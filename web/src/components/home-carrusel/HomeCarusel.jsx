@@ -6,7 +6,7 @@ import Carrusel3 from "../../images/carrusel3.jpeg";
 function HomeCarusel() {
   return (
     <>
-      <div id="default-carousel" class="relative w-full" data-carousel="slide">
+      <div id="default-carousel" class="relative w-full border-b-2 border-pink-400 " data-carousel="slide">
         <div class="relative h-56 overflow-hidden md:h-96">
           <div class="hidden duration-1000 ease-in-out" data-carousel-item>
             <img
