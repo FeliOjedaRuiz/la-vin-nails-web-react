@@ -4,6 +4,8 @@ const express = require("express");
 const logger = require("morgan");
 const createError = require("http-errors");
 
+require("./config/db.config");
+
 const app = express();
 
 app.use(logger("dev"));
@@ -17,10 +19,10 @@ app.use((error, req, res, next) => {
   console.error(error);
 
   const data = {
-    message: error.message
-  }
+    message: error.message,
+  };
 
-  res.status(error.status).json()
+  res.status(error.status).json();
 });
 
 const port = process.env.PORT || 3002;
