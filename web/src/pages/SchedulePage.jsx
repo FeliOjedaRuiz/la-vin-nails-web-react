@@ -1,15 +1,14 @@
-import React from 'react'
-import UpLayout from '../components/layouts/UpLayout'
-import DownLayout from '../components/layouts/DownLayout'
+import React from "react";
+import Layout from "../components/layouts/Layout";
 
 function SchedulePage() {
   return (
     <>
-      <UpLayout />
-      <div>SchedulePage</div>
-      <DownLayout />
+      <Layout>
+        <div>SchedulePage</div>
+      </Layout>
     </>
-  )
+  );
 }
 
-export default SchedulePage
+export default SchedulePage;

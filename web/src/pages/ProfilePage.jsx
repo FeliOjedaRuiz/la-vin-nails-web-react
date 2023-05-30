@@ -1,15 +1,14 @@
-import React from 'react'
-import UpLayout from '../components/layouts/UpLayout'
-import DownLayout from '../components/layouts/DownLayout'
+import React from "react";
+import Layout from "../components/layouts/Layout";
 
 function ProfilePage() {
   return (
     <>
-      <UpLayout />
-      <div>ProfilePage</div>
-      <DownLayout />
+      <Layout>
+        <div>ProfilePage</div>
+      </Layout>
     </>
-  )
+  );
 }
 
-export default ProfilePage
+export default ProfilePage;
