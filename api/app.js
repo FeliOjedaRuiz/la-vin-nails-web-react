@@ -8,7 +8,13 @@ require("./config/db.config");
 
 const app = express();
 
+const cors = require('./config/cors.config');
+app.use(cors);
+app.use(express.json())
 app.use(logger("dev"));
+
+const api = require('./config/routes.config')
+app.use('/api/v1', api);
 
 app.use((req, res, next) => next(createError(404, "Route not found")));
 
