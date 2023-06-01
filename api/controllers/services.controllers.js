@@ -3,8 +3,6 @@ const mongoose = require("mongoose");
 
 module.exports.list = (req, res, next) => {
   Service.find()
-    .then((services) => {
-      res.json(services);
-    })
+    .then((services) => res.json(services))
     .catch(next);
 };
