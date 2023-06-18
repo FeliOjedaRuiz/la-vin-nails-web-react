@@ -3,13 +3,13 @@ import ServiceItem from '../service-item/ServiceItem';
 
 
 function ServiceList({ services }) {
-  
 
-  console.log(services)
+ 
 
   return (
     <>
-      <div>
+      
+      <div className='pb-16'>
         {services.map((service) => (
           <ServiceItem service={service} />
         ))}    

@@ -18,7 +18,7 @@ function ServicesPage() {
     <>
       <Layout>
         <div>
-          <h1>Service Page</h1>
+          <h1 className='text-2xl mb-2 font-bold text-center color text-pink-600'>Servicios ofrecidos</h1>
           <ServiceList services={services} />
         </div>
       </Layout>
