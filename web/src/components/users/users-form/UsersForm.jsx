@@ -33,20 +33,18 @@ function UsersForm() {
 
 
   return (
-    <form onSubmit={handleSubmit(onUserSubmit)}>
+    <form className='flex flex-col' onSubmit={handleSubmit(onUserSubmit)}>
     {serverError && <div>{serverError}</div>}
 
-    <div className='mb-6'>
-    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Nombre</label>
-      <input type='text' placeholder='nombre' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
+    <div className='mb-3'>    
+      <input type='text' placeholder='Nombre' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
       {...register('name', {
         required: 'Se necesita un nombre'
       })} />
       {errors.name && <div>{errors.name?.message}</div>}
     </div>
 
-    <div className='mb-6'>
-    <label for="surname" class="block mb-2 text-sm font-medium text-gray-900">Apellido</label>
+    <div className='mb-3'>    
       <input type='text' placeholder='Apellido' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
       {...register('surname', {
         required: 'Se necesita un apellido'
@@ -54,8 +52,7 @@ function UsersForm() {
       {errors.surname && <div>{errors.surname?.message}</div>}
     </div>
 
-    <div className='mb-6'>
-    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Teléfono</label>
+    <div className='mb-3'>  
       <input type='number' placeholder='Teléfono' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
       {...register('phone', {
         required: 'Se necesita un número de teléfono'
@@ -63,20 +60,22 @@ function UsersForm() {
       {errors.phone && <div>{errors.phone?.message}</div>}
     </div>
     
-    <div className='mb-6'>
-    <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+    <div className='mb-3'>
       <input type='email' placeholder='Email' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
-      {...register('email')} />
+      {...register('email', {
+        required: 'Se necesita un email'
+      })} />
       {errors.email && <div>{errors.email?.message}</div>}
     </div>
     
-    <div className='mb-6'>
-    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
+    <div className='mb-3'>    
       <input type='password' placeholder='Contraseña' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
-      {...register('password')} />
+      {...register('password', {
+        required: 'Se necesita una contraseña'
+      })} />
       {errors.password && <div>{errors.password?.message}</div>}
     </div>
-    <button type='submit' className='text-white bg-teal-500 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-1.5 text-center '>Register</button>
+    <button type='submit' className='text-white bg-green-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-28 self-center px-4 py-1.5 mt-2 text-center'>Registrarse</button>
   </form>
   )
 }

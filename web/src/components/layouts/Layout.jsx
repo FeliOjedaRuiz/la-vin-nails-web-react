@@ -8,13 +8,13 @@ import { NavLink } from "react-router-dom";
 
 function Layout({ children }) {
   return (
-    <>
-      <div className='flex justify-center bg-gradient-to-r from-pink-100 via-white to-green-100 border-b-2 border-pink-400 '>
+    <div className='relative' >
+      <div className='flex absolute w-screen justify-center bg-gradient-to-r from-pink-100 via-white to-green-100 border-b-2 border-pink-400 '>
         <img src={layoutLogo} alt="logo la vin nails simplificado"
         className='h-8 m-2 ' />
       </div>
 
-      <div className='bg-gradient-to-b from-pink-100 to-green-100 h-full p-2'>        
+      <div className='bg-gradient-to-b from-pink-100 to-green-100 min-h-screen pt-14 p-6'>        
         {children}
       </div>
 
@@ -70,7 +70,7 @@ function Layout({ children }) {
           </NavLink>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
