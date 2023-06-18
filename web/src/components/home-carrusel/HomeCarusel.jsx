@@ -1,7 +1,4 @@
 import React from "react";
-import Carrusel1 from "../../images/carrusel1.jpeg";
-import Carrusel2 from "../../images/carrusel2.jpeg";
-import Carrusel3 from "../../images/carrusel3.jpeg";
 
 function HomeCarusel() {
   return (
@@ -10,7 +7,7 @@ function HomeCarusel() {
         <div className="relative h-56 overflow-hidden md:h-96">
           <div className="hidden duration-1000 ease-in-out" data-carousel-item>
             <img
-              src={Carrusel1}
+              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel1_wbnvge.jpg"
               className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               alt="..."
             />
@@ -18,7 +15,7 @@ function HomeCarusel() {
 
           <div className="hidden duration-1000 ease-in-out" data-carousel-item>
             <img
-              src={Carrusel2}
+              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel3_yyr1m7.jpg"
               className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               alt="..."
             />
@@ -26,7 +23,7 @@ function HomeCarusel() {
 
           <div className="hidden duration-1000 ease-in-out" data-carousel-item>
             <img
-              src={Carrusel3}
+              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel2_uecpoq.jpg"
               className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               alt="..."
             />
