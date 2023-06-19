@@ -8,18 +8,18 @@ import { NavLink } from "react-router-dom";
 
 function Layout({ children }) {
   return (
-    <div className='relative' >
-      <div className='flex absolute w-screen justify-center bg-gradient-to-r from-pink-100 via-white to-green-100 border-b-2 border-pink-400 '>
+    <div className='flex flex-col' >
+      <div className='flex fixed z-10 w-screen justify-center bg-gradient-to-r from-pink-100 via-white to-green-100 border-b-2 border-pink-400 '>
         <img src={layoutLogo} alt="logo la vin nails simplificado"
         className='h-8 m-2 ' />
       </div>
 
-      <div className='bg-gradient-to-b from-pink-100 to-green-100 min-h-screen pt-14 p-6'>        
+      <div className='relative top-12 z-0 bg-gradient-to-b from-pink-100 to-green-100 min-h-screen '>        
         {children}
       </div>
 
 
-      <div className="fixed bottom-0 left-0 z-50 w-full h-16 bg-pink-50 border-t-2 border-pink-400">
+      <div className="fixed bottom-0 left-0 z-20 w-full h-16 bg-pink-50 border-t-2 border-pink-400">
         <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
           <NavLink
             to="/"

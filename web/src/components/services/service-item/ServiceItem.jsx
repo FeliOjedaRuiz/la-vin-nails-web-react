@@ -12,7 +12,7 @@ function ServiceItem({ service }) {
               <div className="flex flex-col h-36 w-40 items-center justify-between pl-2 leading-normal">
                   <h5 className=" text-2xl text-center mt-2 leading-none font-bold tracking-tight text-pink-700">{service.name}</h5>
                   <h6 className=" text-xl text-center font-bold tracking-tight text-green-600">desde €{service.price}</h6>
-                  <button type="button" class="text-white bg-gradient-to-r from-teal-500 to-pink-600 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2">Solicitar cita</button>
+                  <button type="button" class="text-white bg-green-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2">Solicitar cita</button>
               </div>
             </div>
             

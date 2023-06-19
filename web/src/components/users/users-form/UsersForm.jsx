@@ -75,7 +75,7 @@ function UsersForm() {
       })} />
       {errors.password && <div>{errors.password?.message}</div>}
     </div>
-    <button type='submit' className='text-white bg-green-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-28 self-center px-4 py-1.5 mt-2 text-center'>Registrarse</button>
+    <button type='submit' className='text-white bg-green-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md w-36 self-center px-4 py-1.5 mt-2 text-center'>Registrarse</button>
   </form>
   )
 }
