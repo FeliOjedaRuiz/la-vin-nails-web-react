@@ -28,13 +28,14 @@ function ServiceItem({ service }) {
 
   return (
     <>      
-      <div className=" mx-1 mb-4 p-3 bg-green-50 border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl">
+      <div className=" mx-1 mb-4 p-3 bg-green-50 border border-gray-200 rounded-lg shadow max-w-xl  md:max-w-xl">
           <div className='flex grid-flow-row mb-3'>
-            <img className="object-cover rounded h-36 w-36 md:h-48 md:w-48" src={service.image} alt={service.name}/>
+            <img className="object-cover rounded h-36 w-36 " src={service.image} alt={service.name}/>
             <div className='flex grow justify-center'>
               <div className="flex flex-col h-36 w-40 items-center justify-between pl-2 leading-normal">
                   <h5 className=" text-2xl text-center mt-2 leading-none font-bold tracking-tight text-pink-700">{service.name}</h5>
                   <h6 className=" text-xl text-center font-bold tracking-tight text-green-600">desde €{service.price}</h6>
+                  <h6 className=" text-sm text-center font-bold tracking-tight text-pink-600">Duración: 1h 30' aprox.</h6>
                   <button type="button" class="text-white bg-green-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2">Solicitar cita</button>
               </div>
             </div>            
@@ -46,9 +47,8 @@ function ServiceItem({ service }) {
               <svg class="w-4 h-4 text-pink-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 8">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={`${icon}`}/>
               </svg>          
-            </div>
-            
-            <p className={` ${view} text-xs font-normal whitespace-normal m-2 text-gray-700 dark:text-gray-400`}>{service.description}</p>
+            </div>            
+            <p className={` ${view} text-sm font-normal whitespace-normal mx-3 mt-1 mb-3 text-gray-700 dark:text-gray-400`}>{service.description}</p>
           </div>
       </div>   
     </>
