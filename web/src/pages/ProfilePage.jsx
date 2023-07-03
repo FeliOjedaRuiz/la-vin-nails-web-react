@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import Layout from "../components/layouts/Layout";
+import { AuthContext } from '../contexts/AuthStore';
 
 function ProfilePage() {
+  const { user } = useContext(AuthContext);
+
+
   return (
     <>
       <Layout>
-        <div>ProfilePage</div>
+        <div>
+          <h1>¡Hola {user.name}!</h1>
+        </div>
       </Layout>
     </>
   );

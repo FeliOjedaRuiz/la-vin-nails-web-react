@@ -41,28 +41,41 @@ const userSchema = new mongoose.Schema(
       default: "guest",
     },
   },
-  { timestamps: true }
+  { timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret.__v;
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        return ret;
+      },
+    },
+  }
 );
 
 userSchema.pre("save", function (next) {
   const user = this;
 
-  if (ADMIN_USERS.includes(user.email)) {
-    user.role = "admin";
-  }
-
   if (user.isModified("password")) {
     bcrypt
-      .hash(user.password, 10)
-      .then((encryptedPassword) => {
-        user.password = encryptedPassword;
-        next();
+      .genSalt(10)
+      .then((salt) => {
+        return bcrypt.hash(user.password, salt).then((hash) => {
+          user.password = hash;
+          next();
+        });
       })
-      .catch(next);
+      .catch((error) => next(error));
   } else {
     next();
   }
 });
+
+userSchema.methods.checkPassword = function (password) {
+  return bcrypt.compare(password, this.password)
+};
 
 const User = mongoose.model("User", userSchema);
 

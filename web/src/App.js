@@ -5,18 +5,22 @@ import SchedulePage from "./pages/SchedulePage";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import AuthStore from "./contexts/AuthStore";
+import PrivateRoute from "./guards/PrivateRoute";
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/schedule" element={<SchedulePage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-      </Routes>
+      <AuthStore>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/schedule" element={<PrivateRoute><SchedulePage /></PrivateRoute>} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+        </Routes>
+      </AuthStore>      
     </>
   );
 }
