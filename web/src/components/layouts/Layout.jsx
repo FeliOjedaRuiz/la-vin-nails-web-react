@@ -30,6 +30,7 @@ function Layout({ children }) {
               Home
             </span>
           </NavLink>
+          
 
           <NavLink
             to="/services"
