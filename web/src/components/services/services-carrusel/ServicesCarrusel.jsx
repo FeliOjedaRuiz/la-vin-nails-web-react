@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import ServiceItem from '../service-item/ServiceItem';
 import servicesService from '../../../services/services';
+import ServiceMicroItem from '../service-micro-item/ServiceMicroItem';
 
 
-function ServiceList() {
+function ServicesCarrusel() {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
@@ -19,15 +19,15 @@ function ServiceList() {
   return (
     <>
       
-      <div className='pb-16 grid grid-cols-1 justify-center md:grid-cols-2 grid-flow-row'>
+      <div className='py-4 px-2 w-screen overflow-scroll'>
+        <div className='flex grid-flow-row'>
         {services.map((service) => (
-          <ServiceItem service={service} />
-        ))}    
-      
-        
+          <ServiceMicroItem service={service} />
+        ))} 
+        </div>
       </div>
     </>
   )
 }
 
-export default ServiceList
+export default ServicesCarrusel
