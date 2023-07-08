@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import carousel1 from "../../images/icono-perfil.png"
 
-function HomeCarusel() {
+function HomeCarousel() {
+  const [img1, setImg1] = useState("")
+  
+  useEffect(() => {
+    setImg1("https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel1_wbnvge.jpg")
+  }, [])
+
   return (
     <>
       <div id="default-carousel" className="relative w-full border-b-2 border-pink-400 " data-carousel="slide">
         <div className="relative h-56 overflow-hidden md:h-96">
-          <div className="hidden duration-1000 ease-in-out" data-carousel-item>
+          <div className=" duration-1000  ease-in-out" data-carousel-item>
             <img
-              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel1_wbnvge.jpg"
+              src={img1}
+              className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+              alt="..."
+            />
+          </div>
+
+          <div className="hidden duration-1000  ease-in-out" data-carousel-item>
+            <img
+              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel3_yyr1m7.jpg"
               className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               alt="..."
             />
@@ -15,7 +30,15 @@ function HomeCarusel() {
 
           <div className="hidden duration-1000 ease-in-out" data-carousel-item>
             <img
-              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel3_yyr1m7.jpg"
+              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel2_uecpoq.jpg"
+              className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+              alt="..."
+            />
+          </div>
+
+          <div className="hidden duration-1000 ease-in-out" data-carousel-item>
+            <img
+              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1687086768/La%20Vin%20Nails%20Web/carrusel2_uecpoq.jpg"
               className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               alt="..."
             />
@@ -121,4 +144,4 @@ function HomeCarusel() {
   );
 }
 
-export default HomeCarusel;
+export default HomeCarousel;

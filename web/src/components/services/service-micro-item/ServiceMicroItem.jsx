@@ -5,10 +5,10 @@ function ServiceMicroItem({ service }) {
 
 
   return (
-    <div className="mx-2  w-36 bg-green-50 border border-gray-200 rounded-lg shadow ">
+    <div className="mx-2 flex flex-col items-center w-36 bg-green-50  rounded-lg shadow hover:outline hover:outline-pink-700 ">
         
       <img
-        className="rounded h-32 w-32 m-2 "
+        className="h-36 w-36 mb-2 rounded-t-lg"
         src={service.image}
         alt={service.name}
       />
@@ -19,7 +19,7 @@ function ServiceMicroItem({ service }) {
       </h5>
       </div>
       
-      <h6 className="mb-2 text-sm text-center font-bold text-green-600">
+      <h6 className="mb-2 text-sm text-center font-medium text-green-600">
         desde €{service.price}
       </h6>
       

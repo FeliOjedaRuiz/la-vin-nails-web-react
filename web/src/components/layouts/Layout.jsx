@@ -14,7 +14,7 @@ function Layout({ children }) {
         className='h-8 m-2 ' />
       </div>
 
-      <div className='relative top-12 z-0 bg-gradient-to-b from-pink-100 to-green-100 min-h-screen '>        
+      <div className='relative top-12 z-0 bg-gradient-to-t from-pink-100 to-green-100 min-h-screen '>        
         {children}
       </div>
 
