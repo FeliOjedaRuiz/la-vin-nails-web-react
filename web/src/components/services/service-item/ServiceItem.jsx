@@ -28,7 +28,7 @@ function ServiceItem({ service }) {
 
   return (
     <>
-      <div className=" mx-1 mb-4 p-3 bg-green-50 border border-gray-200 rounded-lg shadow max-w-xl  md:max-w-xl">
+      <div className=" mx-1 mb-5 p-3 bg-green-50 border border-gray-200 rounded-lg shadow max-w-xl  md:max-w-xl">
         <div className="flex grid-flow-row mb-3">
           <img
             className="object-cover rounded h-36 w-36 "
@@ -48,7 +48,7 @@ function ServiceItem({ service }) {
               </h6>
               <button
                 type="button"
-                class="text-white bg-green-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2"
+                class="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2"
               >
                 Solicitar cita
               </button>
@@ -60,7 +60,7 @@ function ServiceItem({ service }) {
             className={` ${box} flex justify-between items-center px-3 py-1 border-gray-200 rounded`}
             onClick={handleClick}
           >
-            <h6 className=" text-base font-bold tracking-tight text-gray-900 dark:text-white">
+            <h6 className=" text-base font-bold tracking-tight text-green-700 dark:text-white">
               Descripción:
             </h6>
             <svg
@@ -80,7 +80,7 @@ function ServiceItem({ service }) {
             </svg>
           </div>
           <p
-            className={` ${view} text-sm font-normal whitespace-normal mx-3 mt-1 mb-3 text-gray-700 dark:text-gray-400`}
+            className={` ${view} text-md font-medium mx-3 whitespace-normal leading-snug mt-1 mb-3 text-pink-800 dark:text-gray-400`}
           >
             {service.description}
           </p>

@@ -14,7 +14,7 @@ function Layout({ children }) {
         className='h-8 m-2 ' />
       </div>
 
-      <div className='relative top-12 z-0 bg-gradient-to-t from-pink-100 to-green-100 min-h-screen '>        
+      <div className='relative pt-12 pb-16 z-0 bg-gradient-to-b from-pink-200 to-emerald-100 min-h-screen '>        
         {children}
       </div>
 
@@ -25,8 +25,8 @@ function Layout({ children }) {
             to="/"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
           >
-            <img src={homeIcon} alt="icono home" className="w-7 h-7 mb-1 group-hover:text-purple-700 " />
-            <span className="text-xs text-pink-700 group-hover:text-pink-700">
+            <img src={homeIcon} alt="icono home" className="w-7 h-7 group-hover:text-purple-700 " />
+            <span className="text-sm text-pink-700 group-hover:text-pink-700">
               Home
             </span>
           </NavLink>
@@ -39,9 +39,9 @@ function Layout({ children }) {
             <img
               src={servicesIcon}
               alt="icono servicios"
-              className="w-7 h-7 mb-1"
+              className="w-7 h-7"
             />
-            <span className="text-xs text-pink-700 group-hover:text-pink-800">
+            <span className="text-sm text-pink-700 group-hover:text-pink-800">
               Servicios
             </span>
           </NavLink>
@@ -50,8 +50,8 @@ function Layout({ children }) {
             to="/schedule"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
           >
-            <img src={datesIcon} alt="icono agenda" className="w-7 h-7 mb-1" />
-            <span className="text-xs text-pink-700 group-hover:text-pink-800">
+            <img src={datesIcon} alt="icono agenda" className="w-7 h-7" />
+            <span className="text-sm text-pink-700 group-hover:text-pink-800">
               Agenda
             </span>
           </NavLink>
@@ -63,9 +63,9 @@ function Layout({ children }) {
             <img
               src={profileIcon}
               alt="icono perfil"
-              className="w-7 h-7 mb-1"
+              className="w-7 h-7"
             />
-            <span className="text-xs text-pink-700 group-hover:text-pink-800">
+            <span className="text-sm text-pink-700 group-hover:text-pink-800">
               Perfil
             </span>
           </NavLink>

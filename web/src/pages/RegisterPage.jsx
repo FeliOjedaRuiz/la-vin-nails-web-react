@@ -8,8 +8,8 @@ function RegisterPage() {
   return (
     <>
       <Layout>
-        <div className='p-4'>
-          <h1 className='text-center text-3xl font-bold mb-4 text-green-600'>Crea tu cuenta</h1>
+        <div className='p-8'>
+          <h1 className='text-center text-2xl font-bold mb-4 text-green-600'>Crea tu cuenta</h1>
           <UsersForm />          
         </div>
         <LoginBanner />

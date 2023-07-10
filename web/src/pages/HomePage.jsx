@@ -15,8 +15,9 @@ function HomePage() {
           <img src={LaVinLogo} alt="logo la vin nails" className=" h-24 m-4" />
         </div> */}
           <HomeCarousel />
-          <LoginBanner />
           <ServicesSlide/>
+          <LoginBanner />
+          
         </div>
 
       

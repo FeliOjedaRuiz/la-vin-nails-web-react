@@ -8,7 +8,7 @@ function ServicesPage() {
     <>
       <Layout>
         <div className='p-4'>
-          <h1 className='text-3xl mb-5 font-bold text-center color text-pink-600'>Servicios ofrecidos</h1>
+          <h1 className='text-3xl mb-5 font-bold text-center color text-pink-700'>Servicios ofrecidos</h1>
           <ServiceList />
         </div>
       </Layout>

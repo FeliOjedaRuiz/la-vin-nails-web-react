@@ -55,7 +55,7 @@ function UsersLogin() {
           />
           {errors.password && <div>{errors.password?.message}</div>}
         </div>
-        <button type='submit' className='text-white bg-green-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md w-36 self-center px-4 py-1.5 mt-2 text-center'>Comenzar</button>
+        <button type='submit' className='text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md self-center py-1.5 mt-2 text-center'>Comenzar</button>
       </form>
     </>
   );

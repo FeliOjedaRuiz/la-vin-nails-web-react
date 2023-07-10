@@ -10,14 +10,16 @@ function HomeCarousel() {
 
   return (
     <>
-      <div id="default-carousel" className="relative w-full border-b-2 border-pink-400 " data-carousel="slide">
-        <div className="relative h-56 overflow-hidden md:h-96">
+      <div id="default-carousel" className="relative w-full  " data-carousel="slide">
+        <div className="relative aspect-square overflow-hidden md:h-96 md:aspect-auto">
           <div className=" duration-1000  ease-in-out" data-carousel-item>
+            
             <img
               src={img1}
               className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               alt="..."
             />
+            <h1>La Vin</h1>
           </div>
 
           <div className="hidden duration-1000  ease-in-out" data-carousel-item>
