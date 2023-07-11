@@ -11,13 +11,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: "Es necesario un nombre",
       maxLength: [20, "Máximo 20 caracteres"],
-      minlength: [2, "Necesitamos al menos 2 caracteres"],
+      minLength: [2, "Necesitamos al menos 2 caracteres"],
     },
     surname: {
       type: String,
       required: "Es necesario almenos un apellido",
       maxLength: [20, "Máximo 20 caracteres"],
-      minlength: [2, "Es necesario al menos 2 caracteres"],
+      minLength: [2, "Es necesario al menos 2 caracteres"],
     },
     phone: {
       type: Number,
@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Es necesaria una contraseña"],
+      required:  "Es necesaria una contraseña",
       minLength: [8, "Largo minimo 8 caracteres"],
       maxLength: [16, "Largo máximo 16 caracteres"],
     },

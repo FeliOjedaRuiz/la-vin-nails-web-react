@@ -34,46 +34,74 @@ function UsersForm() {
 
   return (
     <form className='flex flex-col' onSubmit={handleSubmit(onUserSubmit)}>
-    {serverError && <div>{serverError}</div>}
+    {serverError && <div className='self-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white' >{serverError}</div>}
 
-    <div className='mb-3'>    
-      <input type='text' placeholder='Nombre' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
+    <div className='mb-2'>
+      <label for="name" className='ml-2 font-medium text-pink-800 text-lg'>Nombre</label>   
+      <input type='text' placeholder='Jane' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
       {...register('name', {
-        required: 'Se necesita un nombre'
+        required: "Es necesario un nombre",
+        minLength: {
+          value: 2,
+          message: "Se necesitan al menos 2 caracteres"},
+        maxLength: {
+          value: 20,
+          message: "Máximo 20 caracteres",}
       })} />
-      {errors.name && <div>{errors.name?.message}</div>}
+      {errors.name && <div className=" ml-2 text-red-600 font-medium">{errors.name?.message}</div>}
     </div>
 
-    <div className='mb-3'>    
-      <input type='text' placeholder='Apellido' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
+    <div className='mb-2'>
+      <label for="surname" className='ml-2 font-medium text-pink-800 text-lg'>Apellido</label>      
+      <input type='text' placeholder='Doe' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
       {...register('surname', {
-        required: 'Se necesita un apellido'
+        required: 'Se necesita un apellido',
+        minLength: {
+          value: 2,
+          message: "Se necesitan al menos 2 caracteres"},
+        maxLength: {
+          value: 20,
+          message: "Máximo 20 caracteres",}
       })} />
-      {errors.surname && <div>{errors.surname?.message}</div>}
+      {errors.surname && <div className=" ml-2 text-red-600 font-medium">{errors.surname?.message}</div>}
     </div>
 
-    <div className='mb-3'>  
-      <input type='number' placeholder='Teléfono' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
+    <div className='mb-2'> 
+      <label for="phone" className='ml-2 font-medium text-pink-800 text-lg'>Teléfono</label>  
+      <input type='number' placeholder='XXX-XXX-XXX' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
       {...register('phone', {
-        required: 'Se necesita un número de teléfono'
+        required: 'Se necesita un número de teléfono',
+        maxLength: {
+          value: 12,
+          message: "Máximo 12 números",}
       })} />
-      {errors.phone && <div>{errors.phone?.message}</div>}
+      {errors.phone && <div className=" ml-2 text-red-600 font-medium">{errors.phone?.message}</div>}
     </div>
     
-    <div className='mb-3'>
-      <input type='email' placeholder='Email' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
+    <div className='mb-2'>
+    <label for="email" className='ml-2 font-medium text-pink-800 text-lg'>E-mail</label>  
+      <input type='email' placeholder='user@example.org' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
       {...register('email', {
-        required: 'Se necesita un email'
+        required: 'Se necesita un email',
+        pattern: {
+                  value: /^\S+@\S+\.\S+$/,
+                  message: 'Es necesario un email valido'
+                }
       })} />
-      {errors.email && <div>{errors.email?.message}</div>}
+      {errors.email && <div className=" ml-2 text-red-600 font-medium">{errors.email?.message}</div>}
     </div>
     
-    <div className='mb-3'>    
-      <input type='password' placeholder='Contraseña' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
+    <div className='mb-2'>
+      <label for="password" className='ml-2 font-medium text-pink-800 text-lg'>Contraseña</label>    
+      <input type='password' placeholder='********' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
       {...register('password', {
-        required: 'Se necesita una contraseña'
+        required: 'Se necesita una contraseña',
+        minLength: {
+                  value: 8,
+                  message: 'Largo minimo 8 caracteres'
+                }
       })} />
-      {errors.password && <div>{errors.password?.message}</div>}
+      {errors.password && <div className=" ml-2 text-red-600 font-medium">{errors.password?.message}</div>}
     </div>
     <button type='submit' className='text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md self-center px-4 py-1.5 mt-2 text-center'>Registrarse</button>
   </form>

@@ -5,7 +5,7 @@ function SchedulePage() {
   return (
     <>
       <Layout>
-        <div>SchedulePage</div>
+        <div></div>
       </Layout>
     </>
   );

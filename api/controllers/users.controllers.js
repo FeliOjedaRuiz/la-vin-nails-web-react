@@ -6,18 +6,21 @@ const maxSessionTime = parseInt(process.env.MAX_SESSION_TIME) || 3_600;
 
 
 module.exports.create = (req, res, next) => {
-  User.create(req.body).then((user) => res.status(201).json(user));
+  User.create(req.body)
+  .then((user) => res.status(201).json(user))
+  .catch(next);
 };
 
 module.exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        return next(createError(401, "Invalid credentials"));
+        return next(createError(401, { errors: { password: 'Credenciales invalidas' } }));
       }
       user.checkPassword(req.body.password).then((match) => {
         if (!match) {
-          return next(createError(401, "Invalid credentials"));
+          console.log("AQUI")
+          return next(createError(401, { errors: { password: 'Credenciales invalidas' } }));
         }
         const token = jwt.sign(
           { sub: user.id, exp: Date.now() / 1000 + maxSessionTime },

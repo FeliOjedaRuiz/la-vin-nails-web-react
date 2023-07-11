@@ -17,8 +17,9 @@ function UsersLogin() {
       user = await usersService.login(user);
       onUserChange(user);
       navigate('/profile')
-    } catch (error) {
+    } catch (error) {       
       const errors = error.response?.data?.errors;
+      console.log(`MMM${errors}`)  
       if (errors) {
         Object.keys(errors)
           .forEach((inputName) => setError(inputName, { message: errors[inputName] }))
@@ -31,8 +32,9 @@ function UsersLogin() {
   return (
     <>
       <form onSubmit={handleSubmit(onLoginSubmit)}>
-        {serverError && <div>{serverError}</div>}
+        {serverError && <div className='text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white'>{serverError}</div>}
         <div className="mb-3">
+          <label for="email" className='ml-2 font-medium text-pink-800 text-lg'>E-mail</label>
           <input
             type="email"
             placeholder="Email"
@@ -41,10 +43,11 @@ function UsersLogin() {
               required: "Se necesita un email",
             })}
           />
-          {errors.email && <div>{errors.email?.message}</div>}
+          {errors.email && <div className=" ml-2 text-red-600 font-medium">{errors.email?.message}</div>}
         </div>
 
         <div className="mb-3">
+          <label for="password" className='ml-2 font-medium text-pink-800 text-lg'>Contraseña</label>    
           <input
             type="password"
             placeholder="Contraseña"
@@ -53,9 +56,9 @@ function UsersLogin() {
               required: "Se necesita una contraseña",
             })}
           />
-          {errors.password && <div>{errors.password?.message}</div>}
+          {errors.password && <div className=" ml-2 text-red-600 font-medium">{errors.password?.message}</div>}
         </div>
-        <button type='submit' className='text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md self-center py-1.5 mt-2 text-center'>Comenzar</button>
+        <button type='submit' className='text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-md self-center py-1.5 mt-2 text-center'>Comenzar</button>
       </form>
     </>
   );
