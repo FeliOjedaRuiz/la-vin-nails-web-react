@@ -6,7 +6,7 @@ function TurnsForm() {
   const {register, handleSubmit, setError, formState: { errors } } = useForm({ mode: "onBlur" });
   const [serverError, setServerError] = useState(undefined);
 
-  const turnState = ["Disponible", "Solicitada", "Confirmada", "Cancelada"];
+  // const turnState = ["Disponible", "Solicitada", "Confirmada", "Cancelada"];
 
   const onTurnSubmit = async (turn) => {
     console.log(turn)
