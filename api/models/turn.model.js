@@ -6,13 +6,13 @@ const turnSchema = new mongoose.Schema({
     required: true,
   },
   hour: {
-    type: [String],
+    type: String,
     required: true,
   },
   state: {
     type: String,
-    enum: ["Pendiente", "Confirmada", "Rechazada"],
-    default: "Pendiente",
+    enum: ["Disponible", "Solicitada", "Confirmada", "Cancelada"],
+    default: "Disponible",
   },
 });
 

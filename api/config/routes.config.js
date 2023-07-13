@@ -15,6 +15,7 @@ router.get("/services", services.list);
 
 // TURNS
 router.post("/turns", turns.create);
+router.get("/turns", turns.list);
 
 
 module.exports = router;

@@ -8,8 +8,6 @@ function UsersForm() {
   const [serverError, setServerError] = useState(undefined);
   const navigate = useNavigate();
 
-  console.debug(`Tags: ${watch('tags')}`);
-
   const onUserSubmit = async (user) => {
     try {
       setServerError(undefined);
@@ -28,8 +26,6 @@ function UsersForm() {
       }
     }
   }
-
-
 
 
   return (

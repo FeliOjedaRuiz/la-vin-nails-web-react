@@ -19,7 +19,6 @@ function UsersLogin() {
       navigate('/profile')
     } catch (error) {       
       const errors = error.response?.data?.errors;
-      console.log(`MMM${errors}`)  
       if (errors) {
         Object.keys(errors)
           .forEach((inputName) => setError(inputName, { message: errors[inputName] }))
