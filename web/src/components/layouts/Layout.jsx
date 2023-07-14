@@ -14,7 +14,7 @@ function Layout({ children }) {
         className='h-8 m-2 ' />
       </div>
 
-      <div className='relative pt-12 pb-16 z-0 bg-gradient-to-b from-pink-200 to-emerald-100 min-h-screen '>        
+      <div className='relative w-full pt-12 pb-16 z-0 bg-gradient-to-b from-pink-200 to-emerald-100 min-h-screen '>        
         {children}
       </div>
 

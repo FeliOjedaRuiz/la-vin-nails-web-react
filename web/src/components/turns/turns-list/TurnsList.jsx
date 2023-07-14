@@ -11,7 +11,7 @@ function TurnsList() {
         setTurns(turns)        
       })
       .catch(error => console.error(error));
-  }, [turns]);
+  }, []);
 
 
   return (
