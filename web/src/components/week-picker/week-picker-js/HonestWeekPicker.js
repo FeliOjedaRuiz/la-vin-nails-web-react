@@ -6,7 +6,7 @@ import { ArrowRight } from "./ArrowRight";
 import { addMonths, endOfWeek, startOfWeek, subMonths } from "date-fns";
 import { getDaysInMonth } from "date-fns/esm";
 
-export const HonestWeekPicker = ({ onChange }) => {
+export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [week, setWeek] = useState({
@@ -29,10 +29,21 @@ export const HonestWeekPicker = ({ onChange }) => {
     return `${dt.getDate()}.${dt.getMonth() + 1}.${dt.getFullYear()}.`;
   };
 
-  const transformDate = (date) => {
+  const transformDate = (date) => {    
     let dt = new Date(date);
+    const year = dt.getFullYear()
+    let month = dt.getMonth() +1
+    let day = dt.getDate()
 
-    return `${dt.getFullYear()}-${dt.getMonth() + 1}-${dt.getDate()}`;
+    if (month < 10) {
+      month = "0"+month
+    }
+
+    if (day < 10){
+      day = "0"+day
+    }
+
+    return `${year}-${month}-${day}`;
   };
 
 
@@ -185,9 +196,10 @@ export const HonestWeekPicker = ({ onChange }) => {
     setDate(new Date(localDate));
   };
 
-
-  let initialDay = transformDate(week.firstDay)
-  let finalDay = transformDate(week.lastDay)
+  onInitDate(transformDate(week.firstDay));
+  onFinalDate(transformDate(week.lastDay))
+  
+  // let finalDay = transformDate(week.lastDay)
 
 
   return (

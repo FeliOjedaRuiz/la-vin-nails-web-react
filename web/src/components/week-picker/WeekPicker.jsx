@@ -14,11 +14,14 @@ export default function WeekPicker() {
   const onChange = (week) => {
     setWeek(week);
   };
+  
+  console.log(week)
 
   return (
     <div >
       <HonestWeekPicker onChange={onChange} />
       {/* <h1>{convertDate(week.firstDay)}</h1> */}
+      
     </div>
   );
 }
