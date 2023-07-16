@@ -1,23 +1,24 @@
-import React from 'react';
-// import './WeekPicker.css';
-import { WeeklyCalendar } from 'react-week-picker';
-import 'react-week-picker/src/lib/calendar.css';
+import React, { useState } from "react";
+import { HonestWeekPicker } from "./week-picker-js/HonestWeekPicker";
+import "./week-picker-css/weekPicker.css";
 
-function WeekPicker() {
+export default function WeekPicker() {
+  const [week, setWeek] = useState({ firstDay: "02-02-2022" });
 
-  const handleJumpToCurrentWeek = (currenDate) => {
-    console.log(`current date: ${currenDate}`);
-  }
+  const convertDate = (date) => {
+    let dt = new Date(date);
 
-  const handleWeekPick = (startDate, endDate) => {
-    console.log(`${startDate} to ${endDate}`);
-  }
+    return `${dt.getDate()}.${dt.getMonth() + 1}.${dt.getFullYear()}`;
+  };
+
+  const onChange = (week) => {
+    setWeek(week);
+  };
 
   return (
-    <div>
-      <WeeklyCalendar onWeekPick={handleWeekPick} jumpToCurrentWeekRequired={true} onJumpToCurrentWeek={handleJumpToCurrentWeek}/>
+    <div >
+      <HonestWeekPicker onChange={onChange} />
+      {/* <h1>{convertDate(week.firstDay)}</h1> */}
     </div>
   );
 }
-
-export default WeekPicker;
