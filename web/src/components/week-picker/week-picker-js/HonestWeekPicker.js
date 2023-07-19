@@ -16,11 +16,11 @@ export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
 
   useEffect(() => {
     onChange && onChange(week);
-  }, [week]);
+  }, []);
 
   const isLeapYear = () => {
     let leapYear = new Date(new Date().getFullYear(), 1, 29);
-    return leapYear.getDate() == 29;
+    return leapYear.getDate() === 29;
   };
 
   const convertDate = (date) => {
@@ -31,7 +31,7 @@ export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
 
   const transformDate = (date) => {    
     let dt = new Date(date);
-    const year = dt.getFullYear()
+    let year = dt.getFullYear()
     let month = dt.getMonth() +1
     let day = dt.getDate()
 
@@ -198,8 +198,6 @@ export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
 
   onInitDate(transformDate(week.firstDay));
   onFinalDate(transformDate(week.lastDay))
-  
-  // let finalDay = transformDate(week.lastDay)
 
 
   return (
