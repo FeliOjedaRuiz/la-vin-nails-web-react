@@ -11,7 +11,7 @@ const turnSchema = new mongoose.Schema({
   },
   state: {
     type: String,
-    enum: ["Disponible", "Solicitada", "Confirmada", "Cancelada"],
+    enum: ["Disponible", "Solicitado", "Confirmado", "Cancelado"],
     default: "Disponible",
   },
 });

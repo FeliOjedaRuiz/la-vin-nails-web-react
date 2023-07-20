@@ -26,7 +26,7 @@ export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
   const convertDate = (date) => {
     let dt = new Date(date);
 
-    return `${dt.getDate()}.${dt.getMonth() + 1}.${dt.getFullYear()}.`;
+    return `${dt.getDate()} de ${months[dt.getMonth()]}`;
   };
 
   const transformDate = (date) => {    
@@ -65,14 +65,14 @@ export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
   };
 
   const months = [
-    "Jan.",
+    "Ene.",
     "Feb.",
     "Mar.",
-    "Apr.",
+    "Abr.",
     "May",
-    "Jun",
-    "July",
-    "Aug.",
+    "Jun.",
+    "Jul.",
+    "Ago.",
     "Sep.",
     "Oct.",
     "Nov.",
@@ -202,13 +202,13 @@ export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
 
   return (
     <div
-      className="week-picker-display"
+      className="week-picker-display  w-full bg-white border-2 border-pink-300"
       onBlur={() => setOpen(false)}
       onClick={() => setOpen(true)}
       tabIndex={0}
     >
-      <p>
-        {convertDate(week.firstDay)} - {convertDate(week.lastDay)}
+      <p className="text-lg font-medium">
+        {convertDate(week.firstDay)} &nbsp; al &nbsp; {convertDate(week.lastDay)}
       </p>
       
       {open && (
@@ -225,11 +225,11 @@ export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
           <div className="numbers-container">
             <div className="single-number day">Lun</div>
             <div className="single-number day">Mar</div>
-            <div className="single-number day">Wed</div>
-            <div className="single-number day">Thu</div>
-            <div className="single-number day">Fri</div>
-            <div className="single-number day">Sat</div>
-            <div className="single-number day">Sun</div>
+            <div className="single-number day">Mie</div>
+            <div className="single-number day">Jue</div>
+            <div className="single-number day">Vie</div>
+            <div className="single-number day">Sab</div>
+            <div className="single-number day">Dom</div>
           </div>
           <div className="numbers-container">{renderDays()}</div>
         </div>

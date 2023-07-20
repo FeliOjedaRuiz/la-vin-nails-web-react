@@ -49,6 +49,37 @@ function WeekSelector() {
   //   `Semana: ${initDate} - ${secondDay} - ${thirdDay} - ${fourthDay} - ${fifthDay} - ${sixthDay}`
   // );
 
+  const months = [
+    "Ene.",
+    "Feb.",
+    "Mar.",
+    "Abr.",
+    "May",
+    "Jun.",
+    "Jul.",
+    "Ago.",
+    "Sep.",
+    "Oct.",
+    "Nov.",
+    "Dec."
+  ];
+
+  const days = {
+    "1": "Lunes",
+    "2": "Martes",
+    "3": "Miérc.",
+    "4": "Jueves",
+    "5": "Viernes",
+    "6": "Sábado",
+    "7": "Domingo",
+  };
+
+  const showDate = (date) => {
+    let dt = new Date(date);
+
+    return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
+  };  
+
 
   const [turns, setTurns] = useState([]);
 
@@ -78,46 +109,50 @@ function WeekSelector() {
 
 
   return (
-    <div>
+    <div className="">
+      <h3 className="m-2 mb-1 text-center text-2xl font-bold text-pink-700">Selecciona una semana</h3>
+      <div className="px-2">
       <HonestWeekPicker
         onChange={onChange}
         onInitDate={onInitDate}
         onFinalDate={onFinalDate}
       />
+      </div>
 
-      <div className="p-2 mt-3 grid grid-cols-2 bg-white">
-        <div className=" px-2 m-2 rounded-md flex-col bg-yellow-400">
-          <h5 className="text-center">{initDate}</h5>
+      {/* <h1 className='text-xl m-3 font-bold text-center color text-pink-700'>Turnos</h1> */}
+      <div className=" mt-3 grid grid-cols-2">
+        <div className=" px-2 m-2 rounded-lg flex-col bg-emerald-100 border-2 border-emerald-300">
+          <h5 className="text-center font-bold m-1">{showDate(initDate)}</h5>
           {firstDayTurns.map((turn) => (
             <TurnItem turn={turn} />
           ))}
         </div>
-        <div className=" px-2 m-2 rounded-md flex-col bg-emerald-500">
-        <h5  className="text-center">{secondDay}</h5>
+        <div className=" px-2 m-2 rounded-lg flex-col bg-emerald-100 border-2 border-emerald-300">
+        <h5  className="text-center font-bold m-1">{showDate(secondDay)}</h5>
           {seconDayTurns.map((turn) => (
             <TurnItem turn={turn} />
           ))}
         </div>
-        <div className=" px-2 m-2 rounded-md flex-col bg-violet-400">
-        <h5  className="text-center">{thirdDay}</h5>
+        <div className=" px-2 m-2 rounded-lg flex-col bg-emerald-100 border-2 border-emerald-300">
+        <h5  className="text-center font-bold m-1">{showDate(thirdDay)}</h5>
           {thirdDayTurns.map((turn) => (
             <TurnItem turn={turn} />
           ))}
         </div>
-        <div className=" px-2 m-2 rounded-md flex-col bg-pink-400">
-        <h5  className="text-center">{fourthDay}</h5>
+        <div className=" px-2 m-2 rounded-lg flex-col bg-emerald-100 border-2 border-emerald-300">
+        <h5  className="text-center font-bold m-1">{showDate(fourthDay)}</h5>
           {fourthDayTurns.map((turn) => (
             <TurnItem turn={turn} />
           ))}
         </div>
-        <div className=" px-2 m-2 rounded-md flex-col bg-cyan-400">
-        <h5 className="text-center">{fifthDay}</h5>
+        <div className=" px-2 m-2 rounded-lg flex-col bg-emerald-100 border-2 border-emerald-300">
+        <h5 className="text-center font-bold m-1">{showDate(fifthDay)}</h5>
           {fifthDayTurns.map((turn) => (
             <TurnItem turn={turn} />
           ))}
         </div>
-        <div className=" px-2 m-2 rounded-md flex-col bg-orange-500">
-        <h5  className="text-center">{sixthDay}</h5>
+        <div className=" px-2 m-2 rounded-lg flex-col bg-emerald-100 border-2 border-emerald-300">
+        <h5  className="text-center font-bold m-1">{showDate(sixthDay)}</h5>
           {sixthDayTurns.map((turn) => (
             <TurnItem turn={turn} />
           ))}

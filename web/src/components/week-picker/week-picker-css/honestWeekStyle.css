@@ -1,5 +1,4 @@
-.week-picker-display {
-  width: 300px;
+.week-picker-display {  
   height: 40px;
   color: #454545;
   position: relative;
@@ -8,14 +7,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #c3c0cc;
   transition: 0.5s ease;
-  padding: 0 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1rem;
-  background-color: white;
 }
 
 .week-picker-options {

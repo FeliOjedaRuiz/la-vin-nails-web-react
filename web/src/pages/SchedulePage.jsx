@@ -12,10 +12,13 @@ function SchedulePage() {
   return (
     <>
       <Layout>
-        <div className='p-8'>
-          <TurnsForm />
-          <h1 className='text-3xl mb-5 font-bold text-center color text-pink-700'>Turnos</h1>       
-          <WeekSelector />
+        <div className='p-6'>
+          <div className="mb-5 p-5 pt-3 bg-white/30 rounded-lg border-2 border-pink-300 shadow-lg">
+            <TurnsForm />
+          </div>
+          <div className="p-1 bg-white/50 rounded-lg border-2 border-pink-300 shadow-lg">
+            <WeekSelector />
+          </div>
         </div>
       </Layout>
     </>

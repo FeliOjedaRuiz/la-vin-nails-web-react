@@ -33,7 +33,7 @@ function TurnsForm() {
         <div className="mb-3">
           <label for="date" className='ml-2 font-medium text-pink-800 text-lg'>Fecha</label>
           <div><input type="date" placeholder="Hora" {...register("date", { required: "Debes seleccionar un día" })}
-            className='rounded border-0 w-80'
+            className='rounded-lg  w-full h-8 px-2 border-2 border-pink-300 '
           /></div>
           {errors.date && <div className=" ml-2 text-red-600 font-medium">{errors.date?.message}</div>}
         </div>
@@ -41,7 +41,7 @@ function TurnsForm() {
         <div className="mb-3">
           <label for="hour" className='ml-2 font-medium text-pink-800 text-lg'>Hora</label>
           <div><input type="time" placeholder="Hora" {...register("hour", { required: "Debes seleccionar una hora" })}
-            className='rounded border-0 w-80'
+            className='rounded-lg w-full h-8 px-2 border-2 border-pink-300 '
           /></div>
           {errors.hour && <div className=" ml-2 text-red-600 font-medium">{errors.hour?.message}</div>}
         </div>
@@ -58,7 +58,7 @@ function TurnsForm() {
           </div>
           {errors.state && <div className=" ml-2 text-red-600 font-medium">{errors.state?.message}</div>}
         </div> */}
-        <button type='submit' className='text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-md self-center py-1.5 mt-2 text-center'>Crear Turno</button>
+        <button type='submit' className='text-white shadow-lg w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-md self-center py-1.5 mt-2 text-center'>Crear Turno</button>
       </form>
     </>
   )
