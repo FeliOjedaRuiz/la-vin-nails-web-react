@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import turnsService from "../../../services/turns"
 
-function TurnsForm() {
+function TurnsForm({ onTurnCreation }) {
   const {register, handleSubmit, setError, formState: { errors } } = useForm({ mode: "onBlur" });
   const [serverError, setServerError] = useState(undefined);
 
@@ -13,6 +13,7 @@ function TurnsForm() {
     try {
       setServerError();
       turn = await turnsService.create(turn);
+      onTurnCreation()
     } catch (error) {
       const errors = error.response?.data?.errors;
       if (errors) {

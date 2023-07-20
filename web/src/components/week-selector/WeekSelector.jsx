@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { HonestWeekPicker } from "../week-picker/week-picker-js/HonestWeekPicker";
-import turnsService from "../../services/turns";
 import TurnItem from "../turns/turn-item/TurnItem";
 
-function WeekSelector() {
+function WeekSelector({ turns }) {
   const [initDate, setInitDate] = useState();
   const [finalDate, setFinalDate] = useState();
 
@@ -81,19 +80,19 @@ function WeekSelector() {
   };  
 
 
-  const [turns, setTurns] = useState([]);
+  // const [turns, setTurns] = useState([]);
 
-  useEffect(() => {
-    turnsService
-      .list()
-      .then((turns) => {
-        const weekTurns = turns.filter(
-          (turn) => turn.date >= initDate && turn.date <= finalDate
-        );
-        setTurns(weekTurns);
-      })
-      .catch((error) => console.error(error));
-  }, [initDate, finalDate]);
+  // useEffect(() => {
+  //   turnsService
+  //     .list()
+  //     .then((turns) => {
+  //       const weekTurns = turns.filter(
+  //         (turn) => turn.date >= initDate && turn.date <= finalDate
+  //       );
+  //       setTurns(weekTurns);
+  //     })
+  //     .catch((error) => console.error(error));
+  // }, [initDate, finalDate]);
 
   // console.log(turns)
   // console.log(`filtro Ini: ${initDate} Fin: ${finalDate}`)

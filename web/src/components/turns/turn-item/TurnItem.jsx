@@ -11,12 +11,12 @@ function TurnItem({ turn }) {
         setTextColor("text-white");
         break;
       case "Solicitado":
-        setBg("bg-gray-400");
-        setTextColor("text-gray-500");
+        setBg("bg-gray-400/50");
+        setTextColor("text-gray-400");
         break;
       case "Confirmado":
-        setBg("bg-gray-400");
-        setTextColor("text-gray-500") 
+        setBg("bg-gray-400/50");
+        setTextColor("text-gray-400") 
         break;
       case "Cancelado":
         setBg("bg-green-600 hover:animate-bounce hover:bg-lime-600");
@@ -28,7 +28,7 @@ function TurnItem({ turn }) {
   }, [turn]);
 
   return (
-    <div className={`mb-2 ${bg} rounded-md shadow-md p-0.5 flex-col`}>
+    <div className={`mb-3 ${bg} rounded-md shadow-md p-0.5 flex-col`}>
       <p className={`text-center font-bold ${textColor}`}>{turn.hour} Hs.</p>
     </div>
   );
