@@ -27,7 +27,7 @@ function TurnsForm({ onTurnCreation }) {
 
 
   return (
-    <div className='p-2 pt-1 m-2 bg-white/50 rounded-lg border-2 border-pink-300 shadow-lg'>
+    <div className='p-2 pt-1 m-2 bg-white/50 rounded-lg border-2 border-pink-300 shadow-md'>
       {/* <h2 className='text-center -mt-1 font-bold text-xl text-pink-800'>Agregar turnos</h2> */}
       <form onSubmit={handleSubmit(onTurnSubmit)}>
         {serverError && <div className='text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white'>{serverError}</div>}
