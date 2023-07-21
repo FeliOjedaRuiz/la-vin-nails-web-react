@@ -27,11 +27,11 @@ function SchedulePage() {
   return (
     <>
       <Layout>
-        <div className="p-6">
+        <div className="p-4">
           <div className="mb-5 p-5 pt-3 bg-white/30 rounded-lg border-2 border-pink-300 shadow-lg">
             <TurnsForm onTurnCreation={onTurnCreation} />
           </div>
-          <div className="p-1 bg-white/50 rounded-lg border-2 border-pink-300 shadow-lg">
+          <div className="p-1 bg-white/30 rounded-lg border-2 border-pink-300 shadow-lg">
             <WeekSelector turns={turns} />
           </div>
         </div>
