@@ -27,22 +27,24 @@ function TurnsForm({ onTurnCreation }) {
 
 
   return (
-    <>
+    <div className='p-2 pt-1 m-2 bg-white/50 rounded-lg border-2 border-pink-300 shadow-lg'>
+      {/* <h2 className='text-center -mt-1 font-bold text-xl text-pink-800'>Agregar turnos</h2> */}
       <form onSubmit={handleSubmit(onTurnSubmit)}>
         {serverError && <div className='text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white'>{serverError}</div>}
         
-        <div className="mb-3">
-          <label for="date" className='ml-2 font-medium text-pink-800 text-lg'>Fecha</label>
+        <div className='flex justify-between'>
+        <div className="">
+          <label for="date" className='ml-2 font-medium text-pink-800 text-sm'>Fecha</label>
           <div><input type="date" placeholder="Hora" {...register("date", { required: "Debes seleccionar un día" })}
-            className='rounded-lg  w-full h-8 px-2 border-2 border-pink-300 '
+            className='rounded-lg w-40 h-8 px-2 border-2 border-pink-300 '
           /></div>
           {errors.date && <div className=" ml-2 text-red-600 font-medium">{errors.date?.message}</div>}
         </div>
 
-        <div className="mb-3">
-          <label for="hour" className='ml-2 font-medium text-pink-800 text-lg'>Hora</label>
+        <div className="">
+          <label for="hour" className='ml-2 font-medium text-pink-800 text-sm'>Hora</label>
           <div><input type="time" placeholder="Hora" {...register("hour", { required: "Debes seleccionar una hora" })}
-            className='rounded-lg w-full h-8 px-2 border-2 border-pink-300 '
+            className='rounded-lg w-24 h-8 px-2 border-2 border-pink-300 '
           /></div>
           {errors.hour && <div className=" ml-2 text-red-600 font-medium">{errors.hour?.message}</div>}
         </div>
@@ -59,9 +61,12 @@ function TurnsForm({ onTurnCreation }) {
           </div>
           {errors.state && <div className=" ml-2 text-red-600 font-medium">{errors.state?.message}</div>}
         </div> */}
-        <button type='submit' className='text-white shadow-lg w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-md self-center py-1.5 mt-2 text-center'>Crear Turno</button>
+        <div className='flex items-end'>
+        <button type='submit' className='text-white shadow-lg h-8 w-8 bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-xl text-center'>+</button>
+        </div>
+        </div>
       </form>
-    </>
+    </div>
   )
 }
 

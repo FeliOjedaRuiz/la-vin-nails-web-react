@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HonestWeekPicker } from "../week-picker/week-picker-js/HonestWeekPicker";
-import TurnItemAdmin from "../turns/turn-item-admin.jsx/TurnItemAdmin";
+import TurnItemAdmin from "../turns/turn-item-admin/TurnItemAdmin";
+import TurnsForm from "../turns/turns-form/TurnsForm";
+import turnsService from "../../services/turns"
 
-function WeekSelector({ turns }) {
+function WeekSelector() {
   const [initDate, setInitDate] = useState();
   const [finalDate, setFinalDate] = useState();
 
@@ -79,7 +81,6 @@ function WeekSelector({ turns }) {
     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };  
 
-
   // const [turns, setTurns] = useState([]);
 
   // useEffect(() => {
@@ -97,13 +98,30 @@ function WeekSelector({ turns }) {
   // console.log(turns)
   // console.log(`filtro Ini: ${initDate} Fin: ${finalDate}`)
 
+  const [reload, setReload] = useState(false);
+
+  const onTurnCreation = () => {
+    setReload(!reload);
+  };
+
+
+  const [turns, setTurns] = useState([]);
+
+  useEffect(() => {
+    turnsService
+      .list()
+      .then((turns) => {
+        setTurns(turns);
+      })
+      .catch((error) => console.error(error));
+  }, [reload]);
+
   const firstDayTurns = turns.filter((turn) => turn.date === initDate);
   const seconDayTurns = turns.filter((turn) => turn.date === secondDay);
   const thirdDayTurns = turns.filter((turn) => turn.date === thirdDay);
   const fourthDayTurns = turns.filter((turn) => turn.date === fourthDay);
   const fifthDayTurns = turns.filter((turn) => turn.date === fifthDay);
   const sixthDayTurns = turns.filter((turn) => turn.date === sixthDay);
-  
 
 
 
@@ -118,7 +136,9 @@ function WeekSelector({ turns }) {
       />
       </div>
 
-      {/* <h1 className='text-xl m-3 font-bold text-center color text-pink-700'>Turnos</h1> */}
+      <TurnsForm onTurnCreation={onTurnCreation} />
+
+      
       <div className=" mt-2 grid grid-cols-2">
         <div className=" px-2 m-1.5 rounded-lg flex-col border-2 border-pink-300">
           <h5 className="text-center font-bold m-1">{showDate(initDate)}</h5>
