@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from 'react-router-dom';
 
 function TurnItemAdmin({ turn }) {
   const [bg, setBg] = useState("");
@@ -28,10 +29,12 @@ function TurnItemAdmin({ turn }) {
   }, [turn]);
 
   return (
-    <div className={`mb-3 ${bg} rounded shadow-md py-0.5 px-1.5 flex-col`}>
-      <p className={`text-center font-medium  text-xs truncate ${textColor}`}>{turn.hour} Hs. - Cristina Ruiz</p>
-      <p className={`text-center font-medium  text-xs truncate ${textColor}`}>Soft Gel - €20</p>
-    </div>
+    <NavLink to={`/turns/${turn.id}`}>
+      <div className={`mb-3 ${bg} rounded shadow-md py-0.5 px-1.5 flex-col`}>
+        <p className={`text-center font-medium  text-xs truncate ${textColor}`}>{turn.hour} Hs. - Cristina Ruiz</p>
+        <p className={`text-center font-medium  text-xs truncate ${textColor}`}>Soft Gel - €20</p>
+      </div>
+    </NavLink>
   );
 }
 

@@ -11,3 +11,9 @@ module.exports.list = (req, res, next) => {
     .then((turns) => res.json(turns))
     .catch(next);
 }
+
+module.exports.detail = (req, res, next) => {
+  Turn.findById(req.params.id)
+    .then((turn) => res.json(turn))
+    .catch(next);
+}

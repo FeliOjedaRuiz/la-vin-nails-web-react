@@ -25,16 +25,27 @@ const dateSchema = new mongoose.Schema(
       type: String,
       required: [true, "Son necesarios los detalles"],
       maxLength: [300, "max 300 chars."],
-    },    
+    },
     turn: {
-      type: String,
-      required: [true, "Es necesario seleccionar una hora"],
+      type:  mongoose.Schema.Types.ObjectId,
+      ref: "Turn",
     },
     cost: {
       type: Number,
-    },    
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret.__v;
+        ret.id = ret._id;
+        delete ret._id;
+        return ret;
+      },
+    },
+  }
 );
 
 dateSchema.index({ date: 1, turn: 1 }, { unique: true });

@@ -20,7 +20,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
-          <Route path="/turns" element={<PrivateRoute role="admin"><TurnDetailPage /></PrivateRoute>} />
+          <Route path="/turns/:id" element={<PrivateRoute role="admin"><TurnDetailPage /></PrivateRoute>} />
         </Routes>
       </AuthStore>      
     </>

@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required:  "Es necesaria una contraseña",
+      required: "Es necesaria una contraseña",
       minLength: [8, "Largo minimo 8 caracteres"],
       maxLength: [16, "Largo máximo 16 caracteres"],
     },
@@ -41,7 +41,8 @@ const userSchema = new mongoose.Schema(
       default: "guest",
     },
   },
-  { timestamps: true,
+  {
+    timestamps: true,
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
@@ -74,8 +75,15 @@ userSchema.pre("save", function (next) {
 });
 
 userSchema.methods.checkPassword = function (password) {
-  return bcrypt.compare(password, this.password)
+  return bcrypt.compare(password, this.password);
 };
+
+userSchema.virtual("dates", {
+  ref: "Date",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
 
 const User = mongoose.model("User", userSchema);
 
