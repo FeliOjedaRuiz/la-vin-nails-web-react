@@ -17,6 +17,12 @@ router.get("/services", services.list);
 router.post("/turns", turns.create);
 router.get("/turns", turns.list);
 router.get("/turns/:id", turns.detail);
+router.patch("/turns/:id")
+router.delete("/turns/:id")
+
+// DATES
+router.post("/dates")
+router.get("/dates")
 
 
 module.exports = router;

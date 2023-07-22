@@ -18,9 +18,8 @@ function TurnDetailCard() {
 
   return (
     <div className='bg-white/50 rounded-md p-3 shadow'>
-      <p>{turn.date}</p>
-      <p>{turn.hour}</p>
-      <p>{turn.state}</p>
+      <p>{turn.date} | {turn.hour} Hs.</p>
+      <p>Estado: {turn.state}</p>
     </div>
 
   )
