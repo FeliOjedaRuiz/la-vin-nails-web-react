@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 function TurnItemAdmin({ turn }) {
   const [bg, setBg] = useState("");
   const [textColor, setTextColor] = useState("");
+  const id = turn.id
+
 
   useEffect(() => {
     switch (turn.state) {
@@ -29,7 +31,7 @@ function TurnItemAdmin({ turn }) {
   }, [turn]);
 
   return (
-    <NavLink to={`/turns/${turn.id}`}>
+    <NavLink to={`/turns/${id}`}>
       <div className={`mb-3 ${bg} rounded shadow-md py-0.5 px-1.5 flex-col`}>
         <p className={`text-center font-medium  text-xs truncate ${textColor}`}>{turn.hour} Hs. - Cristina Ruiz</p>
         <p className={`text-center font-medium  text-xs truncate ${textColor}`}>Soft Gel - €20</p>

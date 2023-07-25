@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "../components/layouts/Layout";
 
-import TurnDetailCard from "../components/turns/turn-detail-card/TurnDetailCard";
+import TurnDetailAndUpdate from "../components/turns/turn-detail-and-update/TurnDetailAndUpdate";
 
 function TurnDetailPage() {
   
@@ -13,7 +13,7 @@ function TurnDetailPage() {
           <h1 className="text-2xl mb-5 font-bold text-center color text-pink-700">
             Detalle del turno
           </h1>
-          <TurnDetailCard />
+          <TurnDetailAndUpdate />
         </div>
       </Layout>
     </>
