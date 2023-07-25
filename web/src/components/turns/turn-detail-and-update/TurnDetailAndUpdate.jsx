@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import saveIcon from "../../../images/save icon2.svg";
 
 function TurnDetailAndUpdate() {
   const { id } = useParams();
+  const navigate = useNavigate()
   const [turn, setTurn] = useState({});
+  const [turnStates, setTurnStates] = useState([
+    "Disponible",
+    "Solicitado",
+    "Confirmado",
+    "Cancelado",
+  ]);
+  let states = [];
 
   useEffect(() => {
     turnsService
       .detail(id)
       .then((turn) => {
         setTurn(turn);
+        states = turnStates.filter((state) => turn.state !== state);
+        states.unshift(turn.state);
+        setTurnStates(states);
       })
       .catch((error) => console.error(error));
   }, [id]);
@@ -26,21 +37,19 @@ function TurnDetailAndUpdate() {
     });
   };
 
-  
   const [serverError, setServerError] = useState(undefined);
-  const [error, setError] = useState(undefined)
-
-  const turnStates = ["Disponible", "Solicitado", "Confirmado", "Cancelado"];
+  const [error, setError] = useState(undefined);
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    onTurnSubmit(turn)
+    onTurnSubmit(turn);
   };
 
   const onTurnSubmit = async (turn) => {
     try {
       setServerError();
       turn = await turnsService.update(id, turn);
+      navigate("/schedule");
     } catch (error) {
       const errors = error.response?.data?.errors;
       if (errors) {
@@ -53,7 +62,6 @@ function TurnDetailAndUpdate() {
     }
   };
 
-  
   return (
     <div className="bg-white/50 rounded-md p-3 shadow">
       <form onSubmit={handleSubmit}>
@@ -72,12 +80,12 @@ function TurnDetailAndUpdate() {
               Fecha
             </label>
             <div>
-              <input 
+              <input
                 type="date"
                 id="date"
                 onChange={handleChange}
                 value={turn.date}
-                className="rounded-lg h-10 px-2 border-2 border-pink-300"
+                className="rounded-lg h-10 w-48 px-2 border-2 border-pink-300"
               />
             </div>
             {/* {errors.date && (
@@ -99,8 +107,8 @@ function TurnDetailAndUpdate() {
                 type="time"
                 id="hour"
                 onChange={handleChange}
-                value={turn.hour}             
-                className="rounded-lg h-10 px-2 border-2 border-pink-300"
+                value={turn.hour}
+                className="rounded-lg h-10 w-24 px-2 border-2 border-pink-300"
               />
             </div>
             {/* {errors.hour && (
@@ -121,13 +129,13 @@ function TurnDetailAndUpdate() {
             </label>
             <div>
               <select
-                className="rounded-lg px-2 w-40 border-2 border-pink-300 align-top "
+                className="rounded-lg px-2 w-48 border-2 border-pink-300 align-top "
                 id="state"
                 onChange={handleChange}
               >
-                {turnStates.map((turnState) => (
-                  <option className="" value={turnState} >
-                    {turnState}
+                {turnStates.map((state) => (
+                  <option className="" value={state}>
+                    {state}
                   </option>
                 ))}
               </select>
