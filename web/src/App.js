@@ -8,6 +8,8 @@ import LoginPage from "./pages/LoginPage";
 import AuthStore from "./contexts/AuthStore";
 import PrivateRoute from "./guards/PrivateRoute";
 import TurnDetailPage from "./pages/TurnDetailPage";
+import ErrorPage from "./pages/ErrorPage";
+import NewDatePage from "./pages/NewDatePage";
 
 function App() {
   return (
@@ -15,11 +17,13 @@ function App() {
       <AuthStore>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/error-page" element={<ErrorPage />} />
           <Route path="/services" element={<ServicesPage />} />
-          <Route path="/schedule" element={<PrivateRoute><SchedulePage /></PrivateRoute>} />
+          <Route path="/new-date/:id" element={<PrivateRoute><NewDatePage /></PrivateRoute>} />          
+          <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+          <Route path="/schedule" element={<PrivateRoute  role="admin"><SchedulePage /></PrivateRoute>} />
           <Route path="/turns/:id" element={<PrivateRoute role="admin"><TurnDetailPage /></PrivateRoute>} />
         </Routes>
       </AuthStore>      

@@ -10,7 +10,7 @@ function PrivateRoute({ children, role }) {
   } else if (!role || role === user.role) {
     return <>{children}</>
   } else {
-    return <Navigate to="/403" replace={true} />
+    return <Navigate to="/error-page" replace={true} />
   }
 }
 

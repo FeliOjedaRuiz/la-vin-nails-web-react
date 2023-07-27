@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 function ServiceItem({ service }) {
   const [view, setView] = useState();
@@ -46,12 +47,14 @@ function ServiceItem({ service }) {
               <h6 className=" text-sm text-center font-bold tracking-tight text-pink-600">
                 Duración: 1h 30' aprox.
               </h6>
+              <NavLink to={`/new-date/${service.id}`}>
               <button
                 type="button"
                 class="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2"
               >
                 Solicitar cita
               </button>
+              </NavLink>
             </div>
           </div>
         </div>

@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import layoutLogo from "../../images/logo-la-vin-simplificado-3.png";
 import homeIcon from "../../images/icono-home.png";
 import servicesIcon from "../../images/icono-servicios.png";
 import datesIcon from "../../images/icono-agenda.png";
 import profileIcon from "../../images/icono-perfil.png";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from '../../contexts/AuthStore';
+
 
 function Layout({ children }) {
+  const { user } = useContext(AuthContext)
+
+
   return (
     <div className='flex flex-col' >
       <div className='flex fixed z-10 w-screen justify-center bg-gradient-to-r from-pink-100 via-white to-green-100 border-b-2 border-pink-400 '>

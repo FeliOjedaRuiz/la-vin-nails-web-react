@@ -13,6 +13,8 @@ router.post("/login", users.login);
 
 // SERVICES
 router.get("/services", services.list);
+router.get("/services/:id", services.detail);
+
 
 // TURNS
 router.post("/turns", turns.create);
