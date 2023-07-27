@@ -20,7 +20,9 @@ function ServiceList() {
     <>      
       <div className='grid grid-cols-1 justify-center md:grid-cols-2 grid-flow-row'>
         {services.map((service) => (
-          <ServiceItem service={service} />
+          <div key={service.id}>
+            <ServiceItem service={service}/>
+          </div>
         ))}
       </div>
     </>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import usersService from '../../../services/users';
 
 function UsersForm() {
-  const { register, handleSubmit, watch, setError, formState: { errors }} = useForm({ mode: 'onBlur' })
+  const { register, handleSubmit, setError, formState: { errors }} = useForm({ mode: 'onBlur' })
   const [serverError, setServerError] = useState(undefined);
   const navigate = useNavigate();
 

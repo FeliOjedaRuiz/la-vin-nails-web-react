@@ -50,7 +50,7 @@ function ServiceItem({ service }) {
               <NavLink to={`/new-date/${service.id}`}>
               <button
                 type="button"
-                class="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2"
+                className="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2"
               >
                 Solicitar cita
               </button>
@@ -67,7 +67,7 @@ function ServiceItem({ service }) {
               Descripción:
             </h6>
             <svg
-              class="w-4 h-4 text-pink-800"
+              className="w-4 h-4 text-pink-800"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -75,9 +75,9 @@ function ServiceItem({ service }) {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d={`${icon}`}
               />
             </svg>

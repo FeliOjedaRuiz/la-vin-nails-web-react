@@ -7,11 +7,13 @@ import Layout from '../components/layouts/Layout';
 function NewDatePage() {
   const { id } = useParams();
   const [service, setService] = useState({});
+  const [serviceTypes, setServiceTypes] = useState([]);
 
   useEffect(() => {
     servicesService.detail(id)
       .then((service) => {
-        setService(service)      
+        setService(service)
+        setServiceTypes(service.type) 
       })
       .catch(error => console.error(error));
   }, []);
@@ -20,12 +22,10 @@ function NewDatePage() {
   return (
     <div>
       <Layout>
-        <div>
-          <h1>Has elegido {service.name} </h1>
-          <DatesForm />
+        <div className='p-4'>          
+          <DatesForm service={service} serviceTypes={serviceTypes} />
         </div>
-      </Layout>
-      
+      </Layout>      
     </div>
   )
 }
