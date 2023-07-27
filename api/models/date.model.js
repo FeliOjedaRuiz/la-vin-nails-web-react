@@ -23,7 +23,7 @@ const dateSchema = new mongoose.Schema(
     },
     designDetails: {
       type: String,
-      required: [true, "Son necesarios los detalles"],
+      // required: [true, "Son necesarios los detalles"],
       maxLength: [300, "max 300 chars."],
     },
     turn: {

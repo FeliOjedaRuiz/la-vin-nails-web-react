@@ -3,6 +3,7 @@ import { AuthContext } from '../../../contexts/AuthStore';
 import { useForm } from 'react-hook-form';
 import datesService from '../../../services/dates'
 import { useNavigate } from 'react-router-dom';
+import WeekSelector from '../../week-selector/WeekSelector';
 
 
 
@@ -11,6 +12,7 @@ function DatesForm({ service, serviceTypes }) {
   const [serverError, setServerError] = useState(undefined);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext)
+  const role = user.role
 
   const onDateSubmit = async (date) => {
     date.user = user.id
@@ -58,15 +60,16 @@ function DatesForm({ service, serviceTypes }) {
         <textarea placeholder='Describe los detalles del diseño...' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5'
         {...register('designDetails', {
           required: "Son necesarios los detalles",
-          minLength: {
-            value: 2,
-            message: "Se necesitan al menos 5 caracteres"},
+          // minLength: {
+          //   value: 5,
+          //   message: "Se necesitan al menos 5 caracteres"},
           maxLength: {
             value: 300,
             message: "Máximo 300 caracteres",}
         })} />
         {errors.name && <div className=" ml-2 text-red-600 font-medium">{errors.name?.message}</div>}
       </div>
+      <WeekSelector role={role} />
       <button type='submit' className='text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md self-center px-4 py-1.5 mt-2 text-center'>Solicitar cita</button>
     </form>
   

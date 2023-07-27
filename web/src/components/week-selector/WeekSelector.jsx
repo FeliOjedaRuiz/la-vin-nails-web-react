@@ -3,8 +3,9 @@ import { HonestWeekPicker } from "../week-picker/week-picker-js/HonestWeekPicker
 import TurnItemAdmin from "../turns/turn-item-admin/TurnItemAdmin";
 import TurnsForm from "../turns/turns-form/TurnsForm";
 import turnsService from "../../services/turns"
+import TurnItemGuest from "../turns/turn-item-guest/TurnItemGuest";
 
-function WeekSelector() {
+function WeekSelector({ role }) {
   const [initDate, setInitDate] = useState();
   const [finalDate, setFinalDate] = useState();
 
@@ -142,39 +143,58 @@ function WeekSelector() {
       <div className="grid grid-cols-2">
         <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
           <h5 className="text-center font-bold m-1">{showDate(initDate)}</h5>
-          {firstDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          {role === "admin" && firstDayTurns.map((turn) => (
+             <TurnItemAdmin turn={turn} />
           ))}
+          {role === "guest" && firstDayTurns.map((turn) => (
+             <TurnItemGuest turn={turn} />
+          ))}  
+          
         </div>
         <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
         <h5  className="text-center font-bold m-1">{showDate(secondDay)}</h5>
-          {seconDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          {role === "admin" && seconDayTurns.map((turn) => (
+             <TurnItemAdmin turn={turn} />
           ))}
+          {role === "guest" && seconDayTurns.map((turn) => (
+             <TurnItemGuest turn={turn} />
+          ))} 
         </div>
         <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
         <h5  className="text-center font-bold m-1">{showDate(thirdDay)}</h5>
-          {thirdDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          {role === "admin" && thirdDayTurns.map((turn) => (
+             <TurnItemAdmin turn={turn} />
           ))}
+          {role === "guest" && thirdDayTurns.map((turn) => (
+             <TurnItemGuest turn={turn} />
+          ))} 
         </div>
         <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
         <h5  className="text-center font-bold m-1">{showDate(fourthDay)}</h5>
-          {fourthDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          {role === "admin" && fourthDayTurns.map((turn) => (
+             <TurnItemAdmin turn={turn} />
           ))}
+          {role === "guest" && fourthDayTurns.map((turn) => (
+             <TurnItemGuest turn={turn} />
+          ))} 
         </div>
         <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
         <h5 className="text-center font-bold m-1">{showDate(fifthDay)}</h5>
-          {fifthDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          {role === "admin" && fifthDayTurns.map((turn) => (
+             <TurnItemAdmin turn={turn} />
           ))}
+          {role === "guest" && fifthDayTurns.map((turn) => (
+             <TurnItemGuest turn={turn} />
+          ))} 
         </div>
         <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
         <h5  className="text-center font-bold m-1">{showDate(sixthDay)}</h5>
-          {sixthDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          {role === "admin" && sixthDayTurns.map((turn) => (
+             <TurnItemAdmin turn={turn} />
           ))}
+          {role === "guest" && sixthDayTurns.map((turn) => (
+             <TurnItemGuest turn={turn} />
+          ))} 
         </div>
               
       </div>
