@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from "react";
 
 function TurnItemGuest({ turn }) {
-  const [bg, setBg] = useState("");
-  const [textColor, setTextColor] = useState("");
+  const [style, setStyle] = useState("");
   const id = turn.id
 
 
   useEffect(() => {
     switch (turn.state) {
       case "Disponible":
-        setBg("bg-green-500");
-        setTextColor("text-white");
+        setStyle("bg-green-500 text-white hover:animate-bounce hover:ring hover:ring-lime-400 ");
         break;
       case "Solicitado":
-        setBg("bg-gray-300");
-        setTextColor("text-black");
+        setStyle("bg-gray-300 text-gray-400");
         break;
       case "Confirmado":
-        setBg("bg-gray-300");
-        setTextColor("text-black");
+        setStyle("bg-gray-300 text-gray-400");
         break;
       case "Cancelado":
-        setBg("bg-green-500");
-        setTextColor("text-white");
+        setStyle("bg-green-500 text-white hover:animate-bounce hover:ring hover:ring-lime-400 ");
         break;
       default:
         break;
@@ -31,8 +26,8 @@ function TurnItemGuest({ turn }) {
 
   return (
     
-      <div className={`mb-1.5 ${bg} rounded shadow py-0.5 px-1.5 flex-col`}>
-        <p className={`text-center font-medium  text-md truncate ${textColor}`}>{turn.hour} Hs.</p>
+      <div className={`mb-1.5 ${style} rounded shadow py-0.5 px-1.5 flex-col`}>
+        <p className={`text-center font-medium  text-md truncate`}>{turn.hour} Hs.</p>
       </div>
     
   );

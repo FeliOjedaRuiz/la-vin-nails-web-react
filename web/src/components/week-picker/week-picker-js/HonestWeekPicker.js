@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../week-picker-css/honestWeekStyle.css";
 import { v4 } from "uuid";
 import { ArrowLeft } from "./ArrowLeft";
@@ -6,17 +6,13 @@ import { ArrowRight } from "./ArrowRight";
 import { addMonths, endOfWeek, startOfWeek, subMonths } from "date-fns";
 import { getDaysInMonth } from "date-fns/esm";
 
-export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
+export const HonestWeekPicker = ({ onInitDate }) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [week, setWeek] = useState({
     firstDay: startOfWeek(new Date(), { weekStartsOn: 1 }),
     lastDay: endOfWeek(new Date(), { weekStartsOn: 1 })
   });
-
-  useEffect(() => {
-    onChange && onChange(week);
-  }, []);
 
   const isLeapYear = () => {
     let leapYear = new Date(new Date().getFullYear(), 1, 29);
@@ -197,8 +193,6 @@ export const HonestWeekPicker = ({ onChange, onInitDate, onFinalDate }) => {
   };
 
   onInitDate(transformDate(week.firstDay));
-  onFinalDate(transformDate(week.lastDay))
-
 
   return (
     <div
