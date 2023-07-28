@@ -61,18 +61,18 @@ export const HonestWeekPicker = ({ onInitDate }) => {
   };
 
   const months = [
-    "Ene.",
-    "Feb.",
-    "Mar.",
-    "Abr.",
-    "May",
-    "Jun.",
-    "Jul.",
-    "Ago.",
-    "Sep.",
-    "Oct.",
-    "Nov.",
-    "Dec."
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
   ];
 
   const days = {

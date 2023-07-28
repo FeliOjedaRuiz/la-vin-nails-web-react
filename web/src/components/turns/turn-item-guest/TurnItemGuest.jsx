@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-function TurnItemGuest({ turn }) {
+function TurnItemGuest({ turn, onTurnSelection }) {
   const [style, setStyle] = useState("");
   const id = turn.id
+  const handleClick = () => {
+    if (turn.state === "Disponible" || turn.state === "Cancelado") {
+      onTurnSelection(turn)
+    }
+  }
 
 
   useEffect(() => {
@@ -26,7 +31,7 @@ function TurnItemGuest({ turn }) {
 
   return (
     
-      <div className={`mb-1.5 ${style} rounded shadow py-0.5 px-1.5 flex-col`}>
+      <div className={`mb-1.5 ${style} rounded shadow py-0.5 px-1.5 flex-col`} onClick={handleClick}>
         <p className={`text-center font-medium  text-md truncate`}>{turn.hour} Hs.</p>
       </div>
     

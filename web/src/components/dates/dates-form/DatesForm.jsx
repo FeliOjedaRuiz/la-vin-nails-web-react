@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthStore";
 import { useForm } from "react-hook-form";
 import datesService from "../../../services/dates";
@@ -16,11 +16,51 @@ function DatesForm({ service, serviceTypes }) {
   const [serverError, setServerError] = useState(undefined);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  const role = user.role;
   const [initDate, setInitDate] = useState();
+  const [selectedTurn, setSelectedTurn] = useState({});
+  const [selectedDate, setSelectedDate] = useState({});
 
   const onInitDate = (date) => {
     setInitDate(date);
+  };
+
+  const onTurnSelection = (turn) => {
+    setSelectedTurn(turn)
+  }
+  
+  useEffect(() => {
+    setSelectedDate(selectedTurn.date)
+  }, [selectedTurn]);
+
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+  ];
+
+  const days = {
+    "1": "Lunes",
+    "2": "Martes",
+    "3": "Miérc.",
+    "4": "Jueves",
+    "5": "Viernes",
+    "6": "Sábado",
+    "7": "Domingo",
+  };
+  
+  const showDate = (selectedDate) => {
+    let dt = new Date(selectedDate);
+
+    return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };
 
   const onDateSubmit = async (date) => {
@@ -107,8 +147,18 @@ function DatesForm({ service, serviceTypes }) {
         <HonestWeekPicker onInitDate={onInitDate} />
       </div>
       <div>
-        <TurnListByWeek initDate={initDate} />
+        <TurnListByWeek initDate={initDate} onTurnSelection={onTurnSelection} />
       </div>
+
+      {selectedTurn.hour &&
+      <div>
+        <p>Turno selecionado {showDate(selectedDate)} a las {selectedTurn.hour} </p>
+      </div>}
+
+      {!selectedTurn.hour &&
+      <div>
+        <p>No has seleccionado ningún turno.</p>
+      </div>}
 
 
 

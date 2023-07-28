@@ -5,7 +5,7 @@ import TurnItemGuest from '../turn-item-guest/TurnItemGuest';
 import { AuthContext } from '../../../contexts/AuthStore';
 
 
-function TurnListByWeek({ initDate, reload }) {
+function TurnListByWeek({ initDate, reload, onTurnSelection }) {
   const [turns, setTurns] = useState([]);
   const { user } = useContext(AuthContext)
   const role = user.role
@@ -39,18 +39,18 @@ function TurnListByWeek({ initDate, reload }) {
   // );
 
   const months = [
-    "Ene.",
-    "Feb.",
-    "Mar.",
-    "Abr.",
-    "May",
-    "Jun.",
-    "Jul.",
-    "Ago.",
-    "Sep.",
-    "Oct.",
-    "Nov.",
-    "Dec."
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
   ];
 
   const days = {
@@ -94,7 +94,7 @@ function TurnListByWeek({ initDate, reload }) {
             <TurnItemAdmin turn={turn} />
         ))}
         {role === "guest" && firstDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} />
+            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}  
         
       </div>
@@ -104,16 +104,16 @@ function TurnListByWeek({ initDate, reload }) {
             <TurnItemAdmin turn={turn} />
         ))}
         {role === "guest" && seconDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} />
+            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))} 
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
       <h5  className="text-center font-bold m-1">{showDate(thirdDay)}</h5>
         {role === "admin" && thirdDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+            <TurnItemAdmin turn={turn}  />
         ))}
         {role === "guest" && thirdDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} />
+            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))} 
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
@@ -122,7 +122,7 @@ function TurnListByWeek({ initDate, reload }) {
             <TurnItemAdmin turn={turn} />
         ))}
         {role === "guest" && fourthDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} />
+            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))} 
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
@@ -131,7 +131,7 @@ function TurnListByWeek({ initDate, reload }) {
             <TurnItemAdmin turn={turn} />
         ))}
         {role === "guest" && fifthDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} />
+            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))} 
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
@@ -140,7 +140,7 @@ function TurnListByWeek({ initDate, reload }) {
             <TurnItemAdmin turn={turn} />
         ))}
         {role === "guest" && sixthDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} />
+            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))} 
       </div>
             
