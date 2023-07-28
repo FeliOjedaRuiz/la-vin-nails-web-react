@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthStore";
 import { useForm } from "react-hook-form";
 import datesService from "../../../services/dates";
+import turnsService from "../../../services/turns"
 import { useNavigate } from "react-router-dom";
 import { HonestWeekPicker } from "../../week-picker/week-picker-js/HonestWeekPicker";
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
@@ -63,13 +64,31 @@ function DatesForm({ service, serviceTypes }) {
     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };
 
+  const onTurnSubmit = async (turn) => {
+    selectedTurn.state = "Solicitado";
+    try {
+      turn = await turnsService.update(selectedTurn.id, selectedTurn);
+    } catch (error) {
+      const errors = error.response?.data?.errors;
+      if (errors) {
+        Object.keys(errors).forEach((inputName) =>
+          setError(inputName, { message: errors[inputName] })
+        );
+      } else {
+        setServerError(error.message);
+      }
+    }
+  };
+
   const onDateSubmit = async (date) => {
     date.user = user.id;
     date.service = service.id;
+    date.turn = selectedTurn.id;
     try {
       setServerError(undefined);
       console.debug("Sending date application...");
       date = await datesService.create(date);
+      onTurnSubmit()
       navigate("/schedule");
     } catch (error) {
       const errors = error.response?.data?.errors;

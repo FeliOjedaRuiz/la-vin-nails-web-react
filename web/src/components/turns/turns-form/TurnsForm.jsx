@@ -9,7 +9,6 @@ function TurnsForm({ onTurnCreation }) {
   // const turnState = ["Disponible", "Solicitada", "Confirmada", "Cancelada"];
 
   const onTurnSubmit = async (turn) => {
-    console.log(turn)
     try {
       setServerError();
       turn = await turnsService.create(turn);
