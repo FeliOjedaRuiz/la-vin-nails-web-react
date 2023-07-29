@@ -51,7 +51,17 @@ function Layout({ children }) {
             </span>
           </NavLink>
 
-          <NavLink
+          {user.role === "guest" && <NavLink
+            to="/my-schedule"
+            className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
+          >
+            <img src={datesIcon} alt="icono agenda" className="w-7 h-7" />
+            <span className="text-sm text-pink-700 group-hover:text-pink-800">
+              Agenda
+            </span>
+          </NavLink>}
+
+          {user.role === "admin" && <NavLink
             to="/schedule"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
           >
@@ -59,7 +69,7 @@ function Layout({ children }) {
             <span className="text-sm text-pink-700 group-hover:text-pink-800">
               Agenda
             </span>
-          </NavLink>
+          </NavLink>}
 
           <NavLink
             to="/profile"

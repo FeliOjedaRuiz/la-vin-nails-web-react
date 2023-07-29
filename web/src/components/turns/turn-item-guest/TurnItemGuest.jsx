@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 function TurnItemGuest({ turn, onTurnSelection }) {
   const [style, setStyle] = useState("");
-  const id = turn.id
   const handleClick = () => {
     if (turn.state === "Disponible" || turn.state === "Cancelado") {
       onTurnSelection(turn)

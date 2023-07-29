@@ -25,6 +25,6 @@ router.delete("/turns/:id");
 
 // DATES
 router.post("/dates", dates.create);
-router.get("/dates");
+router.get("/dates", dates.list);
 
 module.exports = router;

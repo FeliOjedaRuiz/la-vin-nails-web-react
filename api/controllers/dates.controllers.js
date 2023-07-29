@@ -5,3 +5,12 @@ module.exports.create = (req, res, next) => {
     .then((date) => res.status(201).json(date))
     .catch(next);
 };
+
+module.exports.list = (req, res, next) => {
+  Date.find()
+    .populate("turn")
+    .populate("user")
+    .populate("service")
+    .then((dates) => res.json(dates))
+    .catch(next);
+};

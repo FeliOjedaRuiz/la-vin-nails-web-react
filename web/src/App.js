@@ -10,6 +10,7 @@ import PrivateRoute from "./guards/PrivateRoute";
 import TurnDetailPage from "./pages/TurnDetailPage";
 import ErrorPage from "./pages/ErrorPage";
 import NewDatePage from "./pages/NewDatePage";
+import SchedulePageGuest from "./pages/SchedulePageGuest";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/my-schedule" element={<PrivateRoute  role="guest"><SchedulePageGuest /></PrivateRoute>} />
           <Route path="/schedule" element={<PrivateRoute  role="admin"><SchedulePage /></PrivateRoute>} />
           <Route path="/turns/:id" element={<PrivateRoute role="admin"><TurnDetailPage /></PrivateRoute>} />
         </Routes>
