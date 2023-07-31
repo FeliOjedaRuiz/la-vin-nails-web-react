@@ -89,7 +89,7 @@ function DatesForm({ service, serviceTypes }) {
       console.debug("Sending date application...");
       date = await datesService.create(date);
       onTurnSubmit()
-      navigate("/schedule");
+      navigate("/my-schedule");
     } catch (error) {
       const errors = error.response?.data?.errors;
       if (errors) {

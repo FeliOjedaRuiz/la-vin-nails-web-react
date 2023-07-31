@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import layoutLogo from "../../images/logo-la-vin-simplificado-3.png";
 import homeIcon from "../../images/icono-home.png";
 import servicesIcon from "../../images/icono-servicios.png";
@@ -10,6 +10,15 @@ import { AuthContext } from '../../contexts/AuthStore';
 
 function Layout({ children }) {
   const { user } = useContext(AuthContext)
+  const [role, setRole] = useState("")
+
+  useEffect(() => {
+    if (!user) {
+      setRole("guest")      
+    } else {
+      setRole(user.role)
+    }
+  }, [user])
 
 
   return (
@@ -51,7 +60,7 @@ function Layout({ children }) {
             </span>
           </NavLink>
 
-          {user.role === "guest" && <NavLink
+          {role === "guest" && <NavLink
             to="/my-schedule"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
           >
@@ -61,7 +70,7 @@ function Layout({ children }) {
             </span>
           </NavLink>}
 
-          {user.role === "admin" && <NavLink
+          {role === "admin" && <NavLink
             to="/schedule"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
           >

@@ -33,6 +33,11 @@ const dateSchema = new mongoose.Schema(
     cost: {
       type: Number,
     },
+    state: {
+      type: String,
+      enum: ["Solicitada", "Realizada", "Cancelada"],
+      default: "Solicitada",
+    },
   },
   {
     timestamps: true,

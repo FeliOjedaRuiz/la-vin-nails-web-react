@@ -19,7 +19,6 @@ function HomeCarousel() {
               className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               alt="..."
             />
-            <h1>La Vin</h1>
           </div>
 
           <div className="hidden duration-1000  ease-in-out" data-carousel-item>

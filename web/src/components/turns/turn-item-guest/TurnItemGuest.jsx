@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 function TurnItemGuest({ turn, onTurnSelection }) {
   const [style, setStyle] = useState("");
   const handleClick = () => {
-    if (turn.state === "Disponible" || turn.state === "Cancelado") {
+    if (turn.state === "Disponible") {
       onTurnSelection(turn)
     }
   }
@@ -21,7 +21,7 @@ function TurnItemGuest({ turn, onTurnSelection }) {
         setStyle("bg-gray-300 text-gray-400");
         break;
       case "Cancelado":
-        setStyle("bg-green-500 text-white hover:animate-bounce hover:ring hover:ring-lime-400 ");
+        setStyle("bg-gray-300 text-gray-400");
         break;
       default:
         break;

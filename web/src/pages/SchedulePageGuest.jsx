@@ -41,6 +41,7 @@ function SchedulePageGuest() {
     <>
       <Layout>
         <div className='p-4'>
+          <h3 className='text-3xl mb-5 font-bold text-center color text-pink-700'>Mis citas:</h3>
           {dates.map((date) => (
             <DateDetail date={date} />
             ))}

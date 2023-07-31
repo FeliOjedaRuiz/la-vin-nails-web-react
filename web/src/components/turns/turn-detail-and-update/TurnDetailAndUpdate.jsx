@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
+import datesService from "../../../services/dates";
 import { useNavigate, useParams } from "react-router-dom";
 import saveIcon from "../../../images/save icon2.svg";
 
 function TurnDetailAndUpdate() {
   const { id } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [turn, setTurn] = useState({});
+  const [date, setDate] = useState(undefined);
+  const [user, setUser] = useState();
   const [turnStates, setTurnStates] = useState([
     "Disponible",
     "Solicitado",
@@ -25,7 +28,23 @@ function TurnDetailAndUpdate() {
         setTurnStates(states);
       })
       .catch((error) => console.error(error));
+    datesService.list()
+    .then((dates) => {
+      const thisDate = dates.filter((date) => date.turn.id === id)
+      setDate(thisDate[0])      
+    })
   }, [id]);
+
+  console.log(date)
+
+  // useEffect(() => {
+  //   datesService.list()
+  //     .then((dates) => {
+  //       const thisDate = dates.filter((date) => date.turn.id === turn.id)
+  //       setDate(thisDate[0])
+  //       console.log(thisDate[0])
+  //     })
+  // }, [turn, id]);
 
   const handleChange = (ev) => {
     const key = ev.target.id;
@@ -156,6 +175,32 @@ function TurnDetailAndUpdate() {
           </div>
         </div>
       </form>
+      { !date && <div>Este turno aún no fue solicitado</div> }
+      { date && <div>
+        <div className="mt-2">
+          <span className="ml-2 font-medium text-pink-800 text-sm">
+            Cliente: 
+          </span>
+          <span> {date.user.name}</span>
+        </div>
+        <div className="mt-2">
+          <span className="ml-2 font-medium text-pink-800 text-sm">
+            Servicio: 
+          </span>
+          <span>{date.service.name}  </span>
+          <span className="ml-2 font-medium text-pink-800 text-sm">
+            Tipo: 
+          </span>
+          <p className=" inline text-clip overflow-hidden">{date.type} </p>
+        </div>
+        <div className="mt-2">
+          <span className="ml-2 font-medium text-pink-800 text-sm">
+            Detalles: 
+          </span>
+          <span>{date.designDetails}</span>
+        </div>
+      </div>  }
+      
     </div>
   );
 }
