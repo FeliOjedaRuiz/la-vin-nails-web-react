@@ -7,7 +7,12 @@ module.exports.create = (req, res, next) => {
 };
 
 module.exports.list = (req, res, next) => {
-  Date.find()
+  const { turn } = req.query;
+  
+  const criterial = {};
+  if (turn) criterial.turn = turn;
+
+  Date.find(criterial)
     .populate("turn")
     .populate("user")
     .populate("service")

@@ -28,10 +28,12 @@ function SchedulePageGuest() {
   const actualDate = transformDate(new Date());
 
   useEffect(() => {
-    datesService.list()
-      .then((dates) => {
-        const datesUser = dates.filter((date) => date.user.id === user.id)
-        const datesUserAndDate = datesUser.filter((date) => date.turn.date >= actualDate)
+    const query = {}  
+    query.user = user.id
+
+    datesService.list(query)
+      .then((dates) => {        
+        const datesUserAndDate = dates.filter((date) => date.turn.date >= actualDate)
         setDates(datesUserAndDate);
       })
       .catch((error) => console.error(error))

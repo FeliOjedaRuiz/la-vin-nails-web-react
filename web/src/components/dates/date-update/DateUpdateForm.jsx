@@ -7,7 +7,10 @@ function DateUpdateForm() {
   const [date, setDate] = useState();  
 
   useEffect(() => {    
-    datesService.list()
+    const query = {}  
+    query.turn = id
+
+    datesService.list(query)
     .then((dates) => {
       const thisDate = dates.filter((date) => date.turn.id === id);
       setDate(thisDate[0]);
@@ -51,7 +54,7 @@ function DateUpdateForm() {
     <div>
       {!date && <div>Este turno aún no fue solicitado</div>}
       {date && (
-        <div className="my-4">
+        <div className="mb-2 mt-6">
           <h2 className="text-2xl mb-2 font-bold text-center color text-pink-700">
             Detalle de la cita
           </h2>
@@ -83,10 +86,10 @@ function DateUpdateForm() {
             <span className="ml-2 font-medium text-pink-800 text-lg">
               Detalles:
             </span>
-            <span> {date.designDetails}</span>
+            <span className=""> {date.designDetails}</span>
           </div>
 
-          <form onSubmit={handleDateSubmit} className="flex flex-col ">
+          <form onSubmit={handleDateSubmit} className="flex flex-col mt-2 ">
             <div className="flex justify-between mb-3">
               <div className="flex w-60 items-center">
                 <label
@@ -125,7 +128,7 @@ function DateUpdateForm() {
                 <span className="ml-1 font-medium text-pink-800 text-lg"> hs.</span>
               </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex mt-2 justify-center">
               <button
                 type="submit"
                 className="text-white py-1 px-2.5 w-40 font-medium rounded-md text-lg shadow-lg bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
