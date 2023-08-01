@@ -11,7 +11,6 @@ function UsersLogin() {
   const navigate = useNavigate();
 
   const onLoginSubmit = async (user) => {
-    console.log(user)
     try {
       setServerError();
       user = await usersService.login(user);

@@ -29,7 +29,7 @@ function AuthStore({ children }) {
 
   const logout = useCallback(() => {
     handleUserChange();
-    navigate('/')
+    navigate('/login')
   }, [])
 
   return (

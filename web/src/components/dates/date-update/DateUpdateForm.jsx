@@ -13,7 +13,7 @@ function DateUpdateForm() {
       setDate(thisDate[0]);
     })
     .catch((error) => console.error(error));;
-  }, [])
+  }, [id])
 
   const handleDateChange = (ev) => {
     const key = ev.target.id;
@@ -33,6 +33,10 @@ function DateUpdateForm() {
   const [serverError, setServerError] = useState(undefined);
 
   const onDateSubmit = async (date) => {
+    date.user = date.user.id
+    date.turn = date.turn.id
+    date.service = date.service.id
+    console.log(date)
     const dateId = date.id;
     try {
       setServerError();
@@ -87,14 +91,16 @@ function DateUpdateForm() {
               <div className="flex w-60 items-center">
                 <label
                   for="cost"
-                  id="cost"
+                  
                   className="mx-2 font-medium text-pink-800 text-lg"
                 >
                   Costo:
                 </label>
                 <input
                   type="number"
+                  id="cost"
                   onChange={handleDateChange}
+                  value={date.cost}
                   className=" h-8 w-full p-2 border-2 border-pink-300 text-md rounded-lg focus:ring-teal-500  focus:border-teal-500"
                   placeholder="00"
                 />
@@ -103,14 +109,16 @@ function DateUpdateForm() {
               <div className="ml-4 flex items-center">
                 <label
                   for="duration"
-                  id="duration"
+                  
                   className="mx-2 font-medium text-pink-800 text-lg"
                 >
                   Duración:
                 </label>
                 <input
                   type="text"
+                  id="duration"
                   onChange={handleDateChange}
+                  value={date.duration}
                   className="h-8 p-2 border-2 w-full border-pink-300 text-md rounded-lg focus:ring-teal-500  focus:border-teal-500"
                   placeholder="0:00"
                 />{" "}
