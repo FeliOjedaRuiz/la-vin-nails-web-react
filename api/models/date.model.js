@@ -33,6 +33,9 @@ const dateSchema = new mongoose.Schema(
     cost: {
       type: Number,
     },
+    duration: {
+      type: String,
+    },
     state: {
       type: String,
       enum: ["Solicitada", "Realizada", "Cancelada"],

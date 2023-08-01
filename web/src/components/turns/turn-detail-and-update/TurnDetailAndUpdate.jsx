@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
-import datesService from "../../../services/dates";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import saveIcon from "../../../images/save icon2.svg";
+import DateUpdateForm from "../../dates/date-update/DateUpdateForm";
 
 function TurnDetailAndUpdate() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  // const [turnId, setTurnId] = useState(id)
   const [turn, setTurn] = useState({});
-  const [date, setDate] = useState(undefined);
-  const [user, setUser] = useState();
   const [turnStates, setTurnStates] = useState([
     "Disponible",
     "Solicitado",
@@ -28,25 +26,9 @@ function TurnDetailAndUpdate() {
         setTurnStates(states);
       })
       .catch((error) => console.error(error));
-    datesService.list()
-    .then((dates) => {
-      const thisDate = dates.filter((date) => date.turn.id === id)
-      setDate(thisDate[0])      
-    })
-  }, [id]);
+  }, [id]);  
 
-  console.log(date)
-
-  // useEffect(() => {
-  //   datesService.list()
-  //     .then((dates) => {
-  //       const thisDate = dates.filter((date) => date.turn.id === turn.id)
-  //       setDate(thisDate[0])
-  //       console.log(thisDate[0])
-  //     })
-  // }, [turn, id]);
-
-  const handleChange = (ev) => {
+  const handleTurnChange = (ev) => {
     const key = ev.target.id;
     const value = ev.target.value;
 
@@ -57,9 +39,8 @@ function TurnDetailAndUpdate() {
   };
 
   const [serverError, setServerError] = useState(undefined);
-  const [error, setError] = useState(undefined);
 
-  const handleSubmit = (ev) => {
+  const handleTurnSubmit = (ev) => {
     ev.preventDefault();
     onTurnSubmit(turn);
   };
@@ -68,22 +49,18 @@ function TurnDetailAndUpdate() {
     try {
       setServerError();
       turn = await turnsService.update(id, turn);
-      navigate("/schedule");
+      // navigate("/schedule");
     } catch (error) {
-      const errors = error.response?.data?.errors;
-      if (errors) {
-        Object.keys(errors).forEach((inputName) =>
-          setError(inputName, { message: errors[inputName] })
-        );
-      } else {
-        setServerError(error.message);
-      }
+      setServerError(error.message);
     }
   };
 
   return (
     <div className="bg-white/50 rounded-md p-3 shadow">
-      <form onSubmit={handleSubmit}>
+      <h2 className="text-2xl mb-2 font-bold text-center color text-pink-700">
+        Detalle del turno
+      </h2>
+      <form onSubmit={handleTurnSubmit}>
         {serverError && (
           <div className="text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
@@ -102,16 +79,11 @@ function TurnDetailAndUpdate() {
               <input
                 type="date"
                 id="date"
-                onChange={handleChange}
+                onChange={handleTurnChange}
                 value={turn.date}
                 className="rounded-lg h-10 w-48 px-2 border-2 border-pink-300"
               />
             </div>
-            {/* {errors.date && (
-              <div className="text-red-600 text-xs font-medium">
-                {errors.date?.message}
-              </div>
-            )} */}
           </div>
 
           <div className="">
@@ -125,16 +97,11 @@ function TurnDetailAndUpdate() {
               <input
                 type="time"
                 id="hour"
-                onChange={handleChange}
+                onChange={handleTurnChange}
                 value={turn.hour}
                 className="rounded-lg h-10 w-24 px-2 border-2 border-pink-300"
               />
             </div>
-            {/* {errors.hour && (
-              <div className="text-red-600 text-xs font-medium">
-                {errors.hour?.message}
-              </div>
-            )} */}
           </div>
         </div>
 
@@ -150,7 +117,7 @@ function TurnDetailAndUpdate() {
               <select
                 className="rounded-lg px-2 w-48 border-2 border-pink-300 align-top "
                 id="state"
-                onChange={handleChange}
+                onChange={handleTurnChange}
               >
                 {turnStates.map((state) => (
                   <option className="" value={state}>
@@ -159,11 +126,6 @@ function TurnDetailAndUpdate() {
                 ))}
               </select>
             </div>
-            {/* {errors.state && (
-              <div className=" text-red-600 text-xs font-medium">
-                {errors.state?.message}
-              </div>
-            )} */}
           </div>
           <div className="flex items-end">
             <button
@@ -175,32 +137,7 @@ function TurnDetailAndUpdate() {
           </div>
         </div>
       </form>
-      { !date && <div>Este turno aún no fue solicitado</div> }
-      { date && <div>
-        <div className="mt-2">
-          <span className="ml-2 font-medium text-pink-800 text-sm">
-            Cliente: 
-          </span>
-          <span> {date.user.name}</span>
-        </div>
-        <div className="mt-2">
-          <span className="ml-2 font-medium text-pink-800 text-sm">
-            Servicio: 
-          </span>
-          <span>{date.service.name}  </span>
-          <span className="ml-2 font-medium text-pink-800 text-sm">
-            Tipo: 
-          </span>
-          <p className=" inline text-clip overflow-hidden">{date.type} </p>
-        </div>
-        <div className="mt-2">
-          <span className="ml-2 font-medium text-pink-800 text-sm">
-            Detalles: 
-          </span>
-          <span>{date.designDetails}</span>
-        </div>
-      </div>  }
-      
+      <DateUpdateForm  />
     </div>
   );
 }

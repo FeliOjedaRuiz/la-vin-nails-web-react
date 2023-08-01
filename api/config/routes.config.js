@@ -7,6 +7,7 @@ const turns = require("../controllers/turns.controllers");
 const dates = require("../controllers/dates.controllers");
 
 const turnsMid = require("../middlewares/turns.mid");
+const datesMid = require("../middlewares/dates.mid");
 
 // USERS
 router.post("/users", users.create);
@@ -26,5 +27,6 @@ router.delete("/turns/:id");
 // DATES
 router.post("/dates", dates.create);
 router.get("/dates", dates.list);
+router.patch("/dates/:id", datesMid.exists, dates.update);
 
 module.exports = router;

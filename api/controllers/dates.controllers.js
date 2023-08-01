@@ -14,3 +14,11 @@ module.exports.list = (req, res, next) => {
     .then((dates) => res.json(dates))
     .catch(next);
 };
+
+module.exports.update = (req, res, next) => {
+  Object.assign(req.date, req.body);
+  req.date
+    .save()
+    .then((date) => res.json(date))
+    .catch(next);
+};
