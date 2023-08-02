@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import datesService from "../../../services/dates";
 import { useParams } from "react-router-dom";
+import SaveIconSVG from "../../icons/SaveIconSVG";
+import WhatsappIcon from "../../icons/WhatsappIcon";
 
 function DateUpdateForm() {
   const { id } = useParams();
@@ -49,6 +51,8 @@ function DateUpdateForm() {
       setServerError(error.message);
     }
   };
+
+
 
   return (
     <div>
@@ -128,13 +132,22 @@ function DateUpdateForm() {
                 <span className="ml-1 font-medium text-pink-800 text-lg"> hs.</span>
               </div>
             </div>
-            <div className="flex mt-2 justify-center">
+            <div className="flex mt-4 justify-around">
               <button
                 type="submit"
-                className="text-white py-1 px-2.5 w-40 font-medium rounded-md text-lg shadow-lg bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
-              > Actualizar Cita              
+                className=" flex justify-center items-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-gradient-to-l from-pink-700 via-pink-500 to-pink-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+              ><SaveIconSVG />Guardar             
               </button>
+              
+                       
+              <a
+                href={`https://wa.me/${date.user.phone}?text=%C2%A1Hola%21%20Tu%20cita%20de%20${date.service.name}%20para%20el%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.%20ha%20sido%20confirmada.`}
+                className="flex items-center justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+              > <WhatsappIcon /> Escribir             
+              </a>
             </div>
+            
+           
             
           </form>
         </div>
