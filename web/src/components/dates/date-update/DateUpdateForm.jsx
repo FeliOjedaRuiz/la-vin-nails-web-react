@@ -141,7 +141,7 @@ function DateUpdateForm() {
               
                        
               <a
-                href={`https://wa.me/${date.user.phone}?text=%C2%A1Hola%21%20Tu%20cita%20de%20${date.service.name}%20para%20el%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.%20ha%20sido%20confirmada.`}
+                href={`https://wa.me/${date.user.phone}?text=%C2%A1Hola%21 Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. ha sido confirmada con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs. ¡Te espero!`}
                 className="flex items-center justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
               > <WhatsappIcon /> Escribir             
               </a>
