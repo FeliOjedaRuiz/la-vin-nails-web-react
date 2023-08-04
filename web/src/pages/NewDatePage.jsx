@@ -23,7 +23,7 @@ function NewDatePage() {
   return (
     <div>
       <Layout>
-        <div className='p-4'>          
+        <div className='p-2'>          
           <DatesForm service={service} serviceTypes={serviceTypes} />
         </div>
       </Layout>      
