@@ -28,12 +28,12 @@ function Layout({ children }) {
         className='h-8 m-2 ' />
       </div>
 
-      <div className='relative w-full pt-12 pb-16 z-0 bg-gradient-to-b from-pink-200 to-emerald-100 min-h-screen '>        
+      <div className='relative w-full pt-12 pb-16  bg-gradient-to-b from-pink-200 to-emerald-100 min-h-screen '>        
         {children}
       </div>
 
 
-      <div className="fixed bottom-0 left-0 z-20 w-full h-16 bg-pink-50 border-t-2 border-pink-400">
+      <div className="fixed bottom-0 left-0  w-full h-16 bg-pink-50 border-t-2 border-pink-400">
         <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
           <NavLink
             to="/"

@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthStore";
 import { useForm } from "react-hook-form";
 import datesService from "../../../services/dates";
-import turnsService from "../../../services/turns"
+import turnsService from "../../../services/turns";
 import { useNavigate } from "react-router-dom";
 import { HonestWeekPicker } from "../../week-picker/week-picker-js/HonestWeekPicker";
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
+import Modal from "../../modal/Modal";
 
 function DatesForm({ service, serviceTypes }) {
   const {
@@ -20,17 +21,19 @@ function DatesForm({ service, serviceTypes }) {
   const [initDate, setInitDate] = useState();
   const [selectedTurn, setSelectedTurn] = useState({});
   const [selectedDate, setSelectedDate] = useState({});
+  // const [alert, setAlert] = useState("false")
 
   const onInitDate = (date) => {
     setInitDate(date);
   };
 
   const onTurnSelection = (turn) => {
-    setSelectedTurn(turn)
-  }
-  
+    setSelectedTurn(turn);
+  };
+
   useEffect(() => {
-    setSelectedDate(selectedTurn.date)
+    // setAlert("hidden")
+    setSelectedDate(selectedTurn.date);
   }, [selectedTurn]);
 
   const months = [
@@ -45,19 +48,19 @@ function DatesForm({ service, serviceTypes }) {
     "Septiembre",
     "Octubre",
     "Noviembre",
-    "Diciembre"
+    "Diciembre",
   ];
 
   const days = {
-    "1": "Lunes",
-    "2": "Martes",
-    "3": "Miérc.",
-    "4": "Jueves",
-    "5": "Viernes",
-    "6": "Sábado",
-    "7": "Domingo",
+    1: "Lunes",
+    2: "Martes",
+    3: "Miérc.",
+    4: "Jueves",
+    5: "Viernes",
+    6: "Sábado",
+    7: "Domingo",
   };
-  
+
   const showDate = (selectedDate) => {
     let dt = new Date(selectedDate);
 
@@ -80,6 +83,10 @@ function DatesForm({ service, serviceTypes }) {
     }
   };
 
+  // const handleClick = () => {
+  //   setAlert(alert === "" ? "hidden" : "")
+  // };
+
   const onDateSubmit = async (date) => {
     date.user = user.id;
     date.service = service.id;
@@ -88,7 +95,7 @@ function DatesForm({ service, serviceTypes }) {
       setServerError(undefined);
       console.debug("Sending date application...");
       date = await datesService.create(date);
-      onTurnSubmit()
+      onTurnSubmit();
       navigate("/my-schedule");
     } catch (error) {
       const errors = error.response?.data?.errors;
@@ -104,90 +111,122 @@ function DatesForm({ service, serviceTypes }) {
     }
   };
 
+  const [modalState, setModalState] = useState(false);
+
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit(onDateSubmit)}>
-      {serverError && (
-        <div className="self-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
-          {serverError}
+    <div className="relative flex flex-col ">
+      <form className="flex flex-col" onSubmit={handleSubmit(onDateSubmit)}>
+        {serverError && (
+          <div className="self-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
+            {serverError}
+          </div>
+        )}
+        <h1>Has elegido {service.name} </h1>
+        <div className="mb-3">
+          <label for="type" className="ml-2 font-medium text-pink-800 text-lg">
+            Selecciona tipo de servicio
+          </label>
+          <div>
+            <select
+              {...register("type", { required: true })}
+              className="rounded border-0 w-80"
+            >
+              {serviceTypes.map((type) => (
+                <option className="w-80" value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+          {errors.state && (
+            <div className=" ml-2 text-red-600 font-medium">
+              {errors.state?.message}
+            </div>
+          )}
         </div>
-      )}
-      <h1>Has elegido {service.name} </h1>
-      <div className="mb-3">
-        <label for="type" className="ml-2 font-medium text-pink-800 text-lg">
-          Selecciona tipo de servicio
-        </label>
-        <div>
-          <select
-            {...register("type", { required: true })}
-            className="rounded border-0 w-80"
+        <div className="mb-2">
+          <label
+            for="designDetails"
+            className="ml-2 font-medium text-pink-800 text-lg"
           >
-            {serviceTypes.map((type) => (
-              <option className="w-80" value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
+            Detalles
+          </label>
+          <textarea
+            placeholder="Describe los detalles del diseño..."
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
+            {...register("designDetails", {
+              required: "Son necesarios los detalles",
+              // minLength: {
+              //   value: 5,
+              //   message: "Se necesitan al menos 5 caracteres"},
+              maxLength: {
+                value: 300,
+                message: "Máximo 300 caracteres",
+              },
+            })}
+          />
+          {errors.name && (
+            <div className=" ml-2 text-red-600 font-medium">
+              {errors.name?.message}
+            </div>
+          )}
         </div>
-        {errors.state && (
-          <div className=" ml-2 text-red-600 font-medium">
-            {errors.state?.message}
+
+        <div className="px-2">
+          <HonestWeekPicker onInitDate={onInitDate} />
+        </div>
+        <div>
+          <TurnListByWeek
+            initDate={initDate}
+            onTurnSelection={onTurnSelection}
+          />
+        </div>
+
+        {selectedTurn.hour && (
+          <div>
+            <p>
+              Turno selecionado {showDate(selectedDate)} a las{" "}
+              {selectedTurn.hour}{" "}
+            </p>
           </div>
         )}
-      </div>
-      <div className="mb-2">
-        <label
-          for="designDetails"
-          className="ml-2 font-medium text-pink-800 text-lg"
+
+        {!selectedTurn.hour && (
+          <div>
+            <p>No has seleccionado ningún turno.</p>
+          </div>
+        )}
+
+        {/* <button type="submit"
+          className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md self-center px-4 py-1.5 mt-2 text-center"
         >
-          Detalles
-        </label>
-        <textarea
-          placeholder="Describe los detalles del diseño..."
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
-          {...register("designDetails", {
-            required: "Son necesarios los detalles",
-            // minLength: {
-            //   value: 5,
-            //   message: "Se necesitan al menos 5 caracteres"},
-            maxLength: {
-              value: 300,
-              message: "Máximo 300 caracteres",
-            },
-          })}
-        />
-        {errors.name && (
-          <div className=" ml-2 text-red-600 font-medium">
-            {errors.name?.message}
-          </div>
-        )}
-      </div>
+          Solicitar cita
+        </button> */}
 
-      <div className="px-2">
-        <HonestWeekPicker onInitDate={onInitDate} />
-      </div>
-      <div>
-        <TurnListByWeek initDate={initDate} onTurnSelection={onTurnSelection} />
-      </div>
+        <Modal modalState={modalState} setModalState={setModalState}>
+        <p className=" ">Hola!</p>
+        <button
+          onClick={() => setModalState(!modalState)}
+          className="bg-red-600 text-white mt-6 px-2 py-1 rounded "
+        >
+          Cancelar
+        </button>
+        <button type="submit" className="bg-green-600 text-white mt-6 px-2 py-1 rounded ">
+          Aceptar
+        </button>
+      </Modal>
 
-      {selectedTurn.hour &&
-      <div>
-        <p>Turno selecionado {showDate(selectedDate)} a las {selectedTurn.hour} </p>
-      </div>}
-
-      {!selectedTurn.hour &&
-      <div>
-        <p>No has seleccionado ningún turno.</p>
-      </div>}
-
-
+      </form>
 
       <button
-        type="submit"
+        onClick={() => setModalState(!modalState)}
         className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md self-center px-4 py-1.5 mt-2 text-center"
       >
         Solicitar cita
       </button>
-    </form>
+
+      
+    </div>
   );
 }
 

@@ -37,7 +37,7 @@ function SchedulePageGuest() {
         setDates(datesUserAndDate);
       })
       .catch((error) => console.error(error))
-  }, [user])
+  }, [user, actualDate   ])
 
   return (
     <>
