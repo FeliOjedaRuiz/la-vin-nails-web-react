@@ -211,30 +211,52 @@ function DatesForm({ service, serviceTypes }) {
           )}
 
           <Modal modalState={modalState} setModalState={setModalState}>
-            <p className=" ">Hola!</p>
-            <button
-              onClick={() => setModalState(!modalState)}
-              className="bg-red-600 text-white mt-6 px-2 py-1 rounded "
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              className="bg-green-600 text-white mt-6 px-2 py-1 rounded "
-            >
-              Aceptar
-            </button>
+            <div className="text-center mb-6">
+            <p className="font-medium">Solicitar cita de <span className="text-pink-700 font-bold">{service.name}</span>  para el  </p>
+            <p className="font-bold text-pink-700">{showDate(selectedDate)} a las {selectedTurn.hour} hs.</p>
+            </div>
+
+            <div className="text-center mb-6">
+            <p>Tu solicitud será confirmada a la mayor brevedad posible.</p>
+
+            </div>
+
+            <div className="flex justify-around">
+              <button
+                onClick={() => setModalState(!modalState)}
+                className="bg-red-600 text-white  px-2 py-1 rounded "
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className="bg-green-600 text-white  px-2 py-1 rounded "
+              >
+                Aceptar
+              </button>
+            </div>
+            
           </Modal>
         </div>
       </form>
+      {selectedTurn.hour && 
       <div className="p-2">
-      <button
-        onClick={() => setModalState(!modalState)}
-        className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
-      >
-        Solicitar cita
-      </button>
-      </div>
+        <button
+          onClick={() => setModalState(!modalState)}
+          className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
+        >
+          Solicitar cita
+        </button>
+      </div> }
+      {!selectedTurn.hour && 
+      <div className="p-2">
+        <button
+          
+          className="text-gray-500 w-full bg-gray-300 shadow  font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
+        >
+          Solicitar cita
+        </button>
+      </div> }
     </div>
   );
 }

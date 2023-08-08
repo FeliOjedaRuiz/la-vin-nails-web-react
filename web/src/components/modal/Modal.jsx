@@ -4,8 +4,8 @@ function Modal({ children, modalState, setModalState }) {
   return (
     <>
       {modalState && (
-        <div className=" w-screen h-screen fixed top-0 left-0 bg-black/50 z-20 flex justify-center items-center">
-          <div className="bg-white p-4 w-10/12 h-2/6 rounded-lg shadow-2xl flex flex-col items-center">
+        <div className=" w-screen h-screen fixed p-6 top-0 left-0 bg-black/50 z-20 flex justify-center items-center">
+          <div className="bg-gradient-to-tr from-pink-200 to-emerald-100 p-6 rounded-lg shadow-2xl flex flex-col justify-around">
             {children}
           </div>
         </div>
