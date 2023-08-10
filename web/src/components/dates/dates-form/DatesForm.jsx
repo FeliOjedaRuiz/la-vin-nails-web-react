@@ -54,7 +54,7 @@ function DatesForm({ service, serviceTypes }) {
   const days = {
     1: "Lunes",
     2: "Martes",
-    3: "Miérc.",
+    3: "Miércoles",
     4: "Jueves",
     5: "Viernes",
     6: "Sábado",
@@ -83,9 +83,6 @@ function DatesForm({ service, serviceTypes }) {
     }
   };
 
-  // const handleClick = () => {
-  //   setAlert(alert === "" ? "hidden" : "")
-  // };
 
   const onDateSubmit = async (date) => {
     date.user = user.id;
@@ -139,7 +136,7 @@ function DatesForm({ service, serviceTypes }) {
             </label>
             <div>
               <select
-                {...register("type", { required: true })}
+                {...register("type", { required: "Debes seleccionar un tipo de decoración." })}
                 className="rounded-lg  w-full text-green-700 font-medium border-2 border-pink-300 "
               >
                 {serviceTypes.map((type) => (
@@ -148,10 +145,11 @@ function DatesForm({ service, serviceTypes }) {
                   </option>
                 ))}
               </select>
+              {errors.type && <div className=" ml-2 text-red-600 font-medium">{errors.type?.message}</div>}
             </div>
-            {errors.state && (
+            {errors.type && (
               <div className=" ml-2 text-red-600 font-medium">
-                {errors.state?.message}
+                {errors.type?.message}
               </div>
             )}
           </div>
@@ -167,18 +165,18 @@ function DatesForm({ service, serviceTypes }) {
               className="bg-gray-50 border-2 text-green-700 border-pink-300 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
               {...register("designDetails", {
                 required: "Son necesarios los detalles",
-                // minLength: {
-                //   value: 5,
-                //   message: "Se necesitan al menos 5 caracteres"},
+                minLength: {
+                  value: 5,
+                  message: "Se necesitan al menos 5 caracteres"},
                 maxLength: {
                   value: 300,
                   message: "Máximo 300 caracteres",
                 },
               })}
             />
-            {errors.name && (
+            {errors.designDetails && (
               <div className=" ml-2 text-red-600 font-medium">
-                {errors.name?.message}
+                {errors.designDetails?.message}
               </div>
             )}
           </div>
@@ -194,18 +192,18 @@ function DatesForm({ service, serviceTypes }) {
           />
         </div>
 
-        <div className="flex flex-col p-2 justify-center items-center ">
+        <div className="flex flex-col p-2 justify-center items-center mt-2 ">
           {selectedTurn.hour && (
-            <div className=" bg-pink-700 text-white rounded-md text-center  font-medium py-1 px-3 shadow-md">
-              <p className="text-lg"> Turno selecionado: </p>
-              <p className="text-md">
+            <div className=" bg-lime-50 border-2 border-lime-500 rounded-lg text-center  font-medium py-3 px-5 shadow">
+              <p className="text-lg leading-tight text-emerald-700"> Turno selecionado: </p>
+              <p className="text-lg font-bold leading-tight text-emerald-700">
                 {showDate(selectedDate)} a las {selectedTurn.hour}{" "}
               </p>
             </div>
           )}
 
           {!selectedTurn.hour && (
-            <div className=" bg-yellow-300 rounded-md text-center font-medium py-1 px-3  shadow-md">
+            <div className=" bg-yellow-300 rounded-md text-center text-lg font-medium py-1.5 px-3  shadow-md">
               <p>Debes seleccionar un turno</p>
             </div>
           )}
