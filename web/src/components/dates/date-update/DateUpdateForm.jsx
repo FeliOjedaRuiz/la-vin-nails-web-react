@@ -17,7 +17,7 @@ function DateUpdateForm() {
       const thisDate = dates.filter((date) => date.turn.id === id);
       setDate(thisDate[0]);
     })
-    .catch((error) => console.error(error));;
+    .catch((error) => console.error(error));
   }, [id])
 
   const handleDateChange = (ev) => {
