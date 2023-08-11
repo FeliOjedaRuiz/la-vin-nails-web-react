@@ -8,7 +8,7 @@ module.exports.create = (req, res, next) => {
 
 module.exports.list = (req, res, next) => {
   const { turn } = req.query;
-  
+
   const criterial = {};
   if (turn) criterial.turn = turn;
 
@@ -21,24 +21,20 @@ module.exports.list = (req, res, next) => {
 };
 
 module.exports.myList = (req, res, next) => {
-  const { user } = req.user.id;
-  console.log(`USER ${ user }`) 
-  const criterial = {};
+  const criterial = { user: req.user.id };
 
-  if (user) criterial.user = user;
+  console.log(req.user.id);
+  console.log(criterial);
 
-  if (req.user.id) {   
-    
+  if (req.user) {
     Date.find(criterial)
-    .populate("turn")
-    .populate("user")
-    .populate("service")
-    .then((dates) => res.json(dates))
-    .catch(next);
-  }   
+      .populate("turn")
+      .populate("user")
+      .populate("service")
+      .then((dates) => res.json(dates))
+      .catch(next);
+  }
 };
-
-
 
 module.exports.update = (req, res, next) => {
   Object.assign(req.date, req.body);
