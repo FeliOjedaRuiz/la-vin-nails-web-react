@@ -20,6 +20,26 @@ module.exports.list = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.myList = (req, res, next) => {
+  const { user } = req.user.id;
+  console.log(`USER ${ user }`) 
+  const criterial = {};
+
+  if (user) criterial.user = user;
+
+  if (req.user.id) {   
+    
+    Date.find(criterial)
+    .populate("turn")
+    .populate("user")
+    .populate("service")
+    .then((dates) => res.json(dates))
+    .catch(next);
+  }   
+};
+
+
+
 module.exports.update = (req, res, next) => {
   Object.assign(req.date, req.body);
   req.date
