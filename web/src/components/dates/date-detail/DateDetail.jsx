@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import WhatsappIcon from "../../icons/WhatsappIcon";
 import DeleteIcon from "../../icons/DeleteIcon";
-import datesService from "../../../services/dates"
-import { useNavigate } from "react-router-dom";
+import datesService from "../../../services/dates";
+import turnsService from "../../../services/turns";
+import Modal from "./../../modal/Modal";
 
-function DateDetail({ date }) {
+function DateDetail({ date, onDateDelete }) {
   const [state, setState] = useState("");
-  const navigate = useNavigate();
+  const [serverError, setServerError] = useState(undefined);
+  const [modalState, setModalState] = useState(false);
 
   useEffect(() => {
     if (date.turn.state === "Solicitado") {
@@ -16,14 +18,23 @@ function DateDetail({ date }) {
     }
   }, []);
 
-  const handleClick = () => {
+  const handleDeleteDate = () => {
     datesService
       .deleteDate(date.id)
-      .then(
-        navigate("/services")
-      )
-      .catch((error) => console.error(error))
-  }
+      .then(updateDateState)
+      .catch((error) => console.error(error));
+  };
+
+  const updateDateState = () => {
+    const id = date.turn.id;
+    const turn = date.turn;
+    turn.state = "Cancelado";
+
+    turnsService
+      .update(id, turn)
+      .then(onDateDelete)
+      .catch((error) => console.error(error));
+  };
 
   return (
     <div className="bg-white/50 p-4 mb-4 rounded-md shadow md:flex md:justify-around md:p-6">
@@ -80,7 +91,7 @@ function DateDetail({ date }) {
           </div>
           <div className=" ">
             <button
-              onClick={handleClick}
+              onClick={() => setModalState(!modalState)}
               href={`https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.`}
               className="flex items-center mt-1 justify-center text-white py-1 px-4 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
             >
@@ -90,6 +101,33 @@ function DateDetail({ date }) {
           </div>
         </div>
       </div>
+      <Modal modalState={modalState} setModalState={setModalState}>
+        <div className="text-center mb-6">
+          <p className="font-bold text-2xl">
+            CANCELAR CITA           
+          </p>
+          
+        </div>
+
+        <div className="text-center text-xl font-medium mb-6">
+          <p>¿Estas seguro de que quieres cancelar tu cita?</p>
+        </div>
+
+        <div className="flex justify-around">
+          <button
+            onClick={() => setModalState(!modalState)}
+            className="bg-red-600 text-white  px-2 py-1 rounded "
+          >
+            Cancelar
+          </button>
+          <button
+          onClick={handleDeleteDate}
+            className="bg-green-600 text-white  px-2 py-1 rounded "
+          >
+            Aceptar
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }

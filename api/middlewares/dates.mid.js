@@ -16,8 +16,6 @@ module.exports.exists = (req, res, next) => {
 
 module.exports.checkOwner = (req, res, next) => {
   const userId = req.date.user.toString()
-  console.log(userId)
-  console.log(req.user.id)
   if (userId === req.user.id) {
     next();
   } else {

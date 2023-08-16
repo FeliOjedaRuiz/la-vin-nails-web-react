@@ -5,6 +5,11 @@ import DateDetail from "../components/dates/date-detail/DateDetail";
 
 function SchedulePageGuest() {
   const [dates, setDates] = useState([]);
+  const [reload, setReload] = useState(false);
+
+  const onDateDelete = () => {
+    setReload(!reload);
+  };
 
   const transformDate = (date) => {
     let dt = new Date(date);
@@ -35,7 +40,7 @@ function SchedulePageGuest() {
         setDates(datesUserAndDate);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [reload]);
 
   return (
     <>
@@ -45,7 +50,7 @@ function SchedulePageGuest() {
             Mis citas:
           </h3>
           {dates.map((date) => (
-            <DateDetail date={date} />
+            <DateDetail date={date} onDateDelete={onDateDelete} />
           ))}
         </div>
       </Layout>

@@ -89,8 +89,7 @@ function TurnDetailAndUpdate() {
   const onDateSubmit = async (date) => {
     date.user = date.user.id;
     date.turn = date.turn.id;
-    date.service = date.service.id;
-    console.log(date);
+    date.service = date.service.id;    
     const dateId = date.id;
     try {
       setServerError();
