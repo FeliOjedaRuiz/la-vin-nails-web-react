@@ -262,7 +262,7 @@ function TurnDetailAndUpdate() {
           </button>
 
           {date && <a
-            href={`https://wa.me/${date.user.phone}?text=%C2%A1Hola%21 Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. ha sido confirmada con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs. ¡Te espero!`}
+            href={`https://wa.me/+34${date.user.phone}?text=%C2%A1Hola%21 Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. ha sido confirmada con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs. ¡Te espero!`}
             className="flex items-center justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
           >
             {" "}

@@ -8,8 +8,19 @@ module.exports.exists = (req, res, next) => {
         req.date = date;
         next();
       } else {
-        next(createError(404, "Date not found"))
+        next(createError(404, "Date not found"));
       }
     })
     .catch(next);
-}
+};
+
+module.exports.checkOwner = (req, res, next) => {
+  const userId = req.date.user.toString()
+  console.log(userId)
+  console.log(req.user.id)
+  if (userId === req.user.id) {
+    next();
+  } else {
+    next(createError(403, "Forbidden"));
+  }
+};

@@ -30,5 +30,6 @@ router.post("/dates", dates.create);
 router.get("/dates", secure.auth, dates.list);
 router.get("/myDates", secure.auth, dates.myList);
 router.patch("/dates/:id", datesMid.exists, dates.update);
+router.delete("/dates/:id", secure.auth, datesMid.exists, datesMid.checkOwner, dates.delete)
 
 module.exports = router;

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Modal({ children, modalState, setModalState }) {
+function Modal({ children, modalState }) {
   return (
     <>
       {modalState && (

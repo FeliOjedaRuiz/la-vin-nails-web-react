@@ -23,9 +23,6 @@ module.exports.list = (req, res, next) => {
 module.exports.myList = (req, res, next) => {
   const criterial = { user: req.user.id };
 
-  console.log(req.user.id);
-  console.log(criterial);
-
   if (req.user) {
     Date.find(criterial)
       .populate("turn")
@@ -41,5 +38,12 @@ module.exports.update = (req, res, next) => {
   req.date
     .save()
     .then((date) => res.json(date))
+    .catch(next);
+};
+
+module.exports.delete = (req, res, next) => {
+  console.log(`AA ${req.date.id}`)
+  Date.deleteOne({ _id: req.date.id })
+    .then(() => res.status(204).send())
     .catch(next);
 };

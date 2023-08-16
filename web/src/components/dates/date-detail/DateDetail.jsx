@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import WhatsappIcon from "../../icons/WhatsappIcon";
+import DeleteIcon from "../../icons/DeleteIcon";
+import datesService from "../../../services/dates"
+import { useNavigate } from "react-router-dom";
 
 function DateDetail({ date }) {
   const [state, setState] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (date.turn.state === "Solicitado") {
@@ -10,58 +14,80 @@ function DateDetail({ date }) {
     } else {
       setState(date.turn.state);
     }
-  });
+  }, []);
+
+  const handleClick = () => {
+    datesService
+      .deleteDate(date.id)
+      .then(
+        navigate("/services")
+      )
+      .catch((error) => console.error(error))
+  }
 
   return (
-    <div className="bg-white/50 p-4 mb-4 rounded-md shadow">
-      <p className="text-xl font-medium text-pink-700">
-        Fecha:{" "}
-        <span className=" font-normal text-black ">{date.turn.date}</span>
-      </p>
-      <p className="text-xl font-medium text-pink-700">
-        Hora:{" "}
-        <span className=" font-normal text-black ">{date.turn.hour} hs.</span>
-      </p>
-      <p className="text-xl font-medium text-pink-700">
-        Servicio:{" "}
-        <span className=" font-normal text-black ">{date.service.name}</span>{" "}
-      </p>
-      <p className="text-xl font-medium text-pink-700">
-        Tipo: <span className=" font-normal text-black ">{date.type}</span>{" "}
-      </p>
-      <p className="text-xl font-medium text-pink-700">
-        Detalles:{" "}
-        <span className=" font-normal text-black ">{date.designDetails}</span>{" "}
-      </p>
-      <p className="text-xl font-medium text-pink-700">
-        Precio:{" "}
-        <span className=" font-normal text-black ">{date.cost} €.</span>{" "}
-      </p>
-      <p className="text-xl font-medium text-pink-700">
-        Duración estimada:{" "}
-        <span className=" font-normal text-black ">{date.duration} hs.</span>{" "}
-      </p>
-      
-      <div className="flex items-center ">
-        <div className=" w-1/2">
-          <p className="mt-2 text-2xl text-center font-bold text-pink-700">
+    <div className="bg-white/50 p-4 mb-4 rounded-md shadow md:flex md:justify-around md:p-6">
+      <div>
+        <p className="text-xl font-medium text-pink-700">
+          Fecha:{" "}
+          <span className=" font-normal text-black ">{date.turn.date}</span>
+        </p>
+        <p className="text-xl font-medium text-pink-700">
+          Hora:{" "}
+          <span className=" font-normal text-black ">{date.turn.hour} hs.</span>
+        </p>
+        <p className="text-xl font-medium text-pink-700">
+          Servicio:{" "}
+          <span className=" font-normal text-black ">{date.service.name}</span>{" "}
+        </p>
+        <p className="text-xl font-medium text-pink-700">
+          Tipo: <span className=" font-normal text-black ">{date.type}</span>{" "}
+        </p>
+        <p className="text-xl font-medium text-pink-700">
+          Detalles:{" "}
+          <span className=" font-normal text-black ">{date.designDetails}</span>{" "}
+        </p>
+        <p className="text-xl font-medium text-pink-700">
+          Precio:{" "}
+          <span className=" font-normal text-black ">{date.cost} €.</span>{" "}
+        </p>
+        <p className="text-xl font-medium text-pink-700">
+          Duración estimada:{" "}
+          <span className=" font-normal text-black ">{date.duration} hs.</span>{" "}
+        </p>
+      </div>
+      <div className="flex flex-col">
+        <div className="mt-2 mb-2 text-2xl text-center">
+          <span className="  text-center font-bold text-emerald-800">
             Estado:{" "}
-          </p>
-          <p className=" text-center font-medium text-lg leading-snug text-black ">
+          </span>
+          <span className=" text-center font-medium  leading-snug text-black ">
             {state}
-          </p>
+          </span>
         </div>
-        <div className="w-1/2 flex flex-col items-center justify-around ml-2 mt-3">
-          <p className="text-center text-lg font-medium text-pink-800">
-            ¿Tienes una duda?{" "}
-          </p>
-          <a
-            href={`https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.`}
-            className="flex items-center w-full mt-1 justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
-          >
-            {" "}
-            <WhatsappIcon /> Consultar
-          </a>
+        <div className="flex items-end justify-around md:flex-col">
+          <div className=" flex flex-col items-center w-full mr-4 md:mr-0 md:m-4">
+            <p className="text-center text-lg font-medium text-pink-800">
+              ¿Tienes una duda?{" "}
+            </p>
+            <a
+              href={`https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.`}
+              className="flex items-center w-full mt-1 justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+            >
+              {" "}
+              <WhatsappIcon /> Consultar
+            </a>
+          </div>
+          <div className=" ">
+            <button
+              onClick={handleClick}
+              href={`https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.`}
+              className="flex items-center mt-1 justify-center text-white py-1 px-4 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+            >
+              {" "}
+              <DeleteIcon /> Cancelar
+            </button>
+          </div>
         </div>
       </div>
     </div>
