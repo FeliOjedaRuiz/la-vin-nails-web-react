@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/layouts/Layout";
 import { HonestWeekPicker } from "../components/week-picker/week-picker-js/HonestWeekPicker";
 import TurnsForm from "../components/turns/turns-form/TurnsForm";
@@ -11,6 +11,10 @@ function SchedulePage() {
   const onInitDate = (date) => {
     setInitDate(date);
   };
+
+  useEffect(() => {
+    setReload(!reload)
+  }, [])
 
   const onTurnCreation = () => {
     setReload(!reload);

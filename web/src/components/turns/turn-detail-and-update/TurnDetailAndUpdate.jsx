@@ -103,9 +103,13 @@ function TurnDetailAndUpdate() {
   const handleDeleteTurn = () => {
     turnsService
       .deleteTurn(id)
-      .then(navigate("/schedule"))
+      .then(navigateToSchedule)
       .catch((error) => console.error(error));
   };
+
+  const navigateToSchedule = () => {
+    navigate("/schedule");
+  }
 
   return (
     <div className="bg-white/50 rounded-md p-3 shadow">
