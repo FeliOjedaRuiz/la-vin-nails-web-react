@@ -23,7 +23,7 @@ router.post("/turns", turns.create);
 router.get("/turns", turns.list);
 router.get("/turns/:id", turns.detail);
 router.patch("/turns/:id", turnsMid.exists, turns.update);
-router.delete("/turns/:id");
+router.delete("/turns/:id", secure.auth, turnsMid.exists, /*checkAdmin */ turns.delete);
 
 // DATES
 router.post("/dates", dates.create);

@@ -27,7 +27,7 @@ module.exports.update = (req, res, next) => {
 };
 
 module.exports.delete = (req, res, next) => {
-  Turn.deleteOne({_id: req.turn.id})
-    .then(() => res.status(204).send()
-    .catch(next));
-}
+  Turn.deleteOne({ _id: req.turn.id })
+    .then(() => res.status(204).send())
+    .catch(next);
+};

@@ -101,8 +101,11 @@ function TurnDetailAndUpdate() {
   };
 
   const handleDeleteTurn = () => {
-    turnsService.update()
-  }
+    turnsService
+      .deleteTurn(id)
+      .then(navigate("/schedule"))
+      .catch((error) => console.error(error));
+  };
 
   return (
     <div className="bg-white/50 rounded-md p-3 shadow">
@@ -176,24 +179,26 @@ function TurnDetailAndUpdate() {
               </select>
             </div>
           </div>
-          <div>
-          <button
-              onClick={() => setModalState(!modalState)}
-              className="flex items-center justify-center text-white p-3 pl-5 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
-            >
-              {" "}
-              <DeleteIcon />
-            </button>
-          </div>
+          {!date && (
+            <div>
+              <div
+                onClick={() => setModalState(!modalState)}
+                className="flex text-white py-3 pl-3 pr-1 font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+              >
+                {" "}
+                <DeleteIcon />
+              </div>
+            </div>
+          )}
         </div>
 
         <Modal modalState={modalState} setModalState={setModalState}>
           <div className="text-center mb-6">
-            <p className="font-bold text-2xl">CANCELAR CITA</p>
+            <p className="font-bold text-2xl">Eliminar Turno</p>
           </div>
 
           <div className="text-center text-xl font-medium mb-6">
-            <p>¿Estas seguro de que quieres cancelar tu cita?</p>
+            <p>¿Quieres eliminar el turno?</p>
           </div>
 
           <div className="flex justify-around">
