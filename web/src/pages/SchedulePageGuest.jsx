@@ -47,8 +47,9 @@ function SchedulePageGuest() {
       <Layout>
         <div className="p-4">
           <h3 className="text-3xl mb-5 font-bold text-center color text-pink-700">
-            Mis citas:
+            Próximas citas:
           </h3>
+          {!dates[0] && <div className="text-center text-2xl font-medium text-emerald-600 bg-white/50 p-4 m-2 rounded-lg" >No tienes citas pendientes</div>}
           {dates.map((date) => (
             <DateDetail date={date} onDateDelete={onDateDelete} />
           ))}
