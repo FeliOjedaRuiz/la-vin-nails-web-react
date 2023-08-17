@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import SaveIconSVG from "../../icons/SaveIconSVG";
 import WhatsappIcon from "../../icons/WhatsappIcon";
 import { useNavigate } from "react-router-dom";
+import Modal from "../../modal/Modal";
+import DeleteIcon from "../../icons/DeleteIcon";
 
 function TurnDetailAndUpdate() {
   const { id } = useParams();
@@ -18,6 +20,7 @@ function TurnDetailAndUpdate() {
     "Cancelado",
   ]);
   let states = [];
+  const [modalState, setModalState] = useState(false);
 
   const [serverError, setServerError] = useState(undefined);
 
@@ -46,8 +49,6 @@ function TurnDetailAndUpdate() {
       .catch((error) => console.error(error));
   }, []);
 
-  
-
   const handleTurnChange = (ev) => {
     const key = ev.target.id;
     const value = ev.target.value;
@@ -73,14 +74,14 @@ function TurnDetailAndUpdate() {
     onTurnSubmit(turn);
     if (date) {
       onDateSubmit(date);
-    }    
+    }
     navigate("/schedule");
   };
 
   const onTurnSubmit = async (turn) => {
     try {
       setServerError();
-      turn = await turnsService.update(id, turn);      
+      turn = await turnsService.update(id, turn);
     } catch (error) {
       setServerError(error.message);
     }
@@ -89,7 +90,7 @@ function TurnDetailAndUpdate() {
   const onDateSubmit = async (date) => {
     date.user = date.user.id;
     date.turn = date.turn.id;
-    date.service = date.service.id;    
+    date.service = date.service.id;
     const dateId = date.id;
     try {
       setServerError();
@@ -98,6 +99,10 @@ function TurnDetailAndUpdate() {
       setServerError(error.message);
     }
   };
+
+  const handleDeleteTurn = () => {
+    turnsService.update()
+  }
 
   return (
     <div className="bg-white/50 rounded-md p-3 shadow">
@@ -149,7 +154,7 @@ function TurnDetailAndUpdate() {
           </div>
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between items-end">
           <div className="">
             <label
               for="state"
@@ -171,9 +176,47 @@ function TurnDetailAndUpdate() {
               </select>
             </div>
           </div>
+          <div>
+          <button
+              onClick={() => setModalState(!modalState)}
+              className="flex items-center justify-center text-white p-3 pl-5 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+            >
+              {" "}
+              <DeleteIcon />
+            </button>
+          </div>
         </div>
 
-        {!date && <div className=" text-center mt-4 p-0.5 text-pink-600 text-xl font-bold">¡Este turno aún no fue solicitado!</div>}
+        <Modal modalState={modalState} setModalState={setModalState}>
+          <div className="text-center mb-6">
+            <p className="font-bold text-2xl">CANCELAR CITA</p>
+          </div>
+
+          <div className="text-center text-xl font-medium mb-6">
+            <p>¿Estas seguro de que quieres cancelar tu cita?</p>
+          </div>
+
+          <div className="flex justify-around">
+            <button
+              onClick={() => setModalState(!modalState)}
+              className="bg-red-600 text-white  px-2 py-1 rounded "
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleDeleteTurn}
+              className="bg-green-600 text-white  px-2 py-1 rounded "
+            >
+              Aceptar
+            </button>
+          </div>
+        </Modal>
+
+        {!date && (
+          <div className=" text-center mt-4 p-0.5 text-pink-600 text-xl font-bold">
+            ¡Este turno aún no fue solicitado!
+          </div>
+        )}
         {date && (
           <div className="my-6">
             <h2 className="text-2xl mb-2 font-bold text-center color text-pink-700">
@@ -260,13 +303,15 @@ function TurnDetailAndUpdate() {
             Guardar
           </button>
 
-          {date && <a
-            href={`https://wa.me/+34${date.user.phone}?text=%C2%A1Hola%21 Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. ha sido confirmada con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs. ¡Te espero!`}
-            className="flex items-center justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
-          >
-            {" "}
-            <WhatsappIcon /> Escribir
-          </a> }
+          {date && (
+            <a
+              href={`https://wa.me/+34${date.user.phone}?text=%C2%A1Hola%21 Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. ha sido confirmada con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs. ¡Te espero!`}
+              className="flex items-center justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+            >
+              {" "}
+              <WhatsappIcon /> Escribir
+            </a>
+          )}
         </div>
       </form>
     </div>

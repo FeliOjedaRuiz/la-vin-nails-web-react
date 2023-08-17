@@ -92,7 +92,6 @@ function DateDetail({ date, onDateDelete }) {
           <div className=" ">
             <button
               onClick={() => setModalState(!modalState)}
-              href={`https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.`}
               className="flex items-center mt-1 justify-center text-white py-1 px-4 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
             >
               {" "}
