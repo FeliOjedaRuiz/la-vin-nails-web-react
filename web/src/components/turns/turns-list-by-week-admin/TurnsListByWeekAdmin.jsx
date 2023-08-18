@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import turnsService from "../../../services/turns";
-import TurnItemGuest from '../turn-item-guest/TurnItemGuest';
+import TurnItemAdmin from '../turn-item-admin/TurnItemAdmin';
 import { AuthContext } from '../../../contexts/AuthStore';
 
-
-function TurnListByWeek({ initDate, reload, onTurnSelection }) {
+function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
   const [turns, setTurns] = useState([]);
   const { user } = useContext(AuthContext)
   const role = user.role
@@ -32,10 +31,6 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
   const fourthDay = transformDate(day.setDate(day.getDate() + 1));
   const fifthDay = transformDate(day.setDate(day.getDate() + 1));
   const sixthDay = transformDate(day.setDate(day.getDate() + 1));
-
-  // console.log(
-  //   `Semana: ${initDate} - ${secondDay} - ${thirdDay} - ${fourthDay} - ${fifthDay} - ${sixthDay}`
-  // );
 
   const months = [
     "Enero",
@@ -90,43 +85,49 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm">{showDate(initDate)}</h5>
         {firstDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
-        ))}  
+            <TurnItemAdmin turn={turn} />
+        ))}
+        
         
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
       <h5  className="text-center font-bold m-1 text-sm">{showDate(secondDay)}</h5>
         {seconDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
-        ))} 
+            <TurnItemAdmin turn={turn} />
+        ))}
+        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
       <h5  className="text-center font-bold m-1 text-sm">{showDate(thirdDay)}</h5>
         {thirdDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
-        ))} 
+            <TurnItemAdmin turn={turn}  />
+        ))}
+        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
       <h5  className="text-center font-bold m-1 text-sm">{showDate(fourthDay)}</h5>
         {fourthDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
-        ))} 
+            <TurnItemAdmin turn={turn} />
+        ))}
+        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
       <h5 className="text-center font-bold m-1 text-sm">{showDate(fifthDay)}</h5>
         {fifthDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
-        ))} 
+            <TurnItemAdmin turn={turn} />
+        ))}
+        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
       <h5  className="text-center font-bold m-1 text-sm">{showDate(sixthDay)}</h5>
         {sixthDayTurns.map((turn) => (
-            <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
-        ))} 
+            <TurnItemAdmin turn={turn} />
+        ))}
+        
       </div>
             
     </div>
   )
 }
 
-export default TurnListByWeek
+export default TurnsListByWeekAdmin
