@@ -8,7 +8,7 @@ const dates = require("../controllers/dates.controllers");
 
 const turnsMid = require("../middlewares/turns.mid");
 const datesMid = require("../middlewares/dates.mid");
-const secure = require('../middlewares/secure.mid');
+const secure = require("../middlewares/secure.mid");
 
 // USERS
 router.post("/users", users.create);
@@ -19,17 +19,29 @@ router.get("/services", services.list);
 router.get("/services/:id", services.detail);
 
 // TURNS
-router.post("/turns", /*checkAdmin */ turns.create);
+router.post("/turns", secure.isAdmin, turns.create);
 router.get("/turns", turns.list);
 router.get("/turns/:id", turns.detail);
-router.patch("/turns/:id", /*checkAdmin*/ turnsMid.exists, turns.update);
-router.delete("/turns/:id", secure.auth, turnsMid.exists, /*checkAdmin turnFree */ turns.delete);
+router.patch("/turns/:id", secure.isAdmin, turnsMid.exists, turns.update);
+router.delete(
+  "/turns/:id",
+  secure.isAdmin,
+  turnsMid.exists,
+  turnsMid.isFree,
+  turns.delete
+);
 
 // DATES
 router.post("/dates", secure.auth, dates.create);
-router.get("/dates", secure.auth, /*checkAdmin*/ dates.list);
+router.get("/dates", secure.isAdmin, dates.list);
 router.get("/myDates", secure.auth, dates.myList);
-router.patch("/dates/:id", /*checkAdmin*/ datesMid.exists, dates.update);
-router.delete("/dates/:id", secure.auth, datesMid.exists, datesMid.checkOwner, dates.delete)
+router.patch("/dates/:id", secure.isAdmin, datesMid.exists, dates.update);
+router.delete(
+  "/dates/:id",
+  secure.auth,
+  datesMid.exists,
+  datesMid.checkOwner,
+  dates.delete
+);
 
 module.exports = router;

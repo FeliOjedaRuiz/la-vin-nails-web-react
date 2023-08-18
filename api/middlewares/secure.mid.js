@@ -27,3 +27,28 @@ module.exports.auth = (req, res, next) => {
   }
 };
 
+module.exports.isAdmin = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")?.[1];
+
+  if (!token) {
+    return next(createError(401, 'Missing acces token'));
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    User.findById(decoded.sub)
+      .then((user) => {
+        if (user.role === "admin") {
+          req.user = user;
+          next();
+        } else {
+          next(createError(401, "User not found"));
+        }
+      })
+      .catch(next);
+  } catch (err) {
+    next(createError(401, err));
+  }
+};
+
