@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
-import TurnItemAdmin from '../turn-item-admin/TurnItemAdmin';
-import { AuthContext } from '../../../contexts/AuthStore';
+import TurnItemAdmin from "../turn-item-admin/TurnItemAdmin";
+import { AuthContext } from "../../../contexts/AuthStore";
 
 function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
   const [turns, setTurns] = useState([]);
-  const { user } = useContext(AuthContext)
-  const role = user.role
+  const { user } = useContext(AuthContext);
+  const role = user.role;
 
   const transformDate = (date) => {
     let dt = new Date(date);
@@ -44,17 +44,17 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
     "Septiem.",
     "Octubre",
     "Noviem.",
-    "Diciem."
+    "Diciem.",
   ];
 
   const days = {
-    "1": "Lunes",
-    "2": "Martes",
-    "3": "Miércoles",
-    "4": "Jueves",
-    "5": "Viernes",
-    "6": "Sábado",
-    "7": "Domingo",
+    1: "Lunes",
+    2: "Martes",
+    3: "Miércoles",
+    4: "Jueves",
+    5: "Viernes",
+    6: "Sábado",
+    7: "Domingo",
   };
 
   const showDate = (date) => {
@@ -72,62 +72,77 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
       .catch((error) => console.error(error));
   }, [reload]);
 
-  const firstDayTurns = turns.filter((turn) => turn.date === initDate);
-  const seconDayTurns = turns.filter((turn) => turn.date === secondDay);
-  const thirdDayTurns = turns.filter((turn) => turn.date === thirdDay);
-  const fourthDayTurns = turns.filter((turn) => turn.date === fourthDay);
-  const fifthDayTurns = turns.filter((turn) => turn.date === fifthDay);
-  const sixthDayTurns = turns.filter((turn) => turn.date === sixthDay);
-
+  const firstDayTurns = turns
+    .filter((turn) => turn.date === initDate)
+    .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
+  const seconDayTurns = turns
+    .filter((turn) => turn.date === secondDay)
+    .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
+  const thirdDayTurns = turns
+    .filter((turn) => turn.date === thirdDay)
+    .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
+  const fourthDayTurns = turns
+    .filter((turn) => turn.date === fourthDay)
+    .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
+  const fifthDayTurns = turns
+    .filter((turn) => turn.date === fifthDay)
+    .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
+  const sixthDayTurns = turns
+    .filter((turn) => turn.date === sixthDay)
+    .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
 
   return (
     <div className="grid grid-cols-2">
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">{showDate(initDate)}</h5>
+        <h5 className="text-center font-bold m-1 text-sm">
+          {showDate(initDate)}
+        </h5>
         {firstDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          <TurnItemAdmin turn={turn} />
         ))}
-        
-        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-      <h5  className="text-center font-bold m-1 text-sm">{showDate(secondDay)}</h5>
+        <h5 className="text-center font-bold m-1 text-sm">
+          {showDate(secondDay)}
+        </h5>
         {seconDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          <TurnItemAdmin turn={turn} />
         ))}
-        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-      <h5  className="text-center font-bold m-1 text-sm">{showDate(thirdDay)}</h5>
+        <h5 className="text-center font-bold m-1 text-sm">
+          {showDate(thirdDay)}
+        </h5>
         {thirdDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn}  />
+          <TurnItemAdmin turn={turn} />
         ))}
-        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-      <h5  className="text-center font-bold m-1 text-sm">{showDate(fourthDay)}</h5>
+        <h5 className="text-center font-bold m-1 text-sm">
+          {showDate(fourthDay)}
+        </h5>
         {fourthDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          <TurnItemAdmin turn={turn} />
         ))}
-        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-      <h5 className="text-center font-bold m-1 text-sm">{showDate(fifthDay)}</h5>
+        <h5 className="text-center font-bold m-1 text-sm">
+          {showDate(fifthDay)}
+        </h5>
         {fifthDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          <TurnItemAdmin turn={turn} />
         ))}
-        
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-      <h5  className="text-center font-bold m-1 text-sm">{showDate(sixthDay)}</h5>
+        <h5 className="text-center font-bold m-1 text-sm">
+          {showDate(sixthDay)}
+        </h5>
         {sixthDayTurns.map((turn) => (
-            <TurnItemAdmin turn={turn} />
+          <TurnItemAdmin turn={turn} />
         ))}
-        
       </div>
-            
     </div>
-  )
+  );
 }
 
-export default TurnsListByWeekAdmin
+export default TurnsListByWeekAdmin;
