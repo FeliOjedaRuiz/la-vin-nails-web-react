@@ -21,6 +21,8 @@ function TurnDetailAndUpdate() {
   ]);
   let states = [];
   const [modalState, setModalState] = useState(false);
+  const [modalDateState, setModalDateState] = useState(false);
+  const [reload, setReload] = useState(false);
 
   const [serverError, setServerError] = useState(undefined);
 
@@ -31,11 +33,10 @@ function TurnDetailAndUpdate() {
     datesService
       .list(query)
       .then((dates) => {
-        const thisDate = dates.filter((date) => date.turn.id === id);
-        setDate(thisDate[0]);
+        setDate(dates[0]);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [reload]);
 
   useEffect(() => {
     turnsService
@@ -47,7 +48,7 @@ function TurnDetailAndUpdate() {
         setTurnStates(states);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [reload]);
 
   const handleTurnChange = (ev) => {
     const key = ev.target.id;
@@ -109,7 +110,30 @@ function TurnDetailAndUpdate() {
 
   const navigateToSchedule = () => {
     navigate("/schedule");
-  }
+  };
+
+  const handleDeleteDate = () => {
+    setModalDateState(!modalDateState)
+    datesService
+      .deleteDate(date.id)
+      .then(updateTurnState)
+      .catch((error) => console.error(error));
+  };
+
+  const onDateDelete = () => {
+    setReload(!reload);
+  };
+
+  const updateTurnState = () => {
+
+    const turn = date.turn;
+    turn.state = "Cancelado";
+
+    turnsService
+      .update(id, turn)
+      .then(onDateDelete)
+      .catch((error) => console.error(error));
+  };
 
   return (
     <div className="bg-white/50 rounded-md p-3 shadow">
@@ -236,6 +260,7 @@ function TurnDetailAndUpdate() {
                 Cliente:
               </span>
               <span>
+                {" "}
                 {date.user.name} {date.user.surname}
               </span>
             </div>
@@ -321,8 +346,41 @@ function TurnDetailAndUpdate() {
               <WhatsappIcon /> Escribir
             </a>
           )}
+          {date && (
+            <div
+              onClick={() => setModalDateState(!modalDateState)}
+              className="flex text-white py-2.5 pl-3 pr-1 font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+            >
+              {" "}
+              <DeleteIcon /> 
+            </div>
+          )}
         </div>
       </form>
+      <Modal modalState={modalDateState} setModalDateState={setModalDateState}>
+        <div className="text-center mb-6">
+          <p className="font-bold text-2xl">Cancelar Cita</p>
+        </div>
+
+        <div className="text-center text-xl font-medium mb-6">
+          <p>¿Quieres cancelar la cita?</p>
+        </div>
+
+        <div className="flex justify-around">
+          <button
+            onClick={() => setModalDateState(!modalDateState)}
+            className="bg-red-600 text-white  px-2 py-1 rounded "
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={handleDeleteDate}
+            className="bg-green-600 text-white  px-2 py-1 rounded "
+          >
+            Aceptar
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }

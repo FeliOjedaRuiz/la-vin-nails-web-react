@@ -19,13 +19,14 @@ function DateDetail({ date, onDateDelete }) {
   }, []);
 
   const handleDeleteDate = () => {
+    setModalState(!modalState)
     datesService
       .deleteDate(date.id)
-      .then(updateDateState)
+      .then(updateTurnState)
       .catch((error) => console.error(error));
   };
 
-  const updateDateState = () => {
+  const updateTurnState = () => {
     const id = date.turn.id;
     const turn = date.turn;
     turn.state = "Cancelado";
@@ -90,13 +91,13 @@ function DateDetail({ date, onDateDelete }) {
             </a>
           </div>
           <div className=" ">
-            <button
+            <div
               onClick={() => setModalState(!modalState)}
               className="flex items-center mt-1 justify-center text-white py-1 px-4 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
             >
               {" "}
               <DeleteIcon /> Cancelar
-            </button>
+            </div>
           </div>
         </div>
       </div>
