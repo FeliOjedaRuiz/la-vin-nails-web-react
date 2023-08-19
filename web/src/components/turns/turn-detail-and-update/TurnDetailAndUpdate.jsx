@@ -256,12 +256,30 @@ function TurnDetailAndUpdate() {
               Detalle de la cita
             </h2>
             <div className="mt-2">
-              <span className="ml-2 font-medium text-pink-800 text-lg">
+              <span className="ml-2 font-medium text-emerald-800 text-lg">
                 Cliente:
               </span>
               <span>
                 {" "}
                 {date.user.name} {date.user.surname}
+              </span>
+            </div>
+            <div className="">
+              <span className="ml-2 font-medium text-emerald-800 text-lg">
+                Teléfono:
+              </span>
+              <span>
+                {" "}
+                {date.user.phone} 
+              </span>
+            </div>
+            <div className="">
+              <span className="ml-2 font-medium text-emerald-800 text-lg">
+                Email:
+              </span>
+              <span>
+                {" "}
+                {date.user.email} 
               </span>
             </div>
             <div className="mt-1">
