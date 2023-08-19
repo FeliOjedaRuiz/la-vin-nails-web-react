@@ -1,68 +1,96 @@
 const services = [
   {
-    name: "Esmalte semipermanente",
-    type: [
-      "liso de uno o varios colores",
-      "francesitas",
-      "diseño a mano alzada (€1 por uña)",
-      "pegatinas",
-    ],
+    name: "Semipermanente pies",
+    type: ["sin limado", "con limado de durezas"],
     image: "/images/esmaltado.jpeg",
-    description: " Este servicio se realiza con esmaltes permanentes, que se aplica de forma rápida y fácil al secado de luz UV y que consigue la durabilidad y brillo que caracterizan a las uñas esculpidas. Con los cuidados necesarios, una aplicación puede llegar a durar hasta 3 semanas. ",
-    price: 12,
+    description:
+      "Este servicio se realiza con esmaltes semipermanentes, que se aplican de forma rápida y fácil secando con luz UV y que consigue la durabilidad y brillo que caracterizan a las uñas esculpidas. Con los cuidados necesarios, una aplicación puede llegar a durar hasta 3 semanas.",
+    price: 10,
+    dateDuration: "1",
   },
   {
-    name: "Baño de gel",
+    name: "Retiro",
+    type: ["uñas de gel", "esmaltado semipermanente"],
+    image: "/images/baño-de-gel.jpeg",
+    description:
+      "Remoción total del material dejando la uña natural limpia y con un protector y endurecedor de calcio. Se efectua una limpieza y manicuria express (limado, corte de cuticulas y pulido de pieles).",
+    price: 5,
+    dateDuration: "0:30",
+  },
+  {
+    name: "Relleno",
     type: [
-      "sobre uña natural",
-      "con micro extención",
-      "con extención",
+      "esmalte liso",
+      "decoración sensilla",
+      "decoración especial",
+      "francesitas",
     ],
     image: "/images/baño-de-gel.jpeg",
-    description: "Este capping se realiza con una base niveladora que le proporciona más dureza y grosor a la uña natural. Este servicio es perfecto para quienes tienen sus uñas frágiles  o para quienes tienden a morderse sus uñas. Por sobre el baño de gel, se suelen realizar esmaltados para lucir las uñas arregladas.",
-    price: 8,
+    description:
+      "Este servicio se aplica a aquellas uñas que traen crecimiento y solo se emplea acrigel o ruber base. Unicamente para uñas de gel (No acrilico).",
+    price: 18,
+    dateDuration: "1:30",
   },
   {
-    name: "Uñas acrílicas",
+    name: "Micro extención",
     type: [
-      "con esmalte liso",
-      "con decoración simple",
-      "con decoración especial",
-      "Francesitas",
+      "esmalte liso",
+      "decoración sensilla",
+      "decoración especial",
+      "francesitas",
     ],
-    image: "/images/acrilicas.jpeg",
-    description: "Son estructuralmente más fuertes y resistentes. A simple vista se nota que es una construcción artificial, el proceso de relleno o retiro es muy sencillo. Para su aplicación se requiere acrílico en polvo y monómero liquido,  lo que genera un olor fuerte. Con el correcto cuidado, estas uñas pueden durar hasta 6 meses haciendo los mantenimientos de relleno de crecimiento cada 15/20 días.",
+    image: "/images/baño-de-gel.jpeg",
+    description:
+      "Este servicio se adapta mejor a aquellas uñas partidas, maltratadas o extremadamente cortas. Se aplica con acrigel y la extención máxima es de 5 mm.",
+    price: 18,
+    dateDuration: "1:30",
+  },
+  {
+    name: "Uñas de Acrigel",
+    type: [
+      "esmalte liso",
+      "decoración sensilla",
+      "decoración especial",
+      "francesitas",
+    ],
+    image: "/images/uñas-de-gel.jpeg",
+    description:
+      "Este servicio es para quienes tienden a llevar uñas cortas o largas con un aspecto más brillante y natural. Son estructuralmente finas y delicadas. El producto que se utiliza no tiene olor y el riesgo de reacciones alérgicas es nulo. Su duración es de 18 a 21 días.",
     price: 30,
+    dateDuration: "2:00",
   },
   {
-    name: "Uñas de gel",
+    name: "Uñas de gel X-press",
     type: [
-      "con esmalte liso",
-      "con decoración simple",
-      "con decoración especial",
-      "Francesitas",
-    ],
-    image:
-      "/images/uñas-de-gel.jpeg",
-    description: "Este servicio es para quienes tienden a llevar uñas cortas o largas con un aspecto más brillante y natural. Son estructuralmente finas y delicadas. El producto que se utiliza no tiene olor y el riesgo de reacciones alérgicas es nulo. Su duración es de 18 a 21 días.",
-    price: 35,
-  },
-  {
-    name: "Soft gel",
-    type: [
-      "con esmalte liso",
-      "con decoración simple",
-      "con decoración especial",
-      "Francesitas",
+      "esmalte liso",
+      "decoración sensilla",
+      "decoración especial",
+      "francesitas",
     ],
     image: "/images/soft-gel.jpeg",
-    description: "Aplicación con típs fabricados de gel, es la aplicación más elegida por la rapidez en su colocación, se extienden las uñas en pocos minutos. Dan una apariencia de uñas ligeras y flexibles, más realistas. Son Cómodas de llevar ya que apenas aumenta el grosor de la uña. Tienen una duración de hasta 25 días. Éstas no se rellenan el crecimiento, sino que se retiran fácilmente, y vuelven a aplicar en pocos minutos.",
+    description:
+      "Aplicación con típs fabricados de gel, es la aplicación más elegida por la rapidez en su colocación, se extienden las uñas en pocos minutos. Dan una apariencia de uñas ligeras y flexibles, más realistas. Son Cómodas de llevar ya que apenas aumenta el grosor de la uña. Tienen una duración de hasta 25 días. Éstas no se rellenan el crecimiento, sino que se retiran fácilmente, y vuelven a aplicar en pocos minutos.",
     price: 25,
+    dateDuration: "1:30",
+  },
+  {
+    name: "Semipermanente manos con refuerzo de gel",
+    type: [
+      "esmalte liso",
+      "decoración sensilla",
+      "decoración especial",
+      "francesitas",
+    ],
+    image: "/images/esmaltado.jpeg",
+    description:
+      "Este servicio se realiza con esmaltes semipermanentes, que se aplican de forma rápida y fácil secando con luz UV y que consigue la durabilidad y brillo que caracterizan a las uñas esculpidas. Con los cuidados necesarios, una aplicación puede llegar a durar hasta 3 semanas.",
+    price: 15,
+    dateDuration: "1:15",
   },
 ];
 
 const mongoose = require("mongoose");
-const URI = process.env.MONGODB_URI
+const URI = process.env.MONGODB_URI;
 const Service = require("../models/service.model");
 
 mongoose
@@ -75,9 +103,6 @@ mongoose
   .catch((err) => {
     console.error("Error connecting to mongo: ", err);
   });
-
-
-  
 
 // const mongoose = require("mongoose");
 

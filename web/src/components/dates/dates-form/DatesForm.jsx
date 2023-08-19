@@ -131,7 +131,7 @@ function DatesForm({ service, serviceTypes }) {
               for="type"
               className="ml-2 font-medium text-pink-800 text-lg"
             >
-              Selecciona tipo de decoración
+              Selecciona una opción de servicio
             </label>
             <div>
               <select

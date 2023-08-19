@@ -13,32 +13,32 @@ function SchedulePage() {
   };
 
   useEffect(() => {
-    setReload(!reload)
-  }, [])
+    setReload(!reload);
+  }, []);
 
   const onTurnCreation = () => {
     setReload(!reload);
   };
 
   return (
-    <>
-      <Layout>
+    <Layout>
+      <div className="">
         <div className="p-4">
-        <h3 className="mb-1 text-center text-2xl font-bold text-emerald-700">
-        Turnos de la semana
-        </h3>
-        <div className="px-2">
-          <HonestWeekPicker onInitDate={onInitDate} />
+          <h3 className="mb-1 text-center text-2xl font-bold text-emerald-700">
+            Turnos de la semana
+          </h3>
+          <div className="px-2">
+            <HonestWeekPicker onInitDate={onInitDate} />
+          </div>
+          <div>
+            <TurnsForm onTurnCreation={onTurnCreation} />
+          </div>
+          <div>
+            <TurnsListByWeekAdmin initDate={initDate} reload={reload} />
+          </div>
         </div>
-        <div>
-          <TurnsForm onTurnCreation={onTurnCreation} />
-        </div>
-        <div>
-          <TurnsListByWeekAdmin initDate={initDate} reload={reload} />
-        </div>        
-        </div>
-      </Layout>
-    </>
+      </div>
+    </Layout>
   );
 }
 
