@@ -8,8 +8,6 @@ import { HonestWeekPicker } from "../../week-picker/week-picker-js/HonestWeekPic
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
 import Modal from "../../modal/Modal";
 
-
-
 function DatesForm({ service, serviceTypes }) {
   const {
     register,
@@ -85,7 +83,6 @@ function DatesForm({ service, serviceTypes }) {
     }
   };
 
-
   const onDateSubmit = async (date) => {
     date.user = user.id;
     date.service = service.id;
@@ -138,7 +135,9 @@ function DatesForm({ service, serviceTypes }) {
             </label>
             <div>
               <select
-                {...register("type", { required: "Debes seleccionar un tipo de decoración." })}
+                {...register("type", {
+                  required: "Debes seleccionar un tipo de decoración.",
+                })}
                 className="rounded-lg  w-full text-green-700 font-medium border-2 border-pink-300 "
               >
                 {serviceTypes.map((type) => (
@@ -147,7 +146,11 @@ function DatesForm({ service, serviceTypes }) {
                   </option>
                 ))}
               </select>
-              {errors.type && <div className=" ml-2 text-red-600 font-medium">{errors.type?.message}</div>}
+              {errors.type && (
+                <div className=" ml-2 text-red-600 font-medium">
+                  {errors.type?.message}
+                </div>
+              )}
             </div>
             {errors.type && (
               <div className=" ml-2 text-red-600 font-medium">
@@ -169,7 +172,8 @@ function DatesForm({ service, serviceTypes }) {
                 required: "Son necesarios los detalles",
                 minLength: {
                   value: 5,
-                  message: "Se necesitan al menos 5 caracteres"},
+                  message: "Se necesitan al menos 5 caracteres",
+                },
                 maxLength: {
                   value: 300,
                   message: "Máximo 300 caracteres",
@@ -179,6 +183,31 @@ function DatesForm({ service, serviceTypes }) {
             {errors.designDetails && (
               <div className=" ml-2 text-red-600 font-medium">
                 {errors.designDetails?.message}
+              </div>
+            )}
+          </div>
+          <div className="mb-2">
+            <label
+              for="designDetails"
+              className="ml-2 font-medium text-pink-800 text-lg"
+            >
+              ¿Es nescesario remover?
+            </label>
+            <div className="ml-3 flex items-center font-medium text-emerald-700">
+              <span>Sí</span><input className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
+                type="radio"
+                value="Sí"
+                {...register("remove", { required: true })}
+              />
+              <span>No</span><input className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
+                {...register("remove", { required: true })}
+                type="radio"
+                value="No"
+              />
+            </div>
+            {errors.remove && (
+              <div className=" ml-2 text-red-600 font-medium">
+                {errors.remove?.message}
               </div>
             )}
           </div>
@@ -197,7 +226,10 @@ function DatesForm({ service, serviceTypes }) {
         <div className="flex flex-col p-2 justify-center items-center mt-2 ">
           {selectedTurn.hour && (
             <div className=" bg-lime-50 border-2 border-lime-500 rounded-lg text-center  font-medium py-3 px-5 shadow">
-              <p className="text-lg leading-tight text-emerald-700"> Turno selecionado: </p>
+              <p className="text-lg leading-tight text-emerald-700">
+                {" "}
+                Turno selecionado:{" "}
+              </p>
               <p className="text-lg font-bold leading-tight text-emerald-700">
                 {showDate(selectedDate)} a las {selectedTurn.hour}{" "}
               </p>
@@ -212,13 +244,18 @@ function DatesForm({ service, serviceTypes }) {
 
           <Modal modalState={modalState} setModalState={setModalState}>
             <div className="text-center mb-6">
-            <p className="font-medium">Solicitar cita de <span className="text-pink-700 font-bold">{service.name}</span>  para el  </p>
-            <p className="font-bold text-pink-700">{showDate(selectedDate)} a las {selectedTurn.hour} hs.</p>
+              <p className="font-medium">
+                Solicitar cita de{" "}
+                <span className="text-pink-700 font-bold">{service.name}</span>{" "}
+                para el{" "}
+              </p>
+              <p className="font-bold text-pink-700">
+                {showDate(selectedDate)} a las {selectedTurn.hour} hs.
+              </p>
             </div>
 
             <div className="text-center mb-6">
-            <p>Tu solicitud será confirmada a la mayor brevedad posible.</p>
-
+              <p>Tu solicitud será confirmada a la mayor brevedad posible.</p>
             </div>
 
             <div className="flex justify-around">
@@ -235,28 +272,26 @@ function DatesForm({ service, serviceTypes }) {
                 Aceptar
               </button>
             </div>
-            
           </Modal>
         </div>
       </form>
-      {selectedTurn.hour && 
-      <div className="p-2">
-        <button
-          onClick={() => setModalState(!modalState)}
-          className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
-        >
-          Solicitar cita
-        </button>
-      </div> }
-      {!selectedTurn.hour && 
-      <div className="p-2">
-        <button
-          
-          className="text-gray-500 w-full bg-gray-300 shadow  font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
-        >
-          Solicitar cita
-        </button>
-      </div> }
+      {selectedTurn.hour && (
+        <div className="p-2">
+          <button
+            onClick={() => setModalState(!modalState)}
+            className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
+          >
+            Solicitar cita
+          </button>
+        </div>
+      )}
+      {!selectedTurn.hour && (
+        <div className="p-2">
+          <button className="text-gray-500 w-full bg-gray-300 shadow  font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center">
+            Solicitar cita
+          </button>
+        </div>
+      )}
     </div>
   );
 }

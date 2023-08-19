@@ -26,6 +26,11 @@ const dateSchema = new mongoose.Schema(
       // required: [true, "Son necesarios los detalles"],
       maxLength: [300, "max 300 chars."],
     },
+    remove: {
+      type: String,
+      enum: ["Sí", "No"],
+      default: "Sí",
+    },
     turn: {
       type:  mongoose.Schema.Types.ObjectId,
       ref: "Turn",

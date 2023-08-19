@@ -86,6 +86,7 @@ function DateUpdateForm() {
               {date.type}
             </span>
           </div>
+          
           <div className="mt-1">
             <span className="ml-2 font-medium text-pink-800 text-lg">
               Detalles:

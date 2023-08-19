@@ -281,6 +281,15 @@ function TurnDetailAndUpdate() {
             </div>
             <div className="mt-1">
               <span className="ml-2 font-medium text-pink-800 text-lg">
+                Remoción:
+              </span>
+              <span className=" inline text-clip overflow-hidden">
+                {" "}
+                {date.remove}
+              </span>
+            </div>
+            <div className="mt-1">
+              <span className="ml-2 font-medium text-pink-800 text-lg">
                 Detalles:
               </span>
               <span className=""> {date.designDetails}</span>
