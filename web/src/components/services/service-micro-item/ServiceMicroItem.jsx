@@ -1,11 +1,12 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 function ServiceMicroItem({ service }) {
 
 
 
   return (
-    <div className="mx-2 flex flex-col items-center w-36 bg-green-50  rounded-lg shadow hover:outline hover:outline-pink-700 ">
+    <NavLink to={`/new-date/${service.id}`} className="mx-2 flex flex-col items-center w-36 bg-green-50  rounded-lg shadow hover:outline hover:outline-pink-700 ">
         
       <img
         className="h-36 w-36 mb-2 rounded-t-lg"
@@ -24,7 +25,7 @@ function ServiceMicroItem({ service }) {
       </h6>
       
 
-    </div>
+    </NavLink>
   )
 }
 
