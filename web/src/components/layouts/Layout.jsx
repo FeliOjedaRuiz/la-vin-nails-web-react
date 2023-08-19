@@ -27,11 +27,11 @@ function Layout({ children }) {
         <img src={layoutLogo} alt="logo la vin nails simplificado"
         className='h-8 m-2 ' />
       </div>
-
-      <div className='relative w-full pt-12 pb-16  bg-gradient-to-b from-pink-200 to-emerald-100 min-h-screen '>        
+      <div className='flex w-full justify-center relative pt-12 pb-16  min-h-screen bg-gradient-to-b from-pink-200 to-emerald-100'>
+      <div className=' max-w-3xl w-screen overflow-hidden bg-white/30 shadow-lg '>        
         {children}
       </div>
-
+      </div>
 
       <div className="fixed bottom-0 left-0  w-full h-16 bg-pink-50 border-t-2 border-pink-400">
         <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
