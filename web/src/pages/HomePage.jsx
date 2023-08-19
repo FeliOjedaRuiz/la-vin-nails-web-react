@@ -4,6 +4,7 @@ import HomeCarousel from "../components/home-carousel/HomeCarousel";
 import Layout from "./../components/layouts/Layout";
 import ServicesSlide from '../components/services/services-slide/ServicesSlide';
 import LoginBanner from "../components/login-banner/LoginBanner";
+import NewCarousel from "../components/new-carousel/NewCarousel";
 
 function HomePage() {
   return (
@@ -14,7 +15,8 @@ function HomePage() {
           {/* <div className="text-center flex justify-center ">
           <img src={LaVinLogo} alt="logo la vin nails" className=" h-24 m-4" />
         </div> */}
-          <HomeCarousel />
+          {/* <HomeCarousel /> */}
+          <NewCarousel />
           <ServicesSlide/>
           <LoginBanner />
           

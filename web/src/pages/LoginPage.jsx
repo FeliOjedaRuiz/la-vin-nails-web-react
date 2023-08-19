@@ -7,7 +7,7 @@ function LoginPage() {
   return (
     <>
       <Layout>
-        <div className='p-8 '>
+        <div className='p-8'>
         <h1 className='text-center text-2xl font-bold mb-4 text-green-600'>Iniciar sesion</h1>
         <UsersLogin />
         </div>
