@@ -1,6 +1,4 @@
 import React, {useRef, useEffect, useCallback} from 'react';
-import {ReactComponent as FlechaIzquierda} from '../../images/iconmonstr-angel-left-thin.svg';
-import {ReactComponent as FlechaDerecha} from '../../images/iconmonstr-angel-right-thin.svg';
 import styled from 'styled-components';
 import LeftIcon from '../icons/LeftIcon';
 import RightIcon from '../icons/RightIcon';

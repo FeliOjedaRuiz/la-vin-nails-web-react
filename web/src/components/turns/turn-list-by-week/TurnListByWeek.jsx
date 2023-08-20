@@ -1,12 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
 import TurnItemGuest from "../turn-item-guest/TurnItemGuest";
-import { AuthContext } from "../../../contexts/AuthStore";
 
 function TurnListByWeek({ initDate, reload, onTurnSelection }) {
   const [turns, setTurns] = useState([]);
-  const { user } = useContext(AuthContext);
-  const role = user.role;
 
   const transformDate = (date) => {
     let dt = new Date(date);
