@@ -196,7 +196,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
 
   return (
     <div
-      className="week-picker-display w-full bg-white/50 border-2 border-pink-300 text-pink-700 font-bold shadow-md"
+      className="week-picker-display w-full max-w-sm bg-white/50 border-2 border-pink-400 text-emerald-700 font-bold shadow-md"
       onBlur={() => setOpen(false)}
       onClick={() => setOpen(true)}
       tabIndex={0}

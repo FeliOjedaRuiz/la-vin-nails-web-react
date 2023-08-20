@@ -22,7 +22,7 @@ router.get("/services/:id", services.detail);
 router.post("/turns", secure.isAdmin, turns.create);
 router.get("/turns", turns.list);
 router.get("/turns/:id", turns.detail);
-router.patch("/turns/:id", secure.isAdmin, turnsMid.exists, turns.update);
+router.patch("/turns/:id", secure.auth, turnsMid.exists, turns.update);
 router.delete(
   "/turns/:id",
   secure.isAdmin,

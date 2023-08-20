@@ -122,7 +122,7 @@ function DatesForm({ service, serviceTypes }) {
             <h1 className="ml-2 font-bold text-pink-600 text-lg self-center text-center">
               Completa el formulario para tu cita de:
             </h1>
-            <h2 className="ml-2 font-bold text-green-700 text-2xl self-center">
+            <h2 className="ml-2 font-bold text-green-700 text-center text-3xl self-center">
               {service.name}
             </h2>
           </div>
@@ -191,7 +191,7 @@ function DatesForm({ service, serviceTypes }) {
               for="designDetails"
               className="ml-2 font-medium text-pink-800 text-lg"
             >
-              ¿Es nescesario remover?
+              ¿Traes uñas limpias o hay que retirar?
             </label>
             <div className="ml-3 flex items-center font-medium text-emerald-700">
               <span>Sí</span><input className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
@@ -213,7 +213,7 @@ function DatesForm({ service, serviceTypes }) {
           </div>
         </div>
 
-        <div className="px-2">
+        <div className="px-2 flex justify-center mb-3">
           <HonestWeekPicker onInitDate={onInitDate} />
         </div>
         <div>
