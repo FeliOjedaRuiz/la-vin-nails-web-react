@@ -28,7 +28,7 @@ function Layout({ children }) {
           className="h-8 m-2 "
         />
       </div>
-      <div className="flex w-full justify-center relative pt-12 pb-16  min-h-screen bg-gradient-to-b from-pink-200 to-emerald-100">
+      <div className="flex w-full justify-center relative pt-12 pb-16  min-h-screen bg-gradient-to-b from-pink-50 to-emerald-100">
         <div className=" max-w-3xl w-screen overflow-hidden bg-white/30 shadow-lg ">
           {children}          
         </div>

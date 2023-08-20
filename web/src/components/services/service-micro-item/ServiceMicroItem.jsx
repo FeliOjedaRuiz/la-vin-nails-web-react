@@ -14,8 +14,8 @@ function ServiceMicroItem({ service }) {
         alt={service.name}
       />
       
-      <div className='w-36 h-8 overflow-hidden -mt-3'>
-      <h5 className=" text-md text-center mt-2 font-bold text-pink-700">
+      <div className='w-36 h-12 overflow-hidden -mt-3 p-1 flex justify-center items-center'>
+      <h5 className=" text-md text-center mt-1 font-bold leading-none text-pink-700">
         {service.name}
       </h5>
       </div>

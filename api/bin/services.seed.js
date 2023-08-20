@@ -96,7 +96,7 @@ const Service = require("../models/service.model");
 mongoose
   .connect(URI)
   .then(() => {
-    Service.create(services).then(() => {
+    Service.create(services.reverse()).then(() => {
       mongoose.disconnect();
     });
   })

@@ -36,21 +36,21 @@ function ServiceItem({ service }) {
             src={service.image}
             alt={service.name}
           />
-          <div className="flex grow justify-center">
+          <div className="flex grow justify-center items-center">
             <div className="flex flex-col h-36 w-40 items-center justify-between pl-2 leading-normal">
-              <h5 className=" text-2xl text-center mt-2 leading-none font-bold tracking-tight text-pink-700">
+              <h5 className=" text-xl mt-1 text-center leading-none font-bold tracking-tight text-pink-700">
                 {service.name}
               </h5>
-              <h6 className=" text-xl text-center font-bold tracking-tight text-green-600">
+              <h6 className=" text-lg text-center font-bold tracking-tight text-green-600">
                 desde €{service.price}
               </h6>
-              <h6 className=" text-sm text-center font-bold tracking-tight text-pink-600">
-                Duración: 1h 30' aprox.
+              <h6 className=" mb-1 text-xs text-center font-bold tracking-tight text-pink-600">
+                Duración: {service.dateDuration} hs. aprox.
               </h6>
               <NavLink to={`/new-date/${service.id}`} >
               <button
                 type="button"
-                className="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-3 py-1.5 text-center mb-2"
+                className="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-1 py-0.5 text-center mb-2"
               >
                 Solicitar cita
               </button>
