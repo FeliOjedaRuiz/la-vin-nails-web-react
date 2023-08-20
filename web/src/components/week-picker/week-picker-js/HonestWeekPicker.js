@@ -42,8 +42,9 @@ export const HonestWeekPicker = ({ onInitDate }) => {
     return `${year}-${month}-${day}`;
   };
 
+  
 
-  const handleClick = (e) => {
+  const handleClick = (e) => {    
     let localDate;
     if (e.target.id.includes("prev")) {
       localDate = new Date(date.setDate(1));
@@ -105,7 +106,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
       }
 
       ar.push(
-        <div key={v4()} id={i} className={cName} onClick={handleClick}>
+        <div key={v4()} id={i} className={cName} onClick={handleClick} >
           {i}
         </div>
       );
@@ -196,7 +197,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
 
   return (
     <div
-      className="week-picker-display w-full max-w-sm bg-white/50 border-2 border-pink-400 text-emerald-700 font-bold shadow-md"
+      className="week-picker-display z-0 w-full max-w-sm bg-white/50 border-2 border-pink-400 text-emerald-700 font-bold shadow-md"
       onBlur={() => setOpen(false)}
       onClick={() => setOpen(true)}
       tabIndex={0}
@@ -206,7 +207,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
       </p>
       
       {open && (
-        <div className="week-picker-options">
+        <div className="week-picker-options" >
           <div className="title-week">
             <div onClick={() => handleDate()} className="arrow-container">
               {ArrowLeft}
@@ -225,7 +226,10 @@ export const HonestWeekPicker = ({ onInitDate }) => {
             <div className="single-number day">Sab</div>
             <div className="single-number day">Dom</div>
           </div>
-          <div className="numbers-container">{renderDays()}</div>
+          <div className="numbers-container"  >{renderDays()}</div>
+          <div>Haz click afuera para cerrar el desplegable.</div>
+          
+          
         </div>
       )}
     </div>
