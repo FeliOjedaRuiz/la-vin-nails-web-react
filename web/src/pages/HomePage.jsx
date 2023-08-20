@@ -16,8 +16,7 @@ function HomePage() {
         <LoginBanner />
         <div className="p-8 flex flex-col items-center border-t-2 border-pink-400">
           <img src={LaVinLogo} alt="Logo La Vin Nails" className="w-60" />
-          <p>La Vin Nails es...</p>
-          <div className="mt-3 flex justify-around w-full">
+          <div className="mt-5 flex justify-around w-full">
             <a
               href="https://www.instagram.com/nailsgranada.lavin/"
               className="flex"
