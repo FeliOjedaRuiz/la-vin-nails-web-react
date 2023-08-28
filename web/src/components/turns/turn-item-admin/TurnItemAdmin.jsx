@@ -7,19 +7,20 @@ function TurnItemAdmin({ turn }) {
   const [textColor, setTextColor] = useState("");
   const id = turn.id;
 
-  const [date, setDate] = useState(); 
+  const [date, setDate] = useState();
 
-  useEffect(() => {  
-    const query = {}  
-    query.turn = id
+  useEffect(() => {
+    const query = {};
+    query.turn = id;
 
-    datesService.list(query)
-    .then((dates) => {
-      const thisDate = dates.filter((date) => date.turn.id === id);
-      setDate(thisDate[0]);
-    })
-    .catch((error) => console.error(error));;
-  }, [])
+    datesService
+      .list(query)
+      .then((dates) => {
+        const thisDate = dates.filter((date) => date.turn.id === id);
+        setDate(thisDate[0]);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   useEffect(() => {
     switch (turn.state) {
@@ -47,8 +48,13 @@ function TurnItemAdmin({ turn }) {
   return (
     <NavLink to={`/turns/${id}`}>
       <div className={`mb-1.5 ${bg} rounded shadow py-0.5 px-1.5 flex-col`}>
-        <p className={`text-center font-medium  text-md truncate ${textColor}`}>{turn.hour} - {date && date.user.name} {!date && "Disponible"} </p>
-        <p className={`text-center font-medium  text-xs truncate ${textColor}`}> {date && date.service.name + " - " + date.type} </p>
+        <p className={`text-center font-medium  text-md truncate ${textColor}`}>
+          {turn.hour} - {date && date.user.name} {!date && "Disponible"}{" "}
+        </p>
+        <p className={`text-center font-medium  text-xs truncate ${textColor}`}>
+          {" "}
+          {date && date.service.name + " - " + date.type}{" "}
+        </p>
       </div>
     </NavLink>
   );

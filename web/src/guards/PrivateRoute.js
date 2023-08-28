@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthStore';
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthStore";
 
 function PrivateRoute({ children, role }) {
   const { user } = useContext(AuthContext);
 
   if (!user) {
-    return <Navigate to="/login" replace={true} />
+    return <Navigate to="/login" replace={true} />;
   } else if (!role || role === user.role) {
-    return <>{children}</>
+    return <>{children}</>;
   } else {
-    return <Navigate to="/error-page" replace={true} />
+    return <Navigate to="/error-page" replace={true} />;
   }
 }
 
-export default PrivateRoute
+export default PrivateRoute;

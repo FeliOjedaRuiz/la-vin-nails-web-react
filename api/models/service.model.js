@@ -22,7 +22,7 @@ const serviceSchema = new mongoose.Schema(
     },
     dateDuration: {
       type: String,
-    },    
+    },
   },
   {
     timestamps: true,

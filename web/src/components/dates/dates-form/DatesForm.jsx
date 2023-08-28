@@ -194,20 +194,24 @@ function DatesForm({ service, serviceTypes }) {
               ¿Traes uñas limpias o hay que retirar?
             </label>
             <div className="ml-3 flex items-center font-medium text-emerald-700">
-              <span>Sí</span><input className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
+              <span>Sí</span>
+              <input
+                className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
                 type="radio"
                 value="Sí"
-                {...register("remove", { required: true })}
+                {...register("needRemove", { required: true })}
               />
-              <span>No</span><input className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
-                {...register("remove", { required: true })}
+              <span>No</span>
+              <input
+                className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
+                {...register("needRemove", { required: true })}
                 type="radio"
                 value="No"
               />
             </div>
-            {errors.remove && (
+            {errors.needRemove && (
               <div className=" ml-2 text-red-600 font-medium">
-                {errors.remove?.message}
+                {errors.needRemove?.message}
               </div>
             )}
           </div>

@@ -47,13 +47,13 @@ function ServiceItem({ service }) {
               <h6 className=" mb-1 text-xs text-center font-bold tracking-tight text-pink-600">
                 Duración: {service.dateDuration} hs. aprox.
               </h6>
-              <NavLink to={`/new-date/${service.id}`} >
-              <button
-                type="button"
-                className="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-1 py-0.5 text-center mb-2"
-              >
-                Solicitar cita
-              </button>
+              <NavLink to={`/new-date/${service.id}`}>
+                <button
+                  type="button"
+                  className="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-1 py-0.5 text-center mb-2"
+                >
+                  Solicitar cita
+                </button>
               </NavLink>
             </div>
           </div>

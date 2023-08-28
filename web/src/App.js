@@ -20,15 +20,50 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/error-page" element={<ErrorPage />} />
           <Route path="/services" element={<ServicesPage />} />
-          <Route path="/new-date/:id" element={<PrivateRoute><NewDatePage /></PrivateRoute>} />          
-          <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+          <Route
+            path="/new-date/:id"
+            element={
+              <PrivateRoute>
+                <NewDatePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/my-schedule" element={<PrivateRoute  role="guest"><SchedulePageGuest /></PrivateRoute>} />
-          <Route path="/schedule" element={<PrivateRoute  role="admin"><SchedulePage /></PrivateRoute>} />
-          <Route path="/turns/:id" element={<PrivateRoute role="admin"><TurnDetailPage /></PrivateRoute>} />
+          <Route
+            path="/my-schedule"
+            element={
+              <PrivateRoute role="guest">
+                <SchedulePageGuest />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/schedule"
+            element={
+              <PrivateRoute role="admin">
+                <SchedulePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/turns/:id"
+            element={
+              <PrivateRoute role="admin">
+                <TurnDetailPage />
+              </PrivateRoute>
+            }
+          />
         </Routes>
-      </AuthStore>      
+      </AuthStore>
     </>
   );
 }

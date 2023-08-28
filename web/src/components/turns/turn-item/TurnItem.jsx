@@ -16,11 +16,11 @@ function TurnItem({ turn }) {
         break;
       case "Confirmado":
         setBg("bg-gray-400/50");
-        setTextColor("text-gray-400") 
+        setTextColor("text-gray-400");
         break;
       case "Cancelado":
         setBg("bg-green-600 hover:animate-bounce hover:bg-lime-600");
-        setTextColor("text-white") 
+        setTextColor("text-white");
         break;
       default:
         break;

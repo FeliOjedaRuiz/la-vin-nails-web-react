@@ -43,7 +43,9 @@ module.exports.update = (req, res, next) => {
 
 module.exports.delete = (req, res, next) => {
   Date.deleteOne({ _id: req.date.id })
-    .then(() => res.status(204).send(),
-    console.log(`deleting date ${req.date.id}`))
+    .then(
+      () => res.status(204).send(),
+      console.log(`deleting date ${req.date.id}`)
+    )
     .catch(next);
 };

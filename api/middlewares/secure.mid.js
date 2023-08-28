@@ -1,12 +1,12 @@
-const User = require('../models/user.model');
-const createError = require('http-errors');
-const jwt = require('jsonwebtoken');
+const User = require("../models/user.model");
+const createError = require("http-errors");
+const jwt = require("jsonwebtoken");
 
 module.exports.auth = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")?.[1];
 
   if (!token) {
-    return next(createError(401, 'Missing acces token'));
+    return next(createError(401, "Missing acces token"));
   }
 
   try {
@@ -31,7 +31,7 @@ module.exports.isAdmin = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")?.[1];
 
   if (!token) {
-    return next(createError(401, 'Missing acces token'));
+    return next(createError(401, "Missing acces token"));
   }
 
   try {
@@ -51,4 +51,3 @@ module.exports.isAdmin = (req, res, next) => {
     next(createError(401, err));
   }
 };
-

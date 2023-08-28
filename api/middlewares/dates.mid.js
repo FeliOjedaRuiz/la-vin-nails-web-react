@@ -15,7 +15,7 @@ module.exports.exists = (req, res, next) => {
 };
 
 module.exports.checkOwner = (req, res, next) => {
-  const userId = req.date.user.toString()
+  const userId = req.date.user.toString();
   if (req.user.role === "admin") {
     next();
   } else if (userId === req.user.id) {

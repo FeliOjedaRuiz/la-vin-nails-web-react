@@ -11,7 +11,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
   const [date, setDate] = useState(new Date());
   const [week, setWeek] = useState({
     firstDay: startOfWeek(new Date(), { weekStartsOn: 1 }),
-    lastDay: endOfWeek(new Date(), { weekStartsOn: 1 })
+    lastDay: endOfWeek(new Date(), { weekStartsOn: 1 }),
   });
 
   const isLeapYear = () => {
@@ -25,26 +25,24 @@ export const HonestWeekPicker = ({ onInitDate }) => {
     return `${dt.getDate()} de ${months[dt.getMonth()]}`;
   };
 
-  const transformDate = (date) => {    
+  const transformDate = (date) => {
     let dt = new Date(date);
-    let year = dt.getFullYear()
-    let month = dt.getMonth() +1
-    let day = dt.getDate()
+    let year = dt.getFullYear();
+    let month = dt.getMonth() + 1;
+    let day = dt.getDate();
 
     if (month < 10) {
-      month = "0"+month
+      month = "0" + month;
     }
 
-    if (day < 10){
-      day = "0"+day
+    if (day < 10) {
+      day = "0" + day;
     }
 
     return `${year}-${month}-${day}`;
   };
 
-  
-
-  const handleClick = (e) => {    
+  const handleClick = (e) => {
     let localDate;
     if (e.target.id.includes("prev")) {
       localDate = new Date(date.setDate(1));
@@ -73,22 +71,22 @@ export const HonestWeekPicker = ({ onInitDate }) => {
     "Septiembre",
     "Octubre",
     "Noviembre",
-    "Diciembre"
+    "Diciembre",
   ];
 
   const days = {
-    "1": 31,
-    "2": isLeapYear() ? 29 : 28,
-    "3": 31,
-    "4": 30,
-    "5": 31,
-    "6": 30,
-    "7": 31,
-    "8": 31,
-    "9": 30,
-    "10": 31,
-    "11": 30,
-    "12": 31
+    1: 31,
+    2: isLeapYear() ? 29 : 28,
+    3: 31,
+    4: 30,
+    5: 31,
+    6: 30,
+    7: 31,
+    8: 31,
+    9: 30,
+    10: 31,
+    11: 30,
+    12: 31,
   };
 
   const renderDays = () => {
@@ -106,7 +104,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
       }
 
       ar.push(
-        <div key={v4()} id={i} className={cName} onClick={handleClick} >
+        <div key={v4()} id={i} className={cName} onClick={handleClick}>
           {i}
         </div>
       );
@@ -203,11 +201,12 @@ export const HonestWeekPicker = ({ onInitDate }) => {
       tabIndex={0}
     >
       <p className="text-lg font-medium">
-        {convertDate(week.firstDay)} &nbsp; al &nbsp; {convertDate(week.lastDay)}
+        {convertDate(week.firstDay)} &nbsp; al &nbsp;{" "}
+        {convertDate(week.lastDay)}
       </p>
-      
+
       {open && (
-        <div className="week-picker-options" >
+        <div className="week-picker-options">
           <div className="title-week">
             <div onClick={() => handleDate()} className="arrow-container">
               {ArrowLeft}
@@ -226,10 +225,8 @@ export const HonestWeekPicker = ({ onInitDate }) => {
             <div className="single-number day">Sab</div>
             <div className="single-number day">Dom</div>
           </div>
-          <div className="numbers-container"  >{renderDays()}</div>
+          <div className="numbers-container">{renderDays()}</div>
           <div>Haz click afuera para cerrar el desplegable.</div>
-          
-          
         </div>
       )}
     </div>

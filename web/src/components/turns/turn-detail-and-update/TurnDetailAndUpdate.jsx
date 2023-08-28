@@ -113,7 +113,7 @@ function TurnDetailAndUpdate() {
   };
 
   const handleDeleteDate = () => {
-    setModalDateState(!modalDateState)
+    setModalDateState(!modalDateState);
     datesService
       .deleteDate(date.id)
       .then(updateTurnState)
@@ -125,7 +125,6 @@ function TurnDetailAndUpdate() {
   };
 
   const updateTurnState = () => {
-
     const turn = date.turn;
     turn.state = "Cancelado";
 
@@ -268,19 +267,13 @@ function TurnDetailAndUpdate() {
               <span className="ml-2 font-medium text-emerald-800 text-lg">
                 Teléfono:
               </span>
-              <span>
-                {" "}
-                {date.user.phone} 
-              </span>
+              <span> {date.user.phone}</span>
             </div>
             <div className="">
               <span className="ml-2 font-medium text-emerald-800 text-lg">
                 Email:
               </span>
-              <span>
-                {" "}
-                {date.user.email} 
-              </span>
+              <span> {date.user.email}</span>
             </div>
             <div className="mt-1">
               <span className="ml-2 font-medium text-pink-800 text-lg">
@@ -303,7 +296,7 @@ function TurnDetailAndUpdate() {
               </span>
               <span className=" inline text-clip overflow-hidden">
                 {" "}
-                {date.remove}
+                {date.needRemove}
               </span>
             </div>
             <div className="mt-1">
@@ -379,7 +372,7 @@ function TurnDetailAndUpdate() {
               className="flex text-white py-2.5 pl-3 pr-1 font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
             >
               {" "}
-              <DeleteIcon /> 
+              <DeleteIcon />
             </div>
           )}
         </div>

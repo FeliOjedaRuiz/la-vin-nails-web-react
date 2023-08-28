@@ -98,7 +98,11 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         <h5 className="text-center font-bold m-1 text-sm">
           {showDate(initDate)}
         </h5>
-        {!firstDayTurns[0] && <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">No hay turnos disponibles</div> }
+        {!firstDayTurns[0] && (
+          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
+            No hay turnos disponibles
+          </div>
+        )}
         {firstDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
@@ -107,7 +111,11 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         <h5 className="text-center font-bold m-1 text-sm">
           {showDate(secondDay)}
         </h5>
-        {!secondDayTurns[0] && <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">No hay turnos disponibles</div> }
+        {!secondDayTurns[0] && (
+          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
+            No hay turnos disponibles
+          </div>
+        )}
         {secondDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
@@ -116,7 +124,11 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         <h5 className="text-center font-bold m-1 text-sm">
           {showDate(thirdDay)}
         </h5>
-        {!thirdDayTurns[0] && <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">No hay turnos disponibles</div> }
+        {!thirdDayTurns[0] && (
+          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
+            No hay turnos disponibles
+          </div>
+        )}
         {thirdDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
@@ -125,7 +137,11 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         <h5 className="text-center font-bold m-1 text-sm">
           {showDate(fourthDay)}
         </h5>
-        {!fourthDayTurns[0] && <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">No hay turnos disponibles</div> }
+        {!fourthDayTurns[0] && (
+          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
+            No hay turnos disponibles
+          </div>
+        )}
         {fourthDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
@@ -134,7 +150,11 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         <h5 className="text-center font-bold m-1 text-sm">
           {showDate(fifthDay)}
         </h5>
-        {!fifthDayTurns[0] && <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">No hay turnos disponibles</div> }
+        {!fifthDayTurns[0] && (
+          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
+            No hay turnos disponibles
+          </div>
+        )}
         {fifthDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
@@ -143,7 +163,11 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         <h5 className="text-center font-bold m-1 text-sm">
           {showDate(sixthDay)}
         </h5>
-        {!sixthDayTurns[0] && <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">No hay turnos disponibles</div> }
+        {!sixthDayTurns[0] && (
+          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
+            No hay turnos disponibles
+          </div>
+        )}
         {sixthDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}

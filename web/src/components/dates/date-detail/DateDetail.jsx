@@ -19,7 +19,7 @@ function DateDetail({ date, onDateDelete }) {
   }, []);
 
   const handleDeleteDate = () => {
-    setModalState(!modalState)
+    setModalState(!modalState);
     datesService
       .deleteDate(date.id)
       .then(updateTurnState)
@@ -60,12 +60,22 @@ function DateDetail({ date, onDateDelete }) {
           <span className=" font-normal text-black ">{date.designDetails}</span>{" "}
         </p>
         <p className="text-xl font-medium text-pink-700">
+          Remoción:{" "}
+          <span className=" font-normal text-black ">{date.needRemove}</span>{" "}
+        </p>
+        <p className="text-xl font-medium text-pink-700">
           Precio:{" "}
-          <span className=" font-normal text-black ">{date.cost} €.</span>{" "}
+          <span className=" font-normal text-black ">
+            {date.cost}
+            {date.cost && <>€.</>} {!date.cost && <>sin confirmar.</>}{" "}
+          </span>{" "}
         </p>
         <p className="text-xl font-medium text-pink-700">
           Duración estimada:{" "}
-          <span className=" font-normal text-black ">{date.duration} hs.</span>{" "}
+          <span className=" font-normal text-black ">
+            {date.duration} {date.duration && <>hs.</>}{" "}
+            {!date.duration && <>sin confirmar.</>}{" "}
+          </span>{" "}
         </p>
       </div>
       <div className="flex flex-col">
@@ -103,10 +113,7 @@ function DateDetail({ date, onDateDelete }) {
       </div>
       <Modal modalState={modalState} setModalState={setModalState}>
         <div className="text-center mb-6">
-          <p className="font-bold text-2xl">
-            CANCELAR CITA           
-          </p>
-          
+          <p className="font-bold text-2xl">CANCELAR CITA</p>
         </div>
 
         <div className="text-center text-xl font-medium mb-6">
@@ -121,7 +128,7 @@ function DateDetail({ date, onDateDelete }) {
             Cancelar
           </button>
           <button
-          onClick={handleDeleteDate}
+            onClick={handleDeleteDate}
             className="bg-green-600 text-white  px-2 py-1 rounded "
           >
             Aceptar

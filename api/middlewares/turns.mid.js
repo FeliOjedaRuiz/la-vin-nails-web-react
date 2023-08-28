@@ -9,11 +9,11 @@ module.exports.exists = (req, res, next) => {
         req.turn = turn;
         next();
       } else {
-        next(createError(404, "Turn not found"))
+        next(createError(404, "Turn not found"));
       }
     })
     .catch(next);
-}
+};
 
 module.exports.isFree = (req, res, next) => {
   Date.find({ turn: req.turn.id })
@@ -21,8 +21,8 @@ module.exports.isFree = (req, res, next) => {
       if (!date[0]) {
         next();
       } else {
-        next(createError(400, "One Date is in this turn"))
+        next(createError(400, "One Date is in this turn"));
       }
     })
     .catch(next);
-}
+};

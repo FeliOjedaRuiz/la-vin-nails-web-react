@@ -2,22 +2,20 @@ require("dotenv").config();
 
 const express = require("express");
 const logger = require("morgan");
-const mongoose  = require("mongoose");
+const mongoose = require("mongoose");
 const createError = require("http-errors");
+const cors = require("./config/cors.config");
+const api = require("./config/routes.config");
 
 //** Load configuration */
-require('./config/db.config');
+require("./config/db.config");
 const app = express();
-
-const cors = require('./config/cors.config');
+app.use(express.static(__dirname + "/public"));
 app.use(cors);
-app.use(express.json())
+app.use(express.json());
 app.use(logger("dev"));
 
-const api = require('./config/routes.config');
-
-app.use('/api/v1', api);
-
+app.use("/api/v1", api);
 
 //** Error Handling */
 app.use((req, res, next) => next(createError(404, "Route not found")));
@@ -34,7 +32,9 @@ app.use((error, req, res, next) => {
     error = createError(404, `${resourceName} not found`);
   } else if (error.message.includes("E11000")) {
     // Duplicate keys
-    Object.keys(error.keyValue).forEach((key) => error.keyValue[key] = 'Already exists');
+    Object.keys(error.keyValue).forEach(
+      (key) => (error.keyValue[key] = "Already exists")
+    );
     error = createError(409, { errors: error.keyValue });
   } else if (!error.status) {
     error = createError(500, error);
@@ -47,7 +47,8 @@ app.use((error, req, res, next) => {
 
   if (error.errors) {
     const errors = Object.keys(error.errors).reduce((errors, errorKey) => {
-      errors[errorKey] = error.errors[errorKey]?.message || error.errors[errorKey];
+      errors[errorKey] =
+        error.errors[errorKey]?.message || error.errors[errorKey];
       return errors;
     }, {});
     data.errors = errors;
