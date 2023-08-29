@@ -17,6 +17,10 @@ app.use(logger("dev"));
 
 app.use("/api/v1", api);
 
+app.get("/*", (req, res) => {
+  res.sendFile(`${__dirname}/public/index.html`);
+});
+
 //** Error Handling */
 app.use((req, res, next) => next(createError(404, "Route not found")));
 
