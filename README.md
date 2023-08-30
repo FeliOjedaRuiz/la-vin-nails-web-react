@@ -5,7 +5,7 @@
   
   <p>
     Esta app web fue desarrollada para la gestion de citas de un estudio de manicura, cuenta con distintas funcionalidades según si el usuario es cliente o administrador.
-Se encuentra desplegada como MVP en el siguiente enlace: <a href="https://la-vin-nails-web.fly.dev/">https://la-vin-nails-web.fly.dev/</a>
+Se encuentra desplegada como MVP en el siguiente enlace: <a href="https://la-vin-nails-app.fly.dev/">https://la-vin-nails-app.fly.dev/</a>
   </p>
   
   <h2>Funcionalidades</h2>
