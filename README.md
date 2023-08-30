@@ -14,7 +14,7 @@ Se encuentra desplegada como MVP en el siguiente enlace: <a href="https://la-vin
     <li>Citas: Permite a los clientes solicitar su cita según servicio y preferencias.</li>
     <li>Calendario cliente: Permite a los clientes visualizar los turnos disponibles.</li>
     <li>Calendario administrador: Permite al administrador gestionar los turnos y las solicitudes de citas.</li>
-    <li>Botones de whatsaap: permite el contacto via whatsaap entre usuario y administrador..</li>
+    <li>Botones de whatsaap: permite el contacto via whatsaap entre usuario y administrador.</li>
   </ul>
   
   <h2>Próximas funcionalidades</h2>
