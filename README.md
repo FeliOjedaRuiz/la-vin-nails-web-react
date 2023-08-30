@@ -4,7 +4,7 @@
   <h1>La Vin Nails App</h1>
   
   <p>
-    Esta app web fue desarrollada para la gestion de citas de un estudio de manicuría, cuenta con distintas funcionalidades según si el usuario es cliente o adminitrador.
+    Esta app web fue desarrollada para la gestion de citas de un estudio de manicura, cuenta con distintas funcionalidades según si el usuario es cliente o administrador.
 Se encuentra desplegada como MVP en el siguiente enlace: <a href="https://la-vin-nails-web.fly.dev/">https://la-vin-nails-web.fly.dev/</a>
   </p>
   
