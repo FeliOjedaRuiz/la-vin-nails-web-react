@@ -49,7 +49,7 @@ function TurnItemAdmin({ turn }) {
     <NavLink to={`/turns/${id}`}>
       <div className={`mb-1.5 ${bg} rounded shadow py-0.5 px-1.5 flex-col`}>
         <p className={`text-center font-medium  text-md truncate ${textColor}`}>
-          {turn.hour} - {date && date.user.name} {!date && "Disponible"}{" "}
+          {turn.hour} - {date && date.user.name} {!date && turn.state}{" "}
         </p>
         <p className={`text-center font-medium  text-xs truncate ${textColor}`}>
           {" "}
