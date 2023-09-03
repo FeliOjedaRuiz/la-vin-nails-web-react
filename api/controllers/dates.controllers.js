@@ -11,17 +11,23 @@ const transporter = nodemailer.createTransport({
 
 module.exports.create = (req, res, next) => {
   Date.create(req.body)
-     .then((date) => {
+    .then((date) => {
       res.status(201).json(date);
-      transporter
-        .sendMail({
-          from: "La Vin Nails Admin <melisaoviedo.92.22@gmail.com>",
-          to: "m.o.92gm@gmail.com",
-          subject: "Nueva solicitud de cita",
-          html: `<h1>Tienes una nueva solicitud de cita</h1> <h4>De: ${req.user.name} ${req.user.surname}</h4> <h4>mail: ${req.user.email} cel: ${req.user.phone}</h4>`,
-        })
-        .then((info) => console.log(info))
-        .catch((error) => console.log(error));
+      Date.findById(date.id)
+        .populate("turn")
+        .populate("user")
+        .populate("service")
+        .then((dateEmail) => {
+          transporter
+            .sendMail({
+              from: "La Vin Nails Admin <melisaoviedo.92.22@gmail.com>",
+              to: "m.o.92gm@gmail.com",
+              subject: "Nueva solicitud de cita",
+              html: `<h1>Tienes una nueva solicitud de cita</h1> <h3>De: ${dateEmail.user.name} ${dateEmail.user.surname}</h3> <h3>mail: ${dateEmail.user.email} </h3> <h3>Móvil: +34 ${dateEmail.user.phone} </h3> <h3>Servicio: ${dateEmail.service.name}</h3> <h3>Día: ${dateEmail.turn.date} hora: ${dateEmail.turn.hour}</h3> <a href="https://la-vin-nails-app.fly.dev/">Ir a la app</a>`,
+            })
+            .then((info) => console.log(info))
+            .catch((error) => console.log(error));
+        });
     })
     .catch(next);
 };
@@ -62,20 +68,23 @@ module.exports.update = (req, res, next) => {
 };
 
 module.exports.delete = (req, res, next) => {
-  Date.deleteOne({ _id: req.date.id })
-    .then(
-      () => {res.status(204).send(),
-      console.log(`deleting date ${req.date.id}`);
-      transporter
-        .sendMail({
-          from: "La Vin Nails Admin <melisaoviedo.92.22@gmail.com>",
-          to: "m.o.92gm@gmail.com",
-          subject: "Se ha cancelado una cita",
-          html: `<h1>Se ha cancelado una cita</h1> <h4>De: ${req.user.name} ${req.user.surname}</h4> <h4>mail: ${req.user.email} cel: ${req.user.phone}</h4>`,
-        })
-        .then((info) => console.log(info))
-        .catch((error) => console.log(error));    
-    }
-    )
+  Date.findById(req.date.id)
+    .populate("turn")
+    .populate("user")
+    .populate("service")
+    .then((dateEmail) => {
+      Date.deleteOne({ _id: req.date.id }).then(() => {
+        res.status(204).send(), console.log(`deleting date ${req.date.id}`);
+        transporter
+          .sendMail({
+            from: "La Vin Nails Admin <melisaoviedo.92.22@gmail.com>",
+            to: "m.o.92gm@gmail.com",
+            subject: "Se ha cancelado una cita",
+            html: `<h1>Se ha cancelado una cita</h1> <h3>De: ${dateEmail.user.name} ${dateEmail.user.surname}</h3> <h3>mail: ${dateEmail.user.email} </h3> <h3>Móvil: +34 ${dateEmail.user.phone} </h3> <h3>Servicio: ${dateEmail.service.name}</h3> <h3>Día: ${dateEmail.turn.date} hora: ${dateEmail.turn.hour}</h3> <a href="https://la-vin-nails-app.fly.dev/">Ir a la app</a>`,
+          })
+          .then((info) => console.log(info))
+          .catch((error) => console.log(error));
+      });
+    })
     .catch(next);
 };

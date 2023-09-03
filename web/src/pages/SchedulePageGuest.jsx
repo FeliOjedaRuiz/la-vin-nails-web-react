@@ -2,13 +2,23 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/layouts/Layout";
 import datesService from "../services/dates";
 import DateDetail from "../components/dates/date-detail/DateDetail";
+import { HonestWeekPicker } from "../components/week-picker/week-picker-js/HonestWeekPicker";
+import TurnListByWeek from "../components/turns/turn-list-by-week/TurnListByWeek";
+import { NavLink } from "react-router-dom";
 
 function SchedulePageGuest() {
   const [dates, setDates] = useState([]);
   const [reload, setReload] = useState(false);
+  const [initDate, setInitDate] = useState();
+  const [selectedTurn, setSelectedTurn] = useState({});
+  const [selectedDate, setSelectedDate] = useState({});
 
-  const onDateDelete = () => {
-    setReload(!reload);
+  const onInitDate = (date) => {
+    setInitDate(date);
+  };
+
+  const onTurnSelection = (turn) => {
+    setSelectedTurn(turn);
   };
 
   const transformDate = (date) => {
@@ -46,17 +56,28 @@ function SchedulePageGuest() {
     <>
       <Layout>
         <div className="p-4">
-          <h3 className="text-3xl mb-5 font-bold text-center color text-pink-700">
-            Próximas citas:
-          </h3>
-          {!dates[0] && (
-            <div className="text-center text-2xl font-medium text-emerald-600 bg-white/50 p-4 m-2 rounded-lg">
-              No tienes citas pendientes
-            </div>
-          )}
-          {dates.map((date) => (
-            <DateDetail date={date} onDateDelete={onDateDelete} />
-          ))}
+          <div className="mb-4">
+            <h1 className="font-bold text-xl text-center text-emerald-700">
+              Agenda de turnos disponibles
+            </h1>
+          </div>
+          <div className="px-2 flex justify-center mb-3">
+            <HonestWeekPicker onInitDate={onInitDate} />
+          </div>
+          <div className="">
+            <TurnListByWeek
+              initDate={initDate}
+              onTurnSelection={onTurnSelection}
+            />
+          </div>
+
+          <NavLink to="/services">
+            <div className="text-center mt-4 bg-emerald-600 rounded-lg px-3 py-2 leading-tight text-white text-lg">
+              Para seleccionar un turno disponible debes acceder a la sección de
+              servicios.
+              <p className="font-bold">Click Aquí</p>
+            </div>            
+          </NavLink>
         </div>
       </Layout>
     </>

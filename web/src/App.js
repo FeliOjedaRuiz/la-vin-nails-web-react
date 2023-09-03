@@ -40,10 +40,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route
             path="/my-schedule"
-            element={
-              <PrivateRoute role="guest">
-                <SchedulePageGuest />
-              </PrivateRoute>
+            element={              
+                <SchedulePageGuest />              
             }
           />
           <Route
