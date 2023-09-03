@@ -26,8 +26,8 @@ function SchedulePageGuest() {
       <Layout>
         <div className="p-4">
           <div className="mb-4">
-            <h1 className="font-bold text-xl text-center text-emerald-700">
-              Agenda de turnos disponibles
+            <h1 className="font-bold text-3xl text-center text-emerald-700">
+              Turnos disponibles
             </h1>
           </div>
           <div className="px-2 flex justify-center mb-3">

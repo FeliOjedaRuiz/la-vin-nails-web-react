@@ -195,13 +195,14 @@ export const HonestWeekPicker = ({ onInitDate }) => {
 
   return (
     <div
-      className="week-picker-display z-0 w-full max-w-sm bg-white/50 border-2 border-pink-400 text-emerald-700 font-bold shadow-md"
+      className="week-picker-display flex flex-col z-0 w-full max-w-sm bg-white/50 border-2 border-pink-400 text-emerald-700 font-bold shadow-md"
       onBlur={() => setOpen(false)}
       onClick={() => setOpen(true)}
       tabIndex={0}
     >
+    <p className="text-lg uppercase text-pink-600 -mb-2"> {">"} Seleccione aquí la semana {"<"} </p>
       <p className="text-lg font-medium">
-        {convertDate(week.firstDay)} &nbsp; al &nbsp;{" "}
+        {convertDate(week.firstDay)} al {" "}
         {convertDate(week.lastDay)}
       </p>
 
