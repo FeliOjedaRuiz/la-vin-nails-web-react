@@ -20,7 +20,7 @@ function TurnItemAdmin({ turn }) {
         setDate(thisDate[0]);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [turn]);
 
   useEffect(() => {
     switch (turn.state) {

@@ -14,7 +14,7 @@ function SchedulePage() {
 
   useEffect(() => {
     setReload(!reload);
-  }, []);
+  }, [initDate]);
 
   const onTurnCreation = () => {
     setReload(!reload);
