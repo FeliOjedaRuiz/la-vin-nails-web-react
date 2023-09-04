@@ -117,28 +117,31 @@ function DatesForm({ service, serviceTypes }) {
             {serverError}
           </div>
         )}
-        <div className="flex flex-col p-2">
-          <div className="flex flex-col bg-white/50 p-2 rounded-lg border-2 border-pink-300">
-            <h1 className="ml-2 font-bold text-pink-600 text-lg self-center text-center">
-              Completa el formulario para tu cita de:
-            </h1>
-            <h2 className="ml-2 font-bold text-green-700 text-center text-3xl self-center">
+        <div className="flex flex-col p-2 ">
+          <div className="flex flex-col p-2 rounded-xl bg-pink-100 ">
+            <p className="text-center text-3xl font-bold text-pink-700 ">
+              Solicitud de cita para:
+            </p>
+            <p className="ml-2 font-bold text-green-600 text-center text-xl self-center">
               {service.name}
-            </h2>
+            </p>
           </div>
-          <div className="mb-3 mt-3">
+          <p className="ml-2 mt-5 font-bold leading-tight text-pink-600 text-xl self-center text-center">
+            Completa los siguientes 4 pasos:
+          </p>
+          <div className="mb-2 mt-3 p-3 border-2 border-emerald-400 rounded-lg">
             <label
               for="type"
-              className="ml-2 font-medium text-pink-800 text-lg"
+              className="ml-1 text-emerald-800 font-bold text-lg"
             >
-              Selecciona una opción de servicio
+              1- Selecciona una opción de servicio:
             </label>
             <div>
               <select
                 {...register("type", {
                   required: "Debes seleccionar un tipo de decoración.",
                 })}
-                className="rounded-lg  w-full text-green-700 font-medium border-2 border-pink-300 "
+                className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-green-700 font-medium border-2 border-pink-300 "
               >
                 {serviceTypes.map((type) => (
                   <option className="w-80 font-medium" value={type}>
@@ -147,27 +150,22 @@ function DatesForm({ service, serviceTypes }) {
                 ))}
               </select>
               {errors.type && (
-                <div className=" ml-2 text-red-600 font-medium">
+                <div className=" ml-2 mt-2 text-red-600 font-medium">
                   {errors.type?.message}
                 </div>
               )}
             </div>
-            {errors.type && (
-              <div className=" ml-2 text-red-600 font-medium">
-                {errors.type?.message}
-              </div>
-            )}
           </div>
-          <div className="mb-2">
+          <div className="mb-2 mt-3 p-3 border-2 border-emerald-400 rounded-lg">
             <label
               for="designDetails"
-              className="ml-2 font-medium text-pink-800 text-lg"
+              className="ml-1 text-emerald-800 font-bold text-lg"
             >
-              Describe los detalles:
+              2- Describe los detalles:
             </label>
             <textarea
               placeholder="Describe los detalles del diseño..."
-              className="bg-gray-50 border-2 text-green-700 border-pink-300 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
+              className="bg-white mt-2 border-2 text-green-700 border-pink-300 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
               {...register("designDetails", {
                 required: "Son necesarios los detalles",
                 minLength: {
@@ -181,50 +179,67 @@ function DatesForm({ service, serviceTypes }) {
               })}
             />
             {errors.designDetails && (
-              <div className=" ml-2 text-red-600 font-medium">
+              <div className=" ml-2 mt-2 text-red-600 font-medium">
                 {errors.designDetails?.message}
               </div>
             )}
           </div>
-          <div className="mb-2">
+          <div className="mb-2 mt-3 p-3 border-2 border-emerald-400 rounded-lg">
             <label
-              for="designDetails"
-              className="ml-2 font-medium text-pink-800 text-lg"
+              for="needRemove"
+              className="ml-1 text-emerald-800 font-bold text-lg tracking-tight"
             >
-              ¿Traes uñas limpias o hay que retirar?
+              3- ¿Traes uñas limpias o hay que retirar?
             </label>
-            <div className="ml-3 flex items-center font-medium text-emerald-700">
-              <span>Uñas limpias</span>
-              <input
-                className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
-                {...register("needRemove", { required: true })}
-                type="radio"
-                value="No"
-              />
-              <span>Con remoción</span>
-              <input
-                className="mr-4 ml-2 hover:ring-pink-600 hover:bg-pink-600"
-                type="radio"
-                value="Sí"
-                {...register("needRemove", { required: true })}
-              />
+            <div className="ml-1 mt-2 flex items-center justify-around font-medium text-emerald-700">
+              <div className="flex items-center">
+                <span>Uñas limpias</span>
+                <input
+                  className="mr-4 ml-2 h-5 w-5 hover:ring-pink-600 hover:bg-pink-600"
+                  {...register("needRemove", {
+                    required: "Debes seleccionar una opción.",
+                  })}
+                  type="radio"
+                  value="No"
+                />
+              </div>
+              <div className="flex items-center">
+                <span>Con remoción</span>
+                <input
+                  className="mr-4 ml-2 h-5 w-5 hover:ring-pink-600 hover:bg-pink-600"
+                  type="radio"
+                  value="Sí"
+                  {...register("needRemove", {
+                    required: "Debes seleccionar una opción.",
+                  })}
+                />
+              </div>
+              {/* {errors.needRemove && (
+              <div className=" ml-2 text-red-600 font-medium">
+                {errors.needRemove?.message}
+              </div>
+            )} */}
             </div>
             {errors.needRemove && (
-              <div className=" ml-2 text-red-600 font-medium">
+              <div className=" ml-2 mt-2 text-red-600 font-medium">
                 {errors.needRemove?.message}
               </div>
             )}
           </div>
         </div>
-
-        <div className="px-2 flex justify-center mb-3">
-          <HonestWeekPicker onInitDate={onInitDate} />
-        </div>
-        <div>
-          <TurnListByWeek
-            initDate={initDate}
-            onTurnSelection={onTurnSelection}
-          />
+        <div className="mb-2 m-2 pt-3 p-2 border-2 border-emerald-400 rounded-lg">
+          <p className="ml-2 mb-2 text-emerald-800 font-bold text-lg">
+            4- Selecciona un turno
+          </p>
+          <div className="px-2 flex justify-center mb-3">
+            <HonestWeekPicker onInitDate={onInitDate} />
+          </div>
+          <div>
+            <TurnListByWeek
+              initDate={initDate}
+              onTurnSelection={onTurnSelection}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col p-2 justify-center items-center mt-2 ">
@@ -247,7 +262,16 @@ function DatesForm({ service, serviceTypes }) {
           )}
 
           <Modal modalState={modalState} setModalState={setModalState}>
-            <div className="text-center mb-6">
+            <div className="mb-8">
+            <p className="text-center leading-tight font-bold text-4xl uppercase mb-1 text-pink-700">
+                ¡Atención!
+              </p>
+              <p className="text-center leading-tight font-bold text-lg text-emerald-600">
+                Para poder solicitar tu cita es imprescindible completar los 4
+                pasos anteriores.
+              </p>
+            </div>
+            <div className="text-center  leading-tight  mb-6">
               <p className="font-medium">
                 Solicitar cita de{" "}
                 <span className="text-pink-700 font-bold">{service.name}</span>{" "}
@@ -258,11 +282,11 @@ function DatesForm({ service, serviceTypes }) {
               </p>
             </div>
 
-            <div className="text-center mb-6">
+            <div className="text-center text-xl mb-6 font-medium leading-tight text-emerald-700">
               <p>Tu solicitud será confirmada a la mayor brevedad posible.</p>
             </div>
 
-            <div className="flex justify-around">
+            <div className="flex justify-around font-medium text-lg">
               <button
                 onClick={() => setModalState(!modalState)}
                 className="bg-red-600 text-white  px-2 py-1 rounded "
@@ -271,7 +295,7 @@ function DatesForm({ service, serviceTypes }) {
               </button>
               <button
                 type="submit"
-                className="bg-green-600 text-white  px-2 py-1 rounded "
+                className="bg-emerald-600 text-white  px-2 py-1 rounded "
               >
                 Aceptar
               </button>

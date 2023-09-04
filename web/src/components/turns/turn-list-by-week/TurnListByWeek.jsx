@@ -35,17 +35,17 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
 
   const months = [
     "Enero",
-    "Febrero",
+    "Feb.",
     "Marzo",
     "Abril",
     "Mayo",
     "Junio",
     "Julio",
-    "Agosto",
-    "Septiem.",
-    "Octubre",
-    "Noviem.",
-    "Diciem.",
+    "Ago.",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Dic.",
   ];
 
   const days = {
