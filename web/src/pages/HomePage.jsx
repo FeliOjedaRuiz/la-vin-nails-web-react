@@ -36,9 +36,13 @@ function HomePage() {
               +34699861930
             </a>
           </div>
+          <a href="https://www.google.es/maps/place/La+Vin+Nails/@37.199055,-3.6219443,17z/data=!3m1!4b1!4m6!3m5!1s0xd71fdcc60fab787:0xffdd8e2502825163!8m2!3d37.1990508!4d-3.6193694!16s%2Fg%2F11tsjffhvt?entry=ttu" className="font-medium text-center mt-6">
+          <p className="text-emerald-700">Calle Isla De La gomera 4, Esc 3, Bajo "E".</p>
+          <p className="text-pink-800">Granada, Andalucía, España.</p>
+          </a>
         </div>
         <div className="text-center text-sm bg-black/5 p-0.5 text-black/50 ">
-          <a href={`https://wa.me/$+34682126136?text=`}>
+          <a href={`https://wa.me/$+34630173975?text=`}>
             Web desarrollada por Feliciano Ojeda Ruiz
           </a>
         </div>

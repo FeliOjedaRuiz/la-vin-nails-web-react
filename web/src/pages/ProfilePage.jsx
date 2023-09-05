@@ -75,7 +75,7 @@ function ProfilePage() {
             alguna duda comunicate con el administrador:
           </p>
           <a
-            href={`https://wa.me/$+34682126136?text=Hola tengo una duda sobre mi cuenta en La Vin Nails Web.`}
+            href={`https://wa.me/$+34699861930?text=Hola tengo una duda sobre mi cuenta en La Vin Nails Web.`}
             className="flex self-center items-center mt-2 w-32 justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
           >
             {" "}
