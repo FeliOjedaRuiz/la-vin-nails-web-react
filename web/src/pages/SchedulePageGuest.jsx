@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Layout from "../components/layouts/Layout";
-import datesService from "../services/dates";
 import { HonestWeekPicker } from "../components/week-picker/week-picker-js/HonestWeekPicker";
 import TurnListByWeek from "../components/turns/turn-list-by-week/TurnListByWeek";
 import { NavLink } from "react-router-dom";

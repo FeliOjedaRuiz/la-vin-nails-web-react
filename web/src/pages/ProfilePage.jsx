@@ -99,7 +99,7 @@ function ProfilePage() {
 
         <button
           onClick={() => logout()}
-          className="text-white bg-gradient-to-l from-pink-700 via-pink-500 to-pink-700 shadow hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded text-md self-center mt-4 px-4 py-1 text-center"
+          className="text-white bg-gradient-to-l mb-6 from-pink-700 via-pink-500 to-pink-700 shadow hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded text-md self-center  px-4 py-1 text-center"
         >
           Cerrar sesión
         </button>

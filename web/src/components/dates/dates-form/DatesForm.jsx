@@ -21,7 +21,6 @@ function DatesForm({ service, serviceTypes }) {
   const [initDate, setInitDate] = useState();
   const [selectedTurn, setSelectedTurn] = useState({});
   const [selectedDate, setSelectedDate] = useState({});
-  // const [alert, setAlert] = useState("false")
 
   const onInitDate = (date) => {
     setInitDate(date);
@@ -32,7 +31,6 @@ function DatesForm({ service, serviceTypes }) {
   };
 
   useEffect(() => {
-    // setAlert("hidden")
     setSelectedDate(selectedTurn.date);
   }, [selectedTurn]);
 
@@ -92,7 +90,7 @@ function DatesForm({ service, serviceTypes }) {
       console.debug("Sending date application...");
       date = await datesService.create(date);
       onTurnSubmit();
-      navigate("/my-schedule");
+      navigate("/profile");
     } catch (error) {
       const errors = error.response?.data?.errors;
       if (errors) {
