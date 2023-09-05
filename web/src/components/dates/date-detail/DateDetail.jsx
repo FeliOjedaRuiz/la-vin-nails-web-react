@@ -77,6 +77,11 @@ function DateDetail({ date, onDateDelete }) {
             {!date.duration && <>sin confirmar.</>}{" "}
           </span>{" "}
         </p>
+        <a href="https://www.google.es/maps/place/La+Vin+Nails/@37.199055,-3.6219443,17z/data=!3m1!4b1!4m6!3m5!1s0xd71fdcc60fab787:0xffdd8e2502825163!8m2!3d37.1990508!4d-3.6193694!16s%2Fg%2F11tsjffhvt?entry=ttu">
+          <p className="text-2xl font-medium text-center mt-1 text-emerald-600">
+            Ver ubicación.
+          </p>
+        </a>
       </div>
       <div className="flex flex-col">
         <div className="mt-2 mb-2 text-2xl text-center">
