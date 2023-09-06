@@ -81,6 +81,18 @@ function DatesForm({ service, serviceTypes }) {
     }
   };
 
+  // const nodemailer = require("nodemailer");
+
+  // const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
+
+  // const transporter = nodemailer.createTransport({
+  //   service: "gmail",
+  //   auth: {
+  //     user: "melisaoviedo.92.22@gmail.com",
+  //     pass: EMAIL_PASSWORD,
+  //   },
+  // });
+
   const onDateSubmit = async (date) => {
     date.user = user.id;
     date.service = service.id;
@@ -90,6 +102,15 @@ function DatesForm({ service, serviceTypes }) {
       console.debug("Sending date application...");
       date = await datesService.create(date);
       onTurnSubmit();
+      // transporter
+      //   .sendMail({
+      //     from: "La Vin Nails Admin <melisaoviedo.92.22@gmail.com>",
+      //     to: "m.o.92gm@gmail.com",
+      //     subject: "Nueva solicitud de cita",
+      //     html: `<h1>Tienes una nueva solicitud de cita</h1> <h3>De: ${user.name} ${user.surname}</h3> <h3>mail: ${user.email} </h3> <h3>Móvil: +34 ${user.phone} </h3> <h3>Servicio: ${service.name}</h3> <h3>Día: ${selectedTurn.date} hora: ${selectedTurn.turn.hour}</h3> <a href="https://la-vin-nails-app.fly.dev/">Ir a la app</a>`,
+      //   })
+      //   .then((info) => console.log(info))
+      //   .catch((error) => console.log(error));
       navigate("/profile");
     } catch (error) {
       const errors = error.response?.data?.errors;
@@ -261,7 +282,7 @@ function DatesForm({ service, serviceTypes }) {
 
           <Modal modalState={modalState} setModalState={setModalState}>
             <div className="mb-8">
-            <p className="text-center leading-tight font-bold text-4xl uppercase mb-1 text-pink-700">
+              <p className="text-center leading-tight font-bold text-4xl uppercase mb-1 text-pink-700">
                 ¡Atención!
               </p>
               <p className="text-center leading-tight font-bold text-lg text-emerald-600">
