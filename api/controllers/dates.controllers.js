@@ -1,21 +1,38 @@
 const Date = require("../models/date.model");
 
-// const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 
-// const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: "melisaoviedo.92.22@gmail.com",
-//     pass: EMAIL_PASSWORD,
-//   },
-// });
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "melisaoviedo.92.22@gmail.com",
+    pass: EMAIL_PASSWORD,
+  },
+});
 
 module.exports.create = (req, res, next) => {
   Date.create(req.body)
     .then((date) => {
       res.status(201).json(date);
+      Date.findById(date.id)
+        .populate("turn")
+        .populate("user")
+        .populate("service")
+        .then((date) => {
+          transporter
+            .sendMail({
+              from: "La Vin Nails Admin <melisaoviedo.92.22@gmail.com>",
+              to: "m.o.92gm@gmail.com",
+              subject: "Nueva solicitud de cita",
+              html: `<h1>Tienes una nueva solicitud de cita</h1> <h3>De: ${date.user.name} ${date.user.surname}</h3> <h3>mail: ${date.user.email} </h3> <h3>Móvil: +34 ${date.user.phone} </h3> <h3>Servicio: ${date.service.name}</h3> <h3>Día: ${date.turn.date} hora: ${date.turn.hour}</h3> <a href="https://la-vin-nails-app.fly.dev/">Ir a la app</a>`,
+            })
+            .then((info) => {
+              console.log(`Sending email...`)
+              console.log(info)})
+            .catch((error) => console.log(error));         
+        })
     })
     .catch(next);
 };
@@ -70,7 +87,9 @@ module.exports.delete = (req, res, next) => {
             subject: "Se ha cancelado una cita",
             html: `<h1>Se ha cancelado una cita</h1> <h3>De: ${dateEmail.user.name} ${dateEmail.user.surname}</h3> <h3>mail: ${dateEmail.user.email} </h3> <h3>Móvil: +34 ${dateEmail.user.phone} </h3> <h3>Servicio: ${dateEmail.service.name}</h3> <h3>Día: ${dateEmail.turn.date} hora: ${dateEmail.turn.hour}</h3> <a href="https://la-vin-nails-app.fly.dev/">Ir a la app</a>`,
           })
-          .then((info) => console.log(info))
+          .then((info) => {
+            console.log(`Sending email...`)
+            console.log(info)})
           .catch((error) => console.log(error));
       });
     })
