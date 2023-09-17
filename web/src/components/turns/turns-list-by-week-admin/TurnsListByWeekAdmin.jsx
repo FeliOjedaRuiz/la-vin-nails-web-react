@@ -23,6 +23,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
   };
 
   const day = new Date(Date.parse(initDate));
+  const firstDay = transformDate(day.setDate(day.getDate() + 1))
   const secondDay = transformDate(day.setDate(day.getDate() + 1));
   const thirdDay = transformDate(day.setDate(day.getDate() + 1));
   const fourthDay = transformDate(day.setDate(day.getDate() + 1));
@@ -70,7 +71,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
   }, [reload]);
 
   const firstDayTurns = turns
-    .filter((turn) => turn.date === initDate)
+    .filter((turn) => turn.date === firstDay)
     .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
   const seconDayTurns = turns
     .filter((turn) => turn.date === secondDay)
@@ -92,7 +93,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
     <div className="grid grid-cols-2">
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm">
-          {showDate(initDate)}
+          {showDate(firstDay)}
         </h5>
         {firstDayTurns.map((turn) => (
           <TurnItemAdmin turn={turn} />

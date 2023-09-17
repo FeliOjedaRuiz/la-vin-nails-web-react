@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../week-picker-css/honestWeekStyle.css";
 import { v4 } from "uuid";
 import { ArrowLeft } from "./ArrowLeft";
 import { ArrowRight } from "./ArrowRight";
 import { addMonths, endOfWeek, startOfWeek, subMonths } from "date-fns";
 import { getDaysInMonth } from "date-fns/esm";
+import { AuthContext } from "../../../contexts/AuthStore";
 
 export const HonestWeekPicker = ({ onInitDate }) => {
+  const { currentWeek, onWeekSelect } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(new Date());
-  const [week, setWeek] = useState({
-    firstDay: startOfWeek(new Date(), { weekStartsOn: 1 }),
-    lastDay: endOfWeek(new Date(), { weekStartsOn: 1 }),
-  });
+  const [week, setWeek] = useState(currentWeek === undefined ? {
+    firstDay: startOfWeek(new Date(), { weekStartsOn: 0 }),
+    lastDay: endOfWeek(new Date(), { weekStartsOn: 0 }),
+  } : {firstDay: currentWeek.firstDay, lastDay: currentWeek.lastDay});
+  const [reloadWeek, setReloadWeek] = useState(false)
 
   const isLeapYear = () => {
     let leapYear = new Date(new Date().getFullYear(), 1, 29);
@@ -21,7 +24,6 @@ export const HonestWeekPicker = ({ onInitDate }) => {
 
   const convertDate = (date) => {
     let dt = new Date(date);
-
     return `${dt.getDate()} de ${months[dt.getMonth()]}`;
   };
 
@@ -53,11 +55,16 @@ export const HonestWeekPicker = ({ onInitDate }) => {
     } else {
       localDate = new Date(date.setDate(e.target.id));
       setDate(new Date(date.setDate(e.target.id)));
-    }
-    const firstDay = startOfWeek(localDate, { weekStartsOn: 1 });
-    const lastDay = endOfWeek(localDate, { weekStartsOn: 1 });
+    }    
+    const firstDay = startOfWeek(localDate, { weekStartsOn: 0 });
+    const lastDay = endOfWeek(localDate, { weekStartsOn: 0 });
     setWeek({ firstDay, lastDay });
+    setReloadWeek(!reloadWeek)   
   };
+
+  useEffect(() => {    
+      onWeekSelect(week);      
+  }, [reloadWeek]);
 
   const months = [
     "Enero",
@@ -111,7 +118,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
     }
 
     const displayDate = new Date(date).setDate(1);
-    let dayInTheWeek = new Date(displayDate).getDay();
+    let dayInTheWeek = new Date(displayDate).getDay() + 1;
     if (dayInTheWeek < 1) {
       dayInTheWeek = 7;
     }
@@ -162,7 +169,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
 
       if (
         lastDayOfMonth.getTime() <= lastDay &&
-        week.firstDay.getMonth() == lastDayOfMonth.getMonth()
+        week.firstDay.getMonth() === lastDayOfMonth.getMonth()
       ) {
         cName = "single-number selected-week";
       }
@@ -200,10 +207,12 @@ export const HonestWeekPicker = ({ onInitDate }) => {
       onClick={() => setOpen(true)}
       tabIndex={0}
     >
-    <p className="text-lg uppercase text-pink-600 -mb-2"> {">"} Seleccione aquí la semana {"<"} </p>
+      <p className="text-lg uppercase text-pink-600 -mb-2">
+        {" "}
+        {">"} Seleccione aquí la semana {"<"}{" "}
+      </p>
       <p className="text-lg font-medium">
-        {convertDate(week.firstDay)} al {" "}
-        {convertDate(week.lastDay)}
+        {convertDate(week.firstDay)} al {convertDate(week.lastDay)}
       </p>
 
       {open && (
@@ -218,13 +227,13 @@ export const HonestWeekPicker = ({ onInitDate }) => {
             </div>
           </div>
           <div className="numbers-container">
+            <div className="single-number day">Dom</div>
             <div className="single-number day">Lun</div>
             <div className="single-number day">Mar</div>
             <div className="single-number day">Mie</div>
             <div className="single-number day">Jue</div>
             <div className="single-number day">Vie</div>
             <div className="single-number day">Sab</div>
-            <div className="single-number day">Dom</div>
           </div>
           <div className="numbers-container">{renderDays()}</div>
           <div>Haz click afuera para cerrar el desplegable.</div>

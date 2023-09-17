@@ -14,6 +14,7 @@ const restoreUserFromLocalStorage = () => {
 
 function AuthStore({ children }) {
   const [user, setUser] = useState(restoreUserFromLocalStorage());
+  const [currentWeek, setCurrentWeek] = useState();
   const navigate = useNavigate();
 
   const handleUserChange = useCallback((user) => {
@@ -21,6 +22,7 @@ function AuthStore({ children }) {
     if (!user) {
       localStorage.removeItem("user-access-token");
       localStorage.removeItem("current-user");
+      localStorage.removeItem("current-week");
     } else {
       localStorage.setItem("user-access-token", user.token);
       localStorage.setItem("current-user", JSON.stringify(user));
@@ -33,9 +35,20 @@ function AuthStore({ children }) {
     navigate("/login");
   }, []);
 
+  const handleWeekSelect = (week) => {
+    console.log('Updating week context', week)
+    if (!week) {
+      localStorage.removeItem('current-week');
+    } else {
+      localStorage.setItem('current-week', JSON.stringify(week))
+    }
+    setCurrentWeek(week);
+  }
+
+
   return (
     <AuthContext.Provider
-      value={{ user, onUserChange: handleUserChange, logout }}
+      value={{ user, currentWeek, onUserChange: handleUserChange, logout, onWeekSelect: handleWeekSelect }}
     >
       {children}
     </AuthContext.Provider>
