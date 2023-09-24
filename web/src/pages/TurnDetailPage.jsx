@@ -1,10 +1,10 @@
 import React from "react";
 import Layout from "../components/layouts/Layout";
 import TurnDetailAndUpdate from "../components/turns/turn-detail-and-update/TurnDetailAndUpdate";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function TurnDetailPage() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <>

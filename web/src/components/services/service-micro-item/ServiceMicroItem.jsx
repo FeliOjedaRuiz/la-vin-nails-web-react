@@ -5,7 +5,7 @@ function ServiceMicroItem({ service }) {
   return (
     <NavLink
       to={`/new-date/${service.id}`}
-      className="mx-2 flex flex-col items-center w-36 bg-green-50  rounded-lg shadow hover:outline hover:outline-pink-700 "
+      className="mx-2 flex flex-col items-center w-36 bg-white/80  rounded-lg shadow hover:outline hover:outline-pink-700 "
     >
       <img
         className="h-36 w-36 mb-2 rounded-t-lg"

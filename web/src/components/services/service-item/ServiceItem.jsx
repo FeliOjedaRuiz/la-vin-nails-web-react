@@ -29,7 +29,7 @@ function ServiceItem({ service }) {
 
   return (
     <>
-      <div className=" mx-1 mb-5 p-3 bg-green-50 border border-gray-200 rounded-lg shadow max-w-xl  md:max-w-xl">
+      <div className=" mx-1 mb-5 p-3 bg-white/60 border border-gray-200 rounded-lg shadow max-w-xl  md:max-w-xl">
         <div className="flex grid-flow-row mb-3">
           <img
             className="object-cover rounded h-36 w-36 "
