@@ -359,7 +359,17 @@ function TurnDetailAndUpdate() {
 
           {date && (
             <a
-              href={`https://wa.me/+34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. ha sido confirmada con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs. ¡Te espero en Isla de la gomera 4 - edificio Calderón - timbre 79!`}
+              href={`https://wa.me/+34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. *ha sido confirmada* con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs.
+              
+              *¡Te espero en la NUEVA DIRECCIÓN, C. Periodista Rafael Gago Palomo 7, local 3!*
+              
+              https://goo.gl/maps/LBXqKgxpGdbYarhm8
+              
+              🕑 Se tolerarán hasta 10' de demora, de lo contrario queda cancelada! 💅 Es importante que decidas antes que diseño hacerte o una idea general para evitar demoras. De acuerdo al tiempo disponible, quedará a criterio de la manicurista reducir detalles en diseños más elaborados.
+              
+              🧼 ¡Recuerda higienizar bien tus manos antes de la cita!
+              
+              🤑 Puedes abonar con bizum a este número o efectivo preferentemente`}
               className="flex items-center justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
             >
               {" "}

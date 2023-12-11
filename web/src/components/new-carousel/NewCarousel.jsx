@@ -4,15 +4,11 @@ import "../../index.css";
 import styled from "styled-components";
 
 const img1 =
-  "https://res.cloudinary.com/duoshgr3h/image/upload/v1692560886/Carousel_j14opp.jpg";
+  "https://res.cloudinary.com/duoshgr3h/image/upload/v1696626702/Oto%C3%B1o-1_kg6c6g.jpg";
 const img2 =
-  "https://res.cloudinary.com/duoshgr3h/image/upload/v1692560887/Carousel1_ojnbu8.jpg";
+  "https://res.cloudinary.com/duoshgr3h/image/upload/v1696626702/Oto%C3%B1o-2_urslea.jpg";
 const img3 =
-  "https://res.cloudinary.com/duoshgr3h/image/upload/v1692560887/Carousel2_cgmgbe.jpg";
-const img4 =
-  "https://res.cloudinary.com/duoshgr3h/image/upload/v1692560887/Carousel4_jmox6x.jpg";
-const img5 =
-  "https://res.cloudinary.com/duoshgr3h/image/upload/v1692560887/Carousel3_fkkqjz.jpg";
+  "https://res.cloudinary.com/duoshgr3h/image/upload/v1696626702/Oto%C3%B1o-3_fyzuzj.jpg";
 
 const NewCarousel = () => {
   return (
@@ -21,7 +17,7 @@ const NewCarousel = () => {
       <Slideshow controles={true}>
         <Slide>
           <div>
-            <img src={img1} alt="" />
+            <img src={img1} alt="Portada otoño" />
           </div>
           {/* <TextoSlide>
 						<p>15% descuento en productos Apple</p>
@@ -29,22 +25,12 @@ const NewCarousel = () => {
         </Slide>
         <Slide>
           <div>
-            <img src={img2} alt="" />
+            <img src={img2} alt="Promo esmaltado permanente €12" />
           </div>
         </Slide>
         <Slide>
           <div>
-            <img src={img3} alt="" />
-          </div>
-        </Slide>
-        <Slide>
-          <div>
-            <img src={img4} alt="" />
-          </div>
-        </Slide>
-        <Slide>
-          <div>
-            <img src={img5} alt="" />
+            <img src={img3} alt="Promo uñas de gel €20" />
           </div>
         </Slide>
       </Slideshow>
