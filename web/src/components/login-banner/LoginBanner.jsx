@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import ButtonPrimary from "../butons/ButtonPrimary";
 
 function LoginBanner() {
   return (
@@ -14,12 +15,9 @@ function LoginBanner() {
       <p className="mb-6 text-xl/5 text-center font-medium text-pink-800">
         Accede para agendar tu cita <br /> y conseguir descuentos.
       </p>
-      <NavLink
-        to="/login"
-        className="font-medium mx-5 text-center text-lg w-32 py-1.5 self-center rounded-md shadow text-white
-        bg-gradient-to-r from-green-600 from-5% via-teal-500 via-40% to-pink-500 hover:bg-green-700 focus:ring-4 focus:ring-pink-300"
-      >
-        {"Inicia sesión"}
+
+      <NavLink to="/login">
+        <ButtonPrimary>Iniciar sesión</ButtonPrimary>
       </NavLink>
     </div>
   );

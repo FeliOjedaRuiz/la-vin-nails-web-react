@@ -26,7 +26,7 @@ function SchedulePageGuest() {
         <div className="p-4">
         
           <div className="mb-4">
-            <h1 className="font-bold text-3xl text-center text-emerald-700">
+            <h1 className="font-black text-3xl text-center text-teal-800">
               Turnos disponibles
             </h1>
           </div>
@@ -35,7 +35,7 @@ function SchedulePageGuest() {
             <HonestWeekPicker onInitDate={onInitDate} />
           </div>
           <NavLink to="/services">
-            <div className="text-center my-6 mx-2 bg-emerald-600 shadow rounded-lg px-3 py-2 leading-tight text-white text-lg font-medium">
+            <div className="text-center my-6 mx-2 bg-teal-700 shadow rounded-lg px-3 py-2 leading-tight text-white text-lg font-medium">
               Para solicitar cita haz click aquí.
             </div>            
           </NavLink>

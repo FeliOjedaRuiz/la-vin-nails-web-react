@@ -27,7 +27,7 @@ function SchedulePage() {
           <h3 className="mb-1 text-center text-2xl font-bold text-emerald-700">
             Turnos de la semana
           </h3>
-          <div className="px-2">
+          <div className="px-2 flex justify-center mb-3">
             <HonestWeekPicker onInitDate={onInitDate} />
           </div>
           <div>

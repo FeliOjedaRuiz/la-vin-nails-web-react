@@ -90,7 +90,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
     .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
 
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2 md:grid-cols-3">
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm">
           {showDate(firstDay)}

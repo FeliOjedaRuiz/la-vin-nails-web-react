@@ -2,6 +2,7 @@ import React from "react";
 import UsersLogin from "../components/users/users-login/UsersLogin";
 import Layout from "../components/layouts/Layout";
 import { NavLink } from "react-router-dom";
+import ButtonPrimary from "../components/butons/ButtonPrimary";
 
 function LoginPage() {
   return (
@@ -23,12 +24,8 @@ function LoginPage() {
           <p className="mb-6 text-xl/5 text-center font-medium text-pink-800">
             Accede para agendar tu cita <br /> y conseguir descuentos.
           </p>
-          <NavLink
-            to="/register"
-            className="font-medium  mx-5 text-center text-lg w-32 py-1.5 self-center rounded-md shadow text-white
-            bg-gradient-to-r from-pink-500 via-teal-500 via-60% to-green-600 to-90% hover:bg-green-700 focus:ring-4 focus:ring-pink-300"
-          >
-            {"Regístrate"}
+          <NavLink to="/register">
+            <ButtonPrimary>Regístrate</ButtonPrimary>
           </NavLink>
         </div>
       </Layout>

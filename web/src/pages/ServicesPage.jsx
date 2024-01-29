@@ -6,7 +6,7 @@ function ServicesPage() {
   return (
     <>
       <Layout>
-        <div className="p-4">
+        <div className="p-2">
           <h1 className="text-3xl mb-5 font-bold text-center color text-pink-700">
             Servicios ofrecidos
           </h1>

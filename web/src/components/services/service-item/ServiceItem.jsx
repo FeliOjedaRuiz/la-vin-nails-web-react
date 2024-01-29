@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import ButtonPrimary from "../../butons/ButtonPrimary";
+import ButtonGreen from "../../butons/ButtonGreen";
 
 function ServiceItem({ service }) {
   const [view, setView] = useState();
@@ -29,7 +31,7 @@ function ServiceItem({ service }) {
 
   return (
     <>
-      <div className=" mx-1 mb-5 p-3 bg-white/60 border border-gray-200 rounded-lg shadow max-w-xl  md:max-w-xl">
+      <div className=" m-2 p-3 bg-white/60 border border-gray-200 rounded-lg shadow max-w-xl  md:max-w-xl">
         <div className="flex grid-flow-row mb-3">
           <img
             className="object-cover rounded h-36 w-36 "
@@ -38,22 +40,19 @@ function ServiceItem({ service }) {
           />
           <div className="flex grow justify-center items-center">
             <div className="flex flex-col h-36 w-40 items-center justify-between pl-2 leading-normal">
-              <h5 className=" text-xl mt-1 text-center leading-none font-bold tracking-tight text-pink-700">
+              <h5 className=" text-lg mt-1 text-center leading-none font-bold tracking-tight text-pink-700">
                 {service.name}
               </h5>
-              <h6 className=" text-lg text-center font-bold tracking-tight text-green-600">
+              <h6 className=" text-md text-center font-semibold italic tracking-tight text-emerald-600">
                 desde €{service.price}
               </h6>
-              <h6 className=" mb-1 text-xs text-center font-bold tracking-tight text-pink-600">
+              <h6 className=" mb-1 text-xs text-center font-semibold tracking-tight text-pink-600">
                 Duración: {service.dateDuration} hs. aprox.
               </h6>
               <NavLink to={`/new-date/${service.id}`}>
-                <button
-                  type="button"
-                  className="text-white shadow bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700  hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium w-32 rounded-lg text-md px-1 py-0.5 text-center mb-2"
-                >
-                  Solicitar cita
-                </button>
+               
+               <ButtonGreen ><p className="text-sm">Solicitar cita</p></ButtonGreen>
+                
               </NavLink>
             </div>
           </div>
@@ -63,11 +62,11 @@ function ServiceItem({ service }) {
             className={` ${box} flex justify-between items-center px-3 py-1 border-gray-200 rounded`}
             onClick={handleClick}
           >
-            <h6 className=" text-base font-bold tracking-tight text-green-700 dark:text-white">
+            <h6 className=" text-base font-bold tracking-tight text-emerald-800 dark:text-white">
               Descripción:
             </h6>
             <svg
-              className="w-4 h-4 text-pink-800"
+              className="w-4 h-4 text-emerald-600"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

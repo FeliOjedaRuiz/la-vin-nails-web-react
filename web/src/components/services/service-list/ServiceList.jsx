@@ -16,7 +16,7 @@ function ServiceList() {
 
   return (
     <>
-      <div className="grid grid-cols-1 justify-center md:grid-cols-2 grid-flow-row">
+      <div className="grid grid-cols-1 justify-center md:grid-cols-2 xl:grid-cols-3 grid-flow-row">
         {services.map((service) => (
           <div key={service.id}>
             <ServiceItem service={service} />

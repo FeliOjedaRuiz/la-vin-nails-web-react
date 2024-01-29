@@ -21,18 +21,20 @@ function Layout({ children }) {
 
   return (
     <div className="flex flex-col">
-      <div className="flex fixed z-10 w-screen justify-center bg-gradient-to-r from-pink-100 via-white to-green-100 border-b-2 border-pink-400 ">
+      <div className="flex fixed z-10 w-screen justify-center bg-gradient-to-r from-pink-50 via-white to-green-50 border-b-2 border-pink-400 ">
         <img
           src={layoutLogo}
           alt="logo la vin nails simplificado"
           className="h-8 m-2 "
         />
       </div>
-      <div className="flex w-full justify-center relative pt-12 pb-16  min-h-screen bg-gradient-to-b from-pink-100 to-emerald-50">
-        <div className=" max-w-3xl w-screen overflow-hidden bg-white/30 shadow-lg ">
+
+      <div className="flex w-full justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50 via-white to-green-50">
+        <div className=" container w-screen overflow-hidden bg-white/30 shadow-lg ">
           {children}
         </div>
       </div>
+
 
       <div className="fixed bottom-0 left-0  w-full h-16 bg-pink-50 border-t-2 border-pink-400">
         <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
