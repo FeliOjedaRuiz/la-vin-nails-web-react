@@ -12,7 +12,7 @@ function TurnItemGuest({ turn, onTurnSelection }) {
     switch (turn.state) {
       case "Disponible":
         setStyle(
-          "bg-green-500 text-white hover:animate-bounce hover:ring hover:ring-lime-400 "
+          "bg-emerald-500 text-white hover:animate-bounce hover:ring hover:ring-lime-400 "
         );
         break;
       case "Solicitado":
@@ -31,10 +31,10 @@ function TurnItemGuest({ turn, onTurnSelection }) {
 
   return (
     <div
-      className={`mb-1.5 ${style} rounded shadow py-0.5 px-1.5 flex-col`}
+      className={`mb-1.5 ${style} rounded shadow py-0.5 px-1.5 xl:py-1.5 xl:px-2 flex-col`}
       onClick={handleClick}
     >
-      <p className={`text-center font-medium  text-md truncate`}>
+      <p className={`text-center font-medium text-sm md:text-lg xl:text-xl truncate`}>
         {turn.hour} Hs.
       </p>
     </div>

@@ -8,8 +8,8 @@ function LoginPage() {
   return (
     <>
       <Layout>
-        <div className="p-8">
-          <h1 className="text-center text-2xl font-bold mb-4 text-green-600">
+        <div className="p-8 flex flex-col justify-center items-center">
+          <h1 className="text-center text-2xl font-bold mb-4 text-emerald-600">
             Iniciar sesion
           </h1>
           <UsersLogin />

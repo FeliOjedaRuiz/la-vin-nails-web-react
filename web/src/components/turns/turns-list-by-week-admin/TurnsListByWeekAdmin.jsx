@@ -32,17 +32,17 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
 
   const months = [
     "Enero",
-    "Febrero",
+    "Feb.",
     "Marzo",
     "Abril",
     "Mayo",
     "Junio",
     "Julio",
-    "Agosto",
-    "Septiem.",
-    "Octubre",
-    "Noviem.",
-    "Diciem.",
+    "Ago.",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Dic.",
   ];
 
   const days = {
@@ -90,9 +90,9 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
     .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3">
+    <div className="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(firstDay)}
         </h5>
         {firstDayTurns.map((turn) => (
@@ -100,7 +100,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(secondDay)}
         </h5>
         {seconDayTurns.map((turn) => (
@@ -108,7 +108,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(thirdDay)}
         </h5>
         {thirdDayTurns.map((turn) => (
@@ -116,7 +116,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(fourthDay)}
         </h5>
         {fourthDayTurns.map((turn) => (
@@ -124,7 +124,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(fifthDay)}
         </h5>
         {fifthDayTurns.map((turn) => (
@@ -132,7 +132,7 @@ function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(sixthDay)}
         </h5>
         {sixthDayTurns.map((turn) => (

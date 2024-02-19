@@ -4,6 +4,7 @@ import { AuthContext } from "../contexts/AuthStore";
 import WhatsappIcon from "../components/icons/WhatsappIcon";
 import DateDetail from "../components/dates/date-detail/DateDetail";
 import datesService from "../services/dates";
+import ButtonGreen from "./../components/butons/ButtonGreen";
 
 function ProfilePage() {
   const { logout, user } = useContext(AuthContext);
@@ -47,54 +48,58 @@ function ProfilePage() {
 
   return (
     <Layout>
-      <div className="flex flex-col">
-        <h1 className="text-center mt-4 text-3xl font-bold text-pink-700">
+      <div className="flex flex-col items-center">
+        <h1 className="text-center mt-4 md:mt-10 text-3xl md:text-4xl lg:text-5xl font-bold text-pink-700">
           ¡Hola {user.name}!
         </h1>
-        <div className="flex flex-col p-4 pb-6 m-5 rounded-md bg-white/50">
-          <h4 className=" mb-2 text-2xl text-center font-bold text-green-700">
-            Tus perfil
+        <div className="flex flex-col max-w-md px-6 py-4 m-5 rounded-md bg-white/50">
+          <h4 className=" mb-2 text-2xl md:text-3xl text-center font-bold text-green-700">
+            Tu datos
           </h4>
-          <p className="mb-2 text-lg">
+          <p className="mb-2 text-md md:text-lg">
             <strong>Nombre:</strong> {user.name}{" "}
           </p>
-          <p className="mb-2 text-lg">
+          <p className="mb-2 text-md md:text-lg">
             <strong>Apellido:</strong> {user.surname}
           </p>
-          <p className="mb-2 text-lg">
-            <strong>Phone:</strong> {user.phone}
+          <p className="mb-2 text-md md:text-lg">
+            <strong>Teléfono:</strong> {user.phone}
           </p>
-          <p className="mb-2 text-lg">
+          <p className="mb-2 text-md md:text-lg">
             <strong>Email:</strong> {user.email}{" "}
           </p>
-          <button className="mb-3 text-white bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded text-md w-20 self-center mt-4 px-4 py-1 text-center">
-            Editar
-          </button>
-          <p className="text-center leading-tight text-pink-600">
-            Próximamente podrás editar tus datos o eliminar tu cuenta. Si tienes
-            alguna duda comunicate con el administrador:
-          </p>
-          <a
-            href={`https://wa.me/$+34699861930?text=Hola tengo una duda sobre mi cuenta en La Vin Nails Web.`}
-            className="flex self-center items-center mt-2 w-32 justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
-          >
-            {" "}
-            <WhatsappIcon /> Consultar
-          </a>
+          <ButtonGreen>Editar</ButtonGreen>
+          <div className="flex flex-col justify-between items-center mt-3 p-4 border-2 rounded-lg border-emerald-600">
+            <p className="text-center leading-tight text-pink-600">
+              Próximamente podrás editar tus datos o eliminar tu cuenta. Si
+              tienes alguna duda comunicate con el administrador:
+            </p>
+            <a
+              className="flex flex-col items-center justify-center mt-3"
+              href={`https://wa.me/$+34699861930?text=Hola tengo una duda sobre mi cuenta en La Vin Nails Web.`}
+            >
+              <ButtonGreen>
+                <WhatsappIcon />
+                Consultar
+              </ButtonGreen>
+            </a>
+          </div>
         </div>
 
         <div className="p-4">
           <h3 className="text-3xl mb-5 font-bold text-center color text-pink-700">
             Próximas citas:
           </h3>
-          {!dates[0] && (
-            <div className="text-center text-2xl font-medium text-emerald-600 bg-white/50 p-4 m-2 rounded-lg">
-              No tienes citas pendientes
-            </div>
-          )}
-          {dates.map((date) => (
-            <DateDetail date={date} onDateDelete={onDateDelete} />
-          ))}
+          <div>
+            {!dates[0] && (
+              <div className="text-center text-2xl font-medium text-emerald-600 bg-white/50 p-4 m-2 rounded-lg">
+                No tienes citas pendientes
+              </div>
+            )}
+            {dates.map((date) => (
+              <DateDetail date={date} onDateDelete={onDateDelete} />
+            ))}
+          </div>
         </div>
 
         <button

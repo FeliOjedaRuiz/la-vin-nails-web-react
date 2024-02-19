@@ -23,7 +23,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
   };
 
   const day = new Date(Date.parse(initDate));
-  const firstDay = transformDate(day.setDate(day.getDate() + 1))
+  const firstDay = transformDate(day.setDate(day.getDate() + 1));
   const secondDay = transformDate(day.setDate(day.getDate() + 1));
   const thirdDay = transformDate(day.setDate(day.getDate() + 1));
   const fourthDay = transformDate(day.setDate(day.getDate() + 1));
@@ -94,9 +94,9 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
     .sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));
 
   return (
-    <div className="grid grid-cols-2">
+    <div className="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(firstDay)}
         </h5>
         {!firstDayTurns[0] && (
@@ -109,7 +109,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(secondDay)}
         </h5>
         {!secondDayTurns[0] && (
@@ -122,7 +122,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(thirdDay)}
         </h5>
         {!thirdDayTurns[0] && (
@@ -135,7 +135,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(fourthDay)}
         </h5>
         {!fourthDayTurns[0] && (
@@ -148,7 +148,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(fifthDay)}
         </h5>
         {!fifthDayTurns[0] && (
@@ -161,7 +161,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
-        <h5 className="text-center font-bold m-1 text-sm">
+        <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(sixthDay)}
         </h5>
         {!sixthDayTurns[0] && (

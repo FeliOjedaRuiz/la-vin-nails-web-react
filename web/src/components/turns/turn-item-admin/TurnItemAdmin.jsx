@@ -25,15 +25,15 @@ function TurnItemAdmin({ turn }) {
   useEffect(() => {
     switch (turn.state) {
       case "Disponible":
-        setBg("bg-white border border-green-500");
+        setBg("bg-white border-2 border-emerald-500");
         setTextColor("text-black");
         break;
       case "Solicitado":
-        setBg("bg-yellow-300");
+        setBg("bg-yellow-500");
         setTextColor("text-black");
         break;
       case "Confirmado":
-        setBg("bg-green-500");
+        setBg("bg-emerald-500");
         setTextColor("text-white");
         break;
       case "Cancelado":

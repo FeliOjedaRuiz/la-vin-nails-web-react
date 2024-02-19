@@ -31,9 +31,9 @@ function TurnsForm({ onTurnCreation }) {
   };
 
   return (
-    <div className="p-2 pt-1 m-2 bg-white/50 rounded-lg border-2 border-pink-300 shadow-md">
+    <div className="px-2 pt-1 m-2 flex justify-center max-w-sm w-full bg-white/50 rounded-lg border-2 border-pink-300 shadow-md">
       {/* <h2 className='text-center -mt-1 font-bold text-xl text-pink-800'>Agregar turnos</h2> */}
-      <form onSubmit={handleSubmit(onTurnSubmit)}>
+      <form className="w-full mb-2" onSubmit={handleSubmit(onTurnSubmit)}>
         {serverError && (
           <div className="text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
@@ -57,7 +57,7 @@ function TurnsForm({ onTurnCreation }) {
               />
             </div>
             {errors.date && (
-              <div className=" ml-2 text-red-600 font-medium">
+              <div className="text-xs  text-red-600 font-medium">
                 {errors.date?.message}
               </div>
             )}
@@ -81,7 +81,7 @@ function TurnsForm({ onTurnCreation }) {
               />
             </div>
             {errors.hour && (
-              <div className=" ml-2 text-red-600 font-medium">
+              <div className="text-xs  text-red-600 font-medium">
                 {errors.hour?.message}
               </div>
             )}

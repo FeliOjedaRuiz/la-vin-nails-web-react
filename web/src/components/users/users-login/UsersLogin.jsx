@@ -36,7 +36,7 @@ function UsersLogin() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onLoginSubmit)}>
+      <form className="max-w-md w-full" onSubmit={handleSubmit(onLoginSubmit)}>
         {serverError && (
           <div className="text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
