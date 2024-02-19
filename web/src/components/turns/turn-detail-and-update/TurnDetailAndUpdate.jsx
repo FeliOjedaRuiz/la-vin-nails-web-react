@@ -7,6 +7,7 @@ import WhatsappIcon from "../../icons/WhatsappIcon";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../modal/Modal";
 import DeleteIcon from "../../icons/DeleteIcon";
+import ButtonGreen from "../../butons/ButtonGreen";
 
 function TurnDetailAndUpdate() {
   const { id } = useParams();
@@ -135,8 +136,8 @@ function TurnDetailAndUpdate() {
   };
 
   return (
-    <div className="bg-white/50 rounded-md p-3 shadow">
-      <h2 className="text-2xl mb-2 font-bold text-center color text-pink-700">
+    <div className="bg-white/50 rounded-lg p-3 md:p-6 shadow max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+      <h2 className="text-3xl md:text-4xl md:mb-4 mb-2 font-bold text-center color text-pink-700">
         Detalle del turno
       </h2>
       <form onSubmit={handleSubmit}>
@@ -146,7 +147,7 @@ function TurnDetailAndUpdate() {
           </div>
         )}
 
-        <div className="flex justify-between mb-2">
+        <div className="flex justify-between mb-2 px-2">
           <div className="">
             <label
               for="date"
@@ -160,7 +161,7 @@ function TurnDetailAndUpdate() {
                 id="date"
                 onChange={handleTurnChange}
                 value={turn.date}
-                className="rounded-lg h-10 w-48 px-2 border-2 border-pink-300"
+                className="rounded-lg h-10 w-40  px-2 border-2 border-pink-300"
               />
             </div>
           </div>
@@ -178,13 +179,13 @@ function TurnDetailAndUpdate() {
                 id="hour"
                 onChange={handleTurnChange}
                 value={turn.hour}
-                className="rounded-lg h-10 w-24 px-2 border-2 border-pink-300"
+                className="rounded-lg h-10 w-40 px-2 border-2 border-pink-300"
               />
             </div>
           </div>
         </div>
 
-        <div className="flex justify-between items-end">
+        <div className="flex justify-between items-end pl-2">
           <div className="">
             <label
               for="state"
@@ -194,7 +195,7 @@ function TurnDetailAndUpdate() {
             </label>
             <div>
               <select
-                className="rounded-lg px-2 w-48 border-2 border-pink-300 align-top "
+                className="rounded-lg px-2 h-10 w-40 border-2 border-pink-300 align-top "
                 id="state"
                 onChange={handleTurnChange}
               >
@@ -337,7 +338,7 @@ function TurnDetailAndUpdate() {
                   id="duration"
                   onChange={handleDateChange}
                   value={date.duration}
-                  className="h-8 p-2 border-2 w-full border-pink-300 text-md rounded-lg focus:ring-teal-500  focus:border-teal-500"
+                  className="h-8 p-2 border-2 w-14 border-pink-300 text-md rounded-lg focus:ring-teal-500  focus:border-teal-500"
                   placeholder="0:00"
                 />{" "}
                 <span className="ml-1 font-medium text-pink-800 text-lg">
@@ -348,10 +349,10 @@ function TurnDetailAndUpdate() {
             </div>
           </div>
         )}
-        <div className="flex mb-2 mt-6 justify-around">
+        <div className="flex mb-2 mt-6 justify-evenly">
           <button
             type="submit"
-            className=" flex justify-center items-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-gradient-to-l from-pink-700 via-pink-500 to-pink-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+            className=" flex justify-center m-1 items-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-gradient-to-l from-pink-700 via-pink-500 to-pink-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
           >
             <SaveIconSVG />
             Guardar
@@ -366,14 +367,16 @@ function TurnDetailAndUpdate() {
               https://goo.gl/maps/LBXqKgxpGdbYarhm8
               
               🕑 Se tolerarán hasta 10' de demora, de lo contrario queda cancelada! 💅 Es importante que decidas antes que diseño hacerte o una idea general para evitar demoras. De acuerdo al tiempo disponible, quedará a criterio de la manicurista reducir detalles en diseños más elaborados.
-              
+              import ButtonGreen from './../../butons/ButtonGreen';
+
               🧼 ¡Recuerda higienizar bien tus manos antes de la cita!
               
               🤑 Puedes abonar con bizum a este número o efectivo preferentemente`}
-              className="flex items-center justify-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-[#128C7E] hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
-            >
+              className="flex items-center justify-center"
+            > <ButtonGreen >
               {" "}
               <WhatsappIcon /> Escribir
+              </ButtonGreen>
             </a>
           )}
           {date && (

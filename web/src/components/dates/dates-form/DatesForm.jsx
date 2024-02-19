@@ -36,17 +36,17 @@ function DatesForm({ service, serviceTypes }) {
 
   const months = [
     "Enero",
-    "Febrero",
+    "Feb.",
     "Marzo",
     "Abril",
     "Mayo",
     "Junio",
     "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    "Ago.",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Dic.",
   ];
 
   const days = {
@@ -129,29 +129,29 @@ function DatesForm({ service, serviceTypes }) {
   const [modalState, setModalState] = useState(false);
 
   return (
-    <div className="relative flex flex-col ">
+    <div className="relative flex flex-col items-center ">
       <form className="flex flex-col" onSubmit={handleSubmit(onDateSubmit)}>
         {serverError && (
           <div className="self-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
           </div>
         )}
-        <div className="flex flex-col p-2 ">
-          <div className="flex flex-col p-2 rounded-xl bg-pink-100 ">
-            <p className="text-center text-3xl font-bold text-pink-700 ">
+        <div className="flex flex-col p-2 justify-center items-center ">
+          <div className="flex flex-col p-2 rounded-xl w-full max-w-2xl border-4 border-emerald-700  bg-emerald-500 ">
+            <p className="text-center text-xl font-medium text-white ">
               Solicitud de cita para:
             </p>
-            <p className="ml-2 font-bold text-green-600 text-center text-xl self-center">
+            <p className="font-semibold text-white text-center text-md self-center">
               {service.name}
             </p>
           </div>
           <p className="ml-2 mt-5 font-bold leading-tight text-pink-600 text-xl self-center text-center">
             Completa los siguientes 4 pasos:
           </p>
-          <div className="mb-2 mt-3 p-3 border-2 border-emerald-400 rounded-lg">
+          <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
               for="type"
-              className="ml-1 text-emerald-800 font-bold text-lg"
+              className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
             >
               1- Selecciona una opción de servicio:
             </label>
@@ -160,7 +160,7 @@ function DatesForm({ service, serviceTypes }) {
                 {...register("type", {
                   required: "Debes seleccionar un tipo de decoración.",
                 })}
-                className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-green-700 font-medium border-2 border-pink-300 "
+                className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300 "
               >
                 {serviceTypes.map((type) => (
                   <option className="w-80 font-medium" value={type}>
@@ -175,16 +175,16 @@ function DatesForm({ service, serviceTypes }) {
               )}
             </div>
           </div>
-          <div className="mb-2 mt-3 p-3 border-2 border-emerald-400 rounded-lg">
+          <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
               for="designDetails"
-              className="ml-1 text-emerald-800 font-bold text-lg"
+              className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
             >
               2- Describe los detalles:
             </label>
             <textarea
               placeholder="Describe los detalles del diseño..."
-              className="bg-white mt-2 border-2 text-green-700 border-pink-300 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
+              className="bg-white mt-2 border-2 text-emerald-700 border-pink-300 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
               {...register("designDetails", {
                 required: "Son necesarios los detalles",
                 minLength: {
@@ -203,10 +203,10 @@ function DatesForm({ service, serviceTypes }) {
               </div>
             )}
           </div>
-          <div className="mb-2 mt-3 p-3 border-2 border-emerald-400 rounded-lg">
+          <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
               for="needRemove"
-              className="ml-1 text-emerald-800 font-bold text-lg tracking-tight"
+              className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl tracking-tight"
             >
               3- ¿Traes uñas limpias o hay que retirar?
             </label>
@@ -246,8 +246,8 @@ function DatesForm({ service, serviceTypes }) {
             )}
           </div>
         </div>
-        <div className="mb-2 m-2 pt-3 p-2 border-2 border-emerald-400 rounded-lg">
-          <p className="ml-2 mb-2 text-emerald-800 font-bold text-lg">
+        <div className="mb-2 m-2 pt-3 p-2 border-2 border-emerald-500 rounded-lg">
+          <p className="ml-2 mb-2 text-emerald-800 font-bold text-md md:text-lg lg:text-xl">
             4- Selecciona un turno
           </p>
           <div className="px-2 flex justify-center mb-3">
@@ -275,7 +275,7 @@ function DatesForm({ service, serviceTypes }) {
           )}
 
           {!selectedTurn.hour && (
-            <div className=" bg-yellow-300 rounded-md text-center text-lg font-medium py-1.5 px-3  shadow-md">
+            <div className=" bg-yellow-500 rounded-md text-center text-lg font-medium py-1.5 px-3  shadow-md">
               <p>Debes seleccionar un turno</p>
             </div>
           )}
@@ -326,7 +326,7 @@ function DatesForm({ service, serviceTypes }) {
         <div className="p-2">
           <button
             onClick={() => setModalState(!modalState)}
-            className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
+            className="text-white w-full bg-gradient-to-l from-emerald-700 via-emerald-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
           >
             Solicitar cita
           </button>
