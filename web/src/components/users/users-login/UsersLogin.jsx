@@ -82,12 +82,6 @@ function UsersLogin() {
             </div>
           )}
         </div>
-        {/* <button
-          type="submit"
-          className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-md self-center py-1.5 mt-2 text-center"
-        >
-          Comenzar
-        </button> */}
         <ButtonGreen styles="w-full text-center mt-2">Comenzar</ButtonGreen>
       </form>
     </>

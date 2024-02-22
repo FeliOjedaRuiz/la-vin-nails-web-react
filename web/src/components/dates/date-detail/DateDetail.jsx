@@ -103,7 +103,7 @@ function DateDetail({ date, onDateDelete }) {
               className="flex items-center w-full justify-center"
             >
               {" "}
-              <ButtonGreen styles={"flex items-center w-full justify-center"}>
+              <ButtonGreen styles={"flex items-center justify-center w-full m-1"}>
                 {" "}
                 <WhatsappIcon /> Consultar{" "}
               </ButtonGreen>

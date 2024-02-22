@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import turnsService from "../../../services/turns";
+import ButtonGreen from "../../butons/ButtonGreen";
 
 function TurnsForm({ onTurnCreation }) {
   const {
@@ -32,7 +33,7 @@ function TurnsForm({ onTurnCreation }) {
 
   return (
     <div className="px-2 pt-1 m-2 flex justify-center max-w-sm w-full bg-white/50 rounded-lg border-2 border-pink-300 shadow-md">
-      {/* <h2 className='text-center -mt-1 font-bold text-xl text-pink-800'>Agregar turnos</h2> */}
+      
       <form className="w-full mb-2" onSubmit={handleSubmit(onTurnSubmit)}>
         {serverError && (
           <div className="text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
@@ -87,25 +88,8 @@ function TurnsForm({ onTurnCreation }) {
             )}
           </div>
 
-          {/* <div className="mb-3">
-          <label for="state" className='ml-2 font-medium text-pink-800 text-lg'>Estado</label>
-          <div>
-          <select {...register("state", { required: true })}
-            className='rounded border-0 w-80'>
-            {turnState.map((turnState) => (
-              <option className='w-80' value={turnState}>{turnState}</option>
-            ))}         
-          </select>
-          </div>
-          {errors.state && <div className=" ml-2 text-red-600 font-medium">{errors.state?.message}</div>}
-        </div> */}
           <div className="flex items-end">
-            <button
-              type="submit"
-              className="text-white shadow-lg h-8 w-8 bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-xl text-center"
-            >
-              +
-            </button>
+            <ButtonGreen styles={" h-8 w-8 text-xl font-bold"}>+</ButtonGreen>
           </div>
         </div>
       </form>

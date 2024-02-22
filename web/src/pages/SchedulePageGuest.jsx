@@ -45,7 +45,7 @@ function SchedulePageGuest() {
           </div>
 
           <NavLink className="flex justify-center" to="/services">
-            <p className="text-center my-3 mx-2 w-full max-w-sm text-teal-700 rounded-lg px-3 py-2 text-lg font-bold">
+            <p className="text-center my-3 mx-2 w-full max-w-sm text-teal-700 rounded-lg px-3 py-2 text-base font-bold">
               Para solicitar cita haz click aquí.
             </p>            
           </NavLink>

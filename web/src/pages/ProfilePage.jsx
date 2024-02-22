@@ -52,7 +52,7 @@ function ProfilePage() {
         <h1 className="text-center mt-4 md:mt-10 text-3xl md:text-4xl lg:text-5xl font-bold text-pink-700">
           ¡Hola {user.name}!
         </h1>
-        <div className="flex flex-col max-w-md px-6 py-4 m-5 rounded-md bg-white/50">
+        <div className="flex flex-col max-w-md px-6 py-4 m-5 shadow-lg rounded-md bg-white/50">
           <h4 className=" mb-2 text-2xl md:text-3xl text-center font-bold text-green-700">
             Tu datos
           </h4>
