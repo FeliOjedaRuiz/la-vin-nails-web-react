@@ -112,10 +112,10 @@ function DateDetail({ date, onDateDelete }) {
           <div className="flex justify-center items-center p-1 ">
             <button
               onClick={() => setModalState(!modalState)}
-              className="flex w-full items-center mt-1 justify-center text-white py-1 px-4 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+              className="flex w-full items-center mt-1 justify-center text-white py-1 px-4 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-red-800 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500"
             >
               {" "}
-              <DeleteIcon /> Cancelar cita
+              <DeleteIcon /> &nbsp; Cancelar cita
             </button>
           </div>
         </div>
@@ -132,13 +132,13 @@ function DateDetail({ date, onDateDelete }) {
         <div className="flex justify-around">
           <button
             onClick={() => setModalState(!modalState)}
-            className="bg-red-600 text-white  px-2 py-1 rounded "
+            className="text-white  px-2 py-1 rounded bg-red-700 hover:bg-red-800 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500"
           >
             Cancelar
           </button>
           <button
             onClick={handleDeleteDate}
-            className="bg-green-600 text-white  px-2 py-1 rounded "
+            className="text-white  px-2 py-1 rounded bg-emerald-700 hover:bg-emerald-800 hover:ring-2 hover:ring-emerald-500 focus:ring-2 focus:ring-emerald-500"
           >
             Aceptar
           </button>

@@ -16,7 +16,7 @@ function ServicesSlide() {
 
   return (
     <div className="border-y-2 border-pink-400 pb-4">
-      <h2 className="p-4 lg:p-6 mt-2 italic font-bold text-3xl lg:text-4xl text-emerald-600">
+      <h2 className="p-4 lg:p-6 mt-2 italic font-bold text-2xl lg:text-4xl text-emerald-600">
         Nuestros servicios
       </h2>
       <div className=" overflow-scroll bg-white/10  ">

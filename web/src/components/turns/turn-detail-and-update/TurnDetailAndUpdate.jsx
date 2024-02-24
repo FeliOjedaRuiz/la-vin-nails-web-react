@@ -211,7 +211,7 @@ function TurnDetailAndUpdate() {
               <div className="flex items-end justify-start pt-2">
                 <button
                   onClick={() => setModalState(!modalState)}
-                  className="flex justify-center items-center h-10 w-10 text-white font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+                  className="flex justify-center items-center h-10 w-10 text-white font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-red-800 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500"
                 >
                   {" "}
                   <DeleteIcon />
@@ -356,7 +356,7 @@ function TurnDetailAndUpdate() {
         <div className="flex mt-8 justify-evenly">
           <button
             type="submit"
-            className=" flex justify-center m-1 items-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-gradient-to-l from-pink-700 via-pink-500 to-pink-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+            className=" flex justify-center m-1 items-center text-white py-1 px-3 font-medium rounded-md text-lg shadow-lg bg-gradient-to-l from-pink-700 via-pink-500 to-pink-700 hover:bg-pink-700 hover:ring-2 hover:ring-pink-400 focus:ring-2 focus:ring-pink-400"
           >
             <SaveIconSVG />
             Guardar
@@ -388,7 +388,7 @@ function TurnDetailAndUpdate() {
           {date && (
             <button
               onClick={() => setModalDateState(!modalDateState)}
-              className="flex justify-center items-center text-white m-1 h-10 w-10 font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300"
+              className="flex justify-center items-center text-white m-1 h-10 w-10 font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-red-800 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500"
             >
               {" "}
               <DeleteIcon />

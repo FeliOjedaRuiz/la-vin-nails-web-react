@@ -12,7 +12,6 @@ function TurnDetailPage() {
         <div className="p-4 flex items-center justify-center">
           <TurnDetailAndUpdate />
         </div>
-        {/* <button onClick={() => navigate(-1)}>Go back</button> */}
       </Layout>
     </>
   );
