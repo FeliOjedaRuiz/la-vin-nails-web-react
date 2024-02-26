@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import usersService from "../../../services/users";
+import ButtonGreen from "../../butons/ButtonGreen";
 
 function UsersForm() {
   const {
@@ -171,11 +172,9 @@ function UsersForm() {
           </div>
         )}
       </div>
-      <button
-        type="submit"
-        className="text-white w-full bg-gradient-to-l from-emerald-700 via-green-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-md self-center px-4 py-1.5 mt-2 text-center"
-      >
-        Registrarse
+      <button type="submit" className="w-full">
+        {" "}
+        <ButtonGreen>Registrarse</ButtonGreen>
       </button>
     </form>
   );

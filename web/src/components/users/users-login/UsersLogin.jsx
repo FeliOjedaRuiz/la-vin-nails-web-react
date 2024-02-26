@@ -82,7 +82,9 @@ function UsersLogin() {
             </div>
           )}
         </div>
-        <ButtonGreen styles="w-full text-center mt-2">Comenzar</ButtonGreen>
+        <button className="w-full">
+          <ButtonGreen styles="w-full text-center mt-2">Comenzar</ButtonGreen>
+        </button>
       </form>
     </>
   );

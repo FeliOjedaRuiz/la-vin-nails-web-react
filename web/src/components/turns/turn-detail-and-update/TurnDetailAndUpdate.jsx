@@ -366,15 +366,12 @@ function TurnDetailAndUpdate() {
             <a
               href={`https://wa.me/+34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. *ha sido confirmada* con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs.
               
-              *¡Te espero en la NUEVA DIRECCIÓN, C. Periodista Rafael Gago Palomo 7, local 3!*
-              
-              https://goo.gl/maps/LBXqKgxpGdbYarhm8
-              
-              🕑 Se tolerarán hasta 10' de demora, de lo contrario queda cancelada! 💅 Es importante que decidas antes que diseño hacerte o una idea general para evitar demoras. De acuerdo al tiempo disponible, quedará a criterio de la manicurista reducir detalles en diseños más elaborados.
-
-              🧼 ¡Recuerda higienizar bien tus manos antes de la cita!
-              
-              🤑 Puedes abonar con bizum a este número o efectivo preferentemente`}
+              *¡Te espero en https://goo.gl/maps/LBXqKgxpGdbYarhm8!*%0A
+              %0A
+              🕑Se tolerarán hasta 10' de demora, de lo contrario se cancela la cita!%0A
+              💅Antes de la cita, decide que diseño quieres, para evitar demoras.%0A
+              🧼¡Recuerda higienizar bien tus manos antes de la cita!%0A
+              🤑Puedes abonar con bizum a este número o efectivo preferentemente`}
               className="flex items-center justify-center"
             >
               {" "}

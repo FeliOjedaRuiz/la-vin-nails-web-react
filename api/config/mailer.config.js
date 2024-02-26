@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "feliojedaruiz@gmail.com",
+    user: "la.vin.nails.22@gmail.com",
     pass: process.env.EMAIL_PASSWORD,
   },
 });
@@ -11,8 +11,8 @@ const transporter = nodemailer.createTransport({
 module.exports.sendDateCreationEmail = (date) => {
   transporter
     .sendMail({
-      from: "La Vin Nails Admin <feliojedaruiz@gmail.com>",
-      to: "feliojedaruiz@gmail.com",
+      from: "La Vin Nails <la.vin.nails.22@gmail.com>",
+      to: "m.o.92gm@gmail.com",
       subject: "Nueva solicitud de cita",
       html: `<h1>Tienes una nueva solicitud de cita</h1> <h3>De: ${date.user.name} ${date.user.surname}</h3> <h3>mail: ${date.user.email} </h3> <h3>Móvil: +34 ${date.user.phone} </h3> <h3>Servicio: ${date.service.name}</h3> <h3>Día: ${date.turn.date} hora: ${date.turn.hour}</h3> <a href="https://la-vin-nails-app.fly.dev/">Ir a la app</a>`,
     })
@@ -26,8 +26,8 @@ module.exports.sendDateCreationEmail = (date) => {
 module.exports.sendDateDeletedEmail = (date) => {
   transporter
     .sendMail({
-      from: "La Vin Nails Admin <feliojedaruiz@gmail.com>",
-      to: "feliojedaruiz@gmail.com",
+      from: "La Vin Nails <la.vin.nails.22@gmail.com>",
+      to: "m.o.92gm@gmail.com",
       subject: "Se ha cancelado una cita",
       html: `<h1>Se ha cancelado una cita</h1> <h3>De: ${date.user.name} ${date.user.surname}</h3> <h3>mail: ${date.user.email} </h3> <h3>Móvil: +34 ${date.user.phone} </h3> <h3>Servicio: ${date.service.name}</h3> <h3>Día: ${date.turn.date} hora: ${date.turn.hour}</h3> <a href="https://la-vin-nails-app.fly.dev/">Ir a la app</a>`,
     })
@@ -41,8 +41,8 @@ module.exports.sendDateDeletedEmail = (date) => {
 module.exports.sendRestorePasswordEmail = (user) => {
   transporter
     .sendMail({
-      from: "La Vin Nails Admin <feliojedaruiz@gmail.com>",
-      to: "feliojedaruiz@gmail.com",
+      from: "La Vin Nails <la.vin.nails.22@gmail.com>",
+      to: `${user.email}`,
       subject: "Restaurar contraseña de La Vin Nails App",
       html: `<h2>Estas intentando restaurar tu contraseña para La Vin Nails APP</h2>
       <h3>Si no fuiste tu, comunicate con el administrador.</h3>
