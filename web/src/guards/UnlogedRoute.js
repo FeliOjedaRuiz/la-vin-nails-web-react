@@ -2,17 +2,17 @@ import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthStore";
 
-function PrivateRoute({ children, role }) {
-  const { user } = useContext(AuthContext);
+function UnlogedRoute({ children }) {
+  const { logout, user } = useContext(AuthContext);
 
-  if (!user) {
-    return <Navigate to="/login" replace={true} />;
-  } else if (!role || role === user.role) {
+  if (user) {
+    logout();
+    return <>{children}</>;
+  } else if (!user) {
     return <>{children}</>;
   } else {
     return <Navigate to="/error-page" replace={true} />;
   }
 }
 
-export default PrivateRoute;
-
+export default UnlogedRoute;

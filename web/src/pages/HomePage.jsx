@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import LaVinLogo from "../images/la-vin-nails-logo.png";
 import Layout from "./../components/layouts/Layout";
 import ServicesSlide from "../components/services/services-slide/ServicesSlide";

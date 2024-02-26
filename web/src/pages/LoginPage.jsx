@@ -13,13 +13,13 @@ function LoginPage() {
             Iniciar sesion
           </h1>
           <UsersLogin />
-          {/* <Link
+          <Link
             to="/restore"
             className="text-center font-medium leading-5 text-pink-600"
           >
             <p className="font-bold">¿Olvidaste tu contraseña?</p>
             <p>Click aqui para restaurarla.</p>
-          </Link> */}
+          </Link>
         </div>
         <div className="flex flex-col items-center p-6 mt-5 overflow-hidden ">
           <h1

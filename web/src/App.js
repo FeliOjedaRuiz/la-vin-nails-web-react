@@ -12,6 +12,8 @@ import ErrorPage from "./pages/ErrorPage";
 import NewDatePage from "./pages/NewDatePage";
 import SchedulePageGuest from "./pages/SchedulePageGuest";
 import RestorePasswordPage from "./pages/RestorePasswordPage";
+import SendRestoreEmailPage from "./pages/SendRestoreEmailPage";
+import UnlogedRoute from "./guards/UnlogedRoute";
 
 function App() {
   return (
@@ -39,13 +41,26 @@ function App() {
           />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/restore" element={<RestorePasswordPage />} />
+
           <Route
-            path="/my-schedule"
-            element={              
-                <SchedulePageGuest />              
+            path="/restore"
+            element={
+              <UnlogedRoute>
+                <SendRestoreEmailPage />
+              </UnlogedRoute>
             }
           />
+
+          <Route
+            path="/restore/:userId"
+            element={
+              <UnlogedRoute>
+                <RestorePasswordPage />
+              </UnlogedRoute>
+            }
+          />
+
+          <Route path="/my-schedule" element={<SchedulePageGuest />} />
           <Route
             path="/schedule"
             element={

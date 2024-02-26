@@ -1,31 +1,26 @@
-import React from "react";
-import Layout from "../components/layouts/Layout";
-import ButtonGreen from "./../components/butons/ButtonGreen";
+import React from 'react'
+import Layout from '../components/layouts/Layout'
+import UsersRestorePassword from '../components/users/users-restore-password/UsersRestorePassword'
 
 function RestorePasswordPage() {
   return (
     <>
       <Layout>
-        <div className="px-8 pt-4">
-          <h1 className="text-center text-2xl font-bold mb-4 text-pink-700">
+        <div className="px-6">
+          <h1 className="text-center text-2xl font-bold my-8 text-emerald-700">
             Restaurar contraseña
           </h1>
-          <div>
-            <p className="leading-5">
-              1- Ingresa tu email y enviaremos un token para restaurar tu
-              contraseña
+
+          <div className="border-2 border-pink-600 rounded-lg p-4 ">
+            <p className="text-sm/4 mb-4">
+              Ingresa tu nueva contraseña y luego pulsa guardar.
             </p>
-            <div className="border-2 border-emerald-600 rounded-lg p-2">
-              <form action="">
-                <input type="text" />
-                <ButtonGreen>Eniar Token</ButtonGreen>
-              </form>
-            </div>
+            <UsersRestorePassword />
           </div>
         </div>
       </Layout>
     </>
-  );
+  )
 }
 
-export default RestorePasswordPage;
+export default RestorePasswordPage

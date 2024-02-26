@@ -9,10 +9,13 @@ const dates = require("../controllers/dates.controllers");
 const turnsMid = require("../middlewares/turns.mid");
 const datesMid = require("../middlewares/dates.mid");
 const secure = require("../middlewares/secure.mid");
+const usersMid = require("../middlewares/users.mid");
 
 // USERS
 router.post("/users", users.create);
 router.post("/login", users.login);
+router.post("/restorepassword", usersMid.exists, users.sendRestoreEmail);
+router.post("/restorepassword/:userId", usersMid.checkUser, users.restorePassword);
 
 // SERVICES
 router.get("/services", services.list);
