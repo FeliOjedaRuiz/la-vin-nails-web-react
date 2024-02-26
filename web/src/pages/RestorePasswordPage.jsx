@@ -6,7 +6,7 @@ function RestorePasswordPage() {
   return (
     <>
       <Layout>
-        <div className="px-6">
+        <div className="px-6 flex flex-col items-center justify-center">
           <h1 className="text-center text-2xl font-bold my-8 text-emerald-700">
             Restaurar contraseña
           </h1>

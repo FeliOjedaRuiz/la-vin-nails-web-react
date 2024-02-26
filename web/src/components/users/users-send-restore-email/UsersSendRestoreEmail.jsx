@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import usersService from "../../../services/users";
-import ButtonGreen from '../../butons/ButtonGreen';
+import ButtonGreen from "../../butons/ButtonGreen";
 import Modal from "./../../modal/Modal";
 
 function UsersSendRestoreEmail() {
@@ -14,11 +14,10 @@ function UsersSendRestoreEmail() {
   const [serverError, setServerError] = useState(undefined);
   const [modalState, setModalState] = useState(false);
 
-
   const onEmailSubmit = async (user) => {
     try {
       setServerError();
-      setModalState(true)
+      setModalState(true);
       user = await usersService.sendRestoreEmail(user);
     } catch (error) {
       const errors = error.response?.data?.errors;
@@ -34,7 +33,10 @@ function UsersSendRestoreEmail() {
 
   return (
     <>
-      <form className="max-w-md w-full mb-0" onSubmit={handleSubmit(onEmailSubmit)}>
+      <form
+        className="max-w-md w-full mb-0"
+        onSubmit={handleSubmit(onEmailSubmit)}
+      >
         {serverError && (
           <div className="text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
@@ -58,8 +60,9 @@ function UsersSendRestoreEmail() {
             </div>
           )}
         </div>
-      
-        <ButtonGreen styles="w-full text-center mt-6">Enviar</ButtonGreen>
+        <button className="w-full">
+          <ButtonGreen styles="w-full text-center mt-6">Enviar</ButtonGreen>
+        </button>
       </form>
       <Modal modalState={modalState} setModalState={setModalState}>
         <div className="text-center mb-6">
@@ -67,7 +70,10 @@ function UsersSendRestoreEmail() {
         </div>
 
         <div className="text-center text-xl font-medium mb-6 text-emerald-700">
-          <p>Revisa tu casilla de E-mail y encontraras el enlace para restaurar tu contraseña</p>
+          <p>
+            Revisa tu casilla de E-mail y encontraras el enlace para restaurar
+            tu contraseña
+          </p>
         </div>
 
         <div className="flex justify-around">
@@ -77,12 +83,10 @@ function UsersSendRestoreEmail() {
           >
             Ok
           </button>
-          
         </div>
       </Modal>
     </>
   );
 }
 
-
-export default UsersSendRestoreEmail
+export default UsersSendRestoreEmail;

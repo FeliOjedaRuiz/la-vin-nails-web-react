@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import usersService from "../../../services/users";
 import ButtonGreen from "../../butons/ButtonGreen";
 
@@ -64,8 +64,9 @@ function UsersRestorePassword() {
             </div>
           )}
         </div>
-
-        <ButtonGreen styles="w-full text-center mt-6">Guardar</ButtonGreen>
+        <button className="w-full">
+          <ButtonGreen styles="w-full text-center mt-6">Guardar</ButtonGreen>
+        </button>
       </form>
     </>
   );
