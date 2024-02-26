@@ -8,7 +8,7 @@ function RegisterPage() {
     <>
       <Layout>
         <div className="px-8 pt-4">
-          <h1 className="text-center text-2xl font-bold mb-4 text-green-600">
+          <h1 className="text-center text-2xl font-bold mb-4 text-emerald-600">
             Crea tu cuenta
           </h1>
           <UsersForm />

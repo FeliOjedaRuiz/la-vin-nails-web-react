@@ -11,6 +11,7 @@ import TurnDetailPage from "./pages/TurnDetailPage";
 import ErrorPage from "./pages/ErrorPage";
 import NewDatePage from "./pages/NewDatePage";
 import SchedulePageGuest from "./pages/SchedulePageGuest";
+import RestorePasswordPage from "./pages/RestorePasswordPage";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/restore" element={<RestorePasswordPage />} />
           <Route
             path="/my-schedule"
             element={              

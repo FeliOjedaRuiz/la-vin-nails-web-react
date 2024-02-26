@@ -1,7 +1,7 @@
 import React from "react";
 import UsersLogin from "../components/users/users-login/UsersLogin";
 import Layout from "../components/layouts/Layout";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import ButtonPrimary from "../components/butons/ButtonPrimary";
 
 function LoginPage() {
@@ -13,6 +13,13 @@ function LoginPage() {
             Iniciar sesion
           </h1>
           <UsersLogin />
+          {/* <Link
+            to="/restore"
+            className="text-center font-medium leading-5 text-pink-600"
+          >
+            <p className="font-bold">¿Olvidaste tu contraseña?</p>
+            <p>Click aqui para restaurarla.</p>
+          </Link> */}
         </div>
         <div className="flex flex-col items-center p-6 mt-5 overflow-hidden ">
           <h1

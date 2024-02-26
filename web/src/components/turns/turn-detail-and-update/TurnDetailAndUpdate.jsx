@@ -209,18 +209,18 @@ function TurnDetailAndUpdate() {
             </div>
             {!date && (
               <div className="flex items-end justify-start pt-2">
-                <button
+                {/* setModalState(!modalState) */}
+                <div
                   onClick={() => setModalState(!modalState)}
                   className="flex justify-center items-center h-10 w-10 text-white font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-red-800 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500"
                 >
                   {" "}
                   <DeleteIcon />
-                </button>
+                </div>
               </div>
             )}
           </div>
         </div>
-
 
         <Modal modalState={modalState} setModalState={setModalState}>
           <div className="text-center mb-6">
@@ -232,18 +232,18 @@ function TurnDetailAndUpdate() {
           </div>
 
           <div className="flex justify-around">
-            <button
+            <div
               onClick={() => setModalState(!modalState)}
               className="bg-red-600 text-white  px-2 py-1 rounded "
             >
               Cancelar
-            </button>
-            <button
+            </div>
+            <div
               onClick={handleDeleteTurn}
               className="bg-green-600 text-white  px-2 py-1 rounded "
             >
               Aceptar
-            </button>
+            </div>
           </div>
         </Modal>
 
@@ -371,7 +371,6 @@ function TurnDetailAndUpdate() {
               https://goo.gl/maps/LBXqKgxpGdbYarhm8
               
               🕑 Se tolerarán hasta 10' de demora, de lo contrario queda cancelada! 💅 Es importante que decidas antes que diseño hacerte o una idea general para evitar demoras. De acuerdo al tiempo disponible, quedará a criterio de la manicurista reducir detalles en diseños más elaborados.
-              import ButtonGreen from './../../butons/ButtonGreen';
 
               🧼 ¡Recuerda higienizar bien tus manos antes de la cita!
               
@@ -386,13 +385,13 @@ function TurnDetailAndUpdate() {
             </a>
           )}
           {date && (
-            <button
+            <div
               onClick={() => setModalDateState(!modalDateState)}
               className="flex justify-center items-center text-white m-1 h-10 w-10 font-medium rounded-lg text-lg shadow-lg bg-red-700 hover:bg-red-800 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500"
             >
               {" "}
               <DeleteIcon />
-            </button>
+            </div>
           )}
         </div>
       </form>
