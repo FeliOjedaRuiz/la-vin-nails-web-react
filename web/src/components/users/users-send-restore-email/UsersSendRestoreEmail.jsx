@@ -16,9 +16,10 @@ function UsersSendRestoreEmail() {
 
   const onEmailSubmit = async (user) => {
     try {
-      setServerError();
-      setModalState(true);
-      user = await usersService.sendRestoreEmail(user);
+      setModalState(true)
+      setServerError(undefined);      
+      const email = user.email;
+      user = await usersService.sendRestoreEmail(email);
     } catch (error) {
       const errors = error.response?.data?.errors;
       if (errors) {
@@ -26,9 +27,10 @@ function UsersSendRestoreEmail() {
           setError(inputName, { message: errors[inputName] })
         );
       } else {
+        console.error(error);
         setServerError(error.message);
       }
-    }
+    } 
   };
 
   return (
@@ -36,7 +38,7 @@ function UsersSendRestoreEmail() {
       <form
         className="max-w-md w-full mb-0"
         onSubmit={handleSubmit(onEmailSubmit)}
-      >
+      > 
         {serverError && (
           <div className="text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
@@ -72,7 +74,7 @@ function UsersSendRestoreEmail() {
         <div className="text-center text-xl font-medium mb-6 text-emerald-700">
           <p>
             Revisa tu casilla de E-mail y encontraras el enlace para restaurar
-            tu contraseña
+            tu 
           </p>
         </div>
 

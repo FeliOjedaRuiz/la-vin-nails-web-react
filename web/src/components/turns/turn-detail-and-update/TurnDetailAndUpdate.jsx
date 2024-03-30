@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
 import datesService from "../../../services/dates";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import SaveIconSVG from "../../icons/SaveIconSVG";
 import WhatsappIcon from "../../icons/WhatsappIcon";
 import { useNavigate } from "react-router-dom";
@@ -257,27 +257,31 @@ function TurnDetailAndUpdate() {
             <h2 className="text-2xl mb-2 font-bold text-center color text-pink-700">
               Detalle de la cita
             </h2>
-            <div className="mt-2">
-              <span className="ml-2 font-medium text-emerald-800 text-base">
-                Cliente:
-              </span>
-              <span>
-                {" "}
-                {date.user.name} {date.user.surname}
-              </span>
-            </div>
-            <div className="">
-              <span className="ml-2 font-medium text-emerald-800 text-base">
-                Teléfono:
-              </span>
-              <span> {date.user.phone}</span>
-            </div>
-            <div className="">
-              <span className="ml-2 font-medium text-emerald-800 text-base">
-                Email:
-              </span>
-              <span> {date.user.email}</span>
-            </div>
+            <Link to={`/users/${date.user.id}`}>
+              <div className="font-semibold border-2 border-emerald-700 rounded-xl py-2 px-1 bg-teal-50">
+                <div className="">
+                  <span className="ml-2 text-emerald-800 text-base">
+                    Cliente:
+                  </span>
+                  <span>
+                    {" "}
+                    {date.user.name} {date.user.surname}
+                  </span>
+                </div>
+                <div className="">
+                  <span className="ml-2  text-emerald-800 text-base">
+                    Teléfono:
+                  </span>
+                  <span> {date.user.phone}</span>
+                </div>
+                <div className="">
+                  <span className="ml-2 text-emerald-800 text-base">
+                    Email:
+                  </span>
+                  <span> {date.user.email}</span>
+                </div>
+              </div>
+            </Link>
             <div className="mt-1">
               <span className="ml-2 font-medium text-pink-800 text-base">
                 Servicio:

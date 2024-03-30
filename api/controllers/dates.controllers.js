@@ -1,18 +1,6 @@
 const Date = require("../models/date.model");
 const mailer = require("../config/mailer.config");
 
-// const nodemailer = require("nodemailer");
-
-// const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
-
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: "melisaoviedo.92.22@gmail.com",
-//     pass: EMAIL_PASSWORD,
-//   },
-// });
-
 module.exports.create = (req, res, next) => {
   Date.create(req.body)
     .then((date) => {

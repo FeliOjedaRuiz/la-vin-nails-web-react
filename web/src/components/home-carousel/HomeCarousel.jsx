@@ -30,7 +30,6 @@ export function HomeCarousel() {
   }, [changeSize]);
   window.onresize = function (event) {
     setChageSize(!changeSize);
-    console.log("resize");
   };
 
   return (

@@ -37,7 +37,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.sendRestoreEmail = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ email: req.user.email })
     .then((user) => {
       mailer.sendRestorePasswordEmail(user);
     })
@@ -51,5 +51,11 @@ module.exports.restorePassword = (req, res, next) => {
     .then((user) => {
       res.json(user);
     })
+    .catch(next);
+};
+
+module.exports.detail = (req, res, next) => {
+  User.findById(req.params.id)
+    .then((user) => res.json(user))
     .catch(next);
 };

@@ -14,8 +14,9 @@ const usersMid = require("../middlewares/users.mid");
 // USERS
 router.post("/users", users.create);
 router.post("/login", users.login);
-router.post("/restorepassword", usersMid.exists, users.sendRestoreEmail);
+router.post("/sendRestoreEmail/:email", usersMid.exists, users.sendRestoreEmail);
 router.post("/restorepassword/:userId", usersMid.checkUser, users.restorePassword);
+router.get("/users/:id", secure.isAdmin, users.detail);
 
 // SERVICES
 router.get("/services", services.list);

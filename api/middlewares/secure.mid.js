@@ -2,6 +2,20 @@ const User = require("../models/user.model");
 const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
 
+module.exports.cleanBody = (req, res, next) => {
+  // protect some body fields from being sent
+
+  if (req.body) {
+    delete req.body._id;
+    delete req.body.author;
+    delete req.body.createdAt;
+    delete req.body.updatedAt;
+    // delete req.body.confirm;
+  }
+
+  next();
+};
+
 module.exports.auth = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")?.[1];
 

@@ -4,13 +4,17 @@ const create = (user) => http.post("/users", user);
 
 const login = (user) => http.post("/login", user);
 
-const sendRestoreEmail = (user) => http.post("/restorepassword", user);
+const sendRestoreEmail = (email) => http.post(`/sendRestoreEmail/${email}`);
 
-const restorePassword = (user, userId) => http.post(`/restorepassword/${userId}`, user)
+const restorePassword = (user, userId) =>
+  http.post(`/restorepassword/${userId}`, user);
+
+const detail = (id) => http.get(`/users/${id}`);
 
 export default {
   create,
   login,
   sendRestoreEmail,
-  restorePassword
+  restorePassword,
+  detail,
 };

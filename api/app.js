@@ -4,17 +4,20 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const createError = require("http-errors");
-const cors = require("./config/cors.config");
-const api = require("./config/routes.config");
+const secure = require("./middlewares/secure.mid");
 
 //** Load configuration */
 require("./config/db.config");
 const app = express();
-app.use(express.static(__dirname + "/public"));
-app.use(cors);
-app.use(express.json());
-app.use(logger("dev"));
 
+const cors = require("./config/cors.config");
+app.use(cors);
+app.use(express.static(__dirname + "/public"));
+app.use(express.json());
+app.use(logger('dev'));
+app.use(secure.cleanBody);
+
+const api = require("./config/routes.config");
 app.use("/api/v1", api);
 
 app.get("/*", (req, res) => {

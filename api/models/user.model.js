@@ -40,6 +40,11 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "guest"],
       default: "guest",
     },
+    loyalty: {
+      type: Number,
+      min: [1, "Minimo 1 cita"],
+      max: [12, "Máximo 12 citas"],
+    },
   },
   {
     timestamps: true,
@@ -84,6 +89,7 @@ userSchema.virtual("dates", {
   foreignField: "user",
   justOne: true,
 });
+
 
 const User = mongoose.model("User", userSchema);
 

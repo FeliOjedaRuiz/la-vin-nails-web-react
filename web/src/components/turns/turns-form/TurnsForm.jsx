@@ -88,9 +88,9 @@ function TurnsForm({ onTurnCreation }) {
             )}
           </div>
 
-          <div className="flex items-end">
+          <button className="flex items-end">
             <ButtonGreen styles={" h-8 w-8 text-xl font-bold"}>+</ButtonGreen>
-          </div>
+          </button>
         </div>
       </form>
     </div>
