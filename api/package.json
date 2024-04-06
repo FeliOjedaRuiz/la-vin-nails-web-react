@@ -1,0 +1,31 @@
+{
+  "name": "la-vin-nails-api",
+  "version": "1.0.0",
+  "description": "Aplicación web para consulta de servicios y solicitud de citas de La Vin Nails, ",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "seeds": "node bin/services.seed.js"
+  },
+  "author": "Feliciano Ojeda Ruiz",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^2.0.22"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.0",
+    "express": "^4.18.2",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.2.2",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.5"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
