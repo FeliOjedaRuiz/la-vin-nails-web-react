@@ -6,6 +6,7 @@ import DateDetail from "../components/dates/date-detail/DateDetail";
 import datesService from "../services/dates";
 import ButtonGreen from "./../components/butons/ButtonGreen";
 import UserDetailGuest from "../components/users/user-detail-guest/UserDetailGuest";
+import { Link } from "react-router-dom";
 
 function ProfilePage() {
   const { logout, user } = useContext(AuthContext);
@@ -76,12 +77,16 @@ function ProfilePage() {
 
         <UserDetailGuest userId={user.id} />
 
-        <button
-          onClick={() => logout()}
-          className="text-white bg-gradient-to-l m-4 from-pink-700 via-pink-500 to-pink-700 shadow hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded text-md self-center  px-4 py-1 text-center"
-        >
-          Cerrar sesión
-        </button>
+        <div className="flex flex-col items-center w-full max-w-xs my-4 py-2 border-2 rounded-lg border-pink-600">
+          <p className="mt-2 text-teal-800 font-semibold">
+            ¿Quieres cambiar tu contraseña?
+          </p>
+          <Link to="/restore">
+            <button className="text-white bg-gradient-to-l m-3 mb-5 from-pink-700 via-pink-500 to-pink-700 shadow hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded text-md self-center  px-4 py-1 text-center">
+              Restaurar contraseña
+            </button>
+          </Link>
+        </div>
 
         <div className="flex flex-col max-w-xs justify-between items-center mt-3 p-4 border-2 rounded-lg border-emerald-600">
           <p className="text-center leading-tight text-pink-600">
@@ -98,7 +103,13 @@ function ProfilePage() {
             </ButtonGreen>
           </a>
         </div>
-        
+
+        <button
+          onClick={() => logout()}
+          className="text-white bg-gradient-to-l my-8 from-pink-700 via-pink-500 to-pink-700 shadow hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded text-md self-center  px-4 py-1 text-center"
+        >
+          Cerrar sesión
+        </button>
 
         <div className="p-4">
           <h3 className="text-3xl mb-5 font-bold text-center color text-pink-700">

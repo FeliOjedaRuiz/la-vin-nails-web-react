@@ -13,6 +13,8 @@ const detail = (userId) => http.get(`/users/${userId}`);
 
 const update = (userId, user) => http.patch(`/users/${userId}`, user);
 
+const list = () => http.get("/users");
+
 export default {
   create,
   login,
@@ -20,4 +22,5 @@ export default {
   restorePassword,
   detail,
   update,
+  list,
 };

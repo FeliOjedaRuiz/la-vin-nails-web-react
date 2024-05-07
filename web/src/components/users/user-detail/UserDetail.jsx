@@ -38,10 +38,12 @@ function UserDetail({ userId }) {
           <p className="text-center mb-1 text-2xl">
             {user.name} {user.surname}
           </p>
-          <div className="flex items-center mt-2">
+          <a 
+          href={`https://wa.me/+34${user.phone}?text=¡Hola!`}
+          className="flex items-center mt-2">
             <WhatsappIcon />
             <span className="text-xl">{user.phone}</span>
-          </div>
+          </a>
           <div className="flex items-center mt-2">
           <EmailIcon /><p className="text-md">{user.email}</p>
           </div>

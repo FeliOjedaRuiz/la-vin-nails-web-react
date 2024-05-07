@@ -14,10 +14,24 @@ const usersMid = require("../middlewares/users.mid");
 // USERS
 router.post("/users", users.create);
 router.post("/login", users.login);
-router.post("/sendRestoreEmail/:email", usersMid.exists, users.sendRestoreEmail);
-router.post("/restorepassword/:userId", usersMid.checkUser, users.restorePassword);
+router.post(
+  "/sendRestoreEmail/:email",
+  usersMid.exists,
+  users.sendRestoreEmail
+);
+router.post(
+  "/restorepassword/:userId",
+  usersMid.checkUser,
+  users.restorePassword
+);
 router.get("/users/:userId", secure.auth, secure.isAuthorized, users.detail);
-router.patch("/users/:userId", secure.isAdmin, usersMid.clientExists, users.update);
+router.patch(
+  "/users/:userId",
+  secure.isAdmin,
+  usersMid.clientExists,
+  users.update
+);
+router.get("/users", secure.isAdmin, users.list);
 
 // SERVICES
 router.get("/services", services.list);

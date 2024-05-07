@@ -15,6 +15,7 @@ import RestorePasswordPage from "./pages/RestorePasswordPage";
 import SendRestoreEmailPage from "./pages/SendRestoreEmailPage";
 import UnlogedRoute from "./guards/UnlogedRoute";
 import UserDetailPage from "./pages/UserDetailPage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
@@ -61,9 +62,9 @@ function App() {
             }
           />
 
-          <Route path="/my-schedule" element={<SchedulePageGuest />} />
+          <Route path="/guest-schedule" element={<SchedulePageGuest />} />
           <Route
-            path="/schedule"
+            path="/admin-schedule"
             element={
               <PrivateRoute role="admin">
                 <SchedulePage />
@@ -83,6 +84,14 @@ function App() {
             element={
               <PrivateRoute role="admin">
                 <UserDetailPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute role="admin">
+                <AdminPage />
               </PrivateRoute>
             }
           />

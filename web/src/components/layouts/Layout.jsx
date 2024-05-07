@@ -9,7 +9,7 @@ import { AuthContext } from "../../contexts/AuthStore";
 
 function Layout({ children }) {
   const { user } = useContext(AuthContext);
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("guest");
 
   useEffect(() => {
     if (!user) {
@@ -30,11 +30,10 @@ function Layout({ children }) {
       </div>
 
       <div className="flex w-full justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50 via-white to-green-50">
-        <div className=" container w-screen  overflow-hidden bg-white/30 shadow-lg ">
+        <div className=" container w-screen flex flex-col  overflow-hidden bg-white/30 shadow-lg ">
           {children}
         </div>
       </div>
-
 
       <div className="fixed bottom-0 left-0  w-full h-16 bg-pink-50 border-t-2 border-pink-400">
         <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
@@ -64,7 +63,7 @@ function Layout({ children }) {
 
           {role === "guest" && (
             <NavLink
-              to="/my-schedule"
+              to="/guest-schedule"
               className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
             >
               <img src={datesIcon} alt="icono agenda" className="w-7 h-7" />
@@ -76,7 +75,7 @@ function Layout({ children }) {
 
           {role === "admin" && (
             <NavLink
-              to="/schedule"
+              to="/admin-schedule"
               className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
             >
               <img src={datesIcon} alt="icono agenda" className="w-7 h-7" />
@@ -86,15 +85,29 @@ function Layout({ children }) {
             </NavLink>
           )}
 
-          <NavLink
-            to={`/profile`}
-            className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
-          >
-            <img src={profileIcon} alt="icono perfil" className="w-7 h-7" />
-            <span className="text-sm text-pink-700 group-hover:text-pink-800">
-              Perfil
-            </span>
-          </NavLink>
+          {role === "guest" && (
+            <NavLink
+              to={`/profile`}
+              className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
+            >
+              <img src={profileIcon} alt="icono perfil" className="w-7 h-7" />
+              <span className="text-sm text-pink-700 group-hover:text-pink-800">
+                Perfil
+              </span>
+            </NavLink>
+          )}
+
+          {role === "admin" && (
+            <NavLink
+              to={`/admin`}
+              className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
+            >
+              <img src={profileIcon} alt="icono perfil" className="w-7 h-7" />
+              <span className="text-sm text-pink-700 group-hover:text-pink-800">
+                Admin
+              </span>
+            </NavLink>
+          )}
         </div>
       </div>
     </div>
