@@ -4,7 +4,7 @@ import homeIcon from "../../images/icono-home.png";
 import servicesIcon from "../../images/icono-servicios.png";
 import datesIcon from "../../images/icono-agenda.png";
 import profileIcon from "../../images/icono-perfil.png";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthStore";
 
 function Layout({ children }) {
@@ -22,11 +22,13 @@ function Layout({ children }) {
   return (
     <div className="flex flex-col">
       <div className="flex fixed z-10 w-screen justify-center bg-gradient-to-r from-pink-50 via-white to-green-50 border-b-2 border-pink-400 ">
-        <img
-          src={layoutLogo}
-          alt="logo la vin nails simplificado"
-          className="h-8 m-2 "
-        />
+        <Link to="/">
+          <img
+            src={layoutLogo}
+            alt="logo la vin nails simplificado"
+            className="h-8 m-2 "
+          />
+        </Link>
       </div>
 
       <div className="flex w-full justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50 via-white to-green-50">

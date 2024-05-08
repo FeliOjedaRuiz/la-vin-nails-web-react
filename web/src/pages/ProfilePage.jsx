@@ -78,7 +78,7 @@ function ProfilePage() {
         <UserDetailGuest userId={user.id} />
 
         <div className="flex flex-col items-center w-full max-w-xs my-4 py-2 border-2 rounded-lg border-pink-600">
-          <p className="mt-2 text-teal-800 font-semibold">
+          <p className="mt-2 text-teal-700 font-semibold">
             ¿Quieres cambiar tu contraseña?
           </p>
           <Link to="/restore">
@@ -89,7 +89,7 @@ function ProfilePage() {
         </div>
 
         <div className="flex flex-col max-w-xs justify-between items-center mt-3 p-4 border-2 rounded-lg border-emerald-600">
-          <p className="text-center leading-tight text-pink-600">
+          <p className="text-center leading-tight text-pink-700 font-semibold">
             Próximamente podrás editar tus datos o eliminar tu cuenta. Si tienes
             alguna duda comunicate con el administrador:
           </p>

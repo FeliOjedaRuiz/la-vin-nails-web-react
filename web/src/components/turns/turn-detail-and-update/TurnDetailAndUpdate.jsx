@@ -77,7 +77,7 @@ function TurnDetailAndUpdate() {
     if (date) {
       onDateSubmit(date);
     }
-    navigate("/schedule");
+    navigate("/admin-schedule");
   };
 
   const onTurnSubmit = async (turn) => {
@@ -110,7 +110,7 @@ function TurnDetailAndUpdate() {
   };
 
   const navigateToSchedule = () => {
-    navigate("/schedule");
+    navigate("/admin-schedule");
   };
 
   const handleDeleteDate = () => {
