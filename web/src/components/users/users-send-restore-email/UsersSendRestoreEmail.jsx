@@ -73,9 +73,11 @@ function UsersSendRestoreEmail() {
 
         <div className="text-center text-xl font-medium mb-6 text-emerald-700">
           <p>
-            Revisa tu casilla de E-mail y encontraras el enlace para restaurar
-            tu 
+            Revisa tu casilla de e-mail y encontraras el enlace para restaurar
+            tu contraseña.
           </p>
+          <br />
+          <p> Si no recibes el email, no olvides revisar la casilla de SPAM.</p>
         </div>
 
         <div className="flex justify-around">

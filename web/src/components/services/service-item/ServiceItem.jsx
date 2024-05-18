@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import ButtonPrimary from "../../butons/ButtonPrimary";
 import ButtonGreen from "../../butons/ButtonGreen";
+import { AuthContext } from "../../../contexts/AuthStore";
 
 function ServiceItem({ service }) {
   const [view, setView] = useState();
   const [box, setBox] = useState();
   const [bigBox, setBigBox] = useState();
   const [icon, setIcon] = useState();
+  const { user } = useContext(AuthContext);
   const visible = "visible";
   const hidden = "hidden";
   const active = "border";
@@ -49,11 +50,16 @@ function ServiceItem({ service }) {
               <h6 className=" mb-1 text-xs text-center font-semibold tracking-tight text-pink-600">
                 Duración: {service.dateDuration} hs. aprox.
               </h6>
-              <NavLink to={`/new-date/${service.id}`}>
+              {user.role === "guest" && <NavLink to={`/new-date/${service.id}`}>
                
                <ButtonGreen ><p className="text-sm">Solicitar cita</p></ButtonGreen>
                 
-              </NavLink>
+              </NavLink>}
+              {user.role === "admin" && <NavLink to={`/new-date-admin/${service.id}`}>
+               
+               <ButtonGreen ><p className="text-sm">Solicitar cita</p></ButtonGreen>
+                
+              </NavLink>}
             </div>
           </div>
         </div>

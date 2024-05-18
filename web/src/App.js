@@ -16,6 +16,7 @@ import SendRestoreEmailPage from "./pages/SendRestoreEmailPage";
 import UnlogedRoute from "./guards/UnlogedRoute";
 import UserDetailPage from "./pages/UserDetailPage";
 import AdminPage from "./pages/AdminPage";
+import NewDateAdminPage from "./pages/NewDateAdminPage";
 
 function App() {
   return (
@@ -34,6 +35,14 @@ function App() {
             }
           />
           <Route
+            path="/new-date-admin/:id"
+            element={
+              <PrivateRoute role="admin">
+                <NewDateAdminPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/profile"
             element={
               <PrivateRoute>
@@ -44,14 +53,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          <Route
-            path="/restore"
-            element={
-              <UnlogedRoute>
-                <SendRestoreEmailPage />
-              </UnlogedRoute>
-            }
-          />
+          <Route path="/restore" element={<SendRestoreEmailPage />} />
 
           <Route
             path="/restore/:userId"

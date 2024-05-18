@@ -17,9 +17,7 @@ function UsersSearchComponent() {
 
   const onSearch = (value) => {
     setSearch(value);
-  };
-
-  
+  };  
 
   const usersToShow = users.filter(u => u.name.toLowerCase().includes(search.toLocaleLowerCase()))
 

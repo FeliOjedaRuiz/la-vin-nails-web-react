@@ -3,12 +3,14 @@ import { AuthContext } from "../../../contexts/AuthStore";
 import { useForm } from "react-hook-form";
 import datesService from "../../../services/dates";
 import turnsService from "../../../services/turns";
+import UsersService from "../../../services/users";
 import { useNavigate } from "react-router-dom";
 import { HonestWeekPicker } from "../../week-picker/week-picker-js/HonestWeekPicker";
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
 import Modal from "../../modal/Modal";
+import UsersSearchBar from "../../users/users-search-bar/UsersSearchBar";
 
-function DatesForm({ service, serviceTypes }) {
+function DatesFormAdmin({ service, serviceTypes }) {
   const {
     register,
     handleSubmit,
@@ -21,6 +23,9 @@ function DatesForm({ service, serviceTypes }) {
   const [initDate, setInitDate] = useState();
   const [selectedTurn, setSelectedTurn] = useState({});
   const [selectedDate, setSelectedDate] = useState({});
+  const [modalState, setModalState] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
 
   const onInitDate = (date) => {
     setInitDate(date);
@@ -32,6 +37,11 @@ function DatesForm({ service, serviceTypes }) {
 
   useEffect(() => {
     setSelectedDate(selectedTurn.date);
+    UsersService.list()
+      .then((users) => {
+        setUsers(users);
+      })
+      .catch((error) => console.error(error));
   }, [selectedTurn]);
 
   const months = [
@@ -61,7 +71,6 @@ function DatesForm({ service, serviceTypes }) {
 
   const showDate = (selectedDate) => {
     let dt = new Date(selectedDate);
-
     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };
 
@@ -82,7 +91,6 @@ function DatesForm({ service, serviceTypes }) {
   };
 
   const onDateSubmit = async (date) => {
-    date.user = user.id;
     date.service = service.id;
     date.turn = selectedTurn.id;
     try {
@@ -105,7 +113,15 @@ function DatesForm({ service, serviceTypes }) {
     }
   };
 
-  const [modalState, setModalState] = useState(false);
+  const handleChange = (e) => {
+    onSearch(e.target.value);
+  };
+
+  const onSearch = (value) => {
+    setSearch(value);
+  };
+
+  const usersToShow = users.filter(u => u.name.toLowerCase().includes(search.toLocaleLowerCase()))
 
   return (
     <div className="relative flex flex-col items-center ">
@@ -124,15 +140,54 @@ function DatesForm({ service, serviceTypes }) {
               {service.name}
             </p>
           </div>
-          <p className="ml-2 mt-5 font-bold leading-tight text-pink-600 text-xl self-center text-center">
+          {/* <p className="ml-2 mt-5 font-bold leading-tight text-pink-600 text-xl self-center text-center">
             Completa los siguientes 4 pasos:
-          </p>
+          </p> */}
           <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
               for="type"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
             >
-              1- Selecciona una opción de servicio:
+              1- Busca y selecciona un usuario:
+            </label>
+            {/* <UsersSearchBar search={search} onSearch={onSearch} /> */}
+            <div>
+              <div className="">
+                <input
+                  className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300"
+                  type="text"
+                  value={search}
+                  onChange={handleChange}
+                  placeholder="Buscar usuario por nombre"
+                />
+              </div>
+            </div>
+            <div>
+              <select
+                {...register("user", {
+                  required: "Debes seleccionar un usuario.",
+                })}
+                className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300 "
+              >
+                {usersToShow.map((user) => (
+                  <option className="w-80 font-medium" value={user.id}>
+                    {user.name} {user.surname}
+                  </option>
+                ))}
+              </select>
+              {errors.type && (
+                <div className=" ml-2 mt-2 text-red-600 font-medium">
+                  {errors.type?.message}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
+            <label
+              for="type"
+              className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
+            >
+              2- Selecciona una opción de servicio:
             </label>
             <div>
               <select
@@ -159,7 +214,7 @@ function DatesForm({ service, serviceTypes }) {
               for="designDetails"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
             >
-              2- Describe los detalles:
+              3- Describe los detalles:
             </label>
             <textarea
               placeholder="Describe los detalles del diseño..."
@@ -187,7 +242,7 @@ function DatesForm({ service, serviceTypes }) {
               for="needRemove"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl tracking-tight"
             >
-              3- ¿Traes uñas limpias o hay que retirar?
+              4- ¿Traes uñas limpias o hay que retirar?
             </label>
             <div className="ml-1 mt-2 flex items-center justify-around font-medium text-emerald-700">
               <div className="flex items-center">
@@ -227,7 +282,7 @@ function DatesForm({ service, serviceTypes }) {
         </div>
         <div className="mb-2 m-2 pt-3 p-2 border-2 border-emerald-500 rounded-lg">
           <p className="ml-2 mb-2 text-emerald-800 font-bold text-md md:text-lg lg:text-xl">
-            4- Selecciona un turno
+            5- Selecciona un turno
           </p>
           <div className="px-2 flex justify-center mb-3">
             <HonestWeekPicker onInitDate={onInitDate} />
@@ -322,4 +377,4 @@ function DatesForm({ service, serviceTypes }) {
   );
 }
 
-export default DatesForm;
+export default DatesFormAdmin;
