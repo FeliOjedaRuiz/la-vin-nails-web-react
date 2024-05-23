@@ -50,16 +50,27 @@ function ServiceItem({ service }) {
               <h6 className=" mb-1 text-xs text-center font-semibold tracking-tight text-pink-600">
                 Duración: {service.dateDuration} hs. aprox.
               </h6>
-              {user.role === "guest" && <NavLink to={`/new-date/${service.id}`}>
-               
-               <ButtonGreen ><p className="text-sm">Solicitar cita</p></ButtonGreen>
-                
-              </NavLink>}
-              {user.role === "admin" && <NavLink to={`/new-date-admin/${service.id}`}>
-               
-               <ButtonGreen ><p className="text-sm">Solicitar cita</p></ButtonGreen>
-                
-              </NavLink>}
+              {!user && (
+                <NavLink to={`/login`}>
+                  <ButtonGreen>
+                    <p className="text-sm">Solicitar cita</p>
+                  </ButtonGreen>
+                </NavLink>
+              )}
+              {user && user.role === "guest" && (
+                <NavLink to={`/new-date/${service.id}`}>
+                  <ButtonGreen>
+                    <p className="text-sm">Solicitar cita</p>
+                  </ButtonGreen>
+                </NavLink>
+              )}
+              {user && user.role === "admin" && (
+                <NavLink to={`/new-date-admin/${service.id}`}>
+                  <ButtonGreen>
+                    <p className="text-sm">Solicitar cita</p>
+                  </ButtonGreen>
+                </NavLink>
+              )}
             </div>
           </div>
         </div>

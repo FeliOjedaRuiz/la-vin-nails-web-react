@@ -236,7 +236,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
             <div className="single-number day">Sab</div>
           </div>
           <div className="numbers-container">{renderDays()}</div>
-          <div>Haz click afuera para cerrar el desplegable.</div>
+          <div className="text-md text-pink-600 mb-2">Click afuera para cerrar</div>
         </div>
       )}
     </div>

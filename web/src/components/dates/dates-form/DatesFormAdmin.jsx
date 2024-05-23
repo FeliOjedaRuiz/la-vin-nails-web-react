@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { HonestWeekPicker } from "../../week-picker/week-picker-js/HonestWeekPicker";
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
 import Modal from "../../modal/Modal";
-import UsersSearchBar from "../../users/users-search-bar/UsersSearchBar";
+import UserItemSelect from "../../users/user-select-item/UserItemSelect";
 
 function DatesFormAdmin({ service, serviceTypes }) {
   const {
@@ -26,6 +26,8 @@ function DatesFormAdmin({ service, serviceTypes }) {
   const [modalState, setModalState] = useState(false);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [open, setOpen] = useState("hidden");
+  const [selectedUser, setSelectedUser] = useState({});
 
   const onInitDate = (date) => {
     setInitDate(date);
@@ -91,6 +93,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
   };
 
   const onDateSubmit = async (date) => {
+    date.user = selectedUser.id;
     date.service = service.id;
     date.turn = selectedTurn.id;
     try {
@@ -114,6 +117,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
   };
 
   const handleChange = (e) => {
+    setOpen("");
     onSearch(e.target.value);
   };
 
@@ -121,7 +125,30 @@ function DatesFormAdmin({ service, serviceTypes }) {
     setSearch(value);
   };
 
-  const usersToShow = users.filter(u => u.name.toLowerCase().includes(search.toLocaleLowerCase()))
+  const usersToShow = users.filter((u) =>
+    u.name.toLowerCase().includes(search.toLocaleLowerCase())
+  );
+
+  const openSelect = () => {
+    if (open === "hidden") {
+      setOpen("");
+    } else {
+      setOpen("hidden");
+    }
+  };
+
+  const onUserSelect = (user) => {
+    setOpen("hidden");
+    setSelectedUser(user);
+    setSearch(`${user.name} ${user.surname}`);
+  };
+
+  document.addEventListener("click", function (e) {
+    let input = document.getElementById("input");
+    if (e.target !== input) {
+      setOpen("hidden");
+    }
+  });
 
   return (
     <div className="relative flex flex-col items-center ">
@@ -143,7 +170,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
           {/* <p className="ml-2 mt-5 font-bold leading-tight text-pink-600 text-xl self-center text-center">
             Completa los siguientes 4 pasos:
           </p> */}
-          <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
+          <div className="mb-2 mt-3 p-3 h-24 border-2 z-10 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
               for="type"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
@@ -152,18 +179,28 @@ function DatesFormAdmin({ service, serviceTypes }) {
             </label>
             {/* <UsersSearchBar search={search} onSearch={onSearch} /> */}
             <div>
-              <div className="">
-                <input
-                  className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300"
-                  type="text"
-                  value={search}
-                  onChange={handleChange}
-                  placeholder="Buscar usuario por nombre"
-                />
+              <input
+                className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300 "
+                type="text"
+                value={search}
+                onChange={handleChange}
+                placeholder="Buscar usuario por nombre"
+                onClick={openSelect}
+                id="input"
+              />
+              <div
+                className={`rounded-b-lg -mt-2 pt-3 ${open} bg-white pl-1 shadow-lg w-full text-emerald-700 font-medium border-2 border-pink-300`}
+              >
+                <ul className="max-h-[390px] overflow-scroll" id="ul">
+                  {usersToShow.map((filteredUser) => (
+                    <UserItemSelect
+                      user={filteredUser}
+                      onUserSelect={onUserSelect}
+                    />
+                  ))}
+                </ul>
               </div>
-            </div>
-            <div>
-              <select
+              {/* <select
                 {...register("user", {
                   required: "Debes seleccionar un usuario.",
                 })}
@@ -174,10 +211,10 @@ function DatesFormAdmin({ service, serviceTypes }) {
                     {user.name} {user.surname}
                   </option>
                 ))}
-              </select>
-              {errors.type && (
+              </select> */}
+              {errors.user && (
                 <div className=" ml-2 mt-2 text-red-600 font-medium">
-                  {errors.type?.message}
+                  {errors.user?.message}
                 </div>
               )}
             </div>
@@ -267,11 +304,6 @@ function DatesFormAdmin({ service, serviceTypes }) {
                   })}
                 />
               </div>
-              {/* {errors.needRemove && (
-              <div className=" ml-2 text-red-600 font-medium">
-                {errors.needRemove?.message}
-              </div>
-            )} */}
             </div>
             {errors.needRemove && (
               <div className=" ml-2 mt-2 text-red-600 font-medium">
