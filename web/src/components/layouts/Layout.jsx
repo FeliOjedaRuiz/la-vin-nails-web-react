@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import layoutLogo from "../../images/logo-la-vin-simplificado-3.png";
+import layoutLogo from "../../images/logo-la-vin-simplificado-3.webp";
 import homeIcon from "../../images/icono-home.png";
 import servicesIcon from "../../images/icono-servicios.png";
 import datesIcon from "../../images/icono-agenda.png";
 import profileIcon from "../../images/icono-perfil.png";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthStore";
+// import { ReactComponent as HomeIcon} from '../../icons/Home.svg';
 
 function Layout({ children }) {
   const { user } = useContext(AuthContext);
@@ -44,7 +45,7 @@ function Layout({ children }) {
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
           >
             <img
-              src={homeIcon}
+              src="https://res.cloudinary.com/duoshgr3h/image/upload/v1723136075/Home_b3gm80.svg"
               alt="icono home"
               className="w-7 h-7 group-hover:text-purple-700 "
             />
@@ -57,7 +58,7 @@ function Layout({ children }) {
             to="/services"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
           >
-            <img src={servicesIcon} alt="icono servicios" className="w-7 h-7" />
+            <img src="https://res.cloudinary.com/duoshgr3h/image/upload/v1723136078/Services_d0amso.svg" alt="icono servicios" className="w-7 h-7" />
             <span className="text-sm text-pink-700 group-hover:text-pink-800">
               Servicios
             </span>
@@ -68,7 +69,7 @@ function Layout({ children }) {
               to="/guest-schedule"
               className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
             >
-              <img src={datesIcon} alt="icono agenda" className="w-7 h-7" />
+              <img src="https://res.cloudinary.com/duoshgr3h/image/upload/v1723136077/Schedule_qe0mgz.svg" alt="icono agenda" className="w-7 h-7" />
               <span className="text-sm text-pink-700 group-hover:text-pink-800">
                 Agenda
               </span>
@@ -80,7 +81,7 @@ function Layout({ children }) {
               to="/admin-schedule"
               className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
             >
-              <img src={datesIcon} alt="icono agenda" className="w-7 h-7" />
+              <img src="https://res.cloudinary.com/duoshgr3h/image/upload/v1723136077/Schedule_qe0mgz.svg" alt="icono agenda" className="w-7 h-7" />
               <span className="text-sm text-pink-700 group-hover:text-pink-800">
                 Agenda
               </span>
@@ -92,7 +93,7 @@ function Layout({ children }) {
               to={`/profile`}
               className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
             >
-              <img src={profileIcon} alt="icono perfil" className="w-7 h-7" />
+              <img src="https://res.cloudinary.com/duoshgr3h/image/upload/v1723136076/Profile_kkdy2j.svg" alt="icono perfil" className="w-7 h-7" />
               <span className="text-sm text-pink-700 group-hover:text-pink-800">
                 Perfil
               </span>
@@ -104,7 +105,7 @@ function Layout({ children }) {
               to={`/admin`}
               className="inline-flex flex-col items-center justify-center px-5 hover:bg-pink-200"
             >
-              <img src={profileIcon} alt="icono perfil" className="w-7 h-7" />
+              <img src="https://res.cloudinary.com/duoshgr3h/image/upload/v1723136076/Profile_kkdy2j.svg" alt="icono perfil" className="w-7 h-7" />
               <span className="text-sm text-pink-700 group-hover:text-pink-800">
                 Admin
               </span>

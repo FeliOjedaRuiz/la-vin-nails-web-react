@@ -1,16 +1,18 @@
-import LaVinLogo from "../images/la-vin-nails-logo.png";
+import LaVinLogo from "../images/la-vin-nails-logo.webp";
 import Layout from "./../components/layouts/Layout";
 import ServicesSlide from "../components/services/services-slide/ServicesSlide";
 import LoginBanner from "../components/login-banner/LoginBanner";
 import InstagramIcon from "../components/icons/InstagramIcon";
 import WhatsappIcon2 from "../components/icons/WhatsappIcon2";
-import { HomeCarousel } from "../components/home-carousel/HomeCarousel";
+import { ResponsiveCarousel } from "../components/home-carousel/ResponsiveCarousel";
 
 function HomePage() {
+ 
+
   return (
     <Layout>
       <section className="h-fit p-4">
-        <HomeCarousel />
+      <ResponsiveCarousel />      
       </section>
       <section>
         <ServicesSlide />

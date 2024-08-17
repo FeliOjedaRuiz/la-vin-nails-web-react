@@ -5,7 +5,7 @@ function ServiceMicroItem({ service }) {
   return (
     <NavLink
       to={`/new-date/${service.id}`}
-      className="m-2 lg:m-4 flex flex-col items-center bg-white  rounded-lg shadow-md hover:outline hover:outline-pink-700 "
+      className="m-2 lg:m-4 flex flex-col items-center bg-white rounded-lg shadow-lg hover:outline hover:outline-pink-700 "
     >
       <img
         className="w-fit rounded-t-lg"
@@ -19,7 +19,7 @@ function ServiceMicroItem({ service }) {
         </h5>
       </div>
 
-      <h6 className="mb-1 text-sm italic lg:text-lg text-center font-medium text-emerald-600">
+      <h6 className="mb-1 text-sm italic lg:text-lg text-center font-medium text-emerald-800">
         desde €{service.price}
       </h6>
     </NavLink>
