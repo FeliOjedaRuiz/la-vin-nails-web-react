@@ -3,9 +3,7 @@ import ServiceMicroItem from "../service-micro-item/ServiceMicroItem";
 
 function ServicesSlide() {
   const services = [{
-    "_id": {
-      "$oid": "64e1e8f4c7d250c0a7d4c112"
-    },
+    "id": "64e1e8f4c7d250c0a7d4c112",
     "name": "Semipermanente + refuerzo",
     "type": [
       "esmalte liso",
@@ -26,9 +24,7 @@ function ServicesSlide() {
     "__v": 0
   },
   {
-    "_id": {
-      "$oid": "64e1e934f0ccf5e38547aead"
-    },
+    "id": "64e1e934f0ccf5e38547aead",
     "name": "Uñas de gel X-press",
     "type": [
       "esmalte liso",
@@ -49,9 +45,7 @@ function ServicesSlide() {
     "__v": 0
   },
   {
-    "_id": {
-      "$oid": "64e1e94b785c6cfcdea6a7f7"
-    },
+    "id": "64e1e94b785c6cfcdea6a7f7",
     "name": "Uñas de Acrigel",
     "type": [
       "esmalte liso",
@@ -72,9 +66,7 @@ function ServicesSlide() {
     "__v": 0
   },
   {
-    "_id": {
-      "$oid": "64e1e96235c094fecabad700"
-    },
+    "id": "64e1e96235c094fecabad700",
     "name": "Micro extención",
     "type": [
       "esmalte liso",
@@ -95,9 +87,7 @@ function ServicesSlide() {
     "__v": 0
   },
   {
-    "_id": {
-      "$oid": "64e1e97e4dc4ecdf1c715c01"
-    },
+    "id": "64e1e97e4dc4ecdf1c715c01",
     "name": "Relleno",
     "type": [
       "esmalte liso",
@@ -118,9 +108,7 @@ function ServicesSlide() {
     "__v": 0
   },
   {
-    "_id": {
-      "$oid": "64e1e98aea6ed46c5e919bfa"
-    },
+    "id": "64e1e98aea6ed46c5e919bfa",
     "name": "Retiro",
     "type": [
       "uñas de gel",
@@ -139,9 +127,7 @@ function ServicesSlide() {
     "__v": 0
   },
   {
-    "_id": {
-      "$oid": "64e1e98aea6ed46c5e919bfb"
-    },
+    "id": "64e1e98aea6ed46c5e919bfb",
     "name": "Semipermanente pies",
     "type": [
       "sin limado",
