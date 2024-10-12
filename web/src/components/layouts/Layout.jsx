@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import layoutLogo from "../../images/logo-la-vin-simplificado-3.webp";
-import homeIcon from "../../images/icono-home.png";
-import servicesIcon from "../../images/icono-servicios.png";
-import datesIcon from "../../images/icono-agenda.png";
-import profileIcon from "../../images/icono-perfil.png";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthStore";
 // import { ReactComponent as HomeIcon} from '../../icons/Home.svg';

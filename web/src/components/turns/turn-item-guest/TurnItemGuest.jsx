@@ -12,11 +12,11 @@ function TurnItemGuest({ turn, onTurnSelection }) {
   useEffect(() => {
     if (turn.state === "Disponible") {
       setStyle(
-        "bg-pink-400 text-white hover:animate-bounce hover:ring hover:ring-lime-400 "
+        "bg-pink-400 text-white hover:animate-bounce hover:ring hover:ring-yellow-400 "
       ); 
       setIsAvalaible(true)     
     } else {
-      setStyle("bg-gray-300 text-gray-400");
+      setStyle("bg-gray-300 text-gray-500");
       setIsAvalaible(false) 
     }
   }, [turn]);
@@ -26,7 +26,7 @@ function TurnItemGuest({ turn, onTurnSelection }) {
       className={`mb-1.5 ${style} rounded shadow py-0.5 px-1.5 xl:py-1.5 xl:px-2 flex-col`}
       onClick={handleClick}
     >
-      <p className={`text-center font-medium text-xs md:text-lg xl:text-xl truncate`}>
+      <p className={`text-center font-medium text-xs md:text-sm xl:text-md truncate`}>
         {turn.hour} Hs. {!isAvalaible && ("OCUPADO")}
       </p>
     </div>

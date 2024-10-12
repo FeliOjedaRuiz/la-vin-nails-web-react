@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Layout from "../components/layouts/Layout";
 import { HonestWeekPicker } from "../components/week-picker/week-picker-js/HonestWeekPicker";
 import TurnListByWeek from "../components/turns/turn-list-by-week/TurnListByWeek";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import TurnsColorsExplication from "../components/turns/turns-color-explication/TurnsColorsExplication";
 
 function SchedulePageGuest() {
   const [initDate, setInitDate] = useState();
   const [selectedTurn, setSelectedTurn] = useState({});
+  const navigate = useNavigate();
 
   const onInitDate = (date) => {
     setInitDate(date);
@@ -30,27 +32,18 @@ function SchedulePageGuest() {
             <HonestWeekPicker onInitDate={onInitDate} />
           </div>
 
-          <div className="flex justify-evenly w-full max-w-md my-4">
-            <div className="flex items-center ">
-              <div className="bg-pink-400 w-5 h-5 rounded mr-2"></div>
-              <p>Turno Disponible</p>
-            </div>
-            <div className="flex items-center ">
-              <div className="bg-gray-400 w-5 h-5 rounded mr-2"></div>
-              <p>Turno Ocupado</p>
-            </div>
-          </div>
+          <TurnsColorsExplication />
 
-          <div className="flex">
+          <div className="flex mb-20">
             <TurnListByWeek
               initDate={initDate}
               onTurnSelection={onTurnSelection}
             />
           </div>
 
-          <Link className="flex justify-center" to="/services">
-            <p className="text-center my-3 mx-2 w-full max-w-sm text-teal-700 rounded-lg px-3 py-2 text-base font-bold">
-              Para solicitar cita haz click aquí.
+          <Link className="fixed bottom-20 flex justify-center bg-pink-500 rounded-xl border-4 border-yellow-400 shadow-md" to="/services">
+            <p className=" my-1 mx-1 w-full max-w-sm text-center text-base font-bold text-white px-3 py-2 ">
+              ¡Pide tu cita aquí!
             </p>
           </Link>
         </div>

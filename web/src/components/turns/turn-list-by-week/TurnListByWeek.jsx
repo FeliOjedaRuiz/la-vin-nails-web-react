@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
 import TurnItemGuest from "../turn-item-guest/TurnItemGuest";
+import NotAvailableTurn from "../not-avalaible-turn/NotAvailableTurn";
 
 function TurnListByWeek({ initDate, reload, onTurnSelection }) {
   const [turns, setTurns] = useState([]);
@@ -95,79 +96,68 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
 
   return (
     <div className="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(firstDay)}
         </h5>
         {!firstDayTurns[0] && (
-          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
-            No hay turnos disponibles
-          </div>
+          <NotAvailableTurn />
         )}
         {firstDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(secondDay)}
         </h5>
         {!secondDayTurns[0] && (
-          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
-            No hay turnos disponibles
-          </div>
+          <NotAvailableTurn />
         )}
         {secondDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(thirdDay)}
         </h5>
         {!thirdDayTurns[0] && (
-          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
-            No hay turnos disponibles
-          </div>
+          <NotAvailableTurn />
         )}
         {thirdDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(fourthDay)}
         </h5>
         {!fourthDayTurns[0] && (
-          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
-            No hay turnos disponibles
-          </div>
+          <NotAvailableTurn />
         )}
         {fourthDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(fifthDay)}
         </h5>
         {!fifthDayTurns[0] && (
-          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
-            No hay turnos disponibles
-          </div>
+          <NotAvailableTurn />
+          
         )}
         {fifthDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(sixthDay)}
         </h5>
         {!sixthDayTurns[0] && (
-          <div className="text-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
-            No hay turnos disponibles
-          </div>
+          <NotAvailableTurn />
         )}
         {sixthDayTurns.map((turn) => (
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />

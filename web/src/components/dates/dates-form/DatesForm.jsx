@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { HonestWeekPicker } from "../../week-picker/week-picker-js/HonestWeekPicker";
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
 import Modal from "../../modal/Modal";
+import TurnsColorsExplication from "../../turns/turns-color-explication/TurnsColorsExplication";
 
 function DatesForm({ service, serviceTypes }) {
   const {
@@ -232,6 +233,7 @@ function DatesForm({ service, serviceTypes }) {
           <div className="px-2 flex justify-center mb-3">
             <HonestWeekPicker onInitDate={onInitDate} />
           </div>
+          <TurnsColorsExplication />
           <div>
             <TurnListByWeek
               initDate={initDate}

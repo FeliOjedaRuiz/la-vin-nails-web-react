@@ -13,6 +13,7 @@ function TurnDetailAndUpdate() {
   const { id } = useParams();
   const [turn, setTurn] = useState({});
   const [date, setDate] = useState(undefined);
+  const [turnDateWhatsapp, setTurnDateWhatsapp] = useState()
   const navigate = useNavigate();
   const [turnStates, setTurnStates] = useState([
     "Disponible",
@@ -36,7 +37,7 @@ function TurnDetailAndUpdate() {
       .then((dates) => {
         setDate(dates[0]);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error));    
   }, [reload]);
 
   useEffect(() => {
@@ -50,6 +51,13 @@ function TurnDetailAndUpdate() {
       })
       .catch((error) => console.error(error));
   }, [reload]);
+
+  useEffect(() => {
+    if (date) {
+      setTurnDateWhatsapp(showDate(date.turn.date))
+    }    
+  }, [date])
+  
 
   const handleTurnChange = (ev) => {
     const key = ev.target.id;
@@ -135,6 +143,38 @@ function TurnDetailAndUpdate() {
       .catch((error) => console.error(error));
   };
 
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+
+  const days = {
+    1: "Lunes",
+    2: "Martes",
+    3: "Miércoles",
+    4: "Jueves",
+    5: "Viernes",
+    6: "Sábado",
+    7: "Domingo",
+  };
+
+  const showDate = (date) => {
+    let turnDate = new Date(date);
+    return `${days[turnDate.getDay()]} ${turnDate.getDate()} de ${months[turnDate.getMonth()]}`;
+  };
+
+ 
+
   return (
     <div className="bg-white/50 rounded-lg px-2 pt-3 md:p-6 shadow ">
       <h2 className="text-3xl md:text-4xl md:mb-4 mb-2 font-bold text-center color text-pink-700">
@@ -185,6 +225,7 @@ function TurnDetailAndUpdate() {
               </div>
             </div>
           </div>
+
           <div className="flex flex-wrap">
             <div className="mr-5">
               <label
@@ -252,42 +293,33 @@ function TurnDetailAndUpdate() {
             ¡Este turno aún no fue solicitado!
           </div>
         )}
+
         {date && (
           <div className="my-6">
             <h2 className="text-2xl mb-2 font-bold text-center color text-pink-700">
               Detalle de la cita
             </h2>
+
             <Link to={`/users/${date.user.id}`}>
-              <div className="font-semibold border-2 border-emerald-700 rounded-xl py-2 px-1 bg-teal-50">
-                <div className="">
-                  <span className="ml-2 text-emerald-800 text-base">
-                    Cliente:
-                  </span>
-                  <span>
-                    {" "}
-                    {date.user.name} {date.user.surname}
-                  </span>
-                </div>
-                <div className="">
-                  <span className="ml-2  text-emerald-800 text-base">
-                    Teléfono:
-                  </span>
-                  <span> {date.user.phone}</span>
-                </div>
-                <div className="">
-                  <span className="ml-2 text-emerald-800 text-base">
-                    Email:
-                  </span>
-                  <span> {date.user.email}</span>
-                </div>
+              <div className="font-semibold border-2 border-yellow-400 rounded-xl py-3 px-3 bg-pink-500 text-white text-center mb-3">
+                <p className="text-2xl mb-2">
+                Cliente:
+                </p>
+                <p className="text-lg">
+                  {date.user.name} {date.user.surname}
+                </p>
+                <p>{date.user.phone}</p>
+                <p>{date.user.email}</p>
               </div>
             </Link>
+
             <div className="mt-1">
               <span className="ml-2 font-medium text-pink-800 text-base">
                 Servicio:
               </span>
               <span> {date.service.name} </span>
             </div>
+
             <div className="mt-1">
               <span className="ml-2 font-medium text-pink-800 text-base">
                 Tipo:
@@ -297,6 +329,7 @@ function TurnDetailAndUpdate() {
                 {date.type}
               </span>
             </div>
+
             <div className="mt-1">
               <span className="ml-2 font-medium text-pink-800 text-base">
                 Remoción:
@@ -306,6 +339,7 @@ function TurnDetailAndUpdate() {
                 {date.needRemove}
               </span>
             </div>
+
             <div className="mt-1">
               <span className="ml-2 font-medium text-pink-800 text-base">
                 Detalles:
@@ -335,6 +369,7 @@ function TurnDetailAndUpdate() {
                 €.
               </span>
             </div>
+
             <div className=" flex items-center">
               <label
                 for="duration"
@@ -355,8 +390,10 @@ function TurnDetailAndUpdate() {
                 hs.
               </span>
             </div>
+
           </div>
         )}
+
         <div className="flex mt-8 justify-evenly">
           <button
             type="submit"
@@ -368,9 +405,8 @@ function TurnDetailAndUpdate() {
 
           {date && (
             <a
-              href={`https://wa.me/+34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${date.turn.date} a las ${date.turn.hour} hs. *ha sido confirmada* con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs.
-              
-              *¡Te espero en https://goo.gl/maps/LBXqKgxpGdbYarhm8!*%0A
+              href={`https://wa.me/+34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${turnDateWhatsapp} a las ${date.turn.hour} hs.
+              *ha sido confirmada* con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs.*
               %0A
               🕑Se tolerarán hasta 10' de demora, de lo contrario se cancela la cita!%0A
               💅Antes de la cita, decide que diseño quieres, para evitar demoras.%0A
@@ -385,6 +421,7 @@ function TurnDetailAndUpdate() {
               </ButtonGreen>
             </a>
           )}
+
           {date && (
             <div
               onClick={() => setModalDateState(!modalDateState)}
@@ -394,6 +431,7 @@ function TurnDetailAndUpdate() {
               <DeleteIcon />
             </div>
           )}
+
         </div>
       </form>
       <Modal modalState={modalDateState} setModalDateState={setModalDateState}>

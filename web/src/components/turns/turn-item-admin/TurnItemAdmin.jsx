@@ -47,14 +47,14 @@ function TurnItemAdmin({ turn }) {
 
   return (
     <NavLink to={`/turns/${id}`}>
-      <div className={`mb-1.5 ${bg} rounded shadow py-0.5 px-1.5 flex-col`}>
-        <p className={`text-center font-medium  text-md truncate ${textColor}`}>
-          {turn.hour} - {date && date.user.name} {!date && turn.state}{" "}
+      <div className={`mb-1.5 ${bg} rounded shadow py-1 px-1.5  flex flex-col `}>
+        <p className={` font-medium  text-sm truncate ${textColor}`}>
+          {turn.hour} - {date && date.user.name} {date && date.user.surname} {!date && turn.state}{" "}
         </p>
-        <p className={`text-center font-medium  text-xs truncate ${textColor}`}>
+        {/* <p className={`font-medium text-xs truncate ${textColor}`}>
           {" "}
-          {date && date.service.name + " - " + date.type}{" "}
-        </p>
+          {date && date.service.name}
+        </p> */}
       </div>
     </NavLink>
   );
