@@ -95,7 +95,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
 
   return (
     <div className="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(firstDay)}
         </h5>
@@ -108,7 +108,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(secondDay)}
         </h5>
@@ -121,7 +121,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(thirdDay)}
         </h5>
@@ -134,7 +134,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(fourthDay)}
         </h5>
@@ -147,7 +147,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(fifthDay)}
         </h5>
@@ -160,7 +160,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
-      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
+      <div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
         <h5 className="text-center font-bold m-1 text-sm lg:text-lg">
           {showDate(sixthDay)}
         </h5>

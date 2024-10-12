@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 export function ResponsiveCarousel() {
   const desktop1 =
     "https://res.cloudinary.com/duoshgr3h/image/upload/v1723893978/PortadaSeptiembre24W_nuecv3.webp";
-  const desktop2 =
-    "https://res.cloudinary.com/duoshgr3h/image/upload/v1723131632/PortadaVacacionesW3-1_qjusgs.webp";
+  // const desktop2 = "";
   const desktop3 =
     "https://res.cloudinary.com/duoshgr3h/image/upload/v1723893977/PortadaFraseW_aebphs.webp";
   const desktop4 =
@@ -14,8 +13,7 @@ export function ResponsiveCarousel() {
     "https://res.cloudinary.com/duoshgr3h/image/upload/v1723893977/PortadaTrabajos2W_uxwqx8.webp";
   const mobile1 =
     "https://res.cloudinary.com/duoshgr3h/image/upload/v1723893977/PortadaSeptiembre24S_lqo1pp.webp";
-  const mobile2 =
-    "https://res.cloudinary.com/duoshgr3h/image/upload/v1723132177/PortadaVacacionesS_ogjvyy.webp";
+  // const mobile2 = "";
   const mobile3 =
     "https://res.cloudinary.com/duoshgr3h/image/upload/v1723893977/PortadaFraseB_ijq8a1.webp";
   const mobile4 =
@@ -24,7 +22,7 @@ export function ResponsiveCarousel() {
     "https://res.cloudinary.com/duoshgr3h/image/upload/v1723893977/PortadaTrabajos2S_jqnsqk.webp";
 
   const [image1, setImage1] = useState(desktop1);
-  const [image2, setImage2] = useState(desktop2);
+  // const [image2, setImage2] = useState(desktop2);
   const [image3, setImage3] = useState(desktop3);
   const [image4, setImage4] = useState(desktop4);
   const [image5, setImage5] = useState(desktop5);
@@ -33,13 +31,13 @@ export function ResponsiveCarousel() {
   useEffect(() => {
     if (window.innerWidth > 640) {
       setImage1(desktop1);
-      setImage2(desktop2);
+      // setImage2(desktop2);
       setImage3(desktop3);
       setImage4(desktop4);
       setImage5(desktop5);
     } else {
       setImage1(mobile1);
-      setImage2(mobile2);
+      // setImage2(mobile2);
       setImage3(mobile3);
       setImage4(mobile4);
       setImage5(mobile5);
@@ -74,11 +72,11 @@ export function ResponsiveCarousel() {
         alt="Interior de estudio"
         className="w-full object-cover"
       />
-      <img
+      {/* <img
         src={image2}
         alt="fachada de estudio"
         className="w-full object-cover"
-      />
+      /> */}
       <img
         src={image3}
         alt="trabajos de manicuria"
