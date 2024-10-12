@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ServiceItem from "../service-item/ServiceItem";
-import servicesService from "../../../services/services";
+import { services } from "../LaVinServices/LaVinServices.js"
 
 function ServiceList() {
-  const [services, setServices] = useState([]);
+  // TRAER SERVICIO DE BASE DE DATOS
 
-  useEffect(() => {
-    servicesService
-      .list()
-      .then((services) => {
-        setServices(services);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+  // const [services, setServices] = useState([]);
+
+  // useEffect(() => {
+  //   servicesService
+  //     .list()
+  //     .then((services) => {
+  //       setServices(services);
+  //     })
+  //     .catch((error) => console.error(error));
+  // }, []);
 
   return (
     <>
