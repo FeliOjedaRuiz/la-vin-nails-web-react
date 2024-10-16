@@ -5,12 +5,16 @@ import LoginBanner from "../components/login-banner/LoginBanner";
 import InstagramIcon from "../components/icons/InstagramIcon";
 import WhatsappIcon2 from "../components/icons/WhatsappIcon2";
 import { ResponsiveCarousel } from "../components/home-carousel/ResponsiveCarousel";
+import Notices from "../components/notices/Notices";
 
 function HomePage() {
   return (
     <Layout>
       <section className="h-fit p-4">
         <ResponsiveCarousel />
+      </section>
+      <section>
+        <Notices />
       </section>
       <section>
         <ServicesSlide />

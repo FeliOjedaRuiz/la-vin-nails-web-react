@@ -156,7 +156,7 @@ function UsersForm() {
         </label>
         <input
           type="password"
-          placeholder="******"
+          placeholder="****"
           className="bg-white border border-pink-300 text-emerald-700 rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
           {...register("password", {
             required: "Se necesita una contraseña",

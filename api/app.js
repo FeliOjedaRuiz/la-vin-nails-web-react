@@ -14,8 +14,56 @@ const cors = require("./config/cors.config");
 app.use(cors);
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(secure.cleanBody);
+
+
+//** Configuración Notion */
+
+const { Client } = require("@notionhq/client");
+
+const notion = new Client({
+  auth: process.env.NOTION_TOKEN,
+});
+
+const DATABASE_ID = "11d24cbdade3809fa1bdf7f65f05f8bd";
+
+app.get("/api/v1/notices", async (req, res, next) => {
+  try {
+    const query = { database_id: DATABASE_ID };
+    const { results } = await notion.databases.query(query);
+
+    // Aquí se filtra por slug si se pasa como query param
+    const { slug } = req.query; // Obtener el parámetro de la query (si lo hay)
+
+    const filteredResults = results
+      .map((page) => {
+        const { properties } = page;
+        const title = properties.title?.title[0]?.plain_text || "No Title";
+        const description = properties.description?.rich_text[0]?.plain_text || "No Description";
+        const subtitle = properties.subtitle?.rich_text[0]?.plain_text || "No Subtitle";
+        const slugValue = properties.slug?.rich_text[0]?.plain_text || null;
+
+        return {
+          title,
+          description,
+          subtitle,
+          slug: slugValue,
+        };
+      })
+      .filter((page) => {
+        // Filtrar solo si hay un slug en la query
+        return slug ? page.slug === slug : true;
+      });
+
+    // Devuelve los resultados filtrados o todos si no se pasó un slug
+    res.json(filteredResults);
+  } catch (error) {
+    console.error(error);
+    next(createError(500, "Error fetching data from Notion"));
+  }
+});
+
 
 const api = require("./config/routes.config");
 app.use("/api/v1", api);
