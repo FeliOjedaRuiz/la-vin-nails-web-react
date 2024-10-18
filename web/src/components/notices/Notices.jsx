@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LoadingIcon from "../icons/LoadingIcon";
+import "./Notices.css"
 
 const Notices = () => {
   const [notices, setNotices] = useState([]);
@@ -9,13 +10,13 @@ const Notices = () => {
   const [acepted, setAcepted] = useState(false);
 
   const noticesApiUrl =
-    process.env.NOTICES_API_URL || "http://192.168.1.128:3002";
+    process.env.REACT_APP_BASE_API_URL || "http://192.168.1.128:3002/api/v1";
 
   useEffect(() => {
     const fetchNotices = async () => {
       try {
         const response = await fetch(
-          noticesApiUrl + "/api/v1/notices?slug=comunicado"
+          noticesApiUrl + "/notices?slug=comunicado"
         ); // Cambia la URL por la de tu servidor
         if (!response.ok) {
           throw new Error("Error fetching the notices");
@@ -62,10 +63,10 @@ const Notices = () => {
             <h2 className="text-center text-3xl font-bold mb-2 drop-shadow-lg">
               {notices.title}{" "}
             </h2>
-            <p className="text-center text-xl font-bold mb-2 text-yellow-500">
+            <p className="viewspaces text-center text-xl font-bold mb-4 text-yellow-500">
               {notices.subtitle}
             </p>
-            <p className="text-sm ">{notices.description}</p>
+            <p className="text-sm viewspaces" >{notices.description}</p>
             <button
               onClick={() => setAcepted(!acepted)}
               className="bg-white text-pink-500 font-semibold rounded py-2 px-3 mt-6 shadow-md hover:bg-pink-50/90 transition focus:ring-4 focus:ring-yellow-500 active:bg-pink-500 active:text-white"
