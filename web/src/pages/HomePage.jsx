@@ -5,7 +5,6 @@ import LoginBanner from "../components/login-banner/LoginBanner";
 import InstagramIcon from "../components/icons/InstagramIcon";
 import WhatsappIcon2 from "../components/icons/WhatsappIcon2";
 import { ResponsiveCarousel } from "../components/home-carousel/ResponsiveCarousel";
-import Notices from "../components/notices/Notices";
 
 function HomePage() {
   return (
@@ -13,15 +12,15 @@ function HomePage() {
       <section className="h-fit p-4">
         <ResponsiveCarousel />
       </section>
-      <section>
-        <Notices />
-      </section>
+     
       <section>
         <ServicesSlide />
       </section>
+
       <section>
         <LoginBanner />
       </section>
+
       <section className="p-8 flex flex-col items-center border-t-2 border-pink-400">
         <img src={LaVinLogo} alt="Logo La Vin Nails" className="w-60" />
         <div className="mt-5 flex justify-around w-full">
@@ -56,6 +55,7 @@ function HomePage() {
           <p className="text-pink-800">Granada, Andalucía, España.</p>
         </a>
       </section>
+
       <div className="text-center text-sm bg-black/5 p-0.5 text-black/50 ">
         <a href={`https://wa.me/$+34630173975?text=`}>
           Web desarrollada por Feliciano Ojeda Ruiz

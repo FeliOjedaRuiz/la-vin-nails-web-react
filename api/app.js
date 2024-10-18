@@ -43,12 +43,14 @@ app.get("/api/v1/notices", async (req, res, next) => {
         const description = properties.description?.rich_text[0]?.plain_text || "No Description";
         const subtitle = properties.subtitle?.rich_text[0]?.plain_text || "No Subtitle";
         const slugValue = properties.slug?.rich_text[0]?.plain_text || null;
+        const active = properties.active?.checkbox || false;
 
         return {
           title,
           description,
           subtitle,
           slug: slugValue,
+          active,
         };
       })
       .filter((page) => {
@@ -64,6 +66,7 @@ app.get("/api/v1/notices", async (req, res, next) => {
   }
 });
 
+//** Rutas de api la vin nails */
 
 const api = require("./config/routes.config");
 app.use("/api/v1", api);

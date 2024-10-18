@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import servicesService from "../services/services";
 import DatesForm from "../components/dates/dates-form/DatesForm";
 import Layout from "../components/layouts/Layout";
+import Notices from "../components/notices/Notices";
 
 function NewDatePage() {
   const { id } = useParams();
@@ -21,6 +22,7 @@ function NewDatePage() {
 
   return (
     <div>
+      <Notices />
       <Layout>
         <div className="p-1.5">
           <DatesForm service={service} serviceTypes={serviceTypes} />
