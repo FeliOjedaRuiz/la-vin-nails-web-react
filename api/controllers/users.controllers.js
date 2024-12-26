@@ -60,17 +60,6 @@ module.exports.detail = (req, res, next) => {
     .catch(next);
 };
 
-// module.exports.update = (req, res, next) => {
-//   delete req.clientUser['password']
-//   console.log(req.clientUser)
-//   Object.assign(req.clientUser, req.body);
-
-//   req.clientUser
-//     .save()
-//     .then((user) => res.json(user))
-//     .catch(next);
-// };
-
 module.exports.update = (req, res, next) => {
   User.findByIdAndUpdate(req.clientUser.id, req.body)
     .then((user) => {
