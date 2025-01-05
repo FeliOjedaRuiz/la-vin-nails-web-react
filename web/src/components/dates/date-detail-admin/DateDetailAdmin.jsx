@@ -6,7 +6,7 @@ import turnsService from '../../../services/turns';
 import Modal from './../../modal/Modal';
 import ButtonGreen from '../../butons/ButtonGreen';
 
-function DateDetail({ date, onDateDelete }) {
+function DateDetailAdmin({ date }) {
 	const [state, setState] = useState('');
 	const [serverError, setServerError] = useState(undefined);
 	const [modalState, setModalState] = useState(false);
@@ -78,11 +78,7 @@ function DateDetail({ date, onDateDelete }) {
 						{!date.duration && <>sin confirmar.</>}{' '}
 					</span>{' '}
 				</p>
-				<a href="https://www.google.es/maps/place/La+Vin+Nails/@37.199055,-3.6219443,17z/data=!3m1!4b1!4m6!3m5!1s0xd71fdcc60fab787:0xffdd8e2502825163!8m2!3d37.1990508!4d-3.6193694!16s%2Fg%2F11tsjffhvt?entry=ttu">
-					<p className="text-2xl font-medium text-center mt-1 text-emerald-800">
-						Ver ubicación.
-					</p>
-				</a>
+				
 			</div>
 			<div className="flex flex-col md:m-6">
 				<div className="mt-2 mb-2 text-2xl text-center">
@@ -90,34 +86,6 @@ function DateDetail({ date, onDateDelete }) {
 					<p className=" text-center font-medium  leading-snug text-black ">
 						{state}
 					</p>
-				</div>
-				<div className="flex flex-col">
-					<div className=" flex flex-col items-center w-full ">
-						<p className="text-center text-md font-medium text-pink-800">
-							¿Tienes una duda?{' '}
-						</p>
-						<a
-							href={`https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.`}
-							className="flex items-center w-full justify-center"
-						>
-							{' '}
-							<ButtonGreen
-								styles={'flex items-center justify-center w-full m-1'}
-							>
-								{' '}
-								<WhatsappIcon color={"#ffffff"} /> Consultar{' '}
-							</ButtonGreen>
-						</a>
-					</div>
-					<div className="flex justify-center items-center p-1 ">
-						<button
-							onClick={() => setModalState(!modalState)}
-							className="flex w-full items-center mt-1 justify-center text-white py-1 px-4 font-medium rounded-md text-lg shadow-lg bg-red-700 hover:bg-red-800 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500"
-						>
-							{' '}
-							<DeleteIcon /> &nbsp; Cancelar cita
-						</button>
-					</div>
 				</div>
 			</div>
 			<Modal modalState={modalState} setModalState={setModalState}>
@@ -148,4 +116,4 @@ function DateDetail({ date, onDateDelete }) {
 	);
 }
 
-export default DateDetail;
+export default DateDetailAdmin;

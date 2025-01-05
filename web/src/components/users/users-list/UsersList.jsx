@@ -3,7 +3,7 @@ import UserItem from '../user-item/UserItem'
 
 function UsersList({ users }) {
   return (
-    <div className='grid grid-cols-1 grid-flow-row w-full max-w-md'>
+    <div className='grid grid-cols-1 grid-flow-row w-full max-w-md max-h-screen overflow-scroll'>
       {users.map((user) => (
         <UserItem user={user} key={user.id} />
       ))}

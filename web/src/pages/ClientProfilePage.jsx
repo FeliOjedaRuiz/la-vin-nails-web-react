@@ -1,40 +1,30 @@
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Layout from '../components/layouts/Layout';
-import NailPhotoGalery from '../components/nails-photos/nail-photo-galery/NailPhotoGalery';
-import PhotoUpload from '../components/nails-photos/photo-upload/PhotoUpload';
-import { useParams } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthStore';
+import WhatsappIcon from '../components/icons/WhatsappIcon';
+import DateDetail from '../components/dates/date-detail/DateDetail';
 import datesService from '../services/dates';
+import ButtonGreen from '../components/butons/ButtonGreen';
+import UserLoyaltyGuest from '../components/users/user-loyalty-guest/UserLoyaltyGuest';
+import { Link } from 'react-router-dom';
+import UserProfile from '../components/users/user-profile/UserProfile';
 import {
 	Accordion,
 	AccordionHeader,
 	AccordionBody,
 } from '@material-tailwind/react';
-import UserProfile from '../components/users/user-profile/UserProfile';
-import UserLoyalty from '../components/users/user-loyalty/UserLoyalty';
-import DateDetailAdmin from './../components/dates/date-detail-admin/DateDetailAdmin';
+import ClientNailPhotoGalery from '../components/nails-photos/client-nail-photo-galery/ClientNailPhotoGalery';
 
-function ProfilePage() {
-	const [reload, setReload] = useState(false);
-	const [visible, setVisible] = useState(false);
+function ClientProfilePage() {
+	const { logout, user } = useContext(AuthContext);
 	const [dates, setDates] = useState([]);
-	const { id } = useParams();
+	const [reload, setReload] = useState(false);
 	const [open, setOpen] = useState(0);
-
-	const userId = id;
 
 	const handleOpen = (value) => setOpen(open === value ? 0 : value);
 
-	useEffect(() => {
+	const onDateDelete = () => {
 		setReload(!reload);
-	}, []);
-
-	const onPhotoCreation = () => {
-		setReload(!reload);
-	};
-
-	const changeVisibility = () => {
-		setVisible(!visible);
-		console.log('visible', visible);
 	};
 
 	const transformDate = (date) => {
@@ -57,16 +47,16 @@ function ProfilePage() {
 	const actualDate = transformDate(new Date());
 
 	useEffect(() => {
-			datesService
-				.listByUser(userId)
-				.then((dates) => {
-					const datesUserAndDate = dates.filter(
-						(date) => date.turn.date >= actualDate
-					);
-					setDates(datesUserAndDate);
-				})
-				.catch((error) => console.error(error));
-		}, [reload]);
+		datesService
+			.myList()
+			.then((dates) => {
+				const datesUserAndDate = dates.filter(
+					(date) => date.turn.date >= actualDate
+				);
+				setDates(datesUserAndDate);
+			})
+			.catch((error) => console.error(error));
+	}, [reload]);
 
 	function Icon({ id, open }) {
 		return (
@@ -92,7 +82,7 @@ function ProfilePage() {
 	return (
 		<Layout>
 			<div className="flex flex-col justify-center items-center p-4 max-w-xl mx-auto">
-				<UserProfile userId={id} />
+				<UserProfile userId={user.id} />
 				<Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
@@ -101,7 +91,7 @@ function ProfilePage() {
 						Tarjeta de fidelidad
 					</AccordionHeader>
 					<AccordionBody>
-						<UserLoyalty UserLoyalty userId={id} />
+						<UserLoyaltyGuest userId={user.id} />
 					</AccordionBody>
 				</Accordion>
 				<Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
@@ -112,17 +102,7 @@ function ProfilePage() {
 						Galeria
 					</AccordionHeader>
 					<AccordionBody>
-						<PhotoUpload
-							userId={id}
-							onPhotoCreation={onPhotoCreation}
-							changeVisibility={changeVisibility}
-							visible={visible}
-						/>
-						<NailPhotoGalery
-							userId={id}
-							reload={reload}
-							changeVisibility={changeVisibility}
-						/>
+						<ClientNailPhotoGalery userId={user.id} />
 					</AccordionBody>
 				</Accordion>
 				<Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
@@ -141,7 +121,7 @@ function ProfilePage() {
 									</div>
 								)}
 								{dates.map((date) => (
-									<DateDetailAdmin date={date}  />
+									<DateDetail date={date} onDateDelete={onDateDelete} />
 								))}
 							</div>
 						</div>
@@ -155,7 +135,7 @@ function ProfilePage() {
 						Configuración de cuenta
 					</AccordionHeader>
 					<AccordionBody>
-						{/* <div className="flex flex-col items-center justify-center w-full">
+						<div className="flex flex-col items-center justify-center w-full">
 							<div className="flex flex-col items-center justify-center w-full max-w-xl my-4 py-2 border-2 rounded-lg border-pink-600">
 								<p className="mt-2 text-teal-700 font-semibold">
 									¿Quieres cambiar tu contraseña?
@@ -182,12 +162,18 @@ function ProfilePage() {
 									</ButtonGreen>
 								</a>
 							</div>
-						</div> */}
+						</div>
 					</AccordionBody>
 				</Accordion>
+				<button
+					onClick={() => logout()}
+					className="text-white bg-gradient-to-l my-8 from-pink-700 via-pink-500 to-pink-700 shadow hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded text-md self-center  px-4 py-1 text-center"
+				>
+					Cerrar sesión
+				</button>
 			</div>
 		</Layout>
 	);
 }
 
-export default ProfilePage;
+export default ClientProfilePage;

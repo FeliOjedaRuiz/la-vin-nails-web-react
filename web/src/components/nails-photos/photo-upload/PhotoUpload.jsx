@@ -62,7 +62,7 @@ function PhotoUpload({ userId, onPhotoCreation, visible, changeVisibility }) {
 	return (
 		<>
 			{visible && (
-				<div className="p-8 bg-gradient-to-b from-lime-100/95 to-pink-100/95  fixed top-0 z-20 h-full w-full flex items-center justify-center backdrop-blur-[3px]">
+				<div className="p-8 bg-gradient-to-b from-lime-100/95 to-pink-100/95 fixed top-0 left-0 z-20 h-full w-full flex items-center justify-center backdrop-blur-[3px]">
 					<div className="w-full max-w-md mx-auto p-2">
 						<div>
 							<h1 className="text-2xl text-center font-bold mb-4 text-pink-700">
@@ -109,11 +109,11 @@ function PhotoUpload({ userId, onPhotoCreation, visible, changeVisibility }) {
 							</form>
 							{successMessage && (
 								<div className='bg-black/60 fixed top-0 left-0 z-20 h-screen w-screen flex items-center justify-center backdrop-blur-[3px] '>
-								<div className='bg-white p-6 rounded-md flex flex-col items-center shadow-md'>
-									<p className="text-emerald-500 text-2xl font-medium text-center mb-8">
+								<div className='bg-white p-8 rounded-md flex flex-col items-center shadow-md'>
+									<p className="text-emerald-600 text-2xl font-medium text-center mb-6">
 										{successMessage}
 									</p>
-									<button onClick={handleClick} className='bg-teal-600 text-white text-xl rounded-md px-3 py-1 shadow-sm'>OK</button>
+									<button onClick={handleClick} className='bg-teal-600 text-white text-xl font-medium rounded-md px-3 py-1 shadow-sm'>OK</button>
 								</div>
 								</div>
 							)}

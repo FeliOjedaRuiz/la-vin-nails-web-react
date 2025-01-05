@@ -15,11 +15,11 @@ module.exports.create = (req, res, next) => {
 		.catch(next);
 };
 
-module.exports.list = (req, res, next) => {
-	Photo.find()
-		.then((photos) => res.json(photos))
-		.catch(next);
-};
+// module.exports.list = (req, res, next) => {
+// 	Photo.find()
+// 		.then((photos) => res.json(photos))
+// 		.catch(next);
+// };
 
 module.exports.listByUser = (req, res, next) => {
 	const criterial = { user: req.params.userId };

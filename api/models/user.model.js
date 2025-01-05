@@ -42,8 +42,8 @@ const userSchema = new mongoose.Schema(
     },
     loyalty: {
       type: Number,
-      min: [1, "Minimo 1 cita"],
-      max: [12, "Máximo 12 citas"],
+      min: [0, "Minimo 0 cita"],
+      max: [10, "Máximo 10 citas"],
     },
   },
   {

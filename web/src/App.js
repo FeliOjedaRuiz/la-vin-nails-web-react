@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ServicesPage from "./pages/ServicesPage";
 import SchedulePage from "./pages/SchedulePage";
-import ProfilePage from "./pages/ProfilePage";
+import ClientProfilePage from "./pages/ClientProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import AuthStore from "./contexts/AuthStore";
@@ -14,7 +14,7 @@ import SchedulePageGuest from "./pages/SchedulePageGuest";
 import RestorePasswordPage from "./pages/RestorePasswordPage";
 import SendRestoreEmailPage from "./pages/SendRestoreEmailPage";
 import UnlogedRoute from "./guards/UnlogedRoute";
-import UserDetailPage from "./pages/UserDetailPage";
+import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
 import NewDateAdminPage from "./pages/NewDateAdminPage";
 
@@ -46,7 +46,7 @@ function App() {
             path="/profile"
             element={
               <PrivateRoute>
-                <ProfilePage />
+                <ClientProfilePage />
               </PrivateRoute>
             }
           />
@@ -85,7 +85,7 @@ function App() {
             path="/users/:id"
             element={
               <PrivateRoute role="admin">
-                <UserDetailPage />
+                <ProfilePage />
               </PrivateRoute>
             }
           />

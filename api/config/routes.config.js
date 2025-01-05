@@ -57,6 +57,7 @@ router.delete(
 // DATES
 router.post('/dates', secure.auth, dates.create);
 router.get('/dates', secure.isAdmin, dates.list);
+router.get('/dates/:userId', secure.isAdmin, dates.listByUser);
 router.get('/myDates', secure.auth, dates.myList);
 router.patch('/dates/:id', secure.isAdmin, datesMid.exists, dates.update);
 router.delete(
@@ -75,8 +76,8 @@ router.post(
 	photos.upload
 );
 router.post('/photos', secure.auth, photos.create);
-router.get('/photos', secure.isAdmin, photos.list);
-router.get('/photos/:userId', secure.isAdmin, photos.listByUser);
+// router.get('/photos', secure.isAdmin, photos.list);
+router.get('/photos/:userId', secure.auth, secure.isAuthorized, photos.listByUser);
 router.delete('/photos/:id', secure.isAdmin, photosMid.exists, photos.delete);
 
 module.exports = router;
