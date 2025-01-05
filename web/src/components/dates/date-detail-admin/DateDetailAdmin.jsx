@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import WhatsappIcon from '../../icons/WhatsappIcon';
-import DeleteIcon from '../../icons/DeleteIcon';
-import datesService from '../../../services/dates';
-import turnsService from '../../../services/turns';
-import Modal from './../../modal/Modal';
-import ButtonGreen from '../../butons/ButtonGreen';
 
 function DateDetailAdmin({ date }) {
 	const [state, setState] = useState('');
-	const [serverError, setServerError] = useState(undefined);
-	const [modalState, setModalState] = useState(false);
 
 	useEffect(() => {
 		if (date.turn.state === 'Solicitado') {
@@ -19,24 +11,6 @@ function DateDetailAdmin({ date }) {
 		}
 	}, []);
 
-	const handleDeleteDate = () => {
-		setModalState(!modalState);
-		datesService
-			.deleteDate(date.id)
-			.then(updateTurnState)
-			.catch((error) => console.error(error));
-	};
-
-	const updateTurnState = () => {
-		const id = date.turn.id;
-		const turn = date.turn;
-		turn.state = 'Cancelado';
-
-		turnsService
-			.update(id, turn)
-			.then(onDateDelete)
-			.catch((error) => console.error(error));
-	};
 
 	return (
 		<div className="bg-white/50 p-4 mb-6 border-2 border-emerald-500 rounded-lg shadow-lg md:flex md:justify-around md:p-6">
@@ -88,30 +62,6 @@ function DateDetailAdmin({ date }) {
 					</p>
 				</div>
 			</div>
-			<Modal modalState={modalState} setModalState={setModalState}>
-				<div className="text-center mb-6">
-					<p className="font-bold text-2xl">CANCELAR CITA</p>
-				</div>
-
-				<div className="text-center text-xl font-medium mb-6">
-					<p>¿Estas seguro de que quieres cancelar tu cita?</p>
-				</div>
-
-				<div className="flex justify-around">
-					<button
-						onClick={() => setModalState(!modalState)}
-						className="text-white  px-2 py-1 rounded bg-red-700 hover:bg-red-800 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500"
-					>
-						Cancelar
-					</button>
-					<button
-						onClick={handleDeleteDate}
-						className="text-white  px-2 py-1 rounded bg-emerald-700 hover:bg-emerald-800 hover:ring-2 hover:ring-emerald-500 focus:ring-2 focus:ring-emerald-500"
-					>
-						Aceptar
-					</button>
-				</div>
-			</Modal>
 		</div>
 	);
 }
