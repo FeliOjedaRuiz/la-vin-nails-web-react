@@ -19,32 +19,29 @@ function ClientNailPhotoGalery({ userId }) {
 			{photos.map((photo) => (
 				<PhotoItem photo={photo} key={photo.id} />
 			))}
+
 			{!photos[0] && (
-				<div className="aspect-square overflow-hidden object-center rounded-lg flex justify-center items-center shadow-md">
-					<img
-						className="opacity-20 grayscale"
-						src="https://res.cloudinary.com/duoshgr3h/image/upload/v1736036501/la-vin-nails-web/defaults/PhotoDefault_cbdvxx.webp"
-						alt="Foto por defecto"
-					/>
-				</div>
+				<img
+					className="opacity-20 grayscale w-full h-full object-cover rounded-lg shadow-md"
+					src="https://res.cloudinary.com/duoshgr3h/image/upload/v1736036501/la-vin-nails-web/defaults/PhotoDefault_cbdvxx.webp"
+					alt="Foto por defecto"
+				/>
 			)}
+
 			{!photos[1] && (
-				<div className="aspect-square overflow-hidden object-center rounded-lg flex justify-center items-center shadow-md">
-					<img
-						className="opacity-20 grayscale"
-						src="https://res.cloudinary.com/duoshgr3h/image/upload/v1736036501/la-vin-nails-web/defaults/PhotoDefault_cbdvxx.webp"
-						alt="Foto por defecto"
-					/>
-				</div>
+				<img
+					className="opacity-20 grayscale w-full h-full object-cover rounded-lg shadow-md"
+					src="https://res.cloudinary.com/duoshgr3h/image/upload/v1736036501/la-vin-nails-web/defaults/PhotoDefault_cbdvxx.webp"
+					alt="Foto por defecto"
+				/>
 			)}
+
 			{!photos[2] && (
-				<div className="aspect-square overflow-hidden object-center rounded-lg flex justify-center items-center shadow-md">
-					<img
-						className="opacity-20 grayscale"
-						src="https://res.cloudinary.com/duoshgr3h/image/upload/v1736036501/la-vin-nails-web/defaults/PhotoDefault_cbdvxx.webp"
-						alt="Foto por defecto"
-					/>
-				</div>
+				<img
+					className="opacity-20 grayscale w-full h-full object-cover rounded-lg shadow-md"
+					src="https://res.cloudinary.com/duoshgr3h/image/upload/v1736036501/la-vin-nails-web/defaults/PhotoDefault_cbdvxx.webp"
+					alt="Foto por defecto"
+				/>
 			)}
 		</div>
 	);

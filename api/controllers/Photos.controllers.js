@@ -1,5 +1,4 @@
 const Photo = require('../models/photo.model');
-const fileUploader = require('../config/cloudinary.config');
 
 module.exports.upload = (req, res, next) => {
 	if (!req.file) {

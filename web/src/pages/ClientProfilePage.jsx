@@ -13,7 +13,7 @@ import {
 	AccordionHeader,
 	AccordionBody,
 } from '@material-tailwind/react';
-import ClientNailPhotoGalery from '../components/nails-photos/client-nail-photo-galery/ClientNailPhotoGalery';
+import NailPhotoGalery from '../components/nails-photos/nail-photo-galery/NailPhotoGalery';
 
 function ClientProfilePage() {
 	const { logout, user } = useContext(AuthContext);
@@ -102,7 +102,7 @@ function ClientProfilePage() {
 						Galeria
 					</AccordionHeader>
 					<AccordionBody>
-						<ClientNailPhotoGalery userId={user.id} />
+						<NailPhotoGalery userId={user.id} />
 					</AccordionBody>
 				</Accordion>
 				<Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
@@ -157,7 +157,7 @@ function ClientProfilePage() {
 									href={`https://wa.me/$+34699861930?text=Hola tengo una duda sobre mi cuenta en La Vin Nails Web.`}
 								>
 									<ButtonGreen>
-										<WhatsappIcon color={"#ffffff"} />
+										<WhatsappIcon color={'#ffffff'} />
 										Consultar
 									</ButtonGreen>
 								</a>

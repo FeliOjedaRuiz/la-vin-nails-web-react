@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import layoutLogo from "../../images/logo-la-vin-simplificado-3.webp";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthStore";
-// import { ReactComponent as HomeIcon} from '../../icons/Home.svg';
 
 function Layout({ children }) {
   const { user } = useContext(AuthContext);
