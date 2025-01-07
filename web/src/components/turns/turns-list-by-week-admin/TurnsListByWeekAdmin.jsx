@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
 import TurnItemAdmin from "../turn-item-admin/TurnItemAdmin";
 
-function TurnsListByWeekAdmin({ initDate, reload, onTurnSelection }) {
+function TurnsListByWeekAdmin({ initDate, reload }) {
   const [turns, setTurns] = useState([]);
 
   const transformDate = (date) => {

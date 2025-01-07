@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../../modal/Modal";
 import DeleteIcon from "../../icons/DeleteIcon";
 import ButtonGreen from "../../butons/ButtonGreen";
+import UserProfile from './../../users/user-profile/UserProfile';
 
 function TurnDetailAndUpdate() {
   const { id } = useParams();
@@ -20,6 +21,7 @@ function TurnDetailAndUpdate() {
     "Solicitado",
     "Confirmado",
     "Cancelado",
+    "Reservado",
   ]);
   let states = [];
   const [modalState, setModalState] = useState(false);
@@ -301,16 +303,7 @@ function TurnDetailAndUpdate() {
             </h2>
 
             <Link to={`/users/${date.user.id}`}>
-              <div className="font-semibold border-2 border-yellow-400 rounded-xl py-3 px-3 bg-pink-500 text-white text-center mb-3">
-                <p className="text-2xl mb-2">
-                Cliente:
-                </p>
-                <p className="text-lg">
-                  {date.user.name} {date.user.surname}
-                </p>
-                <p>{date.user.phone}</p>
-                <p>{date.user.email}</p>
-              </div>
+              <UserProfile user={date.user} />
             </Link>
 
             <div className="mt-1">
@@ -417,7 +410,7 @@ function TurnDetailAndUpdate() {
               {" "}
               <ButtonGreen styles={"py-1.5"}>
                 {" "}
-                <WhatsappIcon /> Escribir
+                <WhatsappIcon color={"#ffffff"} /> Escribir
               </ButtonGreen>
             </a>
           )}

@@ -4,6 +4,7 @@ import NailPhotoGalery from '../components/nails-photos/nail-photo-galery/NailPh
 import PhotoUpload from '../components/nails-photos/photo-upload/PhotoUpload';
 import { useParams } from 'react-router-dom';
 import datesService from '../services/dates';
+import userServices from '../services/users';
 import {
 	Accordion,
 	AccordionHeader,
@@ -19,6 +20,16 @@ function ProfilePage() {
 	const [dates, setDates] = useState([]);
 	const { id } = useParams();
 	const [open, setOpen] = useState(0);
+	const [user, setUser] = useState({});
+
+	useEffect(() => {
+			userServices
+				.detail(userId)
+				.then((user) => {
+					setUser(user);
+				})
+				.catch((error) => console.error(error));
+		}, []);
 
 	const userId = id;
 
@@ -92,7 +103,7 @@ function ProfilePage() {
 	return (
 		<Layout>
 			<div className="flex flex-col justify-center items-center p-4 max-w-xl mx-auto">
-				<UserProfile userId={id} />
+				<UserProfile user={user} />
 				<Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"

@@ -1,23 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import userServices from '../../../services/users';
 import WhatsappIcon from './../../icons/WhatsappIcon';
 import EmailIcon from '../../icons/EmailIcon';
 
-function UserProfile({ userId }) {
-	const [user, setUser] = useState({});
+function UserProfile({ user }) {
+	console.log('user', user);
 
-	const avatarUrl =
-		user.avatarUrl ||
-		'https://res.cloudinary.com/duoshgr3h/image/upload/v1736012840/la-vin-nails-web/profile-pictures/avatar-default_wnlpoe.png';
-
-	useEffect(() => {
-		userServices
-			.detail(userId)
-			.then((user) => {
-				setUser(user);
-			})
-			.catch((error) => console.error(error));
-	}, []);
+	const avatarUrl =	user.avatarUrl ||	'https://res.cloudinary.com/duoshgr3h/image/upload/v1736012840/la-vin-nails-web/profile-pictures/avatar-default_wnlpoe.png';
 
 	return (
 		<div className="font-semibold text-teal-700 overflow-hidden flex flex-col my-4 w-full max-w-xl p-6 bg-gradient-to-br from-emerald-100/80 via-white to-pink-50 rounded-2xl shadow-md">

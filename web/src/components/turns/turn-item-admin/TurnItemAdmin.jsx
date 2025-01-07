@@ -8,6 +8,7 @@ function TurnItemAdmin({ turn }) {
   const id = turn.id;
 
   const [date, setDate] = useState();
+  
 
   useEffect(() => {
     const query = {};
@@ -24,6 +25,10 @@ function TurnItemAdmin({ turn }) {
 
   useEffect(() => {
     switch (turn.state) {
+      case "Reservado":
+        setBg("bg-orange-600");
+        setTextColor("text-black");
+        break;
       case "Disponible":
         setBg("bg-white border-2 border-emerald-500");
         setTextColor("text-black");

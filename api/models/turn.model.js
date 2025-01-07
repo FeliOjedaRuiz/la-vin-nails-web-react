@@ -12,7 +12,7 @@ const turnSchema = new mongoose.Schema(
     },
     state: {
       type: String,
-      enum: ["Disponible", "Solicitado", "Confirmado", "Cancelado"],
+      enum: ["Disponible", "Solicitado", "Confirmado", "Cancelado", "Reservado"],
       default: "Disponible",
     },
   },

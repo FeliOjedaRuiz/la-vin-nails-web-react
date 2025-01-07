@@ -18,13 +18,13 @@ function ServiceList() {
 
   return (
     <>
-      <div className="grid grid-cols-1 justify-center md:grid-cols-2 xl:grid-cols-3 grid-flow-row">
+      <ul className="grid grid-cols-1 justify-center md:grid-cols-2 xl:grid-cols-3 grid-flow-row">
         {services.map((service) => (
-          <div key={service.id}>
+          <li key={service.id}>
             <ServiceItem service={service} />
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 }

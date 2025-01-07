@@ -82,7 +82,7 @@ function ClientProfilePage() {
 	return (
 		<Layout>
 			<div className="flex flex-col justify-center items-center p-4 max-w-xl mx-auto">
-				<UserProfile userId={user.id} />
+				<UserProfile user={user} />
 				<Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"

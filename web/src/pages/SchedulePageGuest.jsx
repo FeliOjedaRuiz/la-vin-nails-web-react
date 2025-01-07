@@ -2,20 +2,17 @@ import React, { useState } from "react";
 import Layout from "../components/layouts/Layout";
 import { HonestWeekPicker } from "../components/week-picker/week-picker-js/HonestWeekPicker";
 import TurnListByWeek from "../components/turns/turn-list-by-week/TurnListByWeek";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import TurnsColorsExplication from "../components/turns/turns-color-explication/TurnsColorsExplication";
 
 function SchedulePageGuest() {
   const [initDate, setInitDate] = useState();
-  const [selectedTurn, setSelectedTurn] = useState({});
-  const navigate = useNavigate();
 
   const onInitDate = (date) => {
     setInitDate(date);
   };
 
-  const onTurnSelection = (turn) => {
-    setSelectedTurn(turn);
+  const onTurnSelection = () => {
   };
 
   return (
