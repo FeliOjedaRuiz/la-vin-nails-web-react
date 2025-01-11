@@ -2,6 +2,9 @@ import { useState, useEffect, useContext } from 'react';
 import photosService from '../../../services/photos';
 import PhotoItem from '../photo-item/PhotoItem';
 import { AuthContext } from "../../../contexts/AuthStore";
+import LeftIcon from './../../icons/LeftIcon';
+import RightIcon from './../../icons/RightIcon';
+import CloseIcon from '../../icons/CloseIcon';
 
 function NailPhotoGalery({ userId, reload, changeVisibility }) {
 	const [photos, setPhotos] = useState([]);
@@ -106,33 +109,34 @@ function NailPhotoGalery({ userId, reload, changeVisibility }) {
 			</div>
 			{!hidden && (
 				<div
-					className="fixed top-0 left-0 z-20 h-screen w-screen flex items-center justify-center bg-gradient-to-b from-pink-100/80 to-lime-100/80 backdrop-blur-[3px] p-4"
+					className="fixed top-0 left-0 z-20 h-screen  w-screen flex items-center justify-center bg-gradient-to-b from-pink-100/80 to-lime-100/80 backdrop-blur-[3px] p-5"
 					hidden={hidden}
 				>
 					<div className="relative z-30">
+					
 						<img
-							className="aspect-[3/4] object-cover rounded-xl "
+							className="aspect-[3/4] max-h-[680px] object-cover  rounded-xl shadow-md"
 							src={photoUrl}
 							alt="Foto de manicura"
 						/>
 						<button
 							onClick={handleClose}
-							className="absolute top-3 right-3 font-bold text-3xl text-pink-600 drop-shadow-xl"
+							className="absolute top-3 right-3 font-bold text-3xl text-white"
 						>
-							X
+							<CloseIcon className={"h-9 w-9 drop-shadow"} />
 						</button>
 						<div>
 							<button
 								onClick={handleChangePhotoRigth}
-								className="absolute top-1/2 left-3 font-bold text-3xl text-pink-600 drop-shadow-xl"
+								className="absolute top-1/2 left-3 font-bold text-pink-600 drop-shadow-xl"
 							>
-								{'<'}
+								<LeftIcon />
 							</button>
 							<button
 								onClick={handleChangePhotoLeft}
-								className="absolute top-1/2 right-3 font-bold text-3xl text-pink-600 drop-shadow-xl"
+								className="absolute top-1/2 right-3 font-bold text-pink-600 drop-shadow-xl"
 							>
-								{'>'}
+								<RightIcon />
 							</button>
 						</div>
 					</div>
