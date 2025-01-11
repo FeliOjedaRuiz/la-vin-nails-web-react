@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import photosService from '../../../services/photos';
+import CloseIcon from './../../icons/CloseIcon';
 
 function PhotoUpload({ userId, onPhotoCreation, visible, changeVisibility }) {
 	const [photoUrl, setPhotoUrl] = useState('');
@@ -62,8 +63,11 @@ function PhotoUpload({ userId, onPhotoCreation, visible, changeVisibility }) {
 	return (
 		<>
 			{visible && (
-				<div className="p-8 bg-gradient-to-b from-lime-100/95 to-pink-100/95 fixed top-0 left-0 z-20 h-full w-full flex items-center justify-center backdrop-blur-[3px]">
-					<div className="w-full max-w-md mx-auto p-2">
+				<div className="p-8 overflow-scroll bg-gradient-to-b from-lime-100/95 to-pink-100/95 fixed top-0 left-0 z-20 h-full w-full flex items-center justify-center backdrop-blur-[3px]">
+					<div className="w-full max-w-md max-h-full flex flex-col mx-auto p-2 ">
+					<div onClick={changeVisibility}>
+						<CloseIcon  className={'h-9 w-9 drop-shadow absolute top-4 right-4 text-pink-600'} />
+						</div>
 						<div>
 							<h1 className="text-2xl text-center font-bold mb-4 text-pink-700">
 								Agregar Nueva Foto
