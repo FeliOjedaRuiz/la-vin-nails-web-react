@@ -3,19 +3,19 @@ import { NavLink } from 'react-router-dom';
 import datesService from '../../../services/dates';
 import { AuthContext } from '../../../contexts/AuthStore';
 
-function TurnItemAdmin({ turn }) {
+function TurnItemAdmin({ turn, initDate }) {
 	const [bg, setBg] = useState('');
 	const [textColor, setTextColor] = useState('');
 	const { onDateSelect } = useContext(AuthContext);
 	const id = turn.id;
+	const [loaded, setLoaded] = useState(false);
 
 	const [date, setDate] = useState();
 
 	const handleDateSelect = () => {
-		if (date) {
-			onDateSelect(date);
-		}
+		onDateSelect(date);
 	};
+
 
 	useEffect(() => {
 		const query = {};
@@ -25,9 +25,13 @@ function TurnItemAdmin({ turn }) {
 			.list(query)
 			.then((date) => {
 				setDate(date[0]);
+				setLoaded(true);
 			})
 			.catch((error) => console.error(error));
 	}, [turn]);
+
+	
+	
 
 	useEffect(() => {
 		switch (turn.state) {
@@ -63,7 +67,7 @@ function TurnItemAdmin({ turn }) {
 				className={`mb-1.5 ${bg} rounded shadow py-1 px-1.5  flex flex-col `}
 			>
 				<p className={` font-medium  text-sm truncate ${textColor}`}>
-					{turn.hour} - {date && date.user.name} {date && date.user.surname}{' '}
+					{turn.hour} - {date && loaded && date.user.name} {date && loaded && date.user.surname}{' '}
 					{!date && turn.state}{' '}
 				</p>
 

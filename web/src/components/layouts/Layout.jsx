@@ -7,8 +7,6 @@ function Layout({ children }) {
   const { user } = useContext(AuthContext);
   const [role, setRole] = useState("guest");
 
-  console.log("user", user);
-
   useEffect(() => {
     if (!user) {
       setRole("guest");

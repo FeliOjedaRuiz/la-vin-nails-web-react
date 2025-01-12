@@ -46,6 +46,10 @@ function AuthStore({ children }) {
 		navigate('/login');
 	}, []);
 
+	const deleteDate = useCallback(() => {
+		setCurrentDate();
+	}, []);
+
 	const handleWeekSelect = (week) => {
 		console.log('Updating week context', week);
 		if (!week) {
@@ -72,6 +76,7 @@ function AuthStore({ children }) {
 				user,
 				currentWeek,
         currentDate,
+				deleteDate,
 				onUserChange: handleUserChange,
 				logout,
 				onWeekSelect: handleWeekSelect,

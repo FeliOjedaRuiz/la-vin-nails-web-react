@@ -14,7 +14,7 @@ function SchedulePageAdmin() {
 
   useEffect(() => {
     setReload(!reload);
-  }, []);
+  }, [initDate]);
 
   const onTurnCreation = () => {
     setReload(!reload);
