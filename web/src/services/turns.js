@@ -2,7 +2,7 @@ import http from "./base-api";
 
 const create = (turn) => http.post("/turns", turn);
 
-const list = () => http.get("/turns");
+const list = (date) => http.get(`/turns/${date}`);
 
 const detail = (id) => http.get(`/turns/${id}`);
 

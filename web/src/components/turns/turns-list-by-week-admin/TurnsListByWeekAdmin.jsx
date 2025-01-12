@@ -63,12 +63,12 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 
   useEffect(() => {
     turnsService
-      .list()
+      .list(initDate)
       .then((turns) => {
         setTurns(turns);
       })
       .catch((error) => console.error(error));
-  }, [reload]);
+  }, [reload, initDate]);
 
   const firstDayTurns = turns
     .filter((turn) => turn.date === firstDay)

@@ -31,9 +31,9 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
   const fifthDay = transformDate(day.setDate(day.getDate() + 1));
   const sixthDay = transformDate(day.setDate(day.getDate() + 1));
 
-  // console.log(
-  //   `Semana: ${initDate} - ${secondDay} - ${thirdDay} - ${fourthDay} - ${fifthDay} - ${sixthDay}`
-  // );
+  console.log(
+    `Semana: ${initDate} - ${secondDay} - ${thirdDay} - ${fourthDay} - ${fifthDay} - ${sixthDay}`
+  );
 
   const months = [
     "Enero",
@@ -68,12 +68,12 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
 
   useEffect(() => {
     turnsService
-      .list()
+      .list(initDate)
       .then((turns) => {
         setTurns(turns);
       })
       .catch((error) => console.error(error));
-  }, [reload]);
+  }, [reload, initDate]);
 
   const firstDayTurns = turns
     .filter((turn) => turn.date === firstDay)

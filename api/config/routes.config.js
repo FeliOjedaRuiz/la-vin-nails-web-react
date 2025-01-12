@@ -43,7 +43,7 @@ router.get('/services/:id', services.detail);
 
 // TURNS
 router.post('/turns', secure.isAdmin, turns.create);
-router.get('/turns', turns.list);
+router.get('/turns/:date', turns.list);
 router.get('/turns/:id', turns.detail);
 router.patch('/turns/:id', secure.auth, turnsMid.exists, turns.update);
 router.delete(

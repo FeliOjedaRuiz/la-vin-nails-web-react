@@ -7,7 +7,8 @@ module.exports.create = (req, res, next) => {
 };
 
 module.exports.list = (req, res, next) => {
-  Turn.find()
+  const criterial = { date: {"$gt": req.params.date} }
+  Turn.find(criterial)
     .then((turns) => res.json(turns))
     .catch(next);
 };

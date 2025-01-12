@@ -14,11 +14,11 @@ function TurnItemAdmin({ turn }) {
     const query = {};
     query.turn = id;
 
+
     datesService
       .list(query)
-      .then((dates) => {
-        const thisDate = dates.filter((date) => date.turn.id === id);
-        setDate(thisDate[0]);
+      .then((date) => {        
+        setDate(date[0]);
       })
       .catch((error) => console.error(error));
   }, [turn]);
@@ -52,10 +52,14 @@ function TurnItemAdmin({ turn }) {
 
   return (
     <NavLink to={`/turns/${id}`}>
+    
       <div className={`mb-1.5 ${bg} rounded shadow py-1 px-1.5  flex flex-col `}>
+      
+      
         <p className={` font-medium  text-sm truncate ${textColor}`}>
           {turn.hour} - {date && date.user.name} {date && date.user.surname} {!date && turn.state}{" "}
         </p>
+      
         {/* <p className={`font-medium text-xs truncate ${textColor}`}>
           {" "}
           {date && date.service.name}
