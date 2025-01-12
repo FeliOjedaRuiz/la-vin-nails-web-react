@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ServicesPage from "./pages/ServicesPage";
-import SchedulePage from "./pages/SchedulePage";
+import SchedulePageAdmin from "./pages/SchedulePageAdmin";
 import ClientProfilePage from "./pages/ClientProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
@@ -69,7 +69,7 @@ function App() {
             path="/admin-schedule"
             element={
               <PrivateRoute role="admin">
-                <SchedulePage />
+                <SchedulePageAdmin />
               </PrivateRoute>
             }
           />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import turnsService from "../../../services/turns";
 import datesService from "../../../services/dates";
 import { Link, useParams } from "react-router-dom";
@@ -9,11 +9,13 @@ import Modal from "../../modal/Modal";
 import DeleteIcon from "../../icons/DeleteIcon";
 import ButtonGreen from "../../butons/ButtonGreen";
 import UserProfile from './../../users/user-profile/UserProfile';
+import { AuthContext } from "../../../contexts/AuthStore";
 
 function TurnDetailAndUpdate() {
   const { id } = useParams();
   const [turn, setTurn] = useState({});
-  const [date, setDate] = useState(undefined);
+  const { currentDate } = useContext(AuthContext);
+  const [date, setDate] = useState();
   const [turnDateWhatsapp, setTurnDateWhatsapp] = useState()
   const navigate = useNavigate();
   const [turnStates, setTurnStates] = useState([
@@ -27,20 +29,29 @@ function TurnDetailAndUpdate() {
   const [modalState, setModalState] = useState(false);
   const [modalDateState, setModalDateState] = useState(false);
   const [reload, setReload] = useState(false);
+  
 
   const [serverError, setServerError] = useState(undefined);
 
-  useEffect(() => {
-    const query = {};
-    query.turn = id;
+  console.log(`Currrrr ${currentDate}`)
 
-    datesService
-      .list(query)
-      .then((dates) => {
-        setDate(dates[0]);
-      })
-      .catch((error) => console.error(error));    
-  }, [reload]);
+
+  useEffect(() => {
+    setDate(currentDate);
+  }, [])
+  
+
+  // useEffect(() => {
+  //   const query = {};
+  //   query.turn = id;
+
+  //   datesService
+  //     .list(query)
+  //     .then((dates) => {
+  //       setDate(dates[0]);
+  //     })
+  //     .catch((error) => console.error(error));    
+  // }, [reload]);
 
   useEffect(() => {
     turnsService

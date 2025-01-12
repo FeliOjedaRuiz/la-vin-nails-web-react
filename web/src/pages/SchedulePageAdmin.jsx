@@ -4,7 +4,7 @@ import { HonestWeekPicker } from "../components/week-picker/week-picker-js/Hones
 import TurnsForm from "../components/turns/turns-form/TurnsForm";
 import TurnsListByWeekAdmin from "../components/turns/turns-list-by-week-admin/TurnsListByWeekAdmin";
 
-function SchedulePage() {
+function SchedulePageAdmin() {
   const [initDate, setInitDate] = useState("2025-01-01");
   const [reload, setReload] = useState(false);
 
@@ -40,4 +40,4 @@ function SchedulePage() {
   );
 }
 
-export default SchedulePage;
+export default SchedulePageAdmin;
