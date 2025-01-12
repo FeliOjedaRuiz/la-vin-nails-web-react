@@ -18,7 +18,7 @@ function UserProfile({ user }) {
 					{user.name} {user.surname}
 				</p>
 			</div>
-			<div>
+			<div className=''>
 				<a
 					href={`https://wa.me/+34${user.phone}?text=¡Hola!`}
 					className="flex items-center mt-2"
@@ -28,7 +28,7 @@ function UserProfile({ user }) {
 				</a>
 				<div className="flex items-center mt-2">
 					<EmailIcon />
-					<p className="text-md">{user.email}</p>
+					<p className="text-md max-w-[250px] truncate ">{user.email}</p>
 				</div>
 			</div>
 		</div>
