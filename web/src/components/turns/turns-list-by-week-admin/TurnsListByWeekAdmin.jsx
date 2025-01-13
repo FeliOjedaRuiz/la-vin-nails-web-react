@@ -144,89 +144,113 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 					{showDate(firstDay)}
 				</h5>
 				{loading && (
-					<div className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}>
-						<p className={` font-medium text-center text-sm truncate text-black`}>
+					<div
+						className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}
+					>
+						<p
+							className={` font-medium text-center text-sm truncate text-black`}
+						>
 							Cargando...
 						</p>
 					</div>
 				)}
 				{firstDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} initDate={initDate} />
+					<TurnItemAdmin turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
 				<h5 className="text-center font-bold m-1 text-sm lg:text-lg">
 					{showDate(secondDay)}
 				</h5>
-        {loading && (
-					<div className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}>
-						<p className={` font-medium text-center text-sm truncate text-black`}>
+				{loading && (
+					<div
+						className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}
+					>
+						<p
+							className={` font-medium text-center text-sm truncate text-black`}
+						>
 							Cargando...
 						</p>
 					</div>
 				)}
 				{secondDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} initDate={initDate} />
+					<TurnItemAdmin turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
 				<h5 className="text-center font-bold m-1 text-sm lg:text-lg">
 					{showDate(thirdDay)}
 				</h5>
-        {loading && (
-					<div className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}>
-						<p className={` font-medium text-center text-sm truncate text-black`}>
+				{loading && (
+					<div
+						className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}
+					>
+						<p
+							className={` font-medium text-center text-sm truncate text-black`}
+						>
 							Cargando...
 						</p>
 					</div>
 				)}
 				{thirdDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} initDate={initDate} />
+					<TurnItemAdmin turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
 				<h5 className="text-center font-bold m-1 text-sm lg:text-lg">
 					{showDate(fourthDay)}
 				</h5>
-        {loading && (
-					<div className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}>
-						<p className={` font-medium text-center text-sm truncate text-black`}>
+				{loading && (
+					<div
+						className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}
+					>
+						<p
+							className={` font-medium text-center text-sm truncate text-black`}
+						>
 							Cargando...
 						</p>
 					</div>
 				)}
 				{fourthDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} initDate={initDate} />
+					<TurnItemAdmin turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
 				<h5 className="text-center font-bold m-1 text-sm lg:text-lg">
 					{showDate(fifthDay)}
 				</h5>
-        {loading && (
-					<div className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}>
-						<p className={` font-medium text-center text-sm truncate text-black`}>
+				{loading && (
+					<div
+						className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}
+					>
+						<p
+							className={` font-medium text-center text-sm truncate text-black`}
+						>
 							Cargando...
 						</p>
 					</div>
 				)}
 				{fifthDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} initDate={initDate} />
+					<TurnItemAdmin turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
 				<h5 className="text-center font-bold m-1 text-sm lg:text-lg">
 					{showDate(sixthDay)}
 				</h5>
-        {loading && (
-					<div className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}>
-						<p className={` font-medium text-center text-sm truncate text-black`}>
+				{loading && (
+					<div
+						className={`mb-1.5 h-28 bg-gray-300  rounded shadow py-1 px-1.5  flex flex-col justify-center `}
+					>
+						<p
+							className={` font-medium text-center text-sm truncate text-black`}
+						>
 							Cargando...
 						</p>
 					</div>
 				)}
 				{sixthDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} initDate={initDate} />
+					<TurnItemAdmin turn={turn} />
 				))}
 			</div>
 		</div>

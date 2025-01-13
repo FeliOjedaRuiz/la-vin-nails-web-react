@@ -40,10 +40,10 @@ function TurnDetailAndUpdate() {
 	useEffect(() => {
 		turnsService
 			.detail(id)
-			.then((newTurn) => {
-				setTurn(newTurn);
+			.then((turn) => {
+				setTurn(turn);
 				states = turnStates.filter((state) => turn.state !== state);
-				states.unshift(newTurn.state);
+				states.unshift(turn.state);
 				setTurnStates(states);
 			})
 			.catch((error) => console.error(error));
@@ -249,7 +249,7 @@ function TurnDetailAndUpdate() {
 									onChange={handleTurnChange}
 								>
 									{turnStates.map((state) => (
-										<option value={turn.state}>{state}</option>
+										<option value={state}>{state}</option>
 									))}
 								</select>
 							</div>

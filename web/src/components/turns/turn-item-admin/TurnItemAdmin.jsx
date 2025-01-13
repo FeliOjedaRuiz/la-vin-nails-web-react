@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import datesService from '../../../services/dates';
 import { AuthContext } from '../../../contexts/AuthStore';
 
-function TurnItemAdmin({ turn, initDate }) {
+function TurnItemAdmin({ turn }) {
 	const [bg, setBg] = useState('');
 	const [textColor, setTextColor] = useState('');
 	const { onDateSelect } = useContext(AuthContext);
@@ -15,7 +15,6 @@ function TurnItemAdmin({ turn, initDate }) {
 	const handleDateSelect = () => {
 		onDateSelect(date);
 	};
-
 
 	useEffect(() => {
 		const query = {};
@@ -29,9 +28,6 @@ function TurnItemAdmin({ turn, initDate }) {
 			})
 			.catch((error) => console.error(error));
 	}, [turn]);
-
-	
-	
 
 	useEffect(() => {
 		switch (turn.state) {
@@ -61,22 +57,31 @@ function TurnItemAdmin({ turn, initDate }) {
 	}, [turn]);
 
 	return (
-		<NavLink to={`/turns/${id}`}>
-			<div
-				onClick={handleDateSelect}
-				className={`mb-1.5 ${bg} rounded shadow py-1 px-1.5  flex flex-col `}
-			>
-				<p className={` font-medium  text-sm truncate ${textColor}`}>
-					{turn.hour} - {date && loaded && date.user.name} {date && loaded && date.user.surname}{' '}
-					{!date && turn.state}{' '}
-				</p>
-
-				{/* <p className={`font-medium text-xs truncate ${textColor}`}>
-          {" "}
-          {date && date.service.name}
-        </p> */}
-			</div>
-		</NavLink>
+		<>
+			{loaded && (
+				<NavLink to={`/turns/${id}`}>
+					<div
+						onClick={handleDateSelect}
+						className={`mb-1.5 ${bg} rounded shadow py-1 px-1.5  flex flex-col `}
+					>
+						<p className={` font-medium  text-sm truncate ${textColor}`}>
+							{turn.hour} - {date && date.user.name} {date && date.user.surname}{' '}
+							{!date && turn.state}{' '}
+						</p>
+					</div>
+				</NavLink>
+			)}
+			{!loaded && (
+				<div
+					onClick={handleDateSelect}
+					className={`mb-1.5 ${bg} rounded shadow py-1 px-1.5  flex flex-col `}
+				>
+					<p className={` font-medium  text-sm truncate ${textColor}`}>
+						{turn.hour} - {turn.state}
+					</p>
+				</div>
+			)}
+		</>
 	);
 }
 
