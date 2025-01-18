@@ -27,7 +27,7 @@ function UserProfile({ user }) {
 				</a>
 				<div className="flex items-center mt-2 h-6">
 					<EmailIcon />
-					<p className="text-md truncate ">{user.email}</p>
+					<p className="text-md truncate">{user.email}</p>
 				</div>
 			</div>
 		</div>

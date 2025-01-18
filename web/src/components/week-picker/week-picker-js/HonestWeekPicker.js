@@ -207,7 +207,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
       onClick={() => setOpen(true)}
       tabIndex={0}
     >
-      <p className="text-lg uppercase text-pink-600 -mb-2">
+      <p className="text-md uppercase text-pink-600 -mb-2">
         {" "}
         {">"} Seleccione aquí la semana {"<"}{" "}
       </p>
@@ -236,7 +236,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
             <div className="single-number day">Sab</div>
           </div>
           <div className="numbers-container">{renderDays()}</div>
-          <div className="text-md text-pink-600 mb-2">Click afuera para cerrar</div>
+          <div className="text-lg text-pink-600 mb-2 animate-bounce">Click afuera para cerrar</div>
         </div>
       )}
     </div>

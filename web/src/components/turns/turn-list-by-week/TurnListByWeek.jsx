@@ -31,10 +31,6 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
   const fifthDay = transformDate(day.setDate(day.getDate() + 1));
   const sixthDay = transformDate(day.setDate(day.getDate() + 1));
 
-  console.log(
-    `Semana: ${initDate} - ${secondDay} - ${thirdDay} - ${fourthDay} - ${fifthDay} - ${sixthDay}`
-  );
-
   const months = [
     "Enero",
     "Feb.",

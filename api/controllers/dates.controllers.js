@@ -54,6 +54,25 @@ module.exports.listByUser = (req, res, next) => {
 		.catch(next);
 };
 
+module.exports.listByDate = (req, res, next) => {
+	const targetDate = req.params.selectedDate;
+
+	Date.find()
+		.populate('turn')
+		.populate('user')
+		.then((dates) => {
+			const filteredDates = dates.filter((date) => {
+				if (date.turn) {					
+					if (date.turn.date === targetDate) {
+						return true;
+					}
+				}
+			});
+			res.json(filteredDates);
+		})
+		.catch(next);
+};
+
 module.exports.update = (req, res, next) => {
 	Object.assign(req.date, req.body);
 	req.date

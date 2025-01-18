@@ -58,6 +58,7 @@ router.delete(
 router.post('/dates', secure.auth, dates.create);
 router.get('/dates', secure.isAdmin, dates.list);
 router.get('/dates/:userId', secure.isAdmin, dates.listByUser);
+router.get('/dates/selectedDate/:selectedDate', secure.isAdmin, dates.listByDate);
 router.get('/myDates', secure.auth, dates.myList);
 router.patch('/dates/:id', secure.isAdmin, datesMid.exists, dates.update);
 router.delete(
