@@ -1,7 +1,7 @@
 import React from 'react';
 import DateIncome from './DateIncome';
 
-function DailyAccountList({ dates }) {
+function DailyAccountList({ dates, handleReload }) {
 	return (
 		<div>
 			<div className="p-1 mx-2 rounded-lg flex items-center justify-end text-teal-700 font-semibold">
@@ -27,7 +27,7 @@ function DailyAccountList({ dates }) {
 			</div>
 			<ul className="grid grid-cols-1 gap-1 ">
 			{dates.map((date) => (
-				<DateIncome date={date} />
+				<DateIncome date={date} handleReload={handleReload}  />
 			))}
 				
 			</ul>

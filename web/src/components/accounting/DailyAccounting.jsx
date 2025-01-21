@@ -3,12 +3,18 @@ import ReactDatePicker from './ReactDatePicker';
 import DailyAccountList from './DailyAccountList';
 import dateServices from '../../services/dates';
 import useTransformDate from '../../hooks/UseTransformDate';
+import DailyResults from './DailyResults';
 
 function DailyAccounting() {
 	const [date, setDate] = useState(new Date());
 	const [dates, setDates] = useState([]);
+  const [reload, setReload] = useState(false)
 
 	const selectedDate = useTransformDate(date);
+
+  const handleReload = () => {
+    setReload(!reload)
+  }
 
 	useEffect(() => {
 		dateServices
@@ -17,12 +23,13 @@ function DailyAccounting() {
 				setDates(dates);
 			})
 			.catch();
-	}, [date]);
+	}, [date, reload]);
 
 	return (
 		<div className="p-2">
 			<ReactDatePicker date={date} setDate={setDate} />
-			<DailyAccountList dates={dates} />
+			<DailyAccountList dates={dates} handleReload={handleReload} />
+      <DailyResults dates={dates} />
 		</div>
 	);
 }

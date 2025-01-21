@@ -8,12 +8,11 @@ import {
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import { es } from "react-day-picker/locale";
-// import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import LeftIcon from './../icons/LeftIcon';
 import RightIcon from './../icons/RightIcon';
 
 export default function ReactDatePicker({ date, setDate }) {
-	
+	const [openPopover, setOpenPopover] = useState(false);	
 
 	useEffect(() => {
 		
