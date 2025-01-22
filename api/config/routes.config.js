@@ -6,12 +6,14 @@ const services = require('../controllers/services.controllers');
 const turns = require('../controllers/turns.controllers');
 const dates = require('../controllers/dates.controllers');
 const photos = require('../controllers/photos.controllers');
+const expenses = require('../controllers/expenses.controllers');
 
 const turnsMid = require('../middlewares/turns.mid');
 const datesMid = require('../middlewares/dates.mid');
 const secure = require('../middlewares/secure.mid');
 const usersMid = require('../middlewares/users.mid');
 const photosMid = require('../middlewares/photos.mid');
+const expensesMid = require('../middlewares/expenses.mid');
 
 const fileUploader = require('../config/cloudinary.config');
 
@@ -58,7 +60,11 @@ router.delete(
 router.post('/dates', secure.auth, dates.create);
 router.get('/dates', secure.isAdmin, dates.list);
 router.get('/dates/:userId', secure.isAdmin, dates.listByUser);
-router.get('/dates/selectedDate/:selectedDate', secure.isAdmin, dates.listByDate);
+router.get(
+	'/dates/selectedDate/:selectedDate',
+	secure.isAdmin,
+	dates.listByDate
+);
 router.get('/myDates', secure.auth, dates.myList);
 router.patch('/dates/:id', secure.isAdmin, datesMid.exists, dates.update);
 router.delete(
@@ -78,7 +84,29 @@ router.post(
 );
 router.post('/photos', secure.auth, photos.create);
 // router.get('/photos', secure.isAdmin, photos.list);
-router.get('/photos/:userId', secure.auth, secure.isAuthorized, photos.listByUser);
+router.get(
+	'/photos/:userId',
+	secure.auth,
+	secure.isAuthorized,
+	photos.listByUser
+);
 router.delete('/photos/:id', secure.isAdmin, photosMid.exists, photos.delete);
 
 module.exports = router;
+
+// EXPENSES
+
+router.post('/expenses', secure.isAdmin, expenses.create);
+router.get('/expenses/:date', secure.isAdmin, expenses.listByDate);
+router.patch(
+	'/expenses/:id',
+	secure.isAdmin,
+	expensesMid.exists,
+	expenses.update
+);
+router.delete(
+	'/expenses/:id',
+	secure.isAdmin,
+	expensesMid.exists,
+	expenses.delete
+);
