@@ -9,13 +9,13 @@ module.exports.create = (req, res, next) => {
 };
 
 module.exports.listByDate = (req, res, next) => {
-	const { date } = req.query;
 
-	const criterial = {};
-	if (date) criterial.date = date;
+	const criterial = { date: req.params.date };
 
 	Expense.find(criterial)
-		.then((expenses) => res.json(expenses))
+		.then((expenses) => {
+			res.json(expenses);
+		})
 		.catch(next);
 };
 

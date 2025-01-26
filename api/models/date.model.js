@@ -46,6 +46,11 @@ const dateSchema = new mongoose.Schema(
       enum: ["Solicitada", "Realizada", "Cancelada"],
       default: "Solicitada",
     },
+    paymentMethod: {
+      type: String,
+      enum: ["Sin cobrar", "Efectivo", "Bizum"],
+      default: "Sin cobrar",
+    },
   },
   {
     timestamps: true,

@@ -99,7 +99,7 @@ module.exports = router;
 router.post('/expenses', secure.isAdmin, expenses.create);
 router.get('/expenses/:date', secure.isAdmin, expenses.listByDate);
 router.patch(
-	'/expenses/:id',
+	'/expenses/:expenseId',
 	secure.isAdmin,
 	expensesMid.exists,
 	expenses.update

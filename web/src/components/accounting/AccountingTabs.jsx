@@ -32,10 +32,10 @@ function AccountingTabs() {
   return (
     <Tabs value={activeTab}>
       <TabsHeader
-        className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+        className="rounded-none bg-transparent border-b border-teal-400 p-0 shadow-md"
         indicatorProps={{
           className:
-            "bg-transparent border-b-2 border-pink-700 shadow-none rounded-none",
+            "bg-transparent border-b-2 bg-white/50 border-teal-700 shadow-none rounded-none",
         }}
       >
         {data.map(({ label, value }) => (
@@ -43,7 +43,7 @@ function AccountingTabs() {
             key={value}
             value={value}
             onClick={() => setActiveTab(value)}
-            className={activeTab === value ? "text-gray-900 text-lg font-bold w-1/3 h-12" : "w-1/3 text-lg h-12"}
+            className={activeTab === value ? "text-teal-700 font-medium w-1/3 h-8 " : "w-1/3 h-8 text-pink-800"}
           >
             {label}
           </Tab>

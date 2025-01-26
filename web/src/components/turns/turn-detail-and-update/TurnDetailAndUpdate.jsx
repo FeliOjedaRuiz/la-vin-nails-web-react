@@ -401,7 +401,7 @@ function TurnDetailAndUpdate() {
 
 					{date && (
 						<a
-							href={`https://wa.me/+34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${turnDateWhatsapp} a las ${date.turn.hour} hs.
+							href={`https://wa.me/34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${turnDateWhatsapp} a las ${date.turn.hour} hs.
               *ha sido confirmada* con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs.*
               %0A
               🕑Se tolerarán hasta 10' de demora, de lo contrario se cancela la cita!%0A

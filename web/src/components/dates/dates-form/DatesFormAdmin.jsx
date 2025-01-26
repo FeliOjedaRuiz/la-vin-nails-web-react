@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../contexts/AuthStore";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import datesService from "../../../services/dates";
 import turnsService from "../../../services/turns";
@@ -19,7 +18,6 @@ function DatesFormAdmin({ service, serviceTypes }) {
   } = useForm({ mode: "onBlur" });
   const [serverError, setServerError] = useState(undefined);
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
   const [initDate, setInitDate] = useState();
   const [selectedTurn, setSelectedTurn] = useState({});
   const [selectedDate, setSelectedDate] = useState({});
@@ -93,27 +91,33 @@ function DatesFormAdmin({ service, serviceTypes }) {
   };
 
   const onDateSubmit = async (date) => {
+    setModalState(!modalState)
     date.user = selectedUser.id;
     date.service = service.id;
     date.turn = selectedTurn.id;
-    try {
-      setServerError(undefined);
-      console.debug("Sending date application...");
-      date = await datesService.create(date);
-      onTurnSubmit();
-      navigate("/profile");
-    } catch (error) {
-      const errors = error.response?.data?.errors;
-      if (errors) {
-        console.error(error.message, errors);
-        Object.keys(errors).forEach((inputName) =>
-          setError(inputName, { message: errors[inputName] })
-        );
-      } else {
-        console.error(error);
-        setServerError(error.message);
-      }
+    if (date.user) {
+      try {
+        setServerError(undefined);
+        console.debug("Sending date application...");
+        date = await datesService.create(date);
+        onTurnSubmit();
+        navigate("/admin-schedule");
+      } catch (error) {
+        const errors = error.response?.data?.errors;
+        if (errors) {
+          console.error(error.message, errors);
+          Object.keys(errors).forEach((inputName) =>
+            setError(inputName, { message: errors[inputName] })
+          );
+        } else {
+          console.error(error);
+          setServerError(error.message);
+        }
+      }      
+    } else {
+      setServerError("Usuario no seleccionado")
     }
+    
   };
 
   const handleChange = (e) => {

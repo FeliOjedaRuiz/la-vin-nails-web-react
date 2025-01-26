@@ -25,6 +25,9 @@ function TurnItemAdmin({ turn }) {
 			.then((date) => {
 				setDate(date[0]);
 				setLoaded(true);
+				if (!date[0].user) {
+					console.error(`Error cita ID ${date[0].id}, turno ${turn.id}`)
+				}
 			})
 			.catch((error) => console.error(error));
 	}, [turn]);
