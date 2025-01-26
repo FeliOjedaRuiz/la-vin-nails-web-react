@@ -23,7 +23,7 @@ function UsersSearchComponent() {
 
   return (
     <div className="flex flex-col items-center max-w-md w-full p-4">
-      <h3 className="text-3xl mt-3 font-bold text-center color text-pink-700">
+      <h3 className="text-2xl font-bold text-center color text-pink-700">
         Usuarios:
       </h3>
       <UsersSearchBar search={search} onSearch={onSearch} />

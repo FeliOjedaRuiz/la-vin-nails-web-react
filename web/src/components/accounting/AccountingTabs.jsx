@@ -7,6 +7,8 @@ import {
 } from "@material-tailwind/react";
 import React from "react";
 import DailyAccounting from "./DailyAccounting";
+import WeeklyAccounting from "./WeeklyAccounting";
+import MonthlyAccounting from "./MonthlyAccounting";
 
 function AccountingTabs() {
   const [activeTab, setActiveTab] = React.useState("Diario");
@@ -20,12 +22,12 @@ function AccountingTabs() {
     {
       label: "Semanal",
       value: "Semanal",
-      desc: "Contenido semanal",
+      desc: <WeeklyAccounting />,
     },
     {
       label: "Mensual",
       value: "Mensual",
-      desc:  "Contenido Mensual",
+      desc:  <MonthlyAccounting />,
     },   
   ];
 

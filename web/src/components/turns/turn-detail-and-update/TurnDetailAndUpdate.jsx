@@ -403,11 +403,7 @@ function TurnDetailAndUpdate() {
 						<a
 							href={`https://wa.me/34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${turnDateWhatsapp} a las ${date.turn.hour} hs.
               *ha sido confirmada* con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs.*
-              %0A
-              🕑Se tolerarán hasta 10' de demora, de lo contrario se cancela la cita!%0A
-              💅Antes de la cita, decide que diseño quieres, para evitar demoras.%0A
-              🧼¡Recuerda higienizar bien tus manos antes de la cita!%0A
-              🤑Puedes abonar con bizum a este número o efectivo preferentemente`}
+              %0A%0A¡Te espero!`}
 							className="flex items-center justify-center"
 						>
 							{' '}
