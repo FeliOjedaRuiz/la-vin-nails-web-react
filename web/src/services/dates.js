@@ -9,6 +9,8 @@ const listByUser = (userId) => http.get(`/dates/${userId}`);
 const listByDate = (selectedDate) =>
 	http.get(`/dates/selectedDate/${selectedDate}`);
 
+const listByMonth = (selectedMonth) => http.get(`/dates/selectedMonth/${selectedMonth}`)
+
 const myList = () => http.get('/myDates/');
 
 const detail = (id) => http.get(`/dates/${id}`);
@@ -23,6 +25,7 @@ export default {
 	myList,
 	listByUser,
 	listByDate,
+	listByMonth,
 	detail,
 	update,
 	deleteDate,

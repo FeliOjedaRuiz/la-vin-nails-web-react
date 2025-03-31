@@ -49,7 +49,7 @@ function Layout({ children }) {
 						</span>
 					</NavLink>
 
-					{role === 'guest' && (
+					
           <NavLink
 						to="/services"
 						className="inline-flex w-[72px] flex-col items-center justify-center px-2 hover:bg-pink-200"
@@ -63,7 +63,7 @@ function Layout({ children }) {
 							Servicios
 						</span>
 					</NavLink>
-          )}
+         
 
 					{role === 'guest' && (
 						<NavLink

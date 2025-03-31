@@ -6,9 +6,9 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 import React from "react";
-import DailyAccounting from "./DailyAccounting";
+import DailyAccounting from "./DailyAccounting/DailyAccounting";
 import WeeklyAccounting from "./WeeklyAccounting";
-import MonthlyAccounting from "./MonthlyAccounting";
+import MonthlyAccounting from "./MonthAccounting/MonthlyAccounting";
 
 function AccountingTabs() {
   const [activeTab, setActiveTab] = React.useState("Diario");

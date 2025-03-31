@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from './ReactDatePicker';
 import DailyIncomes from './DailyIncomes';
-import dateServices from '../../services/dates';
-import useTransformDate from '../../hooks/UseTransformDate';
+import dateServices from '../../../services/dates';
+import useTransformDate from '../../../hooks/UseTransformDate';
 import DailyResults from './DailyResults';
-import DailyExpenses from './expenses/DailyExpenses';
-import expensesServices from '../../services/expenses';
+import DailyExpenses from '../expenses/DailyExpenses';
+import expensesServices from '../../../services/expenses';
 
 function DailyAccounting() {
 	const [date, setDate] = useState(new Date());

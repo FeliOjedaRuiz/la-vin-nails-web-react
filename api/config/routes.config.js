@@ -65,6 +65,11 @@ router.get(
 	secure.isAdmin,
 	dates.listByDate
 );
+router.get(
+	'/dates/selectedMonth/:selectedMonth',
+	secure.isAdmin,
+	dates.listByMonth
+);
 router.get('/myDates', secure.auth, dates.myList);
 router.patch('/dates/:id', secure.isAdmin, datesMid.exists, dates.update);
 router.delete(

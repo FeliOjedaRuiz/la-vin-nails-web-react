@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	Input,
 	Popover,
@@ -8,16 +8,11 @@ import {
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import { es } from "react-day-picker/locale";
-import LeftIcon from './../icons/LeftIcon';
-import RightIcon from './../icons/RightIcon';
+import LeftIcon from './../../icons/LeftIcon';
+import RightIcon from './../../icons/RightIcon';
 
 export default function ReactDatePicker({ date, setDate }) {
 	const [openPopover, setOpenPopover] = useState(false);	
-
-	useEffect(() => {
-		
-	}, [])
-	
 
 	return (
 		<div className="my-2">

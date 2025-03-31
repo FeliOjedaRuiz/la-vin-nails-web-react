@@ -73,6 +73,26 @@ module.exports.listByDate = (req, res, next) => {
 		.catch(next);
 };
 
+module.exports.listByMonth = (req, res, next) => {
+	const targetDate = req.params.selectedMonth;
+	const [targetYear, targetMonth] = targetDate.split('-');
+
+	Date.find()
+		.populate('turn')
+		.then((dates) => {
+			const filteredDates = dates.filter((date) => {
+				if (date.turn) {
+					const [year, month] = date.turn.date.split('-');
+					if (year === targetYear && month === targetMonth) {
+						return true;
+					}
+				}
+			});
+			res.json(filteredDates);
+		})
+		.catch(next);
+};
+
 module.exports.update = (req, res, next) => {
 	Object.assign(req.date, req.body);
 	req.date
