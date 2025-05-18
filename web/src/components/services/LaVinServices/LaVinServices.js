@@ -12,7 +12,7 @@ export const services = [
       "https://res.cloudinary.com/duoshgr3h/image/upload/v1722880052/semi-mano_uhpm7o.webp",
     description:
       "Este servicio se realiza con esmaltes semipermanentes, que se aplican de forma rápida y fácil secando con luz UV y que consigue la durabilidad y brillo que caracterizan a las uñas esculpidas. Con los cuidados necesarios, una aplicación puede llegar a durar hasta 3 semanas.",
-    price: 14,
+    price: 15,
     dateDuration: "1:15",
   },
   {
@@ -60,7 +60,7 @@ export const services = [
       "https://res.cloudinary.com/duoshgr3h/image/upload/v1722880055/microextenci%C3%B3n_fbsyn6.webp",
     description:
       "Este servicio se adapta mejor a aquellas uñas partidas, maltratadas o extremadamente cortas. Se aplica con acrigel y la extención máxima es de 5 mm.",
-    price: 18,
+    price: 20,
     dateDuration: "1:30",
   },
   {
