@@ -103,6 +103,11 @@ module.exports = router;
 
 router.post('/expenses', secure.isAdmin, expenses.create);
 router.get('/expenses/:date', secure.isAdmin, expenses.listByDate);
+router.get(
+	'/expenses/selectedMonth/:selectedMonth',
+	secure.isAdmin,
+	expenses.listByMonth
+);
 router.patch(
 	'/expenses/:expenseId',
 	secure.isAdmin,

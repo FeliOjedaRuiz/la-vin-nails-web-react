@@ -35,15 +35,15 @@ function DailyResults({ dates, expenses }) {
 		<div className="mt-4 px-2 py-1 bg-white rounded-md shadow-md border border-teal-500">
 			<div className=" flex justify-between font-semibold  text-teal-600">
 				<p>Ingresos </p>
-				<p>{incomesSum} €</p>
+				<p>{incomesSum.toFixed(2)} €</p>
 			</div>
 			<div className=" flex justify-between font-semibold  text-pink-600">
 				<p>Egresos </p>
-				<p>-{expensesSum} €</p>
+				<p>-{expensesSum.toFixed(2)} €</p>
 			</div>
 			<div className="mt-2 pt-2 border-t border-teal-400 flex justify-between font-semibold  ">
 				<p>Balance diario </p>
-				<p>{dailySum} €</p>
+				<p>{dailySum.toFixed(2)} €</p>
 			</div>
 		</div>
 	);
