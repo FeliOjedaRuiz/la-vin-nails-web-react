@@ -122,12 +122,12 @@ function UserLoyalty({ userId }) {
 						>
 							{5 > loyalty ? (
 								<div className="flex flex-col items-center justify-center">
-									<p className="-mb-2 text-xl">25%</p>
+									<p className="-mb-2 text-xl">15%</p>
 									<p className="text-sm">Desc.</p>
 								</div>
 							) : (
 								<div className="flex flex-col items-center justify-center relative w-full">
-									<p className="-mb-2 text-xl">25%</p>
+									<p className="-mb-2 text-xl">15%</p>
 									<p className="text-sm">Desc.</p>
 									<StarIcon className={`w-full text-amber-700 absolute`} />
 								</div>
@@ -224,12 +224,12 @@ function UserLoyalty({ userId }) {
 						>
 							{10 > loyalty ? (
 								<div className="flex flex-col items-center justify-center">
-									<p className="-mb-2 text-xl">50%</p>
+									<p className="-mb-2 text-xl">25%</p>
 									<p className="text-sm">Desc.</p>
 								</div>
 							) : (
 								<div className="flex flex-col items-center justify-center relative w-full">
-									<p className="-mb-2 text-xl">50%</p>
+									<p className="-mb-2 text-xl">25%</p>
 									<p className="text-sm">Desc.</p>
 									<StarIcon className={`w-full text-amber-700 absolute`} />
 								</div>
