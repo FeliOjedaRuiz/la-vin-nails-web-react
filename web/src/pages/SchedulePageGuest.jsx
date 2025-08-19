@@ -4,13 +4,14 @@ import { HonestWeekPicker } from "../components/week-picker/week-picker-js/Hones
 import TurnListByWeek from "../components/turns/turn-list-by-week/TurnListByWeek";
 import { Link } from "react-router-dom";
 import TurnsColorsExplication from "../components/turns/turns-color-explication/TurnsColorsExplication";
+import { useCallback } from "react";
 
 function SchedulePageGuest() {
   const [initDate, setInitDate] = useState();
 
-  const onInitDate = (date) => {
+  const onInitDate = useCallback((date) => {
     setInitDate(date);
-  };
+  }, []);
 
   const onTurnSelection = () => {
   };

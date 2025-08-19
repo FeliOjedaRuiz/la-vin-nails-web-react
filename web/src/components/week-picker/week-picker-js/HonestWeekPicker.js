@@ -66,6 +66,12 @@ export const HonestWeekPicker = ({ onInitDate }) => {
       onWeekSelect(week);      
   }, [reloadWeek]);
 
+  useEffect(() => {
+  if (onInitDate && week.firstDay) {
+    onInitDate(transformDate(week.firstDay));
+  }
+}, [week.firstDay, onInitDate]);
+
   const months = [
     "Enero",
     "Febrero",
@@ -198,7 +204,7 @@ export const HonestWeekPicker = ({ onInitDate }) => {
     setDate(new Date(localDate));
   };
 
-  onInitDate(transformDate(week.firstDay));
+  // onInitDate(transformDate(week.firstDay));
 
   return (
     <div

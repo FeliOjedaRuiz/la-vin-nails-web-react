@@ -155,7 +155,7 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 					</div>
 				)}
 				{firstDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} />
+					<TurnItemAdmin key={turn.id} turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
@@ -174,7 +174,7 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 					</div>
 				)}
 				{secondDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} />
+					<TurnItemAdmin key={turn.id} turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
@@ -193,7 +193,7 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 					</div>
 				)}
 				{thirdDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} />
+					<TurnItemAdmin key={turn.id} turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
@@ -212,7 +212,7 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 					</div>
 				)}
 				{fourthDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} />
+					<TurnItemAdmin key={turn.id} turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
@@ -231,7 +231,7 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 					</div>
 				)}
 				{fifthDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} />
+					<TurnItemAdmin key={turn.id} turn={turn} />
 				))}
 			</div>
 			<div className=" px-2 m-1.5 rounded-lg flex-col border-2 bg-white/50 border-pink-300 shadow-md">
@@ -250,7 +250,7 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 					</div>
 				)}
 				{sixthDayTurns.map((turn) => (
-					<TurnItemAdmin turn={turn} />
+					<TurnItemAdmin key={turn.id} turn={turn} />
 				))}
 			</div>
 		</div>

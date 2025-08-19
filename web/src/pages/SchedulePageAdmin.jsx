@@ -3,14 +3,16 @@ import Layout from "../components/layouts/Layout";
 import { HonestWeekPicker } from "../components/week-picker/week-picker-js/HonestWeekPicker";
 import TurnsForm from "../components/turns/turns-form/TurnsForm";
 import TurnsListByWeekAdmin from "../components/turns/turns-list-by-week-admin/TurnsListByWeekAdmin";
+import { useCallback } from "react";
 
 function SchedulePageAdmin() {
   const [initDate, setInitDate] = useState("2025-01-01");
   const [reload, setReload] = useState(false);
 
-  const onInitDate = (date) => {
-    setInitDate(date);
-  };
+  const onInitDate = useCallback((date) => {
+      setInitDate(date);
+    }, []);
+  
 
   useEffect(() => {
     setReload(!reload);

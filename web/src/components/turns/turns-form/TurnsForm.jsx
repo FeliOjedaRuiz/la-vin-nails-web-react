@@ -44,7 +44,7 @@ function TurnsForm({ onTurnCreation }) {
         <div className="flex justify-between">
           <div className="">
             <label
-              for="date"
+              htmlFor="date"
               className="ml-2 font-medium text-pink-800 text-sm"
             >
               Fecha
@@ -66,7 +66,7 @@ function TurnsForm({ onTurnCreation }) {
 
           <div className="">
             <label
-              for="hour"
+              htmlFor="hour"
               className="ml-2 font-medium text-pink-800 text-sm"
             >
               Hora

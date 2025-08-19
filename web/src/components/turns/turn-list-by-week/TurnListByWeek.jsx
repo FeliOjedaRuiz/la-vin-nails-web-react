@@ -100,7 +100,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <NotAvailableTurn />
         )}
         {firstDayTurns.map((turn) => (
-          <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
+          <TurnItemGuest key={turn.id} turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
@@ -111,7 +111,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <NotAvailableTurn />
         )}
         {secondDayTurns.map((turn) => (
-          <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
+          <TurnItemGuest key={turn.id} turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
@@ -122,7 +122,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <NotAvailableTurn />
         )}
         {thirdDayTurns.map((turn) => (
-          <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
+          <TurnItemGuest key={turn.id} turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
@@ -133,7 +133,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <NotAvailableTurn />
         )}
         {fourthDayTurns.map((turn) => (
-          <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
+          <TurnItemGuest key={turn.id} turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
@@ -145,7 +145,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           
         )}
         {fifthDayTurns.map((turn) => (
-          <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
+          <TurnItemGuest key={turn.id} turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
       <div className=" px-2 m-1.5 rounded-lg flex flex-col border-2 bg-white/50 border-emerald-500 shadow-md">
@@ -156,7 +156,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
           <NotAvailableTurn />
         )}
         {sixthDayTurns.map((turn) => (
-          <TurnItemGuest turn={turn} onTurnSelection={onTurnSelection} />
+          <TurnItemGuest key={turn.id} turn={turn} onTurnSelection={onTurnSelection} />
         ))}
       </div>
     </div>
