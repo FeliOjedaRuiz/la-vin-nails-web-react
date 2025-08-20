@@ -5,6 +5,7 @@ import { AuthContext } from '../../../contexts/AuthStore';
 import LeftIcon from './../../icons/LeftIcon';
 import RightIcon from './../../icons/RightIcon';
 import CloseIcon from '../../icons/CloseIcon';
+import DeleteIcon from '../../icons/DeleteIcon';
 
 function NailPhotoGalery({ userId, reload, changeVisibility }) {
 	const [photos, setPhotos] = useState([]);
@@ -13,6 +14,7 @@ function NailPhotoGalery({ userId, reload, changeVisibility }) {
 	const [photoIndex, setPhotoIndex] = useState(0);
 	const { user } = useContext(AuthContext);
 	const [role, setRole] = useState('guest');
+	const [isDeleting, setIsDeleting] = useState(false);
 
 	useEffect(() => {
 		if (!user) {
@@ -27,6 +29,35 @@ function NailPhotoGalery({ userId, reload, changeVisibility }) {
 		setHidden(!hidden);
 		setPhotoUrl(photos[photoIndex].photoUrl);
 		setPhotoIndex(photoIndex);
+	};
+
+	const handleDeletePhoto = async (photoId) => {
+		setIsDeleting(true);
+		try {
+			// Verificar si la foto que se va a eliminar es la que se está mostrando en el modal
+			const photoToDelete = photos.find(photo => photo.id === photoId);
+			const isCurrentPhotoInModal = !hidden && photoToDelete && photos[photoIndex]?.id === photoId;
+			
+			// Llamada al servicio para eliminar la foto
+			await photosService.deletePhoto(photoId);
+			
+			// Actualizar la lista local de fotos
+			setPhotos(prevPhotos => prevPhotos.filter(photo => photo.id !== photoId));
+			
+			// Si la foto eliminada era la que se estaba mostrando en el modal, cerrarlo
+			if (isCurrentPhotoInModal) {
+				setHidden(true);
+				setPhotoUrl('');
+				setPhotoIndex(0);
+			}
+			
+			console.log('Foto eliminada exitosamente');
+		} catch (error) {
+			console.error('Error al eliminar la foto:', error);
+			alert('Error al eliminar la foto. Por favor, inténtalo de nuevo.');
+		} finally {
+			setIsDeleting(false);
+		}
 	};
 
 	const handleChangePhotoRigth = () => {
@@ -64,6 +95,14 @@ function NailPhotoGalery({ userId, reload, changeVisibility }) {
 
 	return (
 		<>
+			{isDeleting && (
+				<div className="fixed top-0 left-0 z-30 h-full w-full bg-black/50 flex items-center justify-center backdrop-blur-[2px]">
+					<div className="bg-white p-6 rounded-lg shadow-lg">
+						<p className="text-lg font-medium text-gray-700">Eliminando foto...</p>
+					</div>
+				</div>
+			)}
+			
 			<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-4 w-full max-h-80 overflow-scroll p-2">
 				{role === 'admin' && (
 					<button
@@ -80,6 +119,7 @@ function NailPhotoGalery({ userId, reload, changeVisibility }) {
 						key={photo.id}
 						handleOpen={handleOpen}
 						index={index}
+						onDelete={handleDeletePhoto}
 					/>
 				))}
 
@@ -125,6 +165,21 @@ function NailPhotoGalery({ userId, reload, changeVisibility }) {
 							>
 								<CloseIcon className={'h-9 w-9 drop-shadow'} />
 							</button>
+							
+							{role === 'admin' && (
+								<button
+									onClick={() => {
+										if (window.confirm('¿Estás segura de que quieres eliminar esta foto?')) {
+											handleDeletePhoto(photos[photoIndex]?.id);
+										}
+									}}									
+									className="absolute bottom-3 left-3 rounded-full flex items-center justify-center"
+									title="Eliminar foto"
+								>
+									<DeleteIcon className={'h-6 w-6 text-white/60 drop-shadow'} />
+								</button>
+							)}
+							
 							<div>
 								<button
 									onClick={handleChangePhotoRigth}

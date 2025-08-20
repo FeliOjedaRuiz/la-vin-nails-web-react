@@ -14,7 +14,8 @@ export function ResponsiveCarousel() {
       image3: 'https://res.cloudinary.com/duoshgr3h/image/upload/v1723893977/PortadaFraseB_ijq8a1.webp',
       image4: 'https://res.cloudinary.com/duoshgr3h/image/upload/v1723893977/PortadaTrabajos1S_bpcjc0.webp',
       image5: 'https://res.cloudinary.com/duoshgr3h/image/upload/v1723893977/PortadaTrabajos2S_jqnsqk.webp',
-
+    },
+  };
 
   const [isMobile, setIsMobile] = useState(true);
 

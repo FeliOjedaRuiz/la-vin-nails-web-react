@@ -8,12 +8,12 @@ const list = () => http.get("/photos");
 
 const listByUser = (userId) => http.get(`/photos/${userId}`);
 
-const deletephoto = (id) => http.delete(`/photos/${id}`);
+const deletePhoto = (id) => http.delete(`/photos/${id}`);
 
 export default {
   upload,
   create,
   list,
   listByUser,
-  deletephoto,
+  deletePhoto,
 };
