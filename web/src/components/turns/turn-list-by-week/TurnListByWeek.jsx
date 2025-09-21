@@ -62,14 +62,42 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };
 
+  // useEffect(() => {
+  //   turnsService
+  //     .list(initDate)
+  //     .then((turns) => {
+  //       setTurns(turns);
+  //     })
+  //     .catch((error) => console.error(error));
+  // }, [reload, initDate]);
+
   useEffect(() => {
-    turnsService
-      .list(initDate)
-      .then((turns) => {
-        setTurns(turns);
-      })
-      .catch((error) => console.error(error));
-  }, [reload, initDate]);
+  turnsService
+    .list(initDate)
+    .then((turns) => {
+      // Obtener fecha actual
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+
+      // Filtrar los turnos
+      const filteredTurns = turns.filter(turn => {
+        const turnDate = new Date(turn.date);
+        const turnMonth = turnDate.getMonth();
+        const turnYear = turnDate.getFullYear();
+
+        // Calcular diferencia de meses incluyendo años
+        const monthDiff = (turnYear - currentYear) * 12 + (turnMonth - currentMonth);
+        
+        // Permitir solo turnos hasta 2 meses adelante
+        return monthDiff < 2;
+      });
+
+      setTurns(filteredTurns);
+    })
+    .catch((error) => console.error(error));
+}, [reload, initDate]);
+
 
   const firstDayTurns = turns
     .filter((turn) => turn.date === firstDay)
