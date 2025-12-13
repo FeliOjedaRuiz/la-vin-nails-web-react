@@ -17,7 +17,7 @@ function Layout({ children }) {
 
 	return (
 		<div className="flex flex-col">
-			<div className="flex fixed z-50 w-screen justify-center bg-gradient-to-r from-pink-50 via-white to-green-50 border-b-2 border-pink-400 shadow-md ">
+			<div className="flex fixed z-10 w-screen justify-center bg-gradient-to-r from-pink-50 via-white to-green-50 border-b-2 border-pink-400 shadow-md ">
 				<Link to="/">
 					<img
 						src={layoutLogo}
@@ -27,7 +27,7 @@ function Layout({ children }) {
 				</Link>
 			</div>
 
-			<div className="flex w-full justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50 via-white to-green-50">
+			<div className="flex w-full z-0 justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50 via-white to-green-50">
 				<div className=" container w-screen flex flex-col  overflow-hidden bg-white/30 shadow-lg ">
 					{children}
 				</div>
