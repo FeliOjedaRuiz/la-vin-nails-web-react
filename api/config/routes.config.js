@@ -88,7 +88,7 @@ router.post(
 	photos.upload
 );
 router.post('/photos', secure.auth, photos.create);
-// router.get('/photos', secure.isAdmin, photos.list);
+router.get('/photos', photos.list);
 router.get(
 	'/photos/:userId',
 	secure.auth,

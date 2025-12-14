@@ -57,6 +57,14 @@ module.exports.listByUser = (req, res, next) => {
 		.catch(next);
 };
 
+module.exports.list = (req, res, next) => {
+    Photo.find()
+        .sort({ createdAt: -1 }) // ordenar por fecha de creación descendente (más recientes primero)
+        .limit(18)               // limitar a 18 resultados
+        .then((photos) => res.json(photos))
+        .catch(next);
+}
+
 module.exports.delete = async (req, res, next) => {
 	try {
 		const photo = req.photo;		
