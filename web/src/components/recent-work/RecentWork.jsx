@@ -31,7 +31,7 @@ export function RecentWork() {
 
 
   return (
-    <section className="py-12 px-4 bg-gradient-to-b from-background to-card/50">
+    <section className="py-12 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-pink-600 mb-4">Mis Últimos Trabajos</h2>
@@ -100,7 +100,7 @@ export function RecentWork() {
         </div>
 
         {/* Desktop Grid - sin cambios */}
-        <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-4 gap-6">
+        <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-4 gap-8">
           {recentWorks.slice(0, 8).map((work) => (
             <div key={work.id} className="overflow-hidden hover:shadow-lg transition-shadow rounded-lg">
               <div className="relative group">

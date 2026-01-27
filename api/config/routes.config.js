@@ -97,8 +97,6 @@ router.get(
 );
 router.delete('/photos/:id', secure.isAdmin, photosMid.exists, photos.delete);
 
-module.exports = router;
-
 // EXPENSES
 
 router.post('/expenses', secure.isAdmin, expenses.create);
@@ -120,3 +118,5 @@ router.delete(
 	expensesMid.exists,
 	expenses.delete
 );
+
+module.exports = router;

@@ -27,7 +27,7 @@ function Layout({ children }) {
 				</Link>
 			</div>
 
-			<div className="flex w-full z-0 justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50 via-white to-green-50">
+			<div className="flex w-full z-0 justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50  to-green-50">
 				<div className=" container w-screen flex flex-col  overflow-hidden bg-white/30 shadow-lg ">
 					{children}
 				</div>

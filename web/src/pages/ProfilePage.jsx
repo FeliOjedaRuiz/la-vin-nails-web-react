@@ -104,7 +104,7 @@ function ProfilePage() {
 		<Layout>
 			<div className="flex flex-col justify-center items-center p-4 max-w-xl mx-auto">
 				<UserProfile user={user} />
-				<Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
+				{/* <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
 						onClick={() => handleOpen(2)}
@@ -114,7 +114,7 @@ function ProfilePage() {
 					<AccordionBody>
 						<UserLoyalty UserLoyalty userId={id} />
 					</AccordionBody>
-				</Accordion>
+				</Accordion> */}
 				<Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
