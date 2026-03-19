@@ -23,6 +23,8 @@ function DatesForm({ service, serviceTypes }) {
   const [selectedTurn, setSelectedTurn] = useState({});
   const [selectedDate, setSelectedDate] = useState({});
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onInitDate = (date) => {
     setInitDate(date);
   };
@@ -58,50 +60,68 @@ function DatesForm({ service, serviceTypes }) {
     5: "Viernes",
     6: "Sábado",
     7: "Domingo",
+    0: "Domingo",
   };
 
-  const showDate = (selectedDate) => {
-    let dt = new Date(selectedDate);
+  const showDate = (dateString) => {
+    if (!dateString || typeof dateString !== 'string') return "";
+    
+    // Safari Safe Parsing: split "YYYY-MM-DD"
+    const [year, month, day] = dateString.split('-').map(Number);
+    const dt = new Date(year, month - 1, day);
+
+    if (isNaN(dt.getTime())) return "Fecha no válida";
 
     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };
 
-  const onTurnSubmit = async (turn) => {
-    selectedTurn.state = "Solicitado";
+  const onTurnSubmit = async () => {
+    if (!selectedTurn?.id) return;
+    const updatedTurn = { ...selectedTurn, state: "Solicitado" };
     try {
-      turn = await turnsService.update(selectedTurn.id, selectedTurn);
+      await turnsService.update(selectedTurn.id, updatedTurn);
     } catch (error) {
-      const errors = error.response?.data?.errors;
-      if (errors) {
-        Object.keys(errors).forEach((inputName) =>
-          setError(inputName, { message: errors[inputName] })
-        );
-      } else {
-        setServerError(error.message);
-      }
+      console.error("Error updating turn:", error);
+      throw error; 
     }
   };
 
-  const onDateSubmit = async (date) => {
-    date.user = user.id;
-    date.service = service.id;
-    date.turn = selectedTurn.id;
+  const onDateSubmit = async (data) => {
+    if (isSubmitting) return;
+    
+    if (!selectedTurn?.id) {
+      setServerError("Debe seleccionar un turno antes de confirmar.");
+      return;
+    }
+
+    const dateApplication = {
+      ...data,
+      user: user.id,
+      service: service.id,
+      turn: selectedTurn.id,
+    };
+
     try {
+      setIsSubmitting(true);
       setServerError(undefined);
-      console.debug("Sending date application...");
-      date = await datesService.create(date);
-      onTurnSubmit();
+      
+      // Atomic-like submission: Create Date entity
+      await datesService.create(dateApplication);
+      
+      // Update Turn state (AWAITED to prevent race condition)
+      await onTurnSubmit();
+      
       navigate("/profile");
     } catch (error) {
+      setIsSubmitting(false);
+      console.error("Error during date submission:", error);
       const errors = error.response?.data?.errors;
       if (errors) {
-        console.error(error.message, errors);
         Object.keys(errors).forEach((inputName) =>
           setError(inputName, { message: errors[inputName] })
         );
       } else {
-        console.error(error);
-        setServerError(error.message);
+        setServerError(error.message || "Error al procesar la solicitud. Compruebe su conexión.");
       }
     }
   };
@@ -288,6 +308,7 @@ function DatesForm({ service, serviceTypes }) {
 
             <div className="flex justify-around font-medium text-lg">
               <button
+                type="button"
                 onClick={() => setModalState(!modalState)}
                 className="bg-red-600 text-white  px-2 py-1 rounded "
               >
@@ -295,9 +316,12 @@ function DatesForm({ service, serviceTypes }) {
               </button>
               <button
                 type="submit"
-                className="bg-emerald-600 text-white  px-2 py-1 rounded "
+                disabled={isSubmitting}
+                className={`text-white px-4 py-1.5 rounded font-bold transition-all ${
+                  isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700 active:scale-95"
+                }`}
               >
-                Aceptar
+                {isSubmitting ? "Enviando..." : "Confirmar"}
               </button>
             </div>
           </Modal>
@@ -306,6 +330,7 @@ function DatesForm({ service, serviceTypes }) {
       {selectedTurn.hour && (
         <div className="p-2">
           <button
+            type="button"
             onClick={() => setModalState(!modalState)}
             className="text-white w-full bg-gradient-to-l from-emerald-700 via-emerald-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
           >

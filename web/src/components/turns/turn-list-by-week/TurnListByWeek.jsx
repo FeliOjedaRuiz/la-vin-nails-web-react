@@ -23,13 +23,26 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
     return `${year}-${month}-${day}`;
   };
 
-  const day = new Date(Date.parse(initDate));
-  const firstDay = transformDate(day.setDate(day.getDate() + 1));
-  const secondDay = transformDate(day.setDate(day.getDate() + 1));
-  const thirdDay = transformDate(day.setDate(day.getDate() + 1));
-  const fourthDay = transformDate(day.setDate(day.getDate() + 1));
-  const fifthDay = transformDate(day.setDate(day.getDate() + 1));
-  const sixthDay = transformDate(day.setDate(day.getDate() + 1));
+  const safeParseDate = (dateString) => {
+    if (!dateString) return new Date();
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  };
+
+  const day = safeParseDate(initDate);
+  
+  const getNextDate = (baseDate, daysToAdd) => {
+    const d = new Date(baseDate);
+    d.setDate(d.getDate() + daysToAdd);
+    return transformDate(d);
+  };
+
+  const firstDay = getNextDate(day, 1);
+  const secondDay = getNextDate(day, 2);
+  const thirdDay = getNextDate(day, 3);
+  const fourthDay = getNextDate(day, 4);
+  const fifthDay = getNextDate(day, 5);
+  const sixthDay = getNextDate(day, 6);
 
   const months = [
     "Enero",
@@ -57,7 +70,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
   };
 
   const showDate = (date) => {
-    let dt = new Date(date);
+    let dt = safeParseDate(date);
 
     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };
@@ -82,7 +95,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
 
       // Filtrar los turnos
       const filteredTurns = turns.filter(turn => {
-        const turnDate = new Date(turn.date);
+        const turnDate = safeParseDate(turn.date);
         const turnMonth = turnDate.getMonth();
         const turnYear = turnDate.getFullYear();
 

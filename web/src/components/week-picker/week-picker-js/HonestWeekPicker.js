@@ -22,13 +22,24 @@ export const HonestWeekPicker = ({ onInitDate }) => {
     return leapYear.getDate() === 29;
   };
 
+  const safeParseDate = (date) => {
+    if (date instanceof Date) return date;
+    if (typeof date === "string" && date.includes("-")) {
+      const parts = date.split("T")[0].split("-");
+      if (parts.length === 3) {
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+      }
+    }
+    return new Date(date);
+  };
+
   const convertDate = (date) => {
-    let dt = new Date(date);
+    let dt = safeParseDate(date);
     return `${dt.getDate()} de ${months[dt.getMonth()]}`;
   };
 
   const transformDate = (date) => {
-    let dt = new Date(date);
+    let dt = safeParseDate(date);
     let year = dt.getFullYear();
     let month = dt.getMonth() + 1;
     let day = dt.getDate();

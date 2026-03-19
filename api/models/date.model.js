@@ -66,7 +66,7 @@ const dateSchema = new mongoose.Schema(
   }
 );
 
-dateSchema.index({ date: 1, turn: 1 }, { unique: true });
+// dateSchema.index({ date: 1, turn: 1 }, { unique: true });
 
 const Date = mongoose.model("Date", dateSchema);
 
