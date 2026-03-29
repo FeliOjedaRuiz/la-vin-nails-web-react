@@ -1,0 +1,129 @@
+
+> la-vin-nails@0.1.0 test
+> react-scripts test --watchAll=false
+
+FAIL src/__tests__/services/base-api.test.js
+  ● Axios Interceptor Logic › añade Authorization Bearer si hay token
+
+    TypeError: Cannot read properties of undefined (reading 'interceptors')
+
+       5 | });
+       6 |
+    >  7 | http.interceptors.request.use(
+         |      ^
+       8 |   (config) => {
+       9 |     console.debug("Handling request interceptor");
+      10 |     const token = localStorage.getItem("user-access-token");
+
+      at Object.<anonymous> (src/services/base-api.js:7:6)
+      at Object.<anonymous> (src/__tests__/services/base-api.test.js:27:9)
+
+  ● Axios Interceptor Logic › devuelve data de la respuesta
+
+    TypeError: Cannot read properties of undefined (reading 'interceptors')
+
+       5 | });
+       6 |
+    >  7 | http.interceptors.request.use(
+         |      ^
+       8 |   (config) => {
+       9 |     console.debug("Handling request interceptor");
+      10 |     const token = localStorage.getItem("user-access-token");
+
+      at Object.<anonymous> (src/services/base-api.js:7:6)
+      at Object.<anonymous> (src/__tests__/services/base-api.test.js:27:9)
+
+  ● Axios Interceptor Logic › limpia localStorage en error 401 fuera de login
+
+    TypeError: Cannot read properties of undefined (reading 'interceptors')
+
+       5 | });
+       6 |
+    >  7 | http.interceptors.request.use(
+         |      ^
+       8 |   (config) => {
+       9 |     console.debug("Handling request interceptor");
+      10 |     const token = localStorage.getItem("user-access-token");
+
+      at Object.<anonymous> (src/services/base-api.js:7:6)
+      at Object.<anonymous> (src/__tests__/services/base-api.test.js:27:9)
+
+PASS src/__tests__/guards/UnlogedRoute.test.js
+  ● Console
+
+    console.log
+      Updating user context undefined
+
+      at handleUserChange (src/contexts/AuthStore.js:31:11)
+
+    console.error
+      Warning: Cannot update a component (`AuthStore`) while rendering a different component (`UnlogedRoute`). To locate the bad setState() call inside `UnlogedRoute`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render
+          at UnlogedRoute (D:\Proyectos web\web-la-vin\web-la-vin-nails-react\web\src\guards\UnlogedRoute.js:5:25)
+          at AuthStore (D:\Proyectos web\web-la-vin\web-la-vin-nails-react\web\src\contexts\AuthStore.js:24:22)
+          at ThemeProvider (D:\Proyectos web\web-la-vin\web-la-vin-nails-react\web\node_modules\@material-tailwind\react\context\theme.js:1:1993)
+          at Router (D:\Proyectos web\web-la-vin\web-la-vin-nails-react\web\node_modules\react-router\lib\components.tsx:328:13)
+          at MemoryRouter (D:\Proyectos web\web-la-vin\web-la-vin-nails-react\web\node_modules\react-router\lib\components.tsx:152:3)
+
+      39 | 			localStorage.setItem('current-user', JSON.stringify(user));
+      40 | 		}
+    > 41 | 		setUser(user);
+         | 		^
+      42 | 	}, []);
+      43 |
+      44 | 	const logout = useCallback(() => {
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnAboutRenderPhaseUpdatesInDEV (node_modules/react-dom/cjs/react-dom.development.js:27492:15)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25498:5)
+      at setUser (node_modules/react-dom/cjs/react-dom.development.js:17527:7)
+      at handleUserChange (src/contexts/AuthStore.js:41:3)
+      at logout (src/contexts/AuthStore.js:45:3)
+      at UnlogedRoute (src/guards/UnlogedRoute.js:9:5)
+
+    console.warn
+      You should call navigate() in a React.useEffect(), not when your component is first rendered.
+
+      44 | 	const logout = useCallback(() => {
+      45 | 		handleUserChange();
+    > 46 | 		navigate('/login');
+         | 		^
+      47 | 	}, []);
+      48 |
+      49 | 	const deleteDate = useCallback(() => {
+
+      at Object.warning [as UNSAFE_warning] (node_modules/@remix-run/router/history.ts:487:49)
+      at navigate (node_modules/react-router/lib/hooks.tsx:207:7)
+      at logout (src/contexts/AuthStore.js:46:3)
+      at UnlogedRoute (src/guards/UnlogedRoute.js:9:5)
+      at renderWithHooks (node_modules/react-dom/cjs/react-dom.development.js:16305:18)
+      at mountIndeterminateComponent (node_modules/react-dom/cjs/react-dom.development.js:20074:13)
+      at beginWork (node_modules/react-dom/cjs/react-dom.development.js:21587:16)
+      at beginWork$1 (node_modules/react-dom/cjs/react-dom.development.js:27426:14)
+
+PASS src/__tests__/guards/PrivateRoute.test.js
+PASS src/__tests__/contexts/AuthStore.test.js
+  ● Console
+
+    console.log
+      Updating user context { name: 'Feli', token: 'jwt-123', role: 'admin' }
+
+      at onUserChange (src/contexts/AuthStore.js:31:11)
+
+    console.log
+      Updating user context undefined
+
+      at handleUserChange (src/contexts/AuthStore.js:31:11)
+
+    console.log
+      Updating date context 2026-04-10
+
+      at onDateSelect (src/contexts/AuthStore.js:64:11)
+
+PASS src/__tests__/hooks/UseTransformDate.test.js
+
+Test Suites: 1 failed, 4 passed, 5 total
+Tests:       3 failed, 15 passed, 18 total
+Snapshots:   0 total
+Time:        2.56 s
+Ran all test suites.

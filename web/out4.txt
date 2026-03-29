@@ -1,0 +1,36 @@
+
+> la-vin-nails@0.1.0 test
+> react-scripts test src/__tests__/services/base-api.test.js --watchAll=false
+
+  console.debug
+    Handling request interceptor
+
+      at requestHandler (src/services/base-api.js:9:13)
+
+FAIL src/__tests__/services/base-api.test.js
+  Axios Interceptor Logic
+    √ añade Authorization Bearer si hay token (32 ms)
+    √ devuelve data de la respuesta (1 ms)
+    × limpia localStorage en error 401 fuera de login (3 ms)
+
+  ● Axios Interceptor Logic › limpia localStorage en error 401 fuera de login
+
+    expect(received).toBeNull()
+
+    Received: "expired"
+
+      53 |         await Promise.resolve(errorHandler(error)).catch(() => {});
+      54 |
+    > 55 |         expect(localStorage.getItem('user-access-token')).toBeNull();
+         |                                                           ^
+      56 |         window.location = originalLocation;
+      57 |     });
+      58 | });
+
+      at Object.<anonymous> (src/__tests__/services/base-api.test.js:55:59)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        1.373 s, estimated 2 s
+Ran all test suites matching /src\\__tests__\\services\\base-api.test.js/i.

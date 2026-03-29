@@ -1,0 +1,25 @@
+{
+  "short_name": "La Vin Nails",
+  "name": "La Vin Nails — Manicura Granada",
+  "description": "Reserva tu cita de manicura en La Vin Nails, Granada.",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#be185d",
+  "background_color": "#ecfdf5",
+  "lang": "es",
+  "scope": "/"
+}

@@ -6,12 +6,14 @@
   "scripts": {
     "start": "node app.js",
     "dev": "npx nodemon app.js",
-    "seeds": "node bin/services.seed.js"
+    "seeds": "node bin/services.seed.js",
+    "test": "jest --watchAll=false --forceExit"
   },
   "author": "Feliciano Ojeda Ruiz",
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0",
+    "mongodb-memory-server": "^11.0.1",
     "nodemon": "^2.0.22"
   },
   "dependencies": {
@@ -30,6 +32,7 @@
     "nodemailer": "^6.9.5"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": ["/node_modules/", "db-handler"]
   }
 }

@@ -1,0 +1,1867 @@
+commit 910a4cad99ffbfc0696e8a6bca8d42139a71b0d5
+Author: FeliOjedaRuiz <feliojedaruiz@gmail.com>
+Date:   Thu Mar 19 23:26:17 2026 +0100
+
+    Arreglo de incompatibilidad con Safari e implementación de agente de antigravity
+
+diff --git a/.agent/skills/backend_expert/SKILL.md b/.agent/skills/backend_expert/SKILL.md
+new file mode 100644
+index 0000000..22132dd
+--- /dev/null
++++ b/.agent/skills/backend_expert/SKILL.md
+@@ -0,0 +1,54 @@
++---
++name: Backend Expert
++description: Conocimiento experto y utilidades para el backend Node.js/Express/MongoDB de La Vin Nails.
++---
++
++# Habilidad Backend Expert
++
++Esta habilidad proporciona experiencia en la arquitectura específica del backend de La Vin Nails.
++
++## 1. Stack Tecnológico
++
++- **Runtime**: Node.js
++- **Framework**: Express.js
++- **Base de Datos**: MongoDB (vía Mongoose)
++- **Integraciones**:
++  - **Cloudinary**: Gestión de imágenes del portafolio.
++  - **Nodemailer**: Envío de correos de confirmación.
++  - **Notion SDK**: Sincronización de servicios/catálogo.
++- **Autenticación**: JWT (JSON Web Tokens).
++
++## 2. Estructura del Proyecto (`/api`)
++
++- **`app.js`**: Punto de entrada principal. Configuración de middleware, rutas y manejo global de errores.
++- **`config/`**: Archivos de configuración (DB, CORS, Cloudinary, Mailer, etc.).
++- **`controllers/`**: Lógica de los endpoints. Sigue el patrón `module.exports.action = (req, res, next) => ...`.
++- **`models/`**: Esquemas de Mongoose.
++- **`routes/`**: Definición de rutas (unificadas en `config/routes.config.js`).
++- **`bin/`**: Scripts de utilidad (ej. `services.seed.js` para semillas de datos).
++
++## 3. Estándares de Código y Patrones
++
++### Manejo de Errores
++- **SIEMPRE** usa `next(error)` para pasar errores al manejador global.
++- Usa `http-errors` para crear errores estándar:
++  ```javascript
++  const createError = require('http-errors');
++  if (!service) return next(createError(404, 'Service not found'));
++  ```
++
++### Controladores
++- Firma estándar: `(req, res, next)`.
++- Respuestas JSON: `res.json(data)`.
++- Promesas Mongoose: `.then().catch(next)`.
++
++## 4. Lógica de Dominio (La Vin Nails)
++
++### Gestión de Servicios
++- Los servicios pueden provenir de MongoDB o sincronizarse con Notion.
++- **Entidades**: `Service`, `User`, `Appointment` (Cita).
++
++## 5. Tareas Comunes
++- **Nuevo Endpoint**: Crear función en controlador -> Registrar en `routes.config.js`.
++- **Validación**: Usar validación de Mongoose en los modelos.
++- **Depuración**: Revisar logs de `morgan` y el manejador de errores en `app.js`.
+diff --git a/.agent/skills/mobile_ux_expert/SKILL.md b/.agent/skills/mobile_ux_expert/SKILL.md
+new file mode 100644
+index 0000000..41b229b
+--- /dev/null
++++ b/.agent/skills/mobile_ux_expert/SKILL.md
+@@ -0,0 +1,22 @@
++---
++name: mobile_ux_expert
++description: Experto en optimización para dispositivos móviles, especialmente Safari en iOS.
++---
++
++# Mobile UX Expert Skill
++
++Esta habilidad se enfoca en garantizar que La Vin Nails funcione perfectamente en iPhones y otros dispositivos móviles.
++
++## 1. Reglas Críticas para iOS
++
++- **Fechas**: Nunca pases una cadena `YYYY-MM-DD` directamente a `new Date()`. Usa `parseISO` de `date-fns` o descompón la fecha.
++- **Inputs**: Mínimo `16px` de fuente.
++- **Botones**: Añade feedback visual inmediato (`loading state`) para evitar clics repetidos.
++- **Scroll**: Evita `overflow-hidden` en el `body` si no es estrictamente necesario, puede causar saltos en iOS.
++
++## 2. Diagnóstico de Problemas en Producción
++
++Si una clienta reporta que "no se guarda", verifica:
++1. **Validación de Fechas**: ¿La fecha seleccionada se está enviando correctamente?
++2. **Eventos de Formulario**: ¿El `onSubmit` está siendo cancelado por algún error de validación silencioso que Safari detecta distinto?
++3. **Consola del Navegador**: Simular Safari en herramientas de desarrollo para ver errores de `Invalid Date`.
+diff --git a/.agent/skills/ux-ui-design/SKILL.md b/.agent/skills/ux-ui-design/SKILL.md
+new file mode 100644
+index 0000000..02d6c8b
+--- /dev/null
++++ b/.agent/skills/ux-ui-design/SKILL.md
+@@ -0,0 +1,26 @@
++---
++name: ux-ui-design
++description: Guía experta para asegurar una experiencia premium, elegante y minimalista en La Vin Nails.
++---
++
++# Habilidad UX/UI Design (Premium Beauty)
++
++El diseño de La Vin Nails debe transmitir limpieza, profesionalidad y lujo accesible.
++
++## 1. Filosofía de Diseño
++
++1.  **Estética "Nail Art"**: El diseño debe ser tan pulido como el trabajo del salón. Colores suaves, tipografía elegante y mucho espacio en blanco.
++2.  **Confianza y Profesionalidad**: Uso de imágenes reales de alta calidad (vía Cloudinary).
++3.  **Fricción Cero**: El proceso de ver servicios y pedir cita debe ser instantáneo.
++
++## 2. Paleta y Estilos (Basado en Material Tailwind)
++
++- **Layout**: Uso de componentes de `@material-tailwind/react` adaptados a la marca.
++- **Mobile-First**: La mayoría de las clientas reservarán desde su móvil.
++- **Micro-animaciones**: Transiciones suaves al navegar entre servicios.
++
++## 3. Checklist de Calidad UX
++
++- [ ] **Legibilidad**: Contraste alto en textos de precios y servicios.
++- [ ] **Acciones Claras**: El botón de "Reservar" o "Contacto" debe ser siempre visible.
++- [ ] **Feedback**: Estados de carga elegantes mientras se recuperan los servicios de la API.
+diff --git a/.agent/workflows/no-deploy.md b/.agent/workflows/no-deploy.md
+new file mode 100644
+index 0000000..85502c4
+--- /dev/null
++++ b/.agent/workflows/no-deploy.md
+@@ -0,0 +1,16 @@
++---
++description: Flujo preventivo para evitar despliegues accidentales o sin revisión en producción.
++---
++
++# Workflow: No Deploy Without Permission
++
++Este proyecto utiliza Fly.io para el despliegue. Para evitar errores en producción, se sigue este flujo:
++
++1.  **Pruebas Locales**: Probar siempre los cambios en el entorno de desarrollo (`npm run dev` en api y web).
++2.  **Sincronización de Base de Datos**: Si hay cambios en los esquemas, verificar que no rompan los datos existentes.
++3.  **Revisión de Variables de Entorno**: Asegurar que los secretos (Cloudinary, Mongo URI, Notion Token) estén configurados en Fly.io.
++4.  **Confirmación Explícita**: El agente NO ejecutará comandos de despliegue (`fly deploy`) sin una orden directa y confirmada del usuario.
++
++// turbo
++## Paso de Verificación
++Si el usuario pide desplegar, preguntar: "¿Has verificado que los cambios en la API son compatibles con el esquema actual de la base de datos?".
+diff --git a/agent.md b/agent.md
+new file mode 100644
+index 0000000..41a5274
+--- /dev/null
++++ b/agent.md
+@@ -0,0 +1,42 @@
++# agent.md
++
++## 1. Identidad y Propósito
++
++Eres Antigravity, un Desarrollador Fullstack Senior especializado en ecosistemas React/Node.js. Tu misión principal es construir, mantener y escalar la plataforma digital de **La Vin Nails**, un salón de estética y cuidado de uñas.
++
++No eres solo un codificador; eres un arquitecto de software y un asesor técnico. Entiendes que el código sirve a un propósito de negocio: facilitar la reserva de servicios, mostrar el catálogo de estética de manera atractiva y optimizar la gestión de clientes para el salón.
++
++## 2. Stack Tecnológico Estricto (MERN)
++
++Solo debes utilizar y proponer soluciones dentro de este stack, priorizando la velocidad y mantenibilidad:
++
++- **Frontend**: React.js (usando React Scripts por ahora, similar a Vite en flujo).
++- **Estilos**: Tailwind CSS y `@material-tailwind/react`. Mantener el diseño _Mobile-First_ y premium.
++- **Backend**: Node.js con Express.
++- **Base de Datos**: MongoDB (usando Mongoose).
++- **Integraciones**: Cloudinary (imágenes), Nodemailer (notificaciones), Notion SDK (gestión de datos/servicios).
++- **Lenguaje**: **JavaScript puro**. (PROHIBIDO el uso de TypeScript por requerimiento del proyecto).
++
++## 3. Reglas de Interacción y Flujo de Trabajo (Workflow)
++
++### 3.1. Comunicación
++
++- **Idioma**: SIEMPRE comunícate en Español. Lee y escribe documentación, comentarios de código, nombres de variables (siempre que el contexto lo permita sin romper convenciones) y respuestas en Español.
++- **Proactividad Acotada**: Sé proactivo en la detección de errores y sugerencias de mejora, pero **ve paso a paso**. Nunca implementes refactorizaciones masivas sin consultar primero. Usa el workflow de "Planeamiento -> Revisión -> Ejecución".
++
++### 3.2. Fuentes de Verdad
++
++Antes de proponer una solución o escribir código, debes consultar OBLIGATORIAMENTE tu contexto:
++
++1.  **`ens.md`**: Para entender el "Por qué" (Narrativa del Sistema, modelo mental de la aplicación, objetivos de negocio).
++2.  **`docs/`**: Para detalles de implementación, reglas específicas de la API, y arquitectura de datos.
++
++### 3.3. Estándares de Código Críticos (Safari/iOS Mobile)
++
++- **Viewport**: NO USAR `h-screen` o `100vh`. USAR `h-dvh` para evitar problemas en móviles.
++- **Fechas**: No confíes en el parsing directo de Date.
++- **Inputs**: `font-size` mínimo de `16px` para evitar zoom en iOS.
++
++## 4. Comandos Explícitos y Habilidades (Skills)
++
++- Utiliza las habilidades (`skills/`) disponibles en la carpeta `.agent/skills/` cuando la tarea requiera conocimientos específicos. Lee el archivo `SKILL.md` correspondiente antes de actuar.
+diff --git a/api/models/date.model.js b/api/models/date.model.js
+index 324574a..2bbe948 100644
+--- a/api/models/date.model.js
++++ b/api/models/date.model.js
+@@ -66,7 +66,7 @@ const dateSchema = new mongoose.Schema(
+   }
+ );
+ 
+-dateSchema.index({ date: 1, turn: 1 }, { unique: true });
++// dateSchema.index({ date: 1, turn: 1 }, { unique: true });
+ 
+ const Date = mongoose.model("Date", dateSchema);
+ 
+diff --git a/api/package.json b/api/package.json
+index ba37cf3..5c2f86a 100644
+--- a/api/package.json
++++ b/api/package.json
+@@ -5,7 +5,7 @@
+   "main": "app.js",
+   "scripts": {
+     "start": "node app.js",
+-    "dev": "nodemon app.js",
++    "dev": "npx nodemon app.js",
+     "seeds": "node bin/services.seed.js"
+   },
+   "author": "Feliciano Ojeda Ruiz",
+diff --git a/docs/API_DOCUMENTATION.md b/docs/API_DOCUMENTATION.md
+new file mode 100644
+index 0000000..db91f1b
+--- /dev/null
++++ b/docs/API_DOCUMENTATION.md
+@@ -0,0 +1,29 @@
++# Documentación de la API
++
++La API de La Vin Nails es un servidor RESTful construido con Node.js y Express que gestiona la persistencia de datos en MongoDB.
++
++## Endpoints Principales
++
++### Usuarios y Autenticación
++- `POST /register`: Registrar un nuevo usuario administrador.
++- `POST /login`: Autenticación y generación de JWT.
++- `GET /profile`: Obtener datos del usuario autenticado (requiere middleware `secure.auth`).
++
++### Servicios (Nails & Estética)
++- `GET /services`: Listar todos los servicios disponibles (pueden ser cacheados o sincronizados con Notion).
++- `POST /services`: Crear un nuevo servicio (solo admin).
++- `PATCH /services/:id`: Actualizar detalles del servicio.
++- `DELETE /services/:id`: Eliminar un servicio.
++
++### Citas (Appointments)
++- `GET /appointments`: Ver todas las citas (admin).
++- `POST /appointments`: Crear una solicitud de cita para un cliente.
++- `PATCH /appointments/:id`: Cambiar estado de la cita (Confirmada/Pendiente).
++
++## Variables de Entorno Requeridas (`.env`)
++- `PORT`: Puerto de escucha.
++- `MONGODB_URI`: URI de conexión a MongoDB.
++- `JWT_SECRET`: Secreto para firmar tokens.
++- `CLOUDINARY_NAME`, `KEY`, `SECRET`: Credenciales de Cloudinary.
++- `NOTION_TOKEN`, `SERVICES_DB_ID`: Credenciales para el SDK de Notion.
++- `SMTP_USER`, `SMTP_PASS`: Credenciales de Nodemailer.
+diff --git a/docs/PROJECT_OVERVIEW.md b/docs/PROJECT_OVERVIEW.md
+new file mode 100644
+index 0000000..f349834
+--- /dev/null
++++ b/docs/PROJECT_OVERVIEW.md
+@@ -0,0 +1,15 @@
++# Visión General del Proyecto: La Vin Nails
++
++Este proyecto es una plataforma web para un salón de belleza y uñas, permitiendo a los usuarios visualizar servicios, ver el portafolio de trabajos y solicitar citas.
++
++## Objetivos
++1.  **Transformación Digital**: Pasar de la gestión manual de servicios y citas a una plataforma centralizada.
++2.  **Visibilidad**: Exponer el portafolio de alta calidad para atraer nuevas clientas.
++3.  **Facilidad de Gestión**: Permitir a la administradora cambiar el catálogo a través de Notion.
++
++## Repositorio y Entorno
++- **Localización**: `d:\Proyectos web\web-la-vin\web-la-vin-nails-react`
++- **Carpetas**:
++  - `api/`: El backend en Node.js/Express.
++  - `web/`: El frontend en React (Vite/React-Scripts).
++- **Despliegue**: Se utiliza Fly.io para el hosting tanto de la API como del frontend.
+diff --git a/docs/safari_ios_compatibility.md b/docs/safari_ios_compatibility.md
+new file mode 100644
+index 0000000..a58ee13
+--- /dev/null
++++ b/docs/safari_ios_compatibility.md
+@@ -0,0 +1,35 @@
++# Compatibilidad Safari / iOS (iPhone)
++
++Este documento centraliza las mejores prácticas y soluciones a problemas comunes encontrados en dispositivos Apple dentro del ecosistema de La Vin Nails.
++
++## 1. Problemas de Renderizado y Layout
++
++### 1.1. Altura del Viewport (DVH)
++Safari en iOS maneja las barras de navegación de forma dinámica, lo que rompe el uso de `100vh`.
++- **Solución**: Usar `h-dvh` (Dynamic Viewport Height) en Tailwind o `min-height: 100dvh` en CSS.
++- **Evitar**: `h-screen`, `h-full` en contenedores raíz sin altura definida en el padre.
++
++### 1.2. Zoom Automático en Inputs
++iOS hace zoom automático si el `font-size` de un input es menor a `16px`.
++- **Solución**: Asegurar que todos los inputs, selects y textareas tengan al menos `text-base` (16px).
++
++## 2. Problemas de Interacción y Eventos
++
++### 2.1. Clics Fantasma y Touch Events
++A veces los botones no responden al primer toque si hay un delay de 300ms o si el elemento no tiene `cursor-pointer`.
++- **Solución**: Asegurar que los botones tengan `type="button"` y que no haya otros elementos capturando el evento touch.
++- **Estado de Carga**: Siempre mostrar un spinner o cambio visual inmediato tras el clic para evitar que el usuario pulse varias veces.
++
++## 3. Manejo de Fechas (El gran problema de Safari)
++
++### 3.1. Parsing de Fechas Inválidas
++Safari NO soporta el formato `YYYY-MM-DD` en el constructor `new Date()` si no se especifica la hora o si se usan guiones en ciertos contextos.
++- **Error típico**: `new Date("2023-10-25")` puede devolver `Invalid Date` o una fecha desplazada por la zona horaria.
++- **Solución**: Usar librerías como `date-fns` (ya incluida en el proyecto) o formatear manualmente la cadena antes de pasarla al constructor.
++- **Formato Seguro**: ISO 8601 completo o descomponer la cadena (`split('-')`) y usar `new Date(year, month - 1, day)`.
++
++## 4. Persistencia y Caché
++
++### 4.1. Bloqueo de Cookies / LocalStorage
++Si la web se abre desde un WebView (ej. desde Instagram o WhatsApp), Safari puede ser más restrictivo con el almacenamiento.
++- **Solución**: Verificar siempre si el token existe antes de realizar peticiones que lo requieran y manejar errores de red con reintentos si es necesario.
+diff --git a/ens.md b/ens.md
+new file mode 100644
+index 0000000..8d12216
+--- /dev/null
++++ b/ens.md
+@@ -0,0 +1,32 @@
++# ens.md (Estructura de Narrativa del Sistema)
++
++## 1. El Alma del Proyecto: ¿Qué es La Vin Nails?
++
++**La Vin Nails** es el escaparate digital y centro de gestión de un salón de estética especializado en el cuidado de uñas, belleza y bienestar. Su propósito es elevar la experiencia de autocuidado desde el primer contacto digital:
++
++1.  **Para los Administradores:** Ser una herramienta de gestión eficiente que centralice los servicios, las citas y la interacción con los clientes, minimizando el trabajo administrativo manual y maximizando la ocupación del salón.
++2.  **Para los Clientes:** Ofrecer un catálogo visualmente atractivo, premium y fácil de navegar donde puedan descubrir servicios, conocer precios y solicitar citas de forma intuitiva desde cualquier dispositivo, con un enfoque *Mobile-First*.
++
++## 2. Puntos de Dolor y Soluciones (Narrativa Funcional)
++
++### 2.1. Gestión de Servicios Dinámica
++- **Dolor:** Actualizar precios o servicios en el código es lento y propenso a errores.
++- **Solución:** Integración con **Notion** (según se observa en el stack) para que los administradores puedan gestionar el catálogo de servicios de forma externa y sencilla, reflejándose automáticamente en la web.
++
++### 2.2. Experiencia Visual Premium
++- **Dolor:** La estética en el sector de las uñas es fundamental; una web descuidada aleja al cliente.
++- **Solución:** Uso de **Cloudinary** para optimizar y servir imágenes de alta calidad del portafolio. Un diseño limpio, elegante y con micro-animaciones que transmita profesionalidad y cuidado.
++
++### 2.3. Disponibilidad y Comunicación
++- **Dolor:** Pérdida de citas por falta de confirmación rápida o solapamiento.
++- **Solución:** Sistema de notificaciones vía **Nodemailer** y una lógica de backend robusta con **Mongoose** para gestionar el estado de las solicitudes de citas.
++
++## 3. Arquitectura del Modelo Mental (Las Entidades)
++
++1.  **`El Servicio`**: La unidad base de valor. Definido por nombre, descripción, precio y duración. Proviene de una fuente de verdad (posiblemente Notion/MongoDB).
++2.  **`La Cita`**: La reserva de tiempo de un cliente para uno o varios servicios. Incluye datos del cliente, estado (Pendiente, Confirmada) y fecha/hora.
++3.  **`El Portafolio`**: La galería visual de trabajos realizados, gestionada mediante Cloudinary.
++
++## 4. Visión de Sistema Vivo (El Futuro)
++
++El proyecto busca evolucionar hacia una plataforma integral de reservas en tiempo real, posiblemente integrando pasarelas de pago o un sistema de fidelización de clientes. La arquitectura actual debe ser modular y escalable para permitir estas futuras expansiones sin necesidad de reescribir el núcleo del sistema.
+diff --git a/web/package.json b/web/package.json
+index 02c99e2..8091de5 100644
+--- a/web/package.json
++++ b/web/package.json
+@@ -21,7 +21,7 @@
+     "web-vitals": "^2.1.4"
+   },
+   "scripts": {
+-    "start": "react-scripts start",
++    "dev": "react-scripts start",
+     "build": "react-scripts build",
+     "test": "react-scripts test",
+     "eject": "react-scripts eject"
+diff --git a/web/src/components/dates/dates-form/DatesForm.jsx b/web/src/components/dates/dates-form/DatesForm.jsx
+index f446f34..eb26542 100644
+--- a/web/src/components/dates/dates-form/DatesForm.jsx
++++ b/web/src/components/dates/dates-form/DatesForm.jsx
+@@ -23,6 +23,8 @@ function DatesForm({ service, serviceTypes }) {
+   const [selectedTurn, setSelectedTurn] = useState({});
+   const [selectedDate, setSelectedDate] = useState({});
+ 
++  const [isSubmitting, setIsSubmitting] = useState(false);
++
+   const onInitDate = (date) => {
+     setInitDate(date);
+   };
+@@ -58,50 +60,68 @@ function DatesForm({ service, serviceTypes }) {
+     5: "Viernes",
+     6: "Sábado",
+     7: "Domingo",
++    0: "Domingo",
+   };
+ 
+-  const showDate = (selectedDate) => {
+-    let dt = new Date(selectedDate);
++  const showDate = (dateString) => {
++    if (!dateString || typeof dateString !== 'string') return "";
++    
++    // Safari Safe Parsing: split "YYYY-MM-DD"
++    const [year, month, day] = dateString.split('-').map(Number);
++    const dt = new Date(year, month - 1, day);
++
++    if (isNaN(dt.getTime())) return "Fecha no válida";
+ 
+     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
+   };
+ 
+-  const onTurnSubmit = async (turn) => {
+-    selectedTurn.state = "Solicitado";
++  const onTurnSubmit = async () => {
++    if (!selectedTurn?.id) return;
++    const updatedTurn = { ...selectedTurn, state: "Solicitado" };
+     try {
+-      turn = await turnsService.update(selectedTurn.id, selectedTurn);
++      await turnsService.update(selectedTurn.id, updatedTurn);
+     } catch (error) {
+-      const errors = error.response?.data?.errors;
+-      if (errors) {
+-        Object.keys(errors).forEach((inputName) =>
+-          setError(inputName, { message: errors[inputName] })
+-        );
+-      } else {
+-        setServerError(error.message);
+-      }
++      console.error("Error updating turn:", error);
++      throw error; 
+     }
+   };
+ 
+-  const onDateSubmit = async (date) => {
+-    date.user = user.id;
+-    date.service = service.id;
+-    date.turn = selectedTurn.id;
++  const onDateSubmit = async (data) => {
++    if (isSubmitting) return;
++    
++    if (!selectedTurn?.id) {
++      setServerError("Debe seleccionar un turno antes de confirmar.");
++      return;
++    }
++
++    const dateApplication = {
++      ...data,
++      user: user.id,
++      service: service.id,
++      turn: selectedTurn.id,
++    };
++
+     try {
++      setIsSubmitting(true);
+       setServerError(undefined);
+-      console.debug("Sending date application...");
+-      date = await datesService.create(date);
+-      onTurnSubmit();
++      
++      // Atomic-like submission: Create Date entity
++      await datesService.create(dateApplication);
++      
++      // Update Turn state (AWAITED to prevent race condition)
++      await onTurnSubmit();
++      
+       navigate("/profile");
+     } catch (error) {
++      setIsSubmitting(false);
++      console.error("Error during date submission:", error);
+       const errors = error.response?.data?.errors;
+       if (errors) {
+-        console.error(error.message, errors);
+         Object.keys(errors).forEach((inputName) =>
+           setError(inputName, { message: errors[inputName] })
+         );
+       } else {
+-        console.error(error);
+-        setServerError(error.message);
++        setServerError(error.message || "Error al procesar la solicitud. Compruebe su conexión.");
+       }
+     }
+   };
+@@ -288,6 +308,7 @@ function DatesForm({ service, serviceTypes }) {
+ 
+             <div className="flex justify-around font-medium text-lg">
+               <button
++                type="button"
+                 onClick={() => setModalState(!modalState)}
+                 className="bg-red-600 text-white  px-2 py-1 rounded "
+               >
+@@ -295,9 +316,12 @@ function DatesForm({ service, serviceTypes }) {
+               </button>
+               <button
+                 type="submit"
+-                className="bg-emerald-600 text-white  px-2 py-1 rounded "
++                disabled={isSubmitting}
++                className={`text-white px-4 py-1.5 rounded font-bold transition-all ${
++                  isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700 active:scale-95"
++                }`}
+               >
+-                Aceptar
++                {isSubmitting ? "Enviando..." : "Confirmar"}
+               </button>
+             </div>
+           </Modal>
+@@ -306,6 +330,7 @@ function DatesForm({ service, serviceTypes }) {
+       {selectedTurn.hour && (
+         <div className="p-2">
+           <button
++            type="button"
+             onClick={() => setModalState(!modalState)}
+             className="text-white w-full bg-gradient-to-l from-emerald-700 via-emerald-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
+           >
+diff --git a/web/src/components/turns/turn-list-by-week/TurnListByWeek.jsx b/web/src/components/turns/turn-list-by-week/TurnListByWeek.jsx
+index 244f4c8..7122f56 100644
+--- a/web/src/components/turns/turn-list-by-week/TurnListByWeek.jsx
++++ b/web/src/components/turns/turn-list-by-week/TurnListByWeek.jsx
+@@ -23,13 +23,26 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
+     return `${year}-${month}-${day}`;
+   };
+ 
+-  const day = new Date(Date.parse(initDate));
+-  const firstDay = transformDate(day.setDate(day.getDate() + 1));
+-  const secondDay = transformDate(day.setDate(day.getDate() + 1));
+-  const thirdDay = transformDate(day.setDate(day.getDate() + 1));
+-  const fourthDay = transformDate(day.setDate(day.getDate() + 1));
+-  const fifthDay = transformDate(day.setDate(day.getDate() + 1));
+-  const sixthDay = transformDate(day.setDate(day.getDate() + 1));
++  const safeParseDate = (dateString) => {
++    if (!dateString) return new Date();
++    const [year, month, day] = dateString.split('-').map(Number);
++    return new Date(year, month - 1, day);
++  };
++
++  const day = safeParseDate(initDate);
++  
++  const getNextDate = (baseDate, daysToAdd) => {
++    const d = new Date(baseDate);
++    d.setDate(d.getDate() + daysToAdd);
++    return transformDate(d);
++  };
++
++  const firstDay = getNextDate(day, 1);
++  const secondDay = getNextDate(day, 2);
++  const thirdDay = getNextDate(day, 3);
++  const fourthDay = getNextDate(day, 4);
++  const fifthDay = getNextDate(day, 5);
++  const sixthDay = getNextDate(day, 6);
+ 
+   const months = [
+     "Enero",
+@@ -57,7 +70,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
+   };
+ 
+   const showDate = (date) => {
+-    let dt = new Date(date);
++    let dt = safeParseDate(date);
+ 
+     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
+   };
+@@ -82,7 +95,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection }) {
+ 
+       // Filtrar los turnos
+       const filteredTurns = turns.filter(turn => {
+-        const turnDate = new Date(turn.date);
++        const turnDate = safeParseDate(turn.date);
+         const turnMonth = turnDate.getMonth();
+         const turnYear = turnDate.getFullYear();
+ 
+diff --git a/web/src/components/week-picker/week-picker-js/HonestWeekPicker.js b/web/src/components/week-picker/week-picker-js/HonestWeekPicker.js
+index a9beb56..1411e02 100644
+--- a/web/src/components/week-picker/week-picker-js/HonestWeekPicker.js
++++ b/web/src/components/week-picker/week-picker-js/HonestWeekPicker.js
+@@ -22,13 +22,24 @@ export const HonestWeekPicker = ({ onInitDate }) => {
+     return leapYear.getDate() === 29;
+   };
+ 
++  const safeParseDate = (date) => {
++    if (date instanceof Date) return date;
++    if (typeof date === "string" && date.includes("-")) {
++      const parts = date.split("T")[0].split("-");
++      if (parts.length === 3) {
++        return new Date(parts[0], parts[1] - 1, parts[2]);
++      }
++    }
++    return new Date(date);
++  };
++
+   const convertDate = (date) => {
+-    let dt = new Date(date);
++    let dt = safeParseDate(date);
+     return `${dt.getDate()} de ${months[dt.getMonth()]}`;
+   };
+ 
+   const transformDate = (date) => {
+-    let dt = new Date(date);
++    let dt = safeParseDate(date);
+     let year = dt.getFullYear();
+     let month = dt.getMonth() + 1;
+     let day = dt.getDate();
+
+commit d28ba8fcbfb05c872df0ed1beeb451837be556da
+Author: FeliOjedaRuiz <feliojedaruiz@gmail.com>
+Date:   Tue Jan 27 22:20:45 2026 +0100
+
+    Update ServicesHome and ServicesPage designs with responsive slider and new UI
+
+diff --git a/api/README.md b/api/README.md
+new file mode 100644
+index 0000000..7262e63
+--- /dev/null
++++ b/api/README.md
+@@ -0,0 +1,50 @@
++# Uso: bin/delete_photos.js
++
++Breve: script para borrar imágenes en Cloudinary y sus registros en MongoDB.
++
++Precauciones:
++- Asegúrate de tener copia de seguridad de la DB antes de ejecutar opciones destructivas.
++- Las operaciones con `--yes` son irreversibles sobre la base de datos.
++
++Variables de entorno requeridas (archivo `api/.env`):
++
++- `MONGODB_URI`
++- `CLOUDINARY_NAME`
++- `CLOUDINARY_KEY`
++- `CLOUDINARY_SECRET`
++
++Opciones y ejemplos:
++
++- Dry-run (lista sin borrar):
++
++```bash
++node bin/delete_photos.js --dry-run
++```
++
++- Ejecutar borrado (DB + Cloudinary por cada registro):
++
++```bash
++node bin/delete_photos.js --yes
++```
++
++- Sólo Cloudinary (borra por prefijo/carpeta, útil si ya eliminaste registros DB):
++
++```bash
++node bin/delete_photos.js --only-cloudinary --yes
++```
++
++Comportamiento:
++- El script extrae `public_id` desde `photoUrl` y llama a `cloudinary.uploader.destroy(publicId)` por cada registro.
++- El modo `--only-cloudinary` usa `delete_resources_by_prefix` y ahora pagina automáticamente hasta completar, intentando también `delete_folder` al final.
++
++Resumen de la ejecución realizada desde este repositorio:
++
++- Dry-run inicial (con `.env`): listó ~978 fotos.
++- Ejecución con `--yes`: se borraron 978 registros en la base de datos (operación destructiva).
++- Ejecución `--only-cloudinary --yes`: se eliminaron por lotes ~56 recursos y la carpeta `la-vin-nails-web/uñas-clientas` fue eliminada (script pagina automáticamente si es necesario).
++
++Si necesitas que vuelva a ejecutar alguna operación (por ejemplo, repetir sólo Cloudinary), indícamelo y lo hago.
++
++Notas:
++- Cloudinary puede limitar peticiones; el script añade pequeñas pausas y paginación para evitar rate limits.
++- No vuelvas a ejecutar la opción que elimina registros en la DB a menos que quieras repetir la acción (ya se borraron los registros).
+diff --git a/api/bin/delete_photos.js b/api/bin/delete_photos.js
+new file mode 100644
+index 0000000..ab937dd
+--- /dev/null
++++ b/api/bin/delete_photos.js
+@@ -0,0 +1,186 @@
++#!/usr/bin/env node
++require('dotenv').config();
++
++const path = require('path');
++const readline = require('readline');
++
++// Conectar a la base de datos usando la configuración existente
++require(path.join(__dirname, '..', 'config', 'db.config'));
++
++const Photo = require(path.join(__dirname, '..', 'models', 'photo.model'));
++const cloudinary = require('cloudinary').v2;
++
++const args = process.argv.slice(2);
++const dryRun = args.includes('--dry-run');
++const yesAll = args.includes('--yes') || args.includes('-y');
++const onlyCloudinary = args.includes('--only-cloudinary') || args.includes('--folder-delete');
++
++const getPublicIdFromUrl = (photoUrl) => {
++  try {
++    if (!photoUrl) return null;
++    const decodedUrl = decodeURIComponent(photoUrl);
++    const urlParts = decodedUrl.split('/');
++    const uploadIndex = urlParts.indexOf('upload');
++    if (uploadIndex === -1) return null;
++    let pathWithFile = urlParts.slice(uploadIndex + 2).join('/');
++    const publicId = pathWithFile.replace(/\.[^/.]+$/, '');
++    return publicId;
++  } catch (err) {
++    return null;
++  }
++};
++
++const promptYesNo = (question) => {
++  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
++  return new Promise((resolve) => {
++    rl.question(question, (answer) => {
++      rl.close();
++      resolve(answer.trim().toLowerCase() === 'yes' || answer.trim().toLowerCase() === 'y');
++    });
++  });
++};
++
++async function main() {
++  // Ensure cloudinary is configured from env if not already
++  if (!cloudinary.config().cloud_name) {
++    cloudinary.config({
++      cloud_name: process.env.CLOUDINARY_NAME,
++      api_key: process.env.CLOUDINARY_KEY,
++      api_secret: process.env.CLOUDINARY_SECRET,
++    });
++  }
++
++  // If requested, delete by folder prefix directly in Cloudinary
++  if (onlyCloudinary) {
++    const prefix = 'la-vin-nails-web/uñas-clientas';
++    console.log('Target Cloudinary prefix:', prefix);
++    if (dryRun) {
++      console.log('[dry-run] Would delete all resources by prefix:', prefix);
++      process.exit(0);
++    }
++    if (!yesAll) {
++      const proceed = await promptYesNo('\nThis will delete ALL images in Cloudinary folder "la-vin-nails-web/uñas-clientas". Type yes to proceed: ');
++      if (!proceed) {
++        console.log('Aborting Cloudinary folder deletion.');
++        process.exit(0);
++      }
++    }
++    try {
++      // paginate delete_resources_by_prefix until Cloudinary reports partial: false
++      let nextCursor = undefined;
++      let totalDeleted = 0;
++      do {
++        const opts = { resource_type: 'image' };
++        if (nextCursor) opts.next_cursor = nextCursor;
++        const resp = await cloudinary.api.delete_resources_by_prefix(prefix, opts);
++        console.log('Cloudinary batch response:', { deleted_count: Object.keys(resp || {}).length, partial: resp && resp.partial });
++        if (resp && resp.deleted) {
++          totalDeleted += Object.keys(resp.deleted).length;
++        }
++        nextCursor = resp && resp.next_cursor;
++        // small delay to avoid hitting rate limits aggressively
++        if (resp && resp.partial && nextCursor) await new Promise(r => setTimeout(r, 500));
++      } while (nextCursor);
++
++      console.log('Total deleted (approx):', totalDeleted);
++
++      try {
++        const folderResp = await cloudinary.api.delete_folder(prefix);
++        console.log('Cloudinary delete_folder response:', folderResp);
++      } catch (fErr) {
++        console.warn('Could not delete folder (may be non-empty or not supported):', fErr.message || fErr);
++      }
++
++      process.exit(0);
++    } catch (err) {
++      console.error('Error deleting Cloudinary folder prefix:', err);
++      process.exit(2);
++    }
++  }
++  try {
++    const photos = await Photo.find().lean().exec();
++    const total = photos.length;
++
++    console.log(`Found ${total} photos in the database.`);
++    if (total === 0) {
++      process.exit(0);
++    }
++
++    if (!yesAll) {
++      console.log('Sample URLs:');
++      photos.slice(0, 5).forEach((p, i) => console.log(`${i + 1}. ${p.photoUrl}`));
++      if (dryRun) {
++        console.log('\nRunning in dry-run mode: no changes will be made.');
++      }
++      const proceed = await promptYesNo('\nDo you want to continue? Type yes to proceed: ');
++      if (!proceed) {
++        console.log('Aborting. No changes made.');
++        process.exit(0);
++      }
++    } else {
++      if (dryRun) console.log('Running with --yes and --dry-run (no destructive actions).');
++      else console.log('Running with --yes (will perform destructive actions).');
++    }
++
++    let cloudDeleted = 0;
++    let dbDeleted = 0;
++    let cloudNotFound = 0;
++    let cloudErrors = 0;
++
++    for (const photo of photos) {
++      const publicId = getPublicIdFromUrl(photo.photoUrl);
++      if (!publicId) {
++        console.warn('Could not extract public_id from URL:', photo.photoUrl);
++      } else {
++        console.log(`Processing public_id: ${publicId}`);
++        if (!dryRun) {
++          try {
++            const result = await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
++            if (result && result.result === 'ok') {
++              cloudDeleted++;
++              console.log('Deleted from Cloudinary:', publicId);
++            } else if (result && result.result === 'not found') {
++              cloudNotFound++;
++              console.warn('Not found on Cloudinary:', publicId);
++            } else {
++              cloudErrors++;
++              console.warn('Unexpected Cloudinary result for', publicId, result);
++            }
++          } catch (err) {
++            cloudErrors++;
++            console.error('Error deleting from Cloudinary for', publicId, err.message || err);
++          }
++        } else {
++          console.log('[dry-run] Would delete from Cloudinary:', publicId);
++        }
++      }
++
++      if (!dryRun) {
++        try {
++          const r = await Photo.deleteOne({ _id: photo._id });
++          if (r.deletedCount && r.deletedCount > 0) {
++            dbDeleted++;
++          }
++        } catch (err) {
++          console.error('Error deleting DB record for', photo._id, err.message || err);
++        }
++      } else {
++        console.log('[dry-run] Would delete DB record for', photo._id);
++      }
++    }
++
++    console.log('\nSummary:');
++    console.log(`Total photos processed: ${total}`);
++    console.log(`Cloudinary deleted: ${cloudDeleted}`);
++    console.log(`Cloudinary not found: ${cloudNotFound}`);
++    console.log(`Cloudinary errors: ${cloudErrors}`);
++    console.log(`DB deleted: ${dbDeleted}`);
++
++    process.exit(0);
++  } catch (error) {
++    console.error('Fatal error:', error);
++    process.exit(2);
++  }
++}
++
++main();
+diff --git a/api/config/routes.config.js b/api/config/routes.config.js
+index 1fed72c..f7f6b4c 100644
+--- a/api/config/routes.config.js
++++ b/api/config/routes.config.js
+@@ -97,8 +97,6 @@ router.get(
+ );
+ router.delete('/photos/:id', secure.isAdmin, photosMid.exists, photos.delete);
+ 
+-module.exports = router;
+-
+ // EXPENSES
+ 
+ router.post('/expenses', secure.isAdmin, expenses.create);
+@@ -120,3 +118,5 @@ router.delete(
+ 	expensesMid.exists,
+ 	expenses.delete
+ );
++
++module.exports = router;
+diff --git a/services-page design.jsx b/services-page design.jsx
+new file mode 100644
+index 0000000..14cd2e9
+--- /dev/null
++++ b/services-page design.jsx	
+@@ -0,0 +1,244 @@
++"use client"
++
++import { useState } from "react"
++import { Card, CardContent } from "@/components/ui/card"
++import { Button } from "@/components/ui/button"
++import { Badge } from "@/components/ui/badge"
++import { ChevronDown, ChevronUp, Clock, Star, Heart, Sparkles, Palette, X } from "lucide-react"
++
++const services = [
++  {
++    id: 1,
++    title: "Semipermanente + refuerzo",
++    price: "desde €15",
++    duration: "1:15 hs. aprox.",
++    image: "/semipermanent-strengthening-manicure.png",
++    description:
++      "Manicura semipermanente con tratamiento de refuerzo que fortalece las uñas naturales. Incluye limado, cutículas, base fortalecedora y esmaltado semipermanente de larga duración.",
++    features: ["Duración 2-3 semanas", "Fortalece uñas débiles", "Acabado brillante", "Secado inmediato"],
++    icon: Sparkles,
++    popular: true,
++  },
++  {
++    id: 2,
++    title: "Uñas de gel X-press",
++    price: "desde €25",
++    duration: "1:30 hs. aprox.",
++    image: "/placeholder-s6nah.png",
++    description:
++      "Extensión rápida con tips de gel preformados. Técnica innovadora que reduce el tiempo de aplicación manteniendo la máxima calidad y durabilidad.",
++    features: ["Aplicación rápida", "Forma perfecta", "Resistente y flexible", "Ideal para eventos"],
++    icon: Star,
++  },
++  {
++    id: 3,
++    title: "Uñas de Acrígel",
++    price: "desde €30",
++    duration: "2:00 hs. aprox.",
++    image: "/elegant-acrylic-gel-nails.png",
++    description:
++      "Combinación perfecta entre acrílico y gel. Ofrece la resistencia del acrílico con la flexibilidad y brillo natural del gel para un resultado excepcional.",
++    features: ["Máxima resistencia", "Aspecto natural", "Larga duración", "Personalizable"],
++    icon: Heart,
++  },
++  {
++    id: 4,
++    title: "Micro extensión",
++    price: "desde €20",
++    duration: "1:30 hs. aprox.",
++    image: "/micro-nail-extension-subtle.png",
++    description:
++      "Extensión sutil para alargar ligeramente las uñas naturales. Perfecta para quienes buscan un look natural con un poco más de longitud.",
++    features: ["Extensión natural", "Ideal para principiantes", "Mantenimiento fácil", "Look discreto"],
++    icon: Palette,
++  },
++  {
++    id: 5,
++    title: "Relleno",
++    price: "desde €18",
++    duration: "1:30 hs. aprox.",
++    image: "/placeholder-foyt7.png",
++    description:
++      "Mantenimiento profesional para uñas de gel o acrílico. Incluye limado de crecimiento, reparación de desperfectos y nuevo esmaltado.",
++    features: ["Mantiene la forma", "Reparación incluida", "Nuevo color", "Alarga la duración"],
++    icon: Star,
++  },
++  {
++    id: 6,
++    title: "Retiro",
++    price: "desde €5",
++    duration: "0:30 hs. aprox.",
++    image: "/nail-removal-professional.png",
++    description:
++      "Retiro profesional y seguro de cualquier tipo de esmaltado o extensión. Incluye hidratación y cuidado posterior de las uñas naturales.",
++    features: ["Proceso seguro", "Sin dañar la uña", "Hidratación incluida", "Cuidado posterior"],
++    icon: Heart,
++  },
++  {
++    id: 7,
++    title: "Semipermanente pies",
++    price: "desde €10",
++    duration: "1 hs. aprox.",
++    image: "/semipermanent-pedicure.png",
++    description:
++      "Pedicura semipermanente completa con cuidado de cutículas, limado y esmaltado de larga duración especial para pies.",
++    features: ["Duración extendida", "Resistente al agua", "Colores vibrantes", "Cuidado completo"],
++    icon: Sparkles,
++  },
++]
++
++export function ServicesPage() {
++  const [expandedService, setExpandedService] = useState(null)
++
++  const toggleExpanded = (serviceId) => {
++    setExpandedService(expandedService === serviceId ? null : serviceId)
++  }
++
++  return (
++    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
++      {/* Header Section */}
++      <div className="bg-white/80 backdrop-blur-sm border-b">
++        <div className="container mx-auto px-4 py-8">
++          <div className="text-center">
++            <h1 className="font-serif text-3xl md:text-4xl font-bold text-gray-900 mb-3">Servicios ofrecidos</h1>
++            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
++              Descubre nuestra amplia gama de servicios profesionales para el cuidado y embellecimiento de tus uñas
++            </p>
++          </div>
++        </div>
++      </div>
++
++      {/* Services Grid */}
++      <div className="container mx-auto px-4 py-8">
++        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
++          {services.map((service) => {
++            const IconComponent = service.icon
++            const isExpanded = expandedService === service.id
++
++            return (
++              <Card
++                key={service.id}
++                className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm border-0 shadow-lg relative"
++              >
++                {/* Service Image */}
++                <div className="relative">
++                  <img
++                    src={service.image || "/placeholder.svg"}
++                    alt={service.title}
++                    className="w-full h-48 object-cover"
++                  />
++                  {service.popular && (
++                    <Badge className="absolute top-3 right-3 bg-pink-500 hover:bg-pink-600">Popular</Badge>
++                  )}
++                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-full p-2">
++                    <IconComponent className="h-5 w-5 text-pink-600" />
++                  </div>
++                </div>
++
++                <CardContent className="p-6">
++                  {/* Service Header */}
++                  <div className="mb-4">
++                    <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
++                    <div className="flex items-center justify-between mb-3">
++                      <span className="text-2xl font-bold text-pink-600">{service.price}</span>
++                      <div className="flex items-center text-gray-500 text-sm">
++                        <Clock className="h-4 w-4 mr-1" />
++                        {service.duration}
++                      </div>
++                    </div>
++                  </div>
++
++                  {/* Action Buttons */}
++                  <div className="space-y-3">
++                    <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white">Solicitar cita</Button>
++                    <Button
++                      variant="outline"
++                      className="w-full border-pink-200 text-pink-600 hover:bg-pink-50 bg-transparent"
++                      onClick={() => toggleExpanded(service.id)}
++                    >
++                      {isExpanded ? (
++                        <>
++                          Menos detalles <ChevronUp className="ml-2 h-4 w-4" />
++                        </>
++                      ) : (
++                        <>
++                          Ver detalles <ChevronDown className="ml-2 h-4 w-4" />
++                        </>
++                      )}
++                    </Button>
++                  </div>
++                </CardContent>
++
++                {isExpanded && (
++                  <div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-10 animate-in fade-in-0 slide-in-from-bottom-4 duration-300">
++                    {/* Header del overlay */}
++                    <div className="p-4 border-b bg-gradient-to-r from-pink-50 to-purple-50">
++                      <div className="flex items-center justify-between">
++                        <div className="flex items-center space-x-3">
++                          <div className="bg-white rounded-full p-2 shadow-sm">
++                            <IconComponent className="h-5 w-5 text-pink-600" />
++                          </div>
++                          <div>
++                            <h3 className="font-serif text-lg font-bold text-gray-900">{service.title}</h3>
++                            <div className="flex items-center space-x-4 text-sm text-gray-600">
++                              <span className="font-semibold text-pink-600">{service.price}</span>
++                              <div className="flex items-center">
++                                <Clock className="h-3 w-3 mr-1" />
++                                {service.duration}
++                              </div>
++                            </div>
++                          </div>
++                        </div>
++                        <Button
++                          variant="ghost"
++                          size="sm"
++                          onClick={() => setExpandedService(null)}
++                          className="text-gray-500 hover:text-gray-700 hover:bg-white/50"
++                        >
++                          <X className="h-4 w-4" />
++                        </Button>
++                      </div>
++                    </div>
++
++                    {/* Contenido del overlay */}
++                    <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(100%-80px)]">
++                      <div>
++                        <h4 className="font-semibold text-gray-900 mb-2 text-sm">Descripción:</h4>
++                        <p className="text-gray-600 text-sm leading-relaxed">{service.description}</p>
++                      </div>
++
++                      <div>
++                        <h4 className="font-semibold text-gray-900 mb-3 text-sm">Incluye:</h4>
++                        <div className="grid grid-cols-1 gap-2">
++                          {service.features.map((feature, index) => (
++                            <div key={index} className="flex items-center text-sm text-gray-600">
++                              <div className="w-2 h-2 bg-pink-400 rounded-full mr-3 flex-shrink-0"></div>
++                              {feature}
++                            </div>
++                          ))}
++                        </div>
++                      </div>
++
++                      {/* Botones de acción en el overlay */}
++                      <div className="pt-4 border-t space-y-2">
++                        <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white">Solicitar cita</Button>
++                        <Button
++                          variant="outline"
++                          className="w-full border-pink-200 text-pink-600 hover:bg-pink-50 bg-transparent"
++                          onClick={() => setExpandedService(null)}
++                        >
++                          Cerrar detalles
++                        </Button>
++                      </div>
++                    </div>
++                  </div>
++                )}
++              </Card>
++            )
++          })}
++        </div>
++      </div>
++
++    </div>
++  )
++}
+diff --git a/web/src/components/layouts/Layout.jsx b/web/src/components/layouts/Layout.jsx
+index afe5b05..88ba595 100644
+--- a/web/src/components/layouts/Layout.jsx
++++ b/web/src/components/layouts/Layout.jsx
+@@ -27,7 +27,7 @@ function Layout({ children }) {
+ 				</Link>
+ 			</div>
+ 
+-			<div className="flex w-full z-0 justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50 via-white to-green-50">
++			<div className="flex w-full z-0 justify-center relative pt-12 pb-16 min-h-screen bg-gradient-to-b from-pink-50  to-green-50">
+ 				<div className=" container w-screen flex flex-col  overflow-hidden bg-white/30 shadow-lg ">
+ 					{children}
+ 				</div>
+diff --git a/web/src/components/recent-work/RecentWork.jsx b/web/src/components/recent-work/RecentWork.jsx
+index 9f0e09f..56ba377 100644
+--- a/web/src/components/recent-work/RecentWork.jsx
++++ b/web/src/components/recent-work/RecentWork.jsx
+@@ -31,7 +31,7 @@ export function RecentWork() {
+ 
+ 
+   return (
+-    <section className="py-12 px-4 bg-gradient-to-b from-background to-card/50">
++    <section className="py-12 px-4">
+       <div className="container mx-auto max-w-6xl">
+         <div className="text-center mb-10">
+           <h2 className="text-3xl md:text-4xl font-bold text-pink-600 mb-4">Mis Últimos Trabajos</h2>
+@@ -100,7 +100,7 @@ export function RecentWork() {
+         </div>
+ 
+         {/* Desktop Grid - sin cambios */}
+-        <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-4 gap-6">
++        <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-4 gap-8">
+           {recentWorks.slice(0, 8).map((work) => (
+             <div key={work.id} className="overflow-hidden hover:shadow-lg transition-shadow rounded-lg">
+               <div className="relative group">
+diff --git a/web/src/components/services/services-home/ServicesHome.jsx b/web/src/components/services/services-home/ServicesHome.jsx
+new file mode 100644
+index 0000000..9f21793
+--- /dev/null
++++ b/web/src/components/services/services-home/ServicesHome.jsx
+@@ -0,0 +1,193 @@
++import React from 'react';
++import { NavLink } from 'react-router-dom';
++import { AuthContext } from '../../../contexts/AuthStore';
++import { services } from '../LaVinServices/LaVinServices';
++import StarIcon from '../../icons/StarIcon';
++
++// Icons
++const ChevronLeft = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<path d="m15 18-6-6 6-6" />
++	</svg>
++);
++
++const ChevronRight = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<path d="m9 18 6-6-6-6" />
++	</svg>
++);
++
++// UI Components built with Tailwind to match the design
++const Card = ({ className, children }) => (
++	<div
++		className={`rounded-lg border bg-white text-gray-950 shadow-sm ${className}`}
++	>
++		{children}
++	</div>
++);
++
++const CardHeader = ({ className, children }) => (
++	<div className={`flex flex-col space-y-1.5 p-6 ${className}`}>{children}</div>
++);
++
++const CardTitle = ({ className, children }) => (
++	<h3
++		className={`text-2xl font-semibold leading-none text-teal-600 tracking-tight ${className}`}
++	>
++		{children}
++	</h3>
++);
++
++const CardDescription = ({ className, children }) => (
++	<p
++		className={`text-sm text-gray-500 ${children && children.length > 200 ? 'line-clamp-3' : ''} ${className}`}
++	>
++		{children}
++	</p>
++);
++
++const CardContent = ({ className, children }) => (
++	<div className={`p-6 pt-0 ${className}`}>{children}</div>
++);
++
++const Button = ({ className, children, ...props }) => (
++	<button
++		className={`inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400 disabled:pointer-events-none disabled:opacity-50 bg-pink-600 text-white hover:bg-pink-700 h-9 px-4 py-2 ${className}`}
++		{...props}
++	>
++		{children}
++	</button>
++);
++
++export function ServicesHome() {
++	const { user } = React.useContext(AuthContext);
++	const scrollContainerRef = React.useRef(null);
++
++	const scroll = (direction) => {
++		if (scrollContainerRef.current) {
++			const { current } = scrollContainerRef;
++			const scrollAmount =
++				direction === 'left' ? -current.offsetWidth : current.offsetWidth;
++			current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
++		}
++	};
++
++	return (
++		<section className="py-16 px-4">
++			<div className="container mx-auto max-w-6xl relative">
++				<div className="text-center mb-12">
++					<h2 className="text-3xl md:text-4xl font-bold text-pink-600 mb-4">
++						Nuestros Servicios
++					</h2>
++					<p className="text-gray-500 text-lg max-w-2xl mx-auto">
++						Ofrecemos una amplia gama de servicios profesionales para el cuidado
++						y embellecimiento de tus uñas.
++					</p>
++				</div>
++
++				<div className="relative group">
++					{/* Navigation Buttons - Hidden on mobile, visible on desktop group hover */}
++					<button
++						onClick={() => scroll('left')}
++						className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 bg-white/80 hover:bg-white text-pink-600 p-2 rounded-full shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-pink-400 hidden md:block opacity-0 group-hover:opacity-100"
++						aria-label="Previous slide"
++					>
++						<ChevronLeft className="h-6 w-6" />
++					</button>
++					<button
++						onClick={() => scroll('right')}
++						className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 bg-white/80 hover:bg-white text-pink-600 p-2 rounded-full shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-pink-400 hidden md:block opacity-0 group-hover:opacity-100"
++						aria-label="Next slide"
++					>
++						<ChevronRight className="h-6 w-6" />
++					</button>
++
++					{/* Slider Container */}
++					<div
++						ref={scrollContainerRef}
++						className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
++					>
++						{services.map((service, index) => {
++							return (
++								<div
++									key={service.id || index}
++									className="min-w-[85%] md:min-w-[calc(50%-12px)] snap-center flex"
++								>
++									<Card className="overflow-hidden hover:shadow-lg transition-shadow group/card flex flex-col md:flex-row h-full w-full">
++										<div className="md:w-1/3 relative shrink-0">
++											<div className="h-48 md:h-full w-full">
++												<img
++													src={service.image || '/placeholder.svg'}
++													alt={service.name}
++													className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
++												/>
++											</div>
++										</div>
++
++										<div className="md:w-2/3 flex flex-col">
++											<CardHeader>
++												<div className="flex items-center space-x-2 mb-2">
++													<StarIcon className="h-5 w-5 text-pink-500" />
++													<CardTitle className="text-xl">
++														{service.name}
++													</CardTitle>
++												</div>
++												<CardDescription className="text-base text-pretty">
++													{service.description}
++												</CardDescription>
++											</CardHeader>
++											<CardContent className="mt-auto">
++												<div className="flex items-center justify-between">
++													<span className="text-lg font-semibold text-pink-600">
++														{service.price}€
++													</span>
++													{!user && (
++														<NavLink to={`/login`}>
++															<Button>Solicitar cita</Button>
++														</NavLink>
++													)}
++													{user && user.role === 'guest' && (
++														<NavLink to={`/new-date/${service.id}`}>
++															<Button>Solicitar cita</Button>
++														</NavLink>
++													)}
++													{user && user.role === 'admin' && (
++														<NavLink to={`/new-date-admin/${service.id}`}>
++															<Button>Solicitar cita</Button>
++														</NavLink>
++													)}
++												</div>
++											</CardContent>
++										</div>
++									</Card>
++								</div>
++							);
++						})}
++					</div>
++				</div>
++			</div>
++		</section>
++	);
++}
+diff --git a/web/src/pages/ClientProfilePage.jsx b/web/src/pages/ClientProfilePage.jsx
+index 7bbbcd5..ffe4aed 100644
+--- a/web/src/pages/ClientProfilePage.jsx
++++ b/web/src/pages/ClientProfilePage.jsx
+@@ -83,7 +83,7 @@ function ClientProfilePage() {
+ 		<Layout>
+ 			<div className="flex flex-col justify-center items-center p-4 max-w-xl mx-auto">
+ 				<UserProfile user={user} />
+-				<Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
++				{/* <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
+ 					<AccordionHeader
+ 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
+ 						onClick={() => handleOpen(2)}
+@@ -93,7 +93,7 @@ function ClientProfilePage() {
+ 					<AccordionBody>
+ 						<UserLoyaltyGuest userId={user.id} />
+ 					</AccordionBody>
+-				</Accordion>
++				</Accordion> */}
+ 				<Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
+ 					<AccordionHeader
+ 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
+diff --git a/web/src/pages/HomePage.jsx b/web/src/pages/HomePage.jsx
+index 009dc01..17c5cc7 100644
+--- a/web/src/pages/HomePage.jsx
++++ b/web/src/pages/HomePage.jsx
+@@ -1,28 +1,29 @@
+-import Layout from "./../components/layouts/Layout";
+-import Footer from "../components/footer/Footer";
+-import { Hero } from "../components/hero/Hero";
+-import { RecentWork } from "../components/recent-work/RecentWork";
++import Layout from './../components/layouts/Layout';
++import Footer from '../components/footer/Footer';
++import { Hero } from '../components/hero/Hero';
++import { RecentWork } from '../components/recent-work/RecentWork';
++import { ServicesHome } from '../components/services/services-home/ServicesHome';
+ 
+ function HomePage() {
+-  return (
+-    <Layout>
+-      <section className="">
+-        <Hero />
+-      </section>
+-     
+-      <section>
+-        <RecentWork />
+-      </section>
++	return (
++		<Layout>
++			<section className="">
++				<Hero />
++			</section>
+ 
+-      <section>
+-        {/* <LoginBanner /> */}
+-      </section>
++			<section>
++				<ServicesHome />
++			</section>
+ 
+-      <Footer />
++			<section>
++				<RecentWork />
++			</section>
+ 
+-      
+-    </Layout>
+-  );
++			<section>{/* <LoginBanner /> */}</section>
++
++			<Footer />
++		</Layout>
++	);
+ }
+ 
+ export default HomePage;
+diff --git a/web/src/pages/ProfilePage.jsx b/web/src/pages/ProfilePage.jsx
+index 816902b..b6f78b8 100644
+--- a/web/src/pages/ProfilePage.jsx
++++ b/web/src/pages/ProfilePage.jsx
+@@ -104,7 +104,7 @@ function ProfilePage() {
+ 		<Layout>
+ 			<div className="flex flex-col justify-center items-center p-4 max-w-xl mx-auto">
+ 				<UserProfile user={user} />
+-				<Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
++				{/* <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
+ 					<AccordionHeader
+ 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
+ 						onClick={() => handleOpen(2)}
+@@ -114,7 +114,7 @@ function ProfilePage() {
+ 					<AccordionBody>
+ 						<UserLoyalty UserLoyalty userId={id} />
+ 					</AccordionBody>
+-				</Accordion>
++				</Accordion> */}
+ 				<Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
+ 					<AccordionHeader
+ 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
+diff --git a/web/src/pages/ServicesPage.jsx b/web/src/pages/ServicesPage.jsx
+index 0680d31..37ccaea 100644
+--- a/web/src/pages/ServicesPage.jsx
++++ b/web/src/pages/ServicesPage.jsx
+@@ -1,20 +1,398 @@
+-import React from "react";
+-import Layout from "../components/layouts/Layout";
+-import ServiceList from "../components/services/service-list/ServiceList";
++import React, { useState, useContext } from 'react';
++import { NavLink } from 'react-router-dom';
++import Layout from '../components/layouts/Layout';
++import { AuthContext } from '../contexts/AuthStore';
++import { services as laVinServices } from '../components/services/LaVinServices/LaVinServices';
++
++// Icons
++const Clock = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<circle cx="12" cy="12" r="10" />
++		<polyline points="12 6 12 12 16 14" />
++	</svg>
++);
++const ChevronDown = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<path d="m6 9 6 6 6-6" />
++	</svg>
++);
++const ChevronUp = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<path d="m18 15-6-6-6 6" />
++	</svg>
++);
++const X = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<path d="M18 6 6 18" />
++		<path d="m6 6 12 12" />
++	</svg>
++);
++const Star = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
++	</svg>
++);
++const Heart = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
++	</svg>
++);
++const Sparkles = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
++		<path d="M5 3v4" />
++		<path d="M9 3v4" />
++		<path d="M3 5h4" />
++		<path d="M3 9h4" />
++	</svg>
++);
++const Palette = ({ className }) => (
++	<svg
++		xmlns="http://www.w3.org/2000/svg"
++		width="24"
++		height="24"
++		viewBox="0 0 24 24"
++		fill="none"
++		stroke="currentColor"
++		strokeWidth="2"
++		strokeLinecap="round"
++		strokeLinejoin="round"
++		className={className}
++	>
++		<circle cx="13.5" cy="6.5" r=".5" />
++		<circle cx="17.5" cy="10.5" r=".5" />
++		<circle cx="8.5" cy="7.5" r=".5" />
++		<circle cx="6.5" cy="12.5" r=".5" />
++		<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.551-2.5 5.551-5.551C21.488 6.45 17.925 2 12 2Z" />
++	</svg>
++);
++
++const icons = [Sparkles, Star, Heart, Palette];
++
++// UI Components
++const Card = ({ className, children }) => (
++	<div
++		className={`rounded-xl border bg-card text-card-foreground shadow ${className}`}
++	>
++		{children}
++	</div>
++);
++const CardContent = ({ className, children }) => (
++	<div className={`p-6 pt-0 ${className}`}>{children}</div>
++);
++const Badge = ({ className, children }) => (
++	<div
++		className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-white ${className}`}
++	>
++		{children}
++	</div>
++);
++const Button = ({ className, children, variant = 'default', ...props }) => {
++	const baseStyles =
++		'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background';
++	const variants = {
++		default: 'bg-pink-600 text-white hover:bg-pink-700',
++		outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
++		ghost: 'hover:bg-accent hover:text-accent-foreground',
++	};
++	return (
++		<button
++			className={`${baseStyles} ${variants[variant]} h-10 py-2 px-4 ${className}`}
++			{...props}
++		>
++			{children}
++		</button>
++	);
++};
+ 
+ function ServicesPage() {
+-  return (
+-    <>
+-      <Layout>
+-        <div className="p-2">
+-          <h1 className="text-3xl md:text-4xl lg:text-5xl m-5 font-bold text-center color text-pink-700">
+-            Servicios ofrecidos
+-          </h1>
+-          <ServiceList />
+-        </div>
+-      </Layout>
+-    </>
+-  );
++	const [expandedService, setExpandedService] = useState(null);
++	const { user } = useContext(AuthContext);
++
++	const toggleExpanded = (serviceId) => {
++		setExpandedService(expandedService === serviceId ? null : serviceId);
++	};
++
++	return (
++		<Layout>
++			<div className="min-h-screen pb-12">
++				{/* Header Section */}
++				<div className="backdrop-blur-sm border-b">
++					<div className="container mx-auto px-4 py-8">
++						<div className="text-center">
++							<h1 className="text-3xl md:text-4xl font-bold text-pink-600 mb-3">
++								Servicios ofrecidos
++							</h1>
++							<p className="text-gray-600 text-lg max-w-2xl mx-auto">
++								Descubre nuestra amplia gama de servicios profesionales para el
++								cuidado y embellecimiento de tus uñas
++							</p>
++						</div>
++					</div>
++				</div>
++
++				{/* Services Grid */}
++				<div className="container mx-auto px-4 py-8">
++					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
++						{laVinServices.map((service, index) => {
++							const IconComponent = icons[index % icons.length];
++							const isExpanded = expandedService === service.id;
++							const features = service.type || [];
++
++							// Appointment Button Logic
++							const AppointmentButton = () => {
++								if (!user) {
++									return (
++										<NavLink to="/login" className="w-full block">
++											<Button className="w-full">Solicitar cita</Button>
++										</NavLink>
++									);
++								}
++								if (user.role === 'guest') {
++									return (
++										<NavLink
++											to={`/new-date/${service.id}`}
++											className="w-full block"
++										>
++											<Button className="w-full">Solicitar cita</Button>
++										</NavLink>
++									);
++								}
++								if (user.role === 'admin') {
++									return (
++										<NavLink
++											to={`/new-date-admin/${service.id}`}
++											className="w-full block"
++										>
++											<Button className="w-full">Solicitar cita</Button>
++										</NavLink>
++									);
++								}
++								return null;
++							};
++
++							return (
++								<Card
++									key={service.id}
++									className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm border-0 shadow-lg relative flex flex-col"
++								>
++									{/* Service Image */}
++									<div className="relative shrink-0">
++										<img
++											src={service.image || '/placeholder.svg'}
++											alt={service.name}
++											className="w-full h-52 object-cover"
++										/>
++										{/* {index === 0 && (
++                      <Badge className="absolute top-3 right-3 bg-pink-500 hover:bg-pink-600">Popular</Badge>
++                    )} */}
++										<div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-full p-2">
++											<IconComponent className="h-5 w-5 text-pink-600" />
++										</div>
++									</div>
++
++									<CardContent className="p-6 flex flex-col grow">
++										{/* Service Header */}
++										<div className="mb-2 grow">
++											<h3 className="text-xl font-bold text-gray-900 mt-3">
++												{service.name}
++											</h3>
++											<div className="flex items-center justify-between mb-3">
++												<span className="text-2xl font-bold text-pink-600">
++													€{service.price}
++												</span>
++												<div className="flex items-center text-gray-500 text-sm">
++													<Clock className="h-4 w-4 mr-1" />
++													{service.dateDuration} hs
++												</div>
++											</div>
++										</div>
++
++										{/* Action Buttons */}
++										<div className="space-y-3 mt-auto">
++											<AppointmentButton />
++											<Button
++												variant="outline"
++												className="w-full border-pink-200 text-pink-600 hover:bg-pink-50 bg-transparent"
++												onClick={() => toggleExpanded(service.id)}
++											>
++												{isExpanded ? (
++													<>
++														Menos detalles{' '}
++														<ChevronUp className="ml-2 h-4 w-4" />
++													</>
++												) : (
++													<>
++														Ver detalles{' '}
++														<ChevronDown className="ml-2 h-4 w-4" />
++													</>
++												)}
++											</Button>
++										</div>
++									</CardContent>
++
++									{isExpanded && (
++										<div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-10 animate-in fade-in-0 slide-in-from-bottom-4 duration-300 flex flex-col">
++											{/* Header del overlay */}
++											<div className="p-4 border-b bg-gradient-to-r from-pink-50 to-purple-50 shrink-0">
++												<div className="flex items-center justify-between">
++													<div className="flex items-center space-x-3">
++														<div className="bg-white rounded-full p-2 shadow-sm">
++															<IconComponent className="h-5 w-5 text-pink-600" />
++														</div>
++														<div>
++															<h3 className="text-lg font-bold text-gray-900 line-clamp-1">
++																{service.name}
++															</h3>
++															<div className="flex items-center space-x-4 text-sm text-gray-600">
++																<span className="font-semibold text-pink-600">
++																	€{service.price}
++																</span>
++																<div className="flex items-center">
++																	<Clock className="h-3 w-3 mr-1" />
++																	{service.dateDuration} hs
++																</div>
++															</div>
++														</div>
++													</div>
++													<Button
++														variant="ghost"
++														size="sm"
++														onClick={() => setExpandedService(null)}
++														className="text-gray-500 hover:text-gray-700 hover:bg-white/50"
++													>
++														<X className="h-4 w-4" />
++													</Button>
++												</div>
++											</div>
++
++											{/* Contenido del overlay (Scrollable) */}
++											<div className="p-4 space-y-4 overflow-y-auto grow">
++												<div>
++													<h4 className="font-semibold text-gray-900 mb-2 text-sm leading-relaxed">
++														Descripción:
++													</h4>
++													<p className="text-gray-600 text-sm ">
++														{service.description}
++													</p>
++												</div>
++
++												{/* <div>
++													<h4 className="font-semibold text-gray-900 mb-3 text-sm">
++														Incluye:
++													</h4>
++													<div className="grid grid-cols-1 gap-1">
++														{features.map((feature, index) => (
++															<div
++																key={index}
++																className="flex items-center text-sm text-gray-600"
++															>
++																<div className="w-2 h-2 bg-pink-400 rounded-full mr-3 flex-shrink-0"></div>
++																{feature}
++															</div>
++														))}
++													</div>
++												</div> */}
++											</div>
++
++											{/* Botones de acción en el overlay (Fixed at bottom) */}
++											<div className="p-4 border-t space-y-2 shrink-0 bg-white">
++												<AppointmentButton />
++												<Button
++													variant="outline"
++													className="w-full border-gray-200 text-gray-600 hover:bg-gray-100 bg-transparent"
++													onClick={() => setExpandedService(null)}
++												>
++													Cerrar detalles
++												</Button>
++											</div>
++										</div>
++									)}
++								</Card>
++							);
++						})}
++					</div>
++				</div>
++			</div>
++		</Layout>
++	);
+ }
+ 
+ export default ServicesPage;

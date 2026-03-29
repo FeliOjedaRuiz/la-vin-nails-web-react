@@ -1,0 +1,21 @@
+
+> la-vin-nails@0.1.0 test
+> react-scripts test src/__tests__/services/base-api.test.js --watchAll=false
+
+  console.debug
+    Handling request interceptor
+
+      at requestHandler (src/services/base-api.js:9:13)
+
+node:internal/process/promises:392
+      new UnhandledPromiseRejection(reason);
+      ^
+
+UnhandledPromiseRejection: This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason "[object Object]".
+    at throwUnhandledRejectionsMode (node:internal/process/promises:392:7)
+    at processPromiseRejections (node:internal/process/promises:475:17)
+    at processTicksAndRejections (node:internal/process/task_queues:104:32) {
+  code: 'ERR_UNHANDLED_REJECTION'
+}
+
+Node.js v24.12.0
