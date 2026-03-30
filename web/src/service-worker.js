@@ -59,3 +59,46 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
+
+// Listener para recibir notificaciones Push en background
+self.addEventListener('push', (event) => {
+  if (event.data) {
+    try {
+      const payload = event.data.json();
+      
+      const title = payload.title || 'Nueva Notificación';
+      const iconUrl = `${self.location.origin}/icons/icon-192x192.png`;
+
+      const options = {
+        body: payload.body || 'Tienes un nuevo mensaje.',
+        icon: iconUrl,
+        data: { url: payload.url || '/' },
+        vibrate: [200, 100, 200]
+      };
+
+      event.waitUntil(self.registration.showNotification(title, options));
+    } catch (e) {
+      console.error('Error parseando push payload:', e);
+    }
+  }
+});
+
+// Listener para manejar el click en la notificación
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  const urlToOpen = event.notification.data.url;
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      // Si la app ya está abierta, enfocamos la ventana y navegamos
+      const matchingClient = windowClients.find((client) => client.url === urlToOpen || client.url.includes(urlToOpen));
+      if (matchingClient) {
+        return matchingClient.focus();
+      }
+      
+      // Si no, abre una nueva ventana/pestaña
+      return self.clients.openWindow(urlToOpen);
+    })
+  );
+});

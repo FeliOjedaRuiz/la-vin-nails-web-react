@@ -1,5 +1,6 @@
 const Date = require('../models/date.model');
 const mailer = require('../config/mailer.config');
+const pushService = require('../utils/push.service');
 
 module.exports.create = (req, res, next) => {
 	Date.create(req.body)
@@ -11,6 +12,15 @@ module.exports.create = (req, res, next) => {
 				.populate('service')
 				.then((date) => {
 					mailer.sendDateCreationEmail(date);
+					
+					// Push a los Administradores
+					const clientName = date.user?.name || 'Un cliente';
+					const serviceName = date.service?.name || 'un servicio';
+					pushService.notifyAdmins({
+						title: '🗓️ Nueva Reserva',
+						body: `${clientName} ha reservado ${serviceName}.`,
+						url: '/admin/bookings'
+					});
 				});
 		})
 		.catch(next);

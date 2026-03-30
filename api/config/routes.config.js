@@ -7,6 +7,7 @@ const turns = require('../controllers/turns.controllers');
 const dates = require('../controllers/dates.controllers');
 const photos = require('../controllers/photos.controllers');
 const expenses = require('../controllers/expenses.controllers');
+const push = require('../controllers/push.controllers');
 
 const turnsMid = require('../middlewares/turns.mid');
 const datesMid = require('../middlewares/dates.mid');
@@ -16,6 +17,10 @@ const photosMid = require('../middlewares/photos.mid');
 const expensesMid = require('../middlewares/expenses.mid');
 
 const fileUploader = require('../config/cloudinary.config');
+
+// PUSH
+router.get('/push/public-key', secure.auth, push.getPublicKey);
+router.post('/push/subscribe', secure.auth, push.subscribe);
 
 // USERS
 router.post('/users', users.create);

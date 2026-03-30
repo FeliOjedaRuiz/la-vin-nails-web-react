@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import usePushNotifications from '../hooks/usePushNotifications';
 
 const AuthContext = createContext();
 
@@ -27,6 +28,8 @@ function AuthStore({ children }) {
 	const [currentDate, setCurrentDate] = useState(restoreDateFromLocalStorage());
 	const navigate = useNavigate();
 
+	usePushNotifications(user);
+
 	const handleUserChange = useCallback((user) => {
 		console.log('Updating user context', user);
 		if (!user) {
@@ -44,7 +47,7 @@ function AuthStore({ children }) {
 	const logout = useCallback(() => {
 		handleUserChange();
 		navigate('/login');
-	}, []);
+	}, [handleUserChange, navigate]);
 
 	const deleteDate = useCallback(() => {
 		setCurrentDate();
