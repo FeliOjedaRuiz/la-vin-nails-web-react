@@ -12,8 +12,19 @@ export const services = [
       "https://res.cloudinary.com/duoshgr3h/image/upload/v1722880052/semi-mano_uhpm7o.webp",
     description:
       "Este servicio se realiza con esmaltes semipermanentes, que se aplican de forma rápida y fácil secando con luz UV y que consigue la durabilidad y brillo que caracterizan a las uñas esculpidas. Con los cuidados necesarios, una aplicación puede llegar a durar hasta 3 semanas.",
-    price: 15,
+    price: 17,
     dateDuration: "1:15",
+  },
+  {
+    id: "69cc5357be0d63e720a85c0b",
+    name: "Semi Manos y Pies",
+    type: ["esmalte liso"],
+    image:
+      "https://res.cloudinary.com/duoshgr3h/image/upload/v1722880052/semi-mano_uhpm7o.webp",
+    description:
+      "Promoción de Mayo a Agosto 2026, las semis en manos incluyen refuersos y el esmaltado es solamente liso.",
+    price: 25,
+    dateDuration: "1:20",
   },
   {
     id: "64e1e934f0ccf5e38547aead",
@@ -87,7 +98,7 @@ export const services = [
       "https://res.cloudinary.com/duoshgr3h/image/upload/v1722880058/retiro_tf9ihq.webp",
     description:
       "Remoción total del material dejando la uña natural limpia y con un protector y endurecedor de calcio. Se efectua una limpieza y manicuria express (limado, corte de cuticulas y pulido de pieles).",
-    price: 5,
+    price: 3,
     dateDuration: "0:30",
   },
   {
