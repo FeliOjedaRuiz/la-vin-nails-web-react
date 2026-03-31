@@ -22,4 +22,11 @@ reportWebVitals();
 // Activa la PWA en producción con cache-first via Workbox.
 // En desarrollo no tiene efecto (unregister automático).
 // Más info: https://cra.link/PWA
-serviceWorkerRegistration.register();
+serviceWorkerRegistration.register({
+  onUpdate: (registration) => {
+    if (registration && registration.waiting) {
+      registration.waiting.postMessage({ type: "SKIP_WAITING" });
+    }
+    window.location.reload();
+  },
+});

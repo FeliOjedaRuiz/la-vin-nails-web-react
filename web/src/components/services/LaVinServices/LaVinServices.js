@@ -20,7 +20,7 @@ export const services = [
     name: "Semi Manos y Pies",
     type: ["esmalte liso"],
     image:
-      "https://res.cloudinary.com/duoshgr3h/image/upload/v1722880052/semi-mano_uhpm7o.webp",
+      "https://res.cloudinary.com/duoshgr3h/image/upload/v1774999696/la-vin-nails-web/Services/Semi_manos_pies_jjrjf8.png",
     description:
       "Promoción de Mayo a Agosto 2026, las semis en manos incluyen refuersos y el esmaltado es solamente liso.",
     price: 25,
