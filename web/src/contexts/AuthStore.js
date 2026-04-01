@@ -5,21 +5,27 @@ import usePushNotifications from '../hooks/usePushNotifications';
 const AuthContext = createContext();
 
 const restoreUserFromLocalStorage = () => {
-	const user = localStorage.getItem('current-user');
-	if (user) {
-		return JSON.parse(user);
-	} else {
-		return undefined;
+	try {
+		const user = localStorage.getItem('current-user');
+		if (user) {
+			return JSON.parse(user);
+		}
+	} catch (e) {
+		console.warn("localStorage not accessible", e);
 	}
+	return undefined;
 };
 
 const restoreDateFromLocalStorage = () => {
-	const date = localStorage.getItem('current-date');
-	if (date) {
-		return JSON.parse(date);
-	} else {
-		return undefined;
+	try {
+		const date = localStorage.getItem('current-date');
+		if (date) {
+			return JSON.parse(date);
+		}
+	} catch (e) {
+		console.warn("localStorage not accessible", e);
 	}
+	return undefined;
 };
 
 function AuthStore({ children }) {
@@ -33,13 +39,21 @@ function AuthStore({ children }) {
 	const handleUserChange = useCallback((user) => {
 		console.log('Updating user context', user);
 		if (!user) {
-			localStorage.removeItem('user-access-token');
-			localStorage.removeItem('current-user');
-			localStorage.removeItem('current-week');
-			localStorage.removeItem('current-date');
+			try {
+				localStorage.removeItem('user-access-token');
+				localStorage.removeItem('current-user');
+				localStorage.removeItem('current-week');
+				localStorage.removeItem('current-date');
+			} catch (e) {
+				console.warn("localStorage not accessible", e);
+			}
 		} else {
-			localStorage.setItem('user-access-token', user.token);
-			localStorage.setItem('current-user', JSON.stringify(user));
+			try {
+				localStorage.setItem('user-access-token', user.token);
+				localStorage.setItem('current-user', JSON.stringify(user));
+			} catch (e) {
+				console.warn("localStorage not accessible", e);
+			}
 		}
 		setUser(user);
 	}, []);
@@ -56,9 +70,13 @@ function AuthStore({ children }) {
 	const handleWeekSelect = (week) => {
 		console.log('Updating week context', week);
 		if (!week) {
-			localStorage.removeItem('current-week');
+			try {
+				localStorage.removeItem('current-week');
+			} catch (e) {}
 		} else {
-			localStorage.setItem('current-week', JSON.stringify(week));
+			try {
+				localStorage.setItem('current-week', JSON.stringify(week));
+			} catch (e) {}
 		}
 		setCurrentWeek(week);
 	};
@@ -66,9 +84,13 @@ function AuthStore({ children }) {
 	const handleDateSelect = (date) => {
 		console.log('Updating date context', date);
     if (!date) {
-      localStorage.removeItem('current-date');
+      try {
+        localStorage.removeItem('current-date');
+      } catch (e) {}
     } else {
-      localStorage.setItem('current-date', JSON.stringify(date));
+      try {
+        localStorage.setItem('current-date', JSON.stringify(date));
+      } catch (e) {}
     }
     setCurrentDate(date);
 	};

@@ -7,9 +7,13 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     console.debug("Handling request interceptor");
-    const token = localStorage.getItem("user-access-token");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+    try {
+      const token = localStorage.getItem("user-access-token");
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+    } catch (e) {
+      console.warn("localStorage not accessible", e);
     }
     return config;
   },
@@ -21,8 +25,12 @@ http.interceptors.response.use(
   (error) => {
     const status = error.response?.status;
     if (status === 401 && !window.location.href.includes("login")) {
-      localStorage.removeItem("current-user");
-      localStorage.removeItem("user-access-token");
+      try {
+        localStorage.removeItem("current-user");
+        localStorage.removeItem("user-access-token");
+      } catch (e) {
+        console.warn("localStorage not accessible", e);
+      }
       window.location.href = "/";
       return Promise.resolve();
     } else {

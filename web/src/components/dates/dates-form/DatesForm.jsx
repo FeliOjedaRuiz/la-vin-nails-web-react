@@ -9,6 +9,11 @@ import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
 import Modal from "../../modal/Modal";
 import TurnsColorsExplication from "../../turns/turns-color-explication/TurnsColorsExplication";
 
+const isInAppBrowser = () => {
+  const ua = navigator.userAgent || navigator.vendor || window.opera || '';
+  return /Instagram|FBAN|FBAV|FB_IAB|Twitter|Line\/|Snapchat/i.test(ua);
+};
+
 function DatesForm({ service, serviceTypes }) {
   const {
     register,
@@ -17,6 +22,7 @@ function DatesForm({ service, serviceTypes }) {
     formState: { errors },
   } = useForm({ mode: "onBlur" });
   const [serverError, setServerError] = useState(undefined);
+  const [modalError, setModalError] = useState(undefined);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [initDate, setInitDate] = useState();
@@ -89,6 +95,13 @@ function DatesForm({ service, serviceTypes }) {
   const onDateSubmit = async (data) => {
     if (isSubmitting) return;
     
+    setModalError(undefined);
+
+    if (!user?.id) {
+      setModalError("Tu sesión no pudo ser verificada. Prueba abrir la web desde Safari o vuelve a iniciar sesión.");
+      return;
+    }
+    
     if (!selectedTurn?.id) {
       setServerError("Debe seleccionar un turno antes de confirmar.");
       return;
@@ -121,6 +134,7 @@ function DatesForm({ service, serviceTypes }) {
           setError(inputName, { message: errors[inputName] })
         );
       } else {
+        setModalError(error.message || "Error al procesar la solicitud. Compruebe su conexión.");
         setServerError(error.message || "Error al procesar la solicitud. Compruebe su conexión.");
       }
     }
@@ -130,6 +144,14 @@ function DatesForm({ service, serviceTypes }) {
 
   return (
     <div className="relative flex flex-col items-center ">
+      {isInAppBrowser() && (
+        <div className="bg-amber-100 border-l-4 border-amber-500 p-3 m-2 text-sm w-full max-w-2xl rounded shadow-sm">
+          <p className="font-bold text-amber-800">⚠️ Navegador limitado detectado</p>
+          <p className="text-amber-700 mt-1">
+            Parece que estás abriendo la web desde Instagram u otra app similar. Si experimentas problemas al confirmar la cita o iniciar sesión, te recomendamos pulsar el botón de <span className="font-bold inline-flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-more-horizontal mx-1"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg> tres puntos</span> arriba y seleccionar <span className="font-bold">"Abrir en el navegador"</span> (Safari/Chrome).
+          </p>
+        </div>
+      )}
       <form className="flex flex-col" onSubmit={handleSubmit(onDateSubmit)}>
         {serverError && (
           <div className="self-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
@@ -282,6 +304,11 @@ function DatesForm({ service, serviceTypes }) {
           )}
 
           <Modal modalState={modalState} setModalState={setModalState}>
+            {modalError && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-6 text-sm text-center font-medium">
+                {modalError}
+              </div>
+            )}
             <div className="mb-8">
               <p className="text-center leading-tight font-bold text-4xl uppercase mb-1 text-pink-700">
                 ¡Atención!

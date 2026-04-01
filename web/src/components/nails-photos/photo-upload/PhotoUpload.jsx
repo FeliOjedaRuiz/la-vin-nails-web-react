@@ -112,7 +112,7 @@ function PhotoUpload({ userId, onPhotoCreation, visible, changeVisibility }) {
 								</button>
 							</form>
 							{successMessage && (
-								<div className='bg-black/60 fixed top-0 left-0 z-20 h-screen w-screen flex items-center justify-center backdrop-blur-[3px] '>
+								<div className='bg-black/60 fixed top-0 left-0 z-20 w-screen flex items-center justify-center backdrop-blur-[3px]' style={{ height: '100dvh' }}>
 								<div className='bg-white p-8 rounded-md flex flex-col items-center shadow-md'>
 									<p className="text-emerald-600 text-2xl font-medium text-center mb-6">
 										{successMessage}
