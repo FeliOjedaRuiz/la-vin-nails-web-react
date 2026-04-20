@@ -1,36 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-function TurnItemGuest({ turn, onTurnSelection }) {
-  const [style, setStyle] = useState("");
-  const [isAvalaible, setIsAvalaible] = useState(false)
-  const handleClick = () => {
-    if (turn.state === "Disponible") {
+function TurnItemGuest({ turn, onTurnSelection, isSelected }) {
+  const isAvailable = turn.state === "Disponible";
+  
+  const style = isAvailable 
+    ? (isSelected 
+        ? "bg-emerald-600 text-white ring-2 ring-emerald-400 scale-105 shadow-md transition-all font-bold cursor-pointer z-10" 
+        : "bg-pink-400 text-white active:scale-95 transition-transform cursor-pointer")
+    : "bg-gray-300 text-gray-500 opacity-60 cursor-not-allowed";
+
+  const handleClick = (e) => {
+    // Evitamos propagación solo por seguridad en el carrusel
+    e.stopPropagation();
+    if (isAvailable && onTurnSelection) {
       onTurnSelection(turn);
     }
   };
 
-  useEffect(() => {
-    if (turn.state === "Disponible") {
-      setStyle(
-        "bg-pink-400 text-white hover:animate-bounce hover:ring hover:ring-yellow-400 "
-      ); 
-      setIsAvalaible(true)     
-    } else {
-      setStyle("bg-gray-300 text-gray-500");
-      setIsAvalaible(false) 
-    }
-  }, [turn]);
-
   return (
     <div
-      className={`mb-1.5 ${style} rounded shadow py-0.5 px-1.5 xl:py-1.5 xl:px-2 flex-col`}
+      className={`mb-0.5 ${style} rounded shadow-sm py-[2px] flex-col`}
       onClick={handleClick}
     >
-      <p className={`text-center font-medium text-xs md:text-sm xl:text-md truncate`}>
-        {turn.hour} Hs. {!isAvalaible && ("OCUPADO")}
+      <p className={`text-center font-medium text-[10px] md:text-xs leading-[14px] truncate`}>
+        {turn.hour} hs.
       </p>
     </div>
   );
 }
 
-export default TurnItemGuest;
+export default React.memo(TurnItemGuest);

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import Layout from '../components/layouts/Layout';
 import { AuthContext } from '../contexts/AuthStore';
 import { services as laVinServices } from '../components/services/LaVinServices/LaVinServices';
+import SEO from '../components/seo/SEO';
 
 // Icons
 const Clock = ({ className }) => (
@@ -157,13 +158,6 @@ const Card = ({ className, children }) => (
 const CardContent = ({ className, children }) => (
 	<div className={`p-6 pt-0 ${className}`}>{children}</div>
 );
-const Badge = ({ className, children }) => (
-	<div
-		className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-white ${className}`}
-	>
-		{children}
-	</div>
-);
 const Button = ({ className, children, variant = 'default', ...props }) => {
 	const baseStyles =
 		'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background';
@@ -192,6 +186,10 @@ function ServicesPage() {
 
 	return (
 		<Layout>
+			<SEO 
+				title="Catálogo de Servicios de Manicura" 
+				description="Explora nuestros servicios de uñas en Granada: Uñas de gel, acrílicas, esmaltado semipermanente y tratamientos de reconstrucción." 
+			/>
 			<div className="min-h-screen pb-12">
 				{/* Header Section */}
 				<div className="backdrop-blur-sm border-b">
@@ -214,7 +212,6 @@ function ServicesPage() {
 						{laVinServices.map((service, index) => {
 							const IconComponent = icons[index % icons.length];
 							const isExpanded = expandedService === service.id;
-							const features = service.type || [];
 
 							// Appointment Button Logic
 							const AppointmentButton = () => {

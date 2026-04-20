@@ -1,9 +1,10 @@
 'use client';
-import LaVinLogo from '../../images/la-vin-nails-logo.png';
-
-import nuevaPortada from '../../images/nueva-portada-2.webp';
+import LaVinLogo from '../../images/la-vin-nails-logo.webp';
 import LocationIcon from '../icons/LocationIcon';
 import WhatsappIcon2 from '../icons/WhatsappIcon2';
+
+// URL optimizada de Cloudinary (auto-format, auto-quality, max-width 2000px)
+const HERO_IMAGE_URL = "https://res.cloudinary.com/duoshgr3h/image/upload/f_auto,q_auto,w_2000/v1775121424/web-la-vin-heroes/hero-main-v2.webp";
 
 export function Hero() {
 	return (
@@ -12,20 +13,26 @@ export function Hero() {
 			{/* Background Image */}
 			<div className="absolute inset-0 z-0">
 				<img
-					src={nuevaPortada}
-					alt="Manicura profesional"
+					src={HERO_IMAGE_URL}
+					alt="Manicura profesional La Vin Nails"
 					className="w-full h-full object-cover"
+					fetchpriority="high"
+					loading="eager"
+					width="1920"
+					height="1080"
 				/>
 				<div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 			</div>
 
 			{/* Content */}
 			<div className="relative z-10 text-center px-4 max-w-2xl mx-auto">
+				<h1 className="sr-only">La Vin Nails - Estudio de Manicura Profesional en Granada</h1>
 				<div className="mb-8">
 					<img
 						src={LaVinLogo}
 						alt="Logo La Vin Nails"
 						className="w-48 lg:w-72 xl:w-96 m-auto drop-shadow-lg"
+						decoding="async"
 					/>
 					<p className="text-base md:text-lg italic font-medium text-white mb-8 mt-6 leading-relaxed drop-shadow">
 						Transforma tus uñas en obras de arte. <br /> Agenda tu cita y

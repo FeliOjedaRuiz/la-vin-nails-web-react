@@ -1,13 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import datesService from "../../../services/dates";
 import turnsService from "../../../services/turns";
 import UsersService from "../../../services/users";
 import { useNavigate } from "react-router-dom";
-import { HonestWeekPicker } from "../../week-picker/week-picker-js/HonestWeekPicker";
+import { AuthContext } from "../../../contexts/AuthStore";
+import WeekNavigator from "../../week-navigator/WeekNavigator";
+import WeekCarousel from "../../carousel/WeekCarousel";
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
 import Modal from "../../modal/Modal";
 import UserItemSelect from "../../users/user-select-item/UserItemSelect";
+import { addWeeks, subWeeks, startOfWeek, endOfWeek } from "date-fns";
+
+// ─── CalendarPanel ────────────────────────────────────────────────────────────
+// CRÍTICO: debe estar FUERA de DatesFormAdmin para que React lo vea siempre
+// como el mismo tipo entre renders. Si estuviese dentro, cada render crearía
+// un tipo nuevo → unmount+remount de los 3 paneles del carrusel → freeze.
+const CalendarPanelAdmin = React.memo(function CalendarPanelAdmin({ date, selectedTurn, onTurnSelection }) {
+  return (
+    <TurnListByWeek
+      initDate={date}
+      onTurnSelection={onTurnSelection}
+      selectedTurn={selectedTurn}
+    />
+  );
+});
 
 function DatesFormAdmin({ service, serviceTypes }) {
   const {
@@ -18,66 +35,105 @@ function DatesFormAdmin({ service, serviceTypes }) {
   } = useForm({ mode: "onBlur" });
   const [serverError, setServerError] = useState(undefined);
   const navigate = useNavigate();
-  const [initDate, setInitDate] = useState();
+  const { currentWeek, onWeekSelect } = useContext(AuthContext);
+
+  const weekToInitDate = (week) => {
+    if (!week?.firstDay) return undefined;
+    const d = new Date(week.firstDay);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+
+  const [initDate, setInitDate] = useState(() => weekToInitDate(currentWeek));
   const [selectedTurn, setSelectedTurn] = useState({});
-  const [selectedDate, setSelectedDate] = useState({});
+  // selectedDate se deriva directamente — evita un useEffect extra por selección
+  const selectedDate = selectedTurn.date;
+
   const [modalState, setModalState] = useState(false);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState("hidden");
   const [selectedUser, setSelectedUser] = useState({});
 
-  const onInitDate = (date) => {
-    setInitDate(date);
-  };
-
-  const onTurnSelection = (turn) => {
-    setSelectedTurn(turn);
-  };
-
+  // ── Carga de semana inicial ──────────────────────────────────────────────
   useEffect(() => {
-    setSelectedDate(selectedTurn.date);
+    if (!currentWeek?.firstDay) {
+      const now = new Date();
+      const newWeek = {
+        firstDay: startOfWeek(now, { weekStartsOn: 0 }),
+        lastDay: endOfWeek(now, { weekStartsOn: 0 }),
+      };
+      onWeekSelect(newWeek);
+    }
+    setInitDate(weekToInitDate(currentWeek));
+  }, [currentWeek]);
+
+  // ── Carga de usuarios: UNA SOLA VEZ al montar, no al seleccionar turno ──
+  useEffect(() => {
     UsersService.list()
-      .then((users) => {
-        setUsers(users);
-      })
+      .then((users) => setUsers(users))
       .catch((error) => console.error(error));
-  }, [selectedTurn]);
+  }, []); // Sin dependencia en selectedTurn → no se re-ejecuta al seleccionar
 
+  // ── Event listener con cleanup para cerrar dropdown ──────────────────────
+  // FIX: registrar en useEffect para evitar fuga de memoria (se añadía un nuevo
+  // listener en CADA render sin limpiar el anterior).
+  useEffect(() => {
+    const handleDocumentClick = (e) => {
+      const input = document.getElementById("admin-user-input");
+      if (e.target !== input) {
+        setOpen("hidden");
+      }
+    };
+    document.addEventListener("click", handleDocumentClick);
+    return () => document.removeEventListener("click", handleDocumentClick);
+  }, []);
+
+  // ── Navegación de semana ──────────────────────────────────────────────────
+  const handleWeekChange = useCallback((direction) => {
+    if (!currentWeek?.firstDay) return;
+    const base = new Date(currentWeek.firstDay);
+    const newBase = direction === "next" ? addWeeks(base, 1) : subWeeks(base, 1);
+    const newWeek = {
+      firstDay: startOfWeek(newBase, { weekStartsOn: 0 }),
+      lastDay: endOfWeek(newBase, { weekStartsOn: 0 }),
+    };
+    // Actualización síncrona para evitar flash en el carrusel
+    setInitDate(weekToInitDate(newWeek));
+    onWeekSelect(newWeek);
+  }, [currentWeek, onWeekSelect]);
+
+  // Callbacks estables para WeekNavigator
+  const handleWeekPrev = useCallback(() => handleWeekChange("prev"), [handleWeekChange]);
+  const handleWeekNext = useCallback(() => handleWeekChange("next"), [handleWeekChange]);
+
+  // ── Selección de turno — memoizado para no invalidar React.memo ──────────
+  const onTurnSelection = useCallback((turn) => {
+    setSelectedTurn(turn);
+  }, []);
+
+  // ── Formateo de fecha ─────────────────────────────────────────────────────
   const months = [
-    "Enero",
-    "Feb.",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Ago.",
-    "Sept.",
-    "Oct.",
-    "Nov.",
-    "Dic.",
+    "Enero", "Feb.", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Ago.", "Sept.", "Oct.", "Nov.", "Dic.",
   ];
-
   const days = {
-    1: "Lunes",
-    2: "Martes",
-    3: "Miércoles",
-    4: "Jueves",
-    5: "Viernes",
-    6: "Sábado",
-    7: "Domingo",
+    0: "Domingo", 1: "Lunes", 2: "Martes", 3: "Miércoles",
+    4: "Jueves", 5: "Viernes", 6: "Sábado",
   };
 
-  const showDate = (selectedDate) => {
-    let dt = new Date(selectedDate);
+  const showDate = (dateString) => {
+    if (!dateString || typeof dateString !== "string") return "";
+    const [year, month, day] = dateString.split("-").map(Number);
+    const dt = new Date(year, month - 1, day);
+    if (isNaN(dt.getTime())) return "Fecha no válida";
     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };
 
-  const onTurnSubmit = async (turn) => {
-    selectedTurn.state = "Solicitado";
+  // ── Submit ────────────────────────────────────────────────────────────────
+  const onTurnSubmit = async () => {
+    const updatedTurn = { ...selectedTurn, state: "Solicitado" };
     try {
-      turn = await turnsService.update(selectedTurn.id, selectedTurn);
+      await turnsService.update(selectedTurn.id, updatedTurn);
     } catch (error) {
       const errors = error.response?.data?.errors;
       if (errors) {
@@ -91,16 +147,15 @@ function DatesFormAdmin({ service, serviceTypes }) {
   };
 
   const onDateSubmit = async (date) => {
-    setModalState(!modalState)
+    setModalState(!modalState);
     date.user = selectedUser.id;
     date.service = service.id;
     date.turn = selectedTurn.id;
     if (date.user) {
       try {
         setServerError(undefined);
-        console.debug("Sending date application...");
-        date = await datesService.create(date);
-        onTurnSubmit();
+        await datesService.create(date);
+        await onTurnSubmit();
         navigate("/admin-schedule");
       } catch (error) {
         const errors = error.response?.data?.errors;
@@ -113,20 +168,16 @@ function DatesFormAdmin({ service, serviceTypes }) {
           console.error(error);
           setServerError(error.message);
         }
-      }      
+      }
     } else {
-      setServerError("Usuario no seleccionado")
+      setServerError("Usuario no seleccionado");
     }
-    
   };
 
+  // ── Búsqueda de usuarios ──────────────────────────────────────────────────
   const handleChange = (e) => {
     setOpen("");
-    onSearch(e.target.value);
-  };
-
-  const onSearch = (value) => {
-    setSearch(value);
+    setSearch(e.target.value);
   };
 
   const usersToShow = users.filter((u) =>
@@ -134,11 +185,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
   );
 
   const openSelect = () => {
-    if (open === "hidden") {
-      setOpen("");
-    } else {
-      setOpen("hidden");
-    }
+    setOpen((prev) => (prev === "hidden" ? "" : "hidden"));
   };
 
   const onUserSelect = (user) => {
@@ -147,16 +194,9 @@ function DatesFormAdmin({ service, serviceTypes }) {
     setSearch(`${user.name} ${user.surname}`);
   };
 
-  document.addEventListener("click", function (e) {
-    let input = document.getElementById("input");
-    if (e.target !== input) {
-      setOpen("hidden");
-    }
-  });
-
   return (
-    <div className="relative flex flex-col items-center ">
-      <form className="flex flex-col" onSubmit={handleSubmit(onDateSubmit)}>
+    <div className="relative flex flex-col items-center w-full">
+      <form className="flex flex-col w-full" onSubmit={handleSubmit(onDateSubmit)}>
         {serverError && (
           <div className="self-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
@@ -171,17 +211,13 @@ function DatesFormAdmin({ service, serviceTypes }) {
               {service.name}
             </p>
           </div>
-          {/* <p className="ml-2 mt-5 font-bold leading-tight text-pink-600 text-xl self-center text-center">
-            Completa los siguientes 4 pasos:
-          </p> */}
           <div className="mb-2 mt-3 p-3 h-24 border-2 z-10 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
-              for="type"
+              htmlFor="admin-user-input"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
             >
               1- Busca y selecciona un usuario:
             </label>
-            {/* <UsersSearchBar search={search} onSearch={onSearch} /> */}
             <div>
               <input
                 className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300 "
@@ -190,7 +226,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
                 onChange={handleChange}
                 placeholder="Buscar usuario por nombre"
                 onClick={openSelect}
-                id="input"
+                id="admin-user-input"
               />
               <div
                 className={`rounded-b-lg -mt-2 pt-3 ${open} bg-white pl-1 shadow-lg w-full text-emerald-700 font-medium border-2 border-pink-300`}
@@ -198,24 +234,13 @@ function DatesFormAdmin({ service, serviceTypes }) {
                 <ul className="max-h-[390px] overflow-scroll" id="ul">
                   {usersToShow.map((filteredUser) => (
                     <UserItemSelect
+                      key={filteredUser.id || filteredUser._id}
                       user={filteredUser}
                       onUserSelect={onUserSelect}
                     />
                   ))}
                 </ul>
               </div>
-              {/* <select
-                {...register("user", {
-                  required: "Debes seleccionar un usuario.",
-                })}
-                className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300 "
-              >
-                {usersToShow.map((user) => (
-                  <option className="w-80 font-medium" value={user.id}>
-                    {user.name} {user.surname}
-                  </option>
-                ))}
-              </select> */}
               {errors.user && (
                 <div className=" ml-2 mt-2 text-red-600 font-medium">
                   {errors.user?.message}
@@ -225,7 +250,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
           </div>
           <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
-              for="type"
+              htmlFor="type"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
             >
               2- Selecciona una opción de servicio:
@@ -238,7 +263,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
                 className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300 "
               >
                 {serviceTypes.map((type) => (
-                  <option className="w-80 font-medium" value={type}>
+                  <option key={type} className="w-80 font-medium" value={type}>
                     {type}
                   </option>
                 ))}
@@ -252,7 +277,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
           </div>
           <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
-              for="designDetails"
+              htmlFor="designDetails"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
             >
               3- Describe los detalles:
@@ -263,8 +288,8 @@ function DatesFormAdmin({ service, serviceTypes }) {
               {...register("designDetails", {
                 required: "Son necesarios los detalles",
                 minLength: {
-                  value: 5,
-                  message: "Se necesitan al menos 5 caracteres",
+                  value: 3,
+                  message: "Se necesitan al menos 3 caracteres",
                 },
                 maxLength: {
                   value: 300,
@@ -280,7 +305,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
           </div>
           <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
             <label
-              for="needRemove"
+              htmlFor="needRemove"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl tracking-tight"
             >
               4- ¿Traes uñas limpias o hay que retirar?
@@ -315,20 +340,31 @@ function DatesFormAdmin({ service, serviceTypes }) {
               </div>
             )}
           </div>
-        </div>
-        <div className="mb-2 m-2 pt-3 p-2 border-2 border-emerald-500 rounded-lg">
+        <div className="mb-2 mt-3 pt-3 p-2 border-2 border-emerald-500 rounded-lg overflow-hidden w-full max-w-2xl">
           <p className="ml-2 mb-2 text-emerald-800 font-bold text-md md:text-lg lg:text-xl">
             5- Selecciona un turno
           </p>
           <div className="px-2 flex justify-center mb-3">
-            <HonestWeekPicker onInitDate={onInitDate} />
-          </div>
-          <div>
-            <TurnListByWeek
-              initDate={initDate}
-              onTurnSelection={onTurnSelection}
+            <WeekNavigator
+              currentWeek={currentWeek}
+              onPrev={handleWeekPrev}
+              onNext={handleWeekNext}
             />
           </div>
+          {initDate && (
+            <WeekCarousel
+              initDate={initDate}
+              onWeekChange={handleWeekChange}
+              renderItem={(date) => (
+                <CalendarPanelAdmin
+                  date={date}
+                  selectedTurn={selectedTurn}
+                  onTurnSelection={onTurnSelection}
+                />
+              )}
+            />
+          )}
+        </div>
         </div>
 
         <div className="flex flex-col p-2 justify-center items-center mt-2 ">
@@ -377,6 +413,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
 
             <div className="flex justify-around font-medium text-lg">
               <button
+                type="button"
                 onClick={() => setModalState(!modalState)}
                 className="bg-red-600 text-white  px-2 py-1 rounded "
               >
@@ -395,6 +432,7 @@ function DatesFormAdmin({ service, serviceTypes }) {
       {selectedTurn.hour && (
         <div className="p-2">
           <button
+            type="button"
             onClick={() => setModalState(!modalState)}
             className="text-white w-full bg-gradient-to-l from-emerald-700 via-emerald-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
           >

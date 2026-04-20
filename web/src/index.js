@@ -7,14 +7,18 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
 
+import { HelmetProvider } from "react-helmet-async";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Router>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </Router>
+    </HelmetProvider>
   </React.StrictMode>
 );
 reportWebVitals();

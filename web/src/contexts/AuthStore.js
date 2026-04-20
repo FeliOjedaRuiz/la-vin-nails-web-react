@@ -28,10 +28,27 @@ const restoreDateFromLocalStorage = () => {
 	return undefined;
 };
 
+const restoreWeekFromLocalStorage = () => {
+	try {
+		const week = localStorage.getItem('current-week');
+		if (week) {
+			const parsed = JSON.parse(week);
+			// Las fechas se serializan como string en JSON; hay que reconstruir los Date
+			return {
+				firstDay: new Date(parsed.firstDay),
+				lastDay: new Date(parsed.lastDay),
+			};
+		}
+	} catch (e) {
+		console.warn("localStorage not accessible", e);
+	}
+	return undefined;
+};
+
 function AuthStore({ children }) {
 	const [user, setUser] = useState(restoreUserFromLocalStorage());
-	const [currentWeek, setCurrentWeek] = useState();
-	const [currentDate, setCurrentDate] = useState(restoreDateFromLocalStorage());
+	const [currentWeek, setCurrentWeek] = useState(undefined);
+	const [currentDate, setCurrentDate] = useState(undefined);
 	const navigate = useNavigate();
 
 	usePushNotifications(user);
@@ -67,7 +84,7 @@ function AuthStore({ children }) {
 		setCurrentDate();
 	}, []);
 
-	const handleWeekSelect = (week) => {
+	const handleWeekSelect = useCallback((week) => {
 		console.log('Updating week context', week);
 		if (!week) {
 			try {
@@ -79,21 +96,21 @@ function AuthStore({ children }) {
 			} catch (e) {}
 		}
 		setCurrentWeek(week);
-	};
+	}, []);
 
-	const handleDateSelect = (date) => {
+	const handleDateSelect = useCallback((date) => {
 		console.log('Updating date context', date);
-    if (!date) {
-      try {
-        localStorage.removeItem('current-date');
-      } catch (e) {}
-    } else {
-      try {
-        localStorage.setItem('current-date', JSON.stringify(date));
-      } catch (e) {}
-    }
-    setCurrentDate(date);
-	};
+		if (!date) {
+			try {
+				localStorage.removeItem('current-date');
+			} catch (e) {}
+		} else {
+			try {
+				localStorage.setItem('current-date', JSON.stringify(date));
+			} catch (e) {}
+		}
+		setCurrentDate(date);
+	}, []);
 
 	return (
 		<AuthContext.Provider

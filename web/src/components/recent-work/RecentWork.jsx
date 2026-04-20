@@ -11,9 +11,7 @@ export function RecentWork() {
     photosService
       .list()
       .then((photos) => {
-        console.log(photos);
         setRecentWorks(photos);
-        console.log(recentWorks)
       })
       .catch((error) => console.error(error));
   }, []);
@@ -70,14 +68,16 @@ export function RecentWork() {
             </div>
 
             <button              
-              className="absolute left-2 top-1/2 -translate-y-1/2"
+              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/50 rounded-full hover:bg-white/80 transition-colors"
               onClick={prevSlide}
+              aria-label="Ver trabajo anterior"
             >
               <LeftIcon className="h-4 w-4" />
             </button>
             <button
-              className="absolute right-2 top-1/2 -translate-y-1/2"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/50 rounded-full hover:bg-white/80 transition-colors"
               onClick={nextSlide}
+              aria-label="Ver siguiente trabajo"
             >
               <RightIcon className="h-4 w-4" />
             </button>
@@ -106,7 +106,7 @@ export function RecentWork() {
               <div className="relative group">
                 <img
                   src={work.photoUrl || "/placeholder.svg"}
-                  alt="Foto de trabajo reciente"
+                  alt={`Diseño de manicura profesional en La Vin Nails Granada - ${work.id}`}
                   className="w-full aspect-square  object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 

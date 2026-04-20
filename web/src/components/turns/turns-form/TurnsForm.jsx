@@ -32,63 +32,59 @@ function TurnsForm({ onTurnCreation }) {
   };
 
   return (
-    <div className="px-2 pt-1 m-2 flex justify-center max-w-sm w-full bg-white/50 rounded-lg border-2 border-pink-300 shadow-md">
+    <div className="px-2 pt-1 my-1 flex justify-center w-full bg-white/50 rounded-lg border-2 border-pink-300 shadow-md">
       
-      <form className="w-full mb-2" onSubmit={handleSubmit(onTurnSubmit)}>
+      <form className="w-full mb-1 flex flex-col" onSubmit={handleSubmit(onTurnSubmit)}>
         {serverError && (
           <div className="text-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
           </div>
         )}
 
-        <div className="flex justify-between">
-          <div className="">
+        <div className="flex items-end gap-2">
+          <div className="flex-1 min-w-0">
             <label
               htmlFor="date"
-              className="ml-2 font-medium text-pink-800 text-sm"
+              className="ml-1 font-medium text-pink-800 text-sm"
             >
               Fecha
             </label>
-            <div>
-              <input
-                type="date"
-                placeholder="Hora"
-                {...register("date", { required: "Debes seleccionar un día" })}
-                className="rounded-lg w-40 h-8 px-2 border-2 border-pink-300 "
-              />
-            </div>
+            <input
+              type="date"
+              placeholder="Hora"
+              {...register("date", { required: "Debes seleccionar un día" })}
+              className="rounded-lg w-full h-8 px-2 border-2 border-pink-300"
+            />
             {errors.date && (
-              <div className="text-xs  text-red-600 font-medium">
+              <div className="text-xs text-red-600 font-medium">
                 {errors.date?.message}
               </div>
             )}
           </div>
 
-          <div className="">
+          <div className="w-24 shrink-0">
             <label
               htmlFor="hour"
-              className="ml-2 font-medium text-pink-800 text-sm"
+              className="ml-1 font-medium text-pink-800 text-sm"
             >
               Hora
             </label>
-            <div>
-              <input
-                type="time"
-                placeholder="Hora"
-                {...register("hour", {
-                  required: "Debes seleccionar una hora",
-                })}
-                className="rounded-lg w-24 h-8 px-2 border-2 border-pink-300 "
-              />
-            </div>
+            <input
+              type="time"
+              placeholder="Hora"
+              {...register("hour", {
+                required: "Debes seleccionar una hora",
+              })}
+              className="rounded-lg w-full h-8 px-2 border-2 border-pink-300"
+            />
             {errors.hour && (
-              <div className="text-xs  text-red-600 font-medium">
+              <div className="text-xs text-red-600 font-medium">
                 {errors.hour?.message}
               </div>
             )}
           </div>
 
-          <button className="flex items-end">
+          <button className="shrink-0 mb-px" type="submit">
             <ButtonGreen styles={" h-8 w-8 text-xl font-bold"}>+</ButtonGreen>
           </button>
         </div>

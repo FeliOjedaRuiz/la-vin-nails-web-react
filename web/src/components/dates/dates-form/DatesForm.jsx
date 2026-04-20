@@ -1,13 +1,30 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { AuthContext } from "../../../contexts/AuthStore";
 import { useForm } from "react-hook-form";
 import datesService from "../../../services/dates";
 import turnsService from "../../../services/turns";
 import { useNavigate } from "react-router-dom";
-import { HonestWeekPicker } from "../../week-picker/week-picker-js/HonestWeekPicker";
+import WeekNavigator from "../../week-navigator/WeekNavigator";
+import WeekCarousel from "../../carousel/WeekCarousel";
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
 import Modal from "../../modal/Modal";
 import TurnsColorsExplication from "../../turns/turns-color-explication/TurnsColorsExplication";
+import { addWeeks, subWeeks, startOfWeek, endOfWeek } from "date-fns";
+
+// ─── CalendarPanel ────────────────────────────────────────────────────────────
+// CRÍTICO: este componente está FUERA de DatesForm para que React lo vea
+// siempre como el mismo tipo entre renders. Si estuviese dentro,
+// cada render de DatesForm crearía un tipo nuevo → unmount+remount de los
+// 3 paneles → 540 TurnItemGuest re-montados → freeze en móvil.
+const CalendarPanel = React.memo(function CalendarPanel({ date, selectedTurn, onTurnSelection }) {
+  return (
+    <TurnListByWeek
+      initDate={date}
+      onTurnSelection={onTurnSelection}
+      selectedTurn={selectedTurn}
+    />
+  );
+});
 
 const isInAppBrowser = () => {
   const ua = navigator.userAgent || navigator.vendor || window.opera || '';
@@ -24,24 +41,58 @@ function DatesForm({ service, serviceTypes }) {
   const [serverError, setServerError] = useState(undefined);
   const [modalError, setModalError] = useState(undefined);
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const [initDate, setInitDate] = useState();
+  const { user, currentWeek, onWeekSelect } = useContext(AuthContext);
+  const [initDate, setInitDate] = useState(() => {
+    if (!currentWeek?.firstDay) return undefined;
+    const d = new Date(currentWeek.firstDay);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
   const [selectedTurn, setSelectedTurn] = useState({});
-  const [selectedDate, setSelectedDate] = useState({});
+  // selectedDate se deriva directamente — evita un ciclo de render extra por useEffect
+  const selectedDate = selectedTurn.date;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onInitDate = (date) => {
-    setInitDate(date);
-  };
-
-  const onTurnSelection = (turn) => {
-    setSelectedTurn(turn);
-  };
-
   useEffect(() => {
-    setSelectedDate(selectedTurn.date);
-  }, [selectedTurn]);
+    if (!currentWeek?.firstDay) {
+      const now = new Date();
+      const newWeek = {
+        firstDay: startOfWeek(now, { weekStartsOn: 0 }),
+        lastDay: endOfWeek(now, { weekStartsOn: 0 }),
+      };
+      onWeekSelect(newWeek);
+    } else {
+      const d = new Date(currentWeek.firstDay);
+      setInitDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
+    }
+  }, [currentWeek]);
+
+  const handleWeekChange = useCallback((direction) => {
+    if (!currentWeek?.firstDay) return;
+    const base = new Date(currentWeek.firstDay);
+    const newBase = direction === "next" ? addWeeks(base, 1) : subWeeks(base, 1);
+    const newWeek = {
+      firstDay: startOfWeek(newBase, { weekStartsOn: 0 }),
+      lastDay: endOfWeek(newBase, { weekStartsOn: 0 }),
+    };
+
+    // Actualización síncrona para que el WeekCarousel reciba la nueva prop instantáneamente
+    const d = new Date(newWeek.firstDay);
+    setInitDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
+    
+    onWeekSelect(newWeek);
+  }, [currentWeek, onWeekSelect]);
+
+  const onTurnSelection = useCallback((turn) => {
+    setSelectedTurn(turn);
+  }, []);
+
+  // Callbacks estables para WeekNavigator — evita funciones anónimas nuevas en cada render
+  const handleWeekPrev = useCallback(() => handleWeekChange("prev"), [handleWeekChange]);
+  const handleWeekNext = useCallback(() => handleWeekChange("next"), [handleWeekChange]);
+
+  // [ELIMINADO] useEffect que llamaba setSelectedDate → causaba un segundo render
+  // tras cada selección de turno. selectedDate ahora se deriva arriba.
 
   const months = [
     "Enero",
@@ -143,7 +194,7 @@ function DatesForm({ service, serviceTypes }) {
   const [modalState, setModalState] = useState(false);
 
   return (
-    <div className="relative flex flex-col items-center ">
+    <div className="relative flex flex-col items-center w-full">
       {isInAppBrowser() && (
         <div className="bg-amber-100 border-l-4 border-amber-500 p-3 m-2 text-sm w-full max-w-2xl rounded shadow-sm">
           <p className="font-bold text-amber-800">⚠️ Navegador limitado detectado</p>
@@ -152,7 +203,7 @@ function DatesForm({ service, serviceTypes }) {
           </p>
         </div>
       )}
-      <form className="flex flex-col" onSubmit={handleSubmit(onDateSubmit)}>
+      <form className="flex flex-col w-full" onSubmit={handleSubmit(onDateSubmit)}>
         {serverError && (
           <div className="self-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
@@ -210,8 +261,8 @@ function DatesForm({ service, serviceTypes }) {
               {...register("designDetails", {
                 required: "Son necesarios los detalles",
                 minLength: {
-                  value: 5,
-                  message: "Se necesitan al menos 5 caracteres",
+                  value: 3,
+                  message: "Se necesitan al menos 3 caracteres",
                 },
                 maxLength: {
                   value: 300,
@@ -267,21 +318,32 @@ function DatesForm({ service, serviceTypes }) {
               </div>
             )}
           </div>
-        </div>
-        <div className="mb-2 m-2 pt-3 p-2 border-2 border-emerald-500 rounded-lg">
+        <div className="mb-2 mt-3 pt-3 p-2 border-2 border-emerald-500 rounded-lg overflow-hidden w-full max-w-2xl">
           <p className="ml-2 mb-2 text-emerald-800 font-bold text-md md:text-lg lg:text-xl">
             4- Selecciona un turno
           </p>
           <div className="px-2 flex justify-center mb-3">
-            <HonestWeekPicker onInitDate={onInitDate} />
-          </div>
-          <TurnsColorsExplication />
-          <div>
-            <TurnListByWeek
-              initDate={initDate}
-              onTurnSelection={onTurnSelection}
+            <WeekNavigator
+              currentWeek={currentWeek}
+              onPrev={handleWeekPrev}
+              onNext={handleWeekNext}
             />
           </div>
+          <TurnsColorsExplication />
+          {initDate && (
+            <WeekCarousel
+              initDate={initDate}
+              onWeekChange={handleWeekChange}
+              renderItem={(date) => (
+                <CalendarPanel
+                  date={date}
+                  selectedTurn={selectedTurn}
+                  onTurnSelection={onTurnSelection}
+                />
+              )}
+            />
+          )}
+        </div>
         </div>
 
         <div className="flex flex-col p-2 justify-center items-center mt-2 ">

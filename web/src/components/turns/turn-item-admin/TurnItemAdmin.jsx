@@ -8,31 +8,45 @@ function TurnItemAdmin({ turn }) {
 	const [textColor, setTextColor] = useState('');
 	const { onDateSelect } = useContext(AuthContext);
 	const id = turn.id;
-	const [loaded, setLoaded] = useState(false);
-
-	const [date, setDate] = useState();
+	
+	const hasPreloadedDate = turn.hasOwnProperty('dateData');
+	const [loaded, setLoaded] = useState(hasPreloadedDate);
+	const [date, setDate] = useState(hasPreloadedDate ? turn.dateData : undefined);
 
 	const handleDateSelect = () => {
 		onDateSelect(date);
 	};
 
 	useEffect(() => {
+		if (hasPreloadedDate) {
+			setDate(turn.dateData);
+			setLoaded(true);
+			if (turn.dateData && !turn.dateData.user) {
+				console.error(`Error cita ID ${turn.dateData.id}, turno ${turn.id}`);
+			}
+			return;
+		}
+
+		console.warn("Fetching date individually for turn - should be optimized", turn.id);
 		const query = {};
 		query.turn = id;
 
 		datesService
 			.list(query)
-			.then((date) => {
-				setDate(date[0]);
+			.then((dateArr) => {
+				const fetchedDate = dateArr && dateArr.length > 0 ? dateArr[0] : null;
+				setDate(fetchedDate);
 				setLoaded(true);
-				if (!date[0].user) {
-					console.error(`Error cita ID ${date[0].id}, turno ${turn.id}`)
+				if (fetchedDate && !fetchedDate.user) {
+					console.error(`Error cita ID ${fetchedDate.id}, turno ${turn.id}`);
 				}
 			})
 			.catch((error) => console.error(error));
-	}, [turn]);
+	}, [turn, hasPreloadedDate, id]);
 
 	useEffect(() => {
+		const isHandsAndFeet = date?.service?.name === "Semi Manos y Pies";
+
 		switch (turn.state) {
 			case 'Reservado':
 				setBg('bg-orange-600');
@@ -43,11 +57,11 @@ function TurnItemAdmin({ turn }) {
 				setTextColor('text-black');
 				break;
 			case 'Solicitado':
-				setBg('bg-yellow-500');
+				setBg(isHandsAndFeet ? 'bg-teal-200' : 'bg-yellow-500');
 				setTextColor('text-black');
 				break;
 			case 'Confirmado':
-				setBg('bg-emerald-500');
+				setBg(isHandsAndFeet ? 'bg-emerald-700' : 'bg-emerald-500');
 				setTextColor('text-white');
 				break;
 			case 'Cancelado':
@@ -57,7 +71,7 @@ function TurnItemAdmin({ turn }) {
 			default:
 				break;
 		}
-	}, [turn]);
+	}, [turn, date]);
 
 	return (
 		<>
@@ -65,11 +79,10 @@ function TurnItemAdmin({ turn }) {
 				<NavLink to={`/turns/${id}`}>
 					<div
 						onClick={handleDateSelect}
-						className={`mb-1.5 ${bg} rounded shadow py-1 px-1.5  flex flex-col `}
+						className={`mb-0.5 ${bg} rounded shadow-sm py-[2px] px-0.5 flex flex-col `}
 					>
-						<p className={` font-medium  text-sm truncate ${textColor}`}>
-							{turn.hour} - {date && date.user.name} {date && date.user.surname}{' '}
-							{!date && turn.state}{' '}
+						<p className={`pl-1 font-medium text-[10px] md:text-xs leading-[14px] truncate ${textColor}`}>
+							{turn.hour} - {date && date.user.name}
 						</p>
 					</div>
 				</NavLink>
@@ -77,10 +90,10 @@ function TurnItemAdmin({ turn }) {
 			{!loaded && (
 				<div
 					onClick={handleDateSelect}
-					className={`mb-1.5 ${bg} rounded shadow py-1 px-1.5  flex flex-col `}
+					className={`mb-0.5 ${bg} rounded shadow-sm py-[2px] px-0.5 flex flex-col `}
 				>
-					<p className={` font-medium  text-sm truncate ${textColor}`}>
-						{turn.hour} - {turn.state}
+					<p className={`pl-1 font-medium text-[10px] md:text-xs leading-[14px] truncate ${textColor}`}>
+						{turn.hour}
 					</p>
 				</div>
 			)}

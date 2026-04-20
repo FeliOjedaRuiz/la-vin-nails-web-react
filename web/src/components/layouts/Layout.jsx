@@ -29,11 +29,11 @@ function Layout({ children }) {
 				</Link>
 			</div>
 
-			<div className="flex w-full z-0 justify-center relative pt-12 pb-16 bg-gradient-to-b from-pink-50  to-green-50" style={{ minHeight: '100dvh' }}>
+			<main className="flex w-full z-0 justify-center relative pt-12 pb-16 bg-gradient-to-b from-pink-50  to-green-50" style={{ minHeight: '100dvh' }}>
 				<div className=" container w-screen flex flex-col  overflow-hidden bg-white/30 shadow-lg ">
 					{children}
 				</div>
-			</div>
+			</main>
 
 			<div className="fixed bottom-0 left-0 w-full h-16 bg-pink-50 border-t-2 border-pink-400">
 				<div className="h-full max-w-screen-sm mx-auto flex justify-around font-medium">

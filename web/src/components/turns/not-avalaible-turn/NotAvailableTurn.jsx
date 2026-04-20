@@ -2,8 +2,10 @@ import React from "react";
 
 function NotAvailableTurn() {
   return (
-    <div className="text-center h-full flex items-center font-medium bg-gray-200 rounded-lg p-2 mb-2">
-      <p className="text-balance">No hay turnos disponibles este día.</p>
+    <div className="flex flex-col justify-center items-center h-[160px] bg-gray-100 rounded mb-[2px] shadow-inner w-full">
+      <p className="text-center font-medium text-[10px] md:text-xs leading-tight text-gray-500 px-0.5">
+        No hay turnos disponibles este día.
+      </p>
     </div>
   );
 }
