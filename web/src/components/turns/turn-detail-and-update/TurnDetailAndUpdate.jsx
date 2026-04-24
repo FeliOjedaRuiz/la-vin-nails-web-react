@@ -10,6 +10,8 @@ import DeleteIcon from '../../icons/DeleteIcon';
 import ButtonGreen from '../../butons/ButtonGreen';
 import UserProfile from './../../users/user-profile/UserProfile';
 import { AuthContext } from '../../../contexts/AuthStore';
+import { clearAdminTurnsCache } from '../turns-list-by-week-admin/TurnsListByWeekAdmin';
+import { clearGuestTurnsCache } from '../turn-list-by-week/TurnListByWeek';
 
 function TurnDetailAndUpdate() {
 	const { id } = useParams();
@@ -93,6 +95,8 @@ function TurnDetailAndUpdate() {
 		if (date) {
 			onDateSubmit(date);
 		}
+		clearAdminTurnsCache();
+		clearGuestTurnsCache();
 		navigate('/admin-schedule');
 	};
 
@@ -126,6 +130,8 @@ function TurnDetailAndUpdate() {
 	};
 
 	const navigateToSchedule = () => {
+		clearAdminTurnsCache();
+		clearGuestTurnsCache();
 		navigate('/admin-schedule');
 	};
 
@@ -138,15 +144,23 @@ function TurnDetailAndUpdate() {
 	};
 
 	const onDateDelete = () => {
+		// Limpiar el estado local de la cita para que la UI
+		// deje de mostrar los detalles de la cita eliminada.
+		setDate(undefined);
+		// Invalidar cachés para que el calendario muestre datos frescos
+		// sin importar cómo navegue el admin de vuelta (navbar, atrás, etc.)
+		clearAdminTurnsCache();
+		clearGuestTurnsCache();
 		setReload(!reload);
 	};
 
 	const updateTurnState = () => {
-		const turn = date.turn;
-		turn.state = 'Cancelado';
-
+		// CRITICAL FIX: date.turn es un STRING ID (no un objeto)
+		// porque el backend serializa con d.turn.toString().
+		// Antes hacía `const turn = date.turn; turn.state = 'Cancelado'`
+		// lo cual intentaba setear .state en un string primitivo → fallo silencioso.
 		turnsService
-			.update(id, turn)
+			.update(id, { state: 'Cancelado' })
 			.then(onDateDelete)
 			.catch((error) => console.error(error));
 	};

@@ -87,6 +87,13 @@ const DayColumn = React.memo(({ dateStr, dayTurns, loading, getFormattedDate, on
 // mientras refresca la data en segundo plano.
 const turnsCache = {};
 
+// Permite invalidar el caché desde fuera (ej: tras solicitar una cita).
+// Sin esto, al volver al calendario el turno seguiría apareciendo como "Disponible"
+// porque el useEffect ve caché existente y no refetcha.
+export const clearGuestTurnsCache = () => {
+  Object.keys(turnsCache).forEach(key => delete turnsCache[key]);
+};
+
 function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn }) {
   // Inicializar desde caché si existe → evita el flash en blanco al volver
   const [turns, setTurns] = useState(() => turnsCache[initDate] || []);

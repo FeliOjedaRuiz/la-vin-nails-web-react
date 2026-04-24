@@ -8,7 +8,7 @@ Este archivo sirve como única fuente de verdad técnica para las herramientas c
 
 Solo se deben utilizar soluciones dentro de este stack:
 - **Frontend**: React.js (CRA actual).
-- **Estilos**: Tailwind CSS y `@material-tailwind/react`. Diseño _Mobile-First_ y premium obligatorio.
+- **Estilos**: Tailwind CSS. Diseño _Mobile-First_ y premium obligatorio. **(OBLIGATORIO: Leer `DESIGN.md` antes de crear/modificar UI para mantener los tokens y la identidad visual).**
 - **Backend**: Node.js con Express.
 - **Base de Datos**: MongoDB (Mongoose).
 - **Integraciones**: Cloudinary, Nodemailer, Notion SDK.

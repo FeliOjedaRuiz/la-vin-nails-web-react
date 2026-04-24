@@ -3,6 +3,7 @@ import layoutLogo from '../../images/logo-la-vin-simplificado-3.webp';
 import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthStore';
 import InstallBanner from '../pwa/InstallBanner';
+import UpdateBanner from '../pwa/UpdateBanner';
 
 function Layout({ children }) {
 	const { user } = useContext(AuthContext);
@@ -19,6 +20,7 @@ function Layout({ children }) {
 	return (
 		<div className="flex flex-col">
             <InstallBanner />
+						<UpdateBanner />
 			<div className="flex fixed z-10 w-screen justify-center bg-gradient-to-r from-pink-50 via-white to-green-50 border-b-2 border-pink-400 shadow-md ">
 				<Link to="/">
 					<img

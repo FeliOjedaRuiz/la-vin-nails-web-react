@@ -7,7 +7,7 @@ function TurnItemGuest({ turn, onTurnSelection, isSelected }) {
     ? (isSelected 
         ? "bg-emerald-600 text-white ring-2 ring-emerald-400 scale-105 shadow-md transition-all font-bold cursor-pointer z-10" 
         : "bg-pink-400 text-white active:scale-95 transition-transform cursor-pointer")
-    : "bg-gray-300 text-gray-500 opacity-60 cursor-not-allowed";
+    : "bg-gray-300 text-gray-700 opacity-90 cursor-not-allowed";
 
   const handleClick = (e) => {
     // Evitamos propagación solo por seguridad en el carrusel

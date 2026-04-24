@@ -4,12 +4,17 @@ import { addWeeks, subWeeks } from "date-fns";
 
 const getDateString = (date) => {
   if (!date) return undefined;
-  const d = new Date(date);
+  const d = date instanceof Date ? date : new Date(date);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
 
-const getPrev = (dateStr) => getDateString(subWeeks(new Date(dateStr.replace(/-/g, "/")), 1));
-const getNext = (dateStr) => getDateString(addWeeks(new Date(dateStr.replace(/-/g, "/")), 1));
+const safeParseDate = (dateStr) => {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const getPrev = (dateStr) => getDateString(subWeeks(safeParseDate(dateStr), 1));
+const getNext = (dateStr) => getDateString(addWeeks(safeParseDate(dateStr), 1));
 
 /**
  * WeekCarousel — Strip de 3 paneles con clipping por overflow.
@@ -165,6 +170,7 @@ const WeekCarousel = ({ initDate, onWeekChange, renderItem }) => {
             dragConstraints={{ left: -2 * width, right: 0 }}
             dragElastic={0.05}
             dragMomentum={false}
+            initial={{ x: width ? -width : 0 }}
             animate={controls}
             onDragEnd={handleDragEnd}
             style={{

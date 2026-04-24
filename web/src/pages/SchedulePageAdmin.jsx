@@ -18,7 +18,12 @@ const weekToInitDate = (week) => {
 
 function SchedulePageAdmin() {
   const { currentWeek, onWeekSelect } = useContext(AuthContext);
-  const [initDate, setInitDate] = useState(() => weekToInitDate(currentWeek));
+  const [initDate, setInitDate] = useState(() => {
+    if (currentWeek?.firstDay) return weekToInitDate(currentWeek);
+    const now = new Date();
+    const firstDay = startOfWeek(now, { weekStartsOn: 0 });
+    return weekToInitDate({ firstDay });
+  });
   const [reload, setReload] = useState(false);
 
   useEffect(() => {

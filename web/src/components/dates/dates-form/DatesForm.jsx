@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import WeekNavigator from "../../week-navigator/WeekNavigator";
 import WeekCarousel from "../../carousel/WeekCarousel";
 import TurnListByWeek from "../../turns/turn-list-by-week/TurnListByWeek";
+import { clearGuestTurnsCache } from "../../turns/turn-list-by-week/TurnListByWeek";
+import { clearAdminTurnsCache } from "../../turns/turns-list-by-week-admin/TurnsListByWeekAdmin";
 import Modal from "../../modal/Modal";
 import TurnsColorsExplication from "../../turns/turns-color-explication/TurnsColorsExplication";
 import { addWeeks, subWeeks, startOfWeek, endOfWeek } from "date-fns";
@@ -36,6 +38,7 @@ function DatesForm({ service, serviceTypes }) {
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
   const [serverError, setServerError] = useState(undefined);
@@ -66,6 +69,14 @@ function DatesForm({ service, serviceTypes }) {
       setInitDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
     }
   }, [currentWeek]);
+
+  // ── Valor por defecto del tipo de servicio ────────────────────────────────
+  // react-hook-form no detecta el value del <select> si nunca se disparó onChange.
+  useEffect(() => {
+    if (serviceTypes?.length > 0) {
+      setValue("type", serviceTypes[0]);
+    }
+  }, [serviceTypes, setValue]);
 
   const handleWeekChange = useCallback((direction) => {
     if (!currentWeek?.firstDay) return;
@@ -175,6 +186,13 @@ function DatesForm({ service, serviceTypes }) {
       // Update Turn state (AWAITED to prevent race condition)
       await onTurnSubmit();
       
+      // CRITICAL: Cerrar modal ANTES de navegar.
+      // Sin esto, el modal fixed z-20 queda renderizado encima de /profile
+      // y el usuario ve la pantalla congelada.
+      setModalState(false);
+      // Invalidar ambos cachés para que el calendario muestre datos frescos
+      clearGuestTurnsCache();
+      clearAdminTurnsCache();
       navigate("/profile");
     } catch (error) {
       setIsSubmitting(false);
@@ -191,7 +209,26 @@ function DatesForm({ service, serviceTypes }) {
     }
   };
 
+  const onInvalid = () => {
+    // Si la validación de react-hook-form falla, 
+    setModalState(false);
+  };
+
+  const onFormValid = (data) => {
+    // Submit real de react-hook-form pasó todas las validaciones!
+    // Guardamos los datos validados y solo mostramos el modal
+    setFormData(data);
+    setModalState(true);
+  };
+
+  const confirmAndSubmit = () => {
+    if (formData) {
+       onDateSubmit(formData);
+    }
+  };
+
   const [modalState, setModalState] = useState(false);
+  const [formData, setFormData] = useState(null);
 
   return (
     <div className="relative flex flex-col items-center w-full">
@@ -203,7 +240,7 @@ function DatesForm({ service, serviceTypes }) {
           </p>
         </div>
       )}
-      <form className="flex flex-col w-full" onSubmit={handleSubmit(onDateSubmit)}>
+      <form className="flex flex-col w-full" onSubmit={handleSubmit(onFormValid, onInvalid)}>
         {serverError && (
           <div className="self-center py-1 px-3 mb-3 rounded-lg bg-red-500 border border-red-800 text-white">
             {serverError}
@@ -221,7 +258,7 @@ function DatesForm({ service, serviceTypes }) {
           <p className="ml-2 mt-5 font-bold leading-tight text-pink-600 text-xl self-center text-center">
             Completa los siguientes 4 pasos:
           </p>
-          <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
+          <div className={`mb-2 mt-3 p-3 border-2 rounded-lg w-full max-w-2xl transition-colors duration-300 ${errors.type ? "border-red-500 bg-red-50 shadow-sm" : "border-emerald-500"}`}>
             <label
               for="type"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
@@ -233,7 +270,7 @@ function DatesForm({ service, serviceTypes }) {
                 {...register("type", {
                   required: "Debes seleccionar un tipo de decoración.",
                 })}
-                className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300 "
+                className="rounded-lg bg-white pl-1 h-9 w-full mt-2 text-emerald-700 font-medium border-2 border-pink-300 focus:ring-4 focus:ring-pink-500 focus:border-pink-500 focus:outline-none transition-all"
               >
                 {serviceTypes.map((type) => (
                   <option className="w-80 font-medium" value={type}>
@@ -248,7 +285,7 @@ function DatesForm({ service, serviceTypes }) {
               )}
             </div>
           </div>
-          <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
+          <div className={`mb-2 mt-3 p-3 border-2 rounded-lg w-full max-w-2xl transition-colors duration-300 ${errors.designDetails ? "border-red-500 bg-red-50 shadow-sm" : "border-emerald-500"}`}>
             <label
               for="designDetails"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl"
@@ -257,7 +294,7 @@ function DatesForm({ service, serviceTypes }) {
             </label>
             <textarea
               placeholder="Describe los detalles del diseño..."
-              className="bg-white mt-2 border-2 text-emerald-700 border-pink-300 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"
+              className="bg-white mt-2 border-2 text-emerald-700 border-pink-300 text-sm rounded-lg focus:ring-4 focus:ring-pink-500 focus:border-pink-500 focus:outline-none block w-full p-2.5 transition-all"
               {...register("designDetails", {
                 required: "Son necesarios los detalles",
                 minLength: {
@@ -276,7 +313,7 @@ function DatesForm({ service, serviceTypes }) {
               </div>
             )}
           </div>
-          <div className="mb-2 mt-3 p-3 border-2 border-emerald-500 rounded-lg w-full max-w-2xl">
+          <div className={`mb-2 mt-3 p-3 border-2 rounded-lg w-full max-w-2xl transition-colors duration-300 ${errors.needRemove ? "border-red-500 bg-red-50 shadow-sm" : "border-emerald-500"}`}>
             <label
               for="needRemove"
               className="ml-1 text-emerald-800 font-bold text-md md:text-lg lg:text-xl tracking-tight"
@@ -287,7 +324,7 @@ function DatesForm({ service, serviceTypes }) {
               <div className="flex items-center">
                 <span>Uñas limpias</span>
                 <input
-                  className="mr-4 ml-2 h-5 w-5 hover:ring-pink-600 hover:bg-pink-600"
+                  className="mr-4 ml-2 h-5 w-5 hover:ring-pink-600 hover:bg-pink-600 focus:ring-4 focus:ring-pink-500 focus:outline-none cursor-pointer transition-all"
                   {...register("needRemove", {
                     required: "Debes seleccionar una opción.",
                   })}
@@ -298,7 +335,7 @@ function DatesForm({ service, serviceTypes }) {
               <div className="flex items-center">
                 <span>Con remoción</span>
                 <input
-                  className="mr-4 ml-2 h-5 w-5 hover:ring-pink-600 hover:bg-pink-600"
+                  className="mr-4 ml-2 h-5 w-5 hover:ring-pink-600 hover:bg-pink-600 focus:ring-4 focus:ring-pink-500 focus:outline-none cursor-pointer transition-all"
                   type="radio"
                   value="Sí"
                   {...register("needRemove", {
@@ -398,13 +435,14 @@ function DatesForm({ service, serviceTypes }) {
             <div className="flex justify-around font-medium text-lg">
               <button
                 type="button"
-                onClick={() => setModalState(!modalState)}
+                onClick={() => setModalState(false)}
                 className="bg-red-600 text-white  px-2 py-1 rounded "
               >
                 Cancelar
               </button>
               <button
-                type="submit"
+                type="button"
+                onClick={confirmAndSubmit}
                 disabled={isSubmitting}
                 className={`text-white px-4 py-1.5 rounded font-bold transition-all ${
                   isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700 active:scale-95"
@@ -419,8 +457,8 @@ function DatesForm({ service, serviceTypes }) {
       {selectedTurn.hour && (
         <div className="p-2">
           <button
-            type="button"
-            onClick={() => setModalState(!modalState)}
+            type="submit"
+            onClick={handleSubmit(onFormValid, onInvalid)}
             className="text-white w-full bg-gradient-to-l from-emerald-700 via-emerald-500 to-emerald-700 shadow hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-xl self-center px-4 py-1.5 mt-2 text-center"
           >
             Solicitar cita

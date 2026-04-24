@@ -48,6 +48,13 @@ const DayColumn = ({ dateStr, dayTurns, loading, getFormattedDate }) => {
 // mientras refresca en segundo plano.
 const turnsCache = {};
 
+// Permite invalidar el caché desde fuera (ej: tras eliminar/modificar un turno).
+// Sin esto, al volver al calendario se muestran datos de caché obsoletos
+// y el useEffect no refetcha porque ve que ya hay datos cacheados.
+export const clearAdminTurnsCache = () => {
+	Object.keys(turnsCache).forEach(key => delete turnsCache[key]);
+};
+
 function TurnsListByWeekAdmin({ initDate, reload }) {
 	// Inicializar desde caché si existe → render instantáneo al volver
 	const [turns, setTurns] = useState(() => turnsCache[initDate] || []);

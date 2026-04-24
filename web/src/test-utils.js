@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { ThemeProvider } from '@material-tailwind/react';
 import AuthStore from './contexts/AuthStore';
 
 /**
@@ -13,9 +12,7 @@ import AuthStore from './contexts/AuthStore';
 export function renderWithProviders(ui, { route = '/', ...options } = {}) {
   return render(
     <MemoryRouter initialEntries={[route]}>
-      <ThemeProvider>
-        <AuthStore>{ui}</AuthStore>
-      </ThemeProvider>
+      <AuthStore>{ui}</AuthStore>
     </MemoryRouter>,
     options
   );

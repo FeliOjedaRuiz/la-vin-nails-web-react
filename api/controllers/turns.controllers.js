@@ -26,9 +26,16 @@ module.exports.list = async (req, res, next) => {
 		const datesByTurnId = {};
 		dates.forEach(d => {
 			if (d.turn) {
+				// .lean() omite virtuals de toJSON → los subdocumentos populados
+				// solo tienen _id. Mapeamos manualmente para que el frontend
+				// pueda usar .id de forma consistente.
+				const user = d.user ? { ...d.user, id: d.user._id } : d.user;
+				const service = d.service ? { ...d.service, id: d.service._id } : d.service;
 				datesByTurnId[d.turn.toString()] = {
 					...d,
 					id: d._id,
+					user,
+					service,
 					turn: d.turn.toString()
 				};
 			}

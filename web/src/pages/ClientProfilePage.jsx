@@ -8,11 +8,7 @@ import ButtonGreen from '../components/butons/ButtonGreen';
 import UserLoyaltyGuest from '../components/users/user-loyalty-guest/UserLoyaltyGuest';
 import { Link } from 'react-router-dom';
 import UserProfile from '../components/users/user-profile/UserProfile';
-import {
-	Accordion,
-	AccordionHeader,
-	AccordionBody,
-} from '@material-tailwind/react';
+import { Accordion, AccordionHeader, AccordionBody } from '../components/ui/Accordion';
 import NailPhotoGalery from '../components/nails-photos/nail-photo-galery/NailPhotoGalery';
 
 function ClientProfilePage() {
@@ -58,26 +54,11 @@ function ClientProfilePage() {
 			.catch((error) => console.error(error));
 	}, [reload]);
 
-	function Icon({ id, open }) {
-		return (
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				strokeWidth={2}
-				stroke="currentColor"
-				className={`${
-					id === open ? 'rotate-180' : ''
-				} h-5 w-5 transition-transform`}
-			>
-				<path
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-				/>
-			</svg>
-		);
-	}
+	const ChevronIcon = (
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5 transition-transform">
+			<path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+		</svg>
+	);
 
 	return (
 		<Layout>
@@ -94,25 +75,25 @@ function ClientProfilePage() {
 						<UserLoyaltyGuest userId={user.id} />
 					</AccordionBody>
 				</Accordion> */}
-				<Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
+				<Accordion open={open === 1} icon={ChevronIcon}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
 						onClick={() => handleOpen(1)}
 					>
 						Galeria
 					</AccordionHeader>
-					<AccordionBody>
+					<AccordionBody open={open === 1}>
 						<NailPhotoGalery userId={user.id} />
 					</AccordionBody>
 				</Accordion>
-				<Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
+				<Accordion open={open === 3} icon={ChevronIcon}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
 						onClick={() => handleOpen(3)}
 					>
 						Próximas citas
 					</AccordionHeader>
-					<AccordionBody>
+					<AccordionBody open={open === 3}>
 						<div className="p-4">
 							<div>
 								{!dates[0] && (
@@ -127,14 +108,14 @@ function ClientProfilePage() {
 						</div>
 					</AccordionBody>
 				</Accordion>
-				<Accordion open={open === 4} icon={<Icon id={4} open={open} />}>
+				<Accordion open={open === 4} icon={ChevronIcon}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
 						onClick={() => handleOpen(4)}
 					>
 						Configuración de cuenta
 					</AccordionHeader>
-					<AccordionBody>
+					<AccordionBody open={open === 4}>
 						<div className="flex flex-col items-center justify-center w-full">
 							<div className="flex flex-col items-center justify-center w-full max-w-xl my-4 py-2 border-2 rounded-lg border-pink-600">
 								<p className="mt-2 text-teal-700 font-semibold">

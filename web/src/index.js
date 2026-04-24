@@ -5,7 +5,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ThemeProvider } from "@material-tailwind/react";
 
 import { HelmetProvider } from "react-helmet-async";
 
@@ -14,9 +13,7 @@ root.render(
   <React.StrictMode>
     <HelmetProvider>
       <Router>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
+        <App />
       </Router>
     </HelmetProvider>
   </React.StrictMode>
@@ -28,9 +25,10 @@ reportWebVitals();
 // Más info: https://cra.link/PWA
 serviceWorkerRegistration.register({
   onUpdate: (registration) => {
-    if (registration && registration.waiting) {
-      registration.waiting.postMessage({ type: "SKIP_WAITING" });
-    }
-    window.location.reload();
+    // Emitimos un evento personalizado para mostrar el banner de actualización 
+    // en la UI, en lugar de recargar de forma forzada.
+    const event = new CustomEvent("pwaUpdate", { detail: registration });
+    window.dispatchEvent(event);
   },
 });
+

@@ -1,10 +1,4 @@
-import React, { useState } from 'react';
-import {
-	Input,
-	Popover,
-	PopoverHandler,
-	PopoverContent,
-} from '@material-tailwind/react';
+import React, { useState, useRef, useEffect } from 'react';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import { es } from "react-day-picker/locale";
@@ -12,26 +6,51 @@ import LeftIcon from './../../icons/LeftIcon';
 import RightIcon from './../../icons/RightIcon';
 
 export default function ReactDatePicker({ date, setDate }) {
-	const [openPopover, setOpenPopover] = useState(false);	
+	const [isOpen, setIsOpen] = useState(false);
+	const containerRef = useRef(null);
+
+	// Cerrar el popover al hacer click fuera del componente
+	useEffect(() => {
+		function handleClickOutside(event) {
+			if (containerRef.current && !containerRef.current.contains(event.target)) {
+				setIsOpen(false);
+			}
+		}
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, []);
+
+	const handleDaySelect = (selectedDate) => {
+		setDate(selectedDate);
+		setIsOpen(false);
+	};
 
 	return (
-		<div className="my-2">
-			<Popover placement="bottom">
-				<PopoverHandler >
-					<Input
-						label="Selecciona fecha"
-						onChange={() => null}
-						value={date ? format(date, 'PPP', { locale: es }) : ''}
-						color='teal'
-            className='text-teal-600 text-xl'
-            size='lg'
-					/>
-				</PopoverHandler>
-				<PopoverContent>
+		<div className="my-2 relative" ref={containerRef}>
+			{/* Input trigger */}
+			<div className="relative">
+				<input
+					type="text"
+					readOnly
+					onClick={() => setIsOpen((prev) => !prev)}
+					value={date ? format(date, 'PPP', { locale: es }) : ''}
+					placeholder="Selecciona fecha"
+					className="w-full cursor-pointer border-b-2 border-teal-500 bg-transparent py-2 pr-8 text-base text-teal-600 placeholder-teal-400 outline-none transition-colors focus:border-teal-700"
+				/>
+				<span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-teal-500">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+						<path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+					</svg>
+				</span>
+			</div>
+
+			{/* Popover calendar */}
+			{isOpen && (
+				<div className="absolute left-0 top-full z-50 mt-1 rounded-lg border border-gray-200 bg-white p-3 shadow-xl">
 					<DayPicker
 						mode="single"
 						selected={date}
-						onSelect={setDate}
+						onSelect={handleDaySelect}
 						showOutsideDays
 						classNames={{
 							caption: 'flex justify-center py-2 mb-4 relative items-center',
@@ -55,8 +74,7 @@ export default function ReactDatePicker({ date, setDate }) {
 								'day-outside text-teal-500 opacity-50 aria-selected:bg-teal-500 aria-selected:text-teal-900 aria-selected:bg-opacity-10',
 							disabled: 'text-teal-500 opacity-50',
 							hidden: 'invisible',
-              
-              weekday: 'text-teal-800'
+							weekday: 'text-teal-800',
 						}}
 						locale={es}
 						labels={{
@@ -81,8 +99,8 @@ export default function ReactDatePicker({ date, setDate }) {
 							),
 						}}
 					/>
-				</PopoverContent>
-			</Popover>
+				</div>
+			)}
 		</div>
 	);
 }

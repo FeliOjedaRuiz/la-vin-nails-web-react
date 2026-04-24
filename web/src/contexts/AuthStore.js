@@ -1,6 +1,8 @@
 import React, { createContext, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import usePushNotifications from '../hooks/usePushNotifications';
+import { clearGuestTurnsCache } from '../components/turns/turn-list-by-week/TurnListByWeek';
+import { clearAdminTurnsCache } from '../components/turns/turns-list-by-week-admin/TurnsListByWeekAdmin';
 
 const AuthContext = createContext();
 
@@ -33,7 +35,6 @@ const restoreWeekFromLocalStorage = () => {
 		const week = localStorage.getItem('current-week');
 		if (week) {
 			const parsed = JSON.parse(week);
-			// Las fechas se serializan como string en JSON; hay que reconstruir los Date
 			return {
 				firstDay: new Date(parsed.firstDay),
 				lastDay: new Date(parsed.lastDay),
@@ -47,14 +48,19 @@ const restoreWeekFromLocalStorage = () => {
 
 function AuthStore({ children }) {
 	const [user, setUser] = useState(restoreUserFromLocalStorage());
-	const [currentWeek, setCurrentWeek] = useState(undefined);
-	const [currentDate, setCurrentDate] = useState(undefined);
+	const [currentWeek, setCurrentWeek] = useState(restoreWeekFromLocalStorage);
+	const [currentDate, setCurrentDate] = useState(restoreDateFromLocalStorage);
 	const navigate = useNavigate();
 
 	usePushNotifications(user);
 
 	const handleUserChange = useCallback((user) => {
 		console.log('Updating user context', user);
+		
+		// Invalida cachés enteros siempre que el usuario cambia (sea login o logout)
+		clearGuestTurnsCache();
+		clearAdminTurnsCache();
+
 		if (!user) {
 			try {
 				localStorage.removeItem('user-access-token');
@@ -77,6 +83,10 @@ function AuthStore({ children }) {
 
 	const logout = useCallback(() => {
 		handleUserChange();
+		// Resetear estado en memoria — sin esto, la próxima sesión
+		// hereda la semana/cita del usuario anterior.
+		setCurrentWeek(undefined);
+		setCurrentDate(undefined);
 		navigate('/login');
 	}, [handleUserChange, navigate]);
 
