@@ -36,7 +36,7 @@ function TurnDetailAndUpdate() {
 
 	useEffect(() => {
 		setDate(currentDate);
-    deleteDate();
+		deleteDate();
 	}, []);
 
 	useEffect(() => {
@@ -52,10 +52,10 @@ function TurnDetailAndUpdate() {
 	}, [reload]);
 
 	useEffect(() => {
-		if (date) {
-			setTurnDateWhatsapp(showDate(date.turn.date));
+		if (turn.date) {
+			setTurnDateWhatsapp(showDate(turn.date));
 		}
-	}, [date]);
+	}, [turn, date]);
 
 	// useEffect(() => {
 	//   const query = {};
@@ -415,9 +415,8 @@ function TurnDetailAndUpdate() {
 
 					{date && (
 						<a
-							href={`https://wa.me/34${date.user.phone}?text=¡Hola! Tu cita de ${date.service.name} para el ${turnDateWhatsapp} a las ${date.turn.hour} hs.
-              *ha sido confirmada* con un precio de ${date.cost}€ y una duración estimada de ${date.duration} hs.*
-              %0A%0A¡Te espero!`}
+							href={`https://wa.me/34${date.user.phone}?text=¡Hola! 👋😃Tu cita de ${date.service.name} 💅 ha sido confirmada✅ para el *${turnDateWhatsapp} a las ${turn.hour} hs.* El costo es de *${date.cost}€* y una duración estimada de *${date.duration} hs. ⏰*
+              %0A%0A¡Te espero! 💋`}
 							className="flex items-center justify-center"
 						>
 							{' '}
