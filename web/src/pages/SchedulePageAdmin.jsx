@@ -19,7 +19,6 @@ const weekToInitDate = (week) => {
 function SchedulePageAdmin() {
   const { currentWeek, onWeekSelect } = useContext(AuthContext);
   const [initDate, setInitDate] = useState(() => {
-    if (currentWeek?.firstDay) return weekToInitDate(currentWeek);
     const now = new Date();
     const firstDay = startOfWeek(now, { weekStartsOn: 0 });
     return weekToInitDate({ firstDay });
@@ -27,19 +26,15 @@ function SchedulePageAdmin() {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    if (!currentWeek || !currentWeek.firstDay) {
-      const now = new Date();
-      const newWeek = {
-        firstDay: startOfWeek(now, { weekStartsOn: 0 }),
-        lastDay: endOfWeek(now, { weekStartsOn: 0 })
-      };
-      onWeekSelect(newWeek);
-      setInitDate(weekToInitDate(newWeek));
-    } else {
-      setInitDate(weekToInitDate(currentWeek));
-    }
+    const now = new Date();
+    const newWeek = {
+      firstDay: startOfWeek(now, { weekStartsOn: 0 }),
+      lastDay: endOfWeek(now, { weekStartsOn: 0 })
+    };
+    onWeekSelect(newWeek);
+    setInitDate(weekToInitDate(newWeek));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWeek]);
+  }, []); // Solo al montar, para resetear a la semana actual siempre
 
   const updateWeek = (baseDate) => {
     const newWeek = {

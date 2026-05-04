@@ -89,11 +89,11 @@ function TurnDetailAndUpdate() {
 		});
 	};
 
-	const handleSubmit = (ev) => {
+	const handleSubmit = async (ev) => {
 		ev.preventDefault();
-		onTurnSubmit(turn);
+		await onTurnSubmit(turn);
 		if (date) {
-			onDateSubmit(date);
+			await onDateSubmit(date);
 		}
 		clearAdminTurnsCache();
 		clearGuestTurnsCache();

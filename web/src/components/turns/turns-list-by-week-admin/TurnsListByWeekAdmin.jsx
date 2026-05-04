@@ -46,7 +46,7 @@ const DayColumn = ({ dateStr, dayTurns, loading, getFormattedDate }) => {
 // Caché a nivel de módulo: sobrevive navegación entre páginas.
 // Patrón "stale-while-revalidate": muestra datos previos instantáneamente
 // mientras refresca en segundo plano.
-const turnsCache = {};
+export const turnsCache = {};
 
 // Permite invalidar el caché desde fuera (ej: tras eliminar/modificar un turno).
 // Sin esto, al volver al calendario se muestran datos de caché obsoletos
@@ -133,7 +133,22 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 
 		// Si hay caché y NO fue un reload forzado, los datos ya son correctos
 		// (vienen del prefetch o de una navegación anterior) → cero flash.
-		if (cached && !isReloadTriggered) return;
+		// Si hay caché y NO fue un reload forzado, usamos los datos cacheados
+		// pero SIEMPRE revalidamos en background (Stale-While-Revalidate real).
+		// Esto soluciona que al volver atrás con navegación nativa se vean datos viejos.
+		if (cached && !isReloadTriggered) {
+			turnsService.list(initDate, sixthDay)
+				.then((freshTurns) => {
+					const currentCached = turnsCache[initDate];
+					const changed = JSON.stringify(freshTurns) !== JSON.stringify(currentCached);
+					if (changed) {
+						turnsCache[initDate] = freshTurns;
+						setTurns(freshTurns);
+					}
+				})
+				.catch(() => {});
+			return;
+		}
 
 		if (!cached) setLoading(true);
 
