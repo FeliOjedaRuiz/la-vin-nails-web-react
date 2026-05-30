@@ -34,13 +34,14 @@ const Notices = () => {
     };
 
     fetchNotices();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (acepted) {
       setActive(false);
     }
-  }, [acepted]);
+  }, [acepted, noticesApiUrl]);
 
   if (loading) {
     return (

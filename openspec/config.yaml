@@ -1,9 +1,11 @@
 schema: spec-driven
 context: |
-  Tech stack: React (CRA), Tailwind CSS, Node.js, Express, MongoDB
-  Architecture: Fullstack MERN (Client-Server), Mobile-First UI
-  Testing: Jest & React Testing Library
-  Style: ESLint (react-app), Tailwind utilities
+  Tech stack: React 18 (CRA), Tailwind CSS 3, Node.js/Express, MongoDB/Mongoose
+  Architecture: Fullstack MERN (web/ frontend, api/ backend), Mobile-First UI
+  Testing: Jest (CRA builtin + api jest 29), RTL, mongodb-memory-server
+  Style: ESLint (react-app), Tailwind utilities, JavaScript puro (no TS)
+  Deploy: Fly.io (Dockerfile, fly.toml)
+  Conventions: h-dvh (no h-screen/100vh), min 16px inputs, date-fns for dates
 rules:
   proposal:
     - Include rollback plan for risky changes
@@ -21,8 +23,11 @@ rules:
   apply:
     - Follow existing code patterns and conventions
     - Load relevant coding skills for the project stack
+    tdd: true
+    test_command: "cd api && npm test && cd ../web && CI=true npm test"
   verify:
-    - Run tests if test infrastructure exists
-    - Compare implementation against every spec scenario
+    test_command: "cd api && npm test && cd ../web && CI=true npm test"
+    build_command: "cd web && npm run build"
+    coverage_threshold: 0
   archive:
     - Warn before merging destructive deltas (large removals)

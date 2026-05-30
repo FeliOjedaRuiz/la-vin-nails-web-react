@@ -4,7 +4,9 @@ const list = () => http.get("/services");
 
 const detail = (id) => http.get(`/services/${id}`);
 
-export default {
+const servicesApi = {
   list,
   detail,
 };
+
+export default servicesApi;

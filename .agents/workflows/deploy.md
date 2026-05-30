@@ -7,7 +7,7 @@ description: Flujo estandarizado para despliegues a producción en Fly.io.
 Este workflow garantiza que cada despliegue a producción en La Vin Nails sea seguro, replicable y esté debidamente probado.
 
 1. **Revisión Continua de Seguridad**: 
-   - Invoca las reglas de `.agent/workflows/no-deploy.md` para asegurar que está permitido hacer un pase a producción en este momento.
+   - Invoca las reglas de `.agents/workflows/no-deploy.md` para asegurar que está permitido hacer un pase a producción en este momento.
    
 2. **Ejecución de Tests Automatizados**:
    - `cd web && npm test -- --watchAll=false`

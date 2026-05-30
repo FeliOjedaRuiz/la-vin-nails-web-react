@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Layout from "../components/layouts/Layout";
 import WeekNavigator from "../components/week-navigator/WeekNavigator";
 import TurnsForm from "../components/turns/turns-form/TurnsForm";
@@ -41,15 +41,8 @@ function SchedulePageAdmin() {
     onWeekSelect(newWeek);
     setInitDate(weekToInitDate(newWeek));
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Solo al montar; respeta y sincroniza con currentWeek si ya existe
-
-  const updateWeek = (baseDate) => {
-    const newWeek = {
-      firstDay: startOfWeek(baseDate, { weekStartsOn: 0 }),
-      lastDay: endOfWeek(baseDate, { weekStartsOn: 0 })
-    };
-    onWeekSelect(newWeek);
-  };
 
   const handleWeekChange = (direction) => {
     if (!currentWeek?.firstDay) return;
@@ -69,10 +62,6 @@ function SchedulePageAdmin() {
   const onTurnCreation = () => {
     setReload((prev) => !prev);
   };
-
-  const onInitDate = useCallback((date) => {
-    setInitDate(date);
-  }, []);
 
   return (
     <Layout>

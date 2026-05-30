@@ -10,10 +10,12 @@ const listByUser = (userId) => http.get(`/photos/${userId}`);
 
 const deletePhoto = (id) => http.delete(`/photos/${id}`);
 
-export default {
+const photosApi = {
   upload,
   create,
   list,
   listByUser,
   deletePhoto,
 };
+
+export default photosApi;

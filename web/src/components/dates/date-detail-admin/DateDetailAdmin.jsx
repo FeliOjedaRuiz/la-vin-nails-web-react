@@ -9,7 +9,7 @@ function DateDetailAdmin({ date }) {
 		} else {
 			setState(date.turn.state);
 		}
-	}, []);
+	}, [date.turn.state]);
 
 
 	return (

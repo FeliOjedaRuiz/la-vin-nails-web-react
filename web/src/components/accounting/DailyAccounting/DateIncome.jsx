@@ -21,13 +21,14 @@ function DateIncome({ date, handleReload }) {
 		);
 		methods.unshift(newDate.paymentMethod);
 		setPaymentMethods(methods);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		if (!editing) {
 			setNewDate(date);
 		}
-	}, [date]);
+	}, [date, editing]);
 
 	const handleDateChange = (ev) => {
 		const key = ev.target.id;
@@ -53,6 +54,7 @@ function DateIncome({ date, handleReload }) {
 		if (newDate !== date) {
 			dateSubmit(newDate);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [newDate]);
 
 	const dateSubmit = async (updatedDate) => {

@@ -8,7 +8,6 @@ import ButtonGreen from '../../butons/ButtonGreen';
 
 function DateDetail({ date, onDateDelete }) {
 	const [state, setState] = useState('');
-	const [serverError, setServerError] = useState(undefined);
 	const [modalState, setModalState] = useState(false);
 
 	useEffect(() => {
@@ -17,7 +16,7 @@ function DateDetail({ date, onDateDelete }) {
 		} else {
 			setState(date.turn.state);
 		}
-	}, []);
+	}, [date.turn.state]);
 
 	const handleDeleteDate = () => {
 		setModalState(!modalState);

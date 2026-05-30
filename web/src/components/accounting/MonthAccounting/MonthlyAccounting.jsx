@@ -16,7 +16,6 @@ function MonthlyAccounting() {
 		bizum: 0,
 		total: 0,
 	}); // Totales de cost por paymentMethod
-	const [expenses, setExpenses] = useState([]); // Gastos obtenidos de la API
 	const [totalExpenses, setTotalExpenses] = useState({
 		gastosFijos: 0,
 		insumos: 0,
@@ -97,7 +96,6 @@ function MonthlyAccounting() {
 				);
 				const total = totalGastosFijos + totalInsumos + totalOtros;
 
-				setExpenses({ gastosFijos, insumos, otros });
 				setTotalExpenses({
 					gastosFijos: totalGastosFijos,
 					insumos: totalInsumos,
@@ -106,7 +104,7 @@ function MonthlyAccounting() {
 				});
 			})
 			.catch((error) => console.error(error));
-	}, [selectedMonth]);
+	}, [selectedMonthTrans]);
 
 	// Manejar el cambio de fecha desde MonthPicker
 	const handleMonthChange = (month) => {

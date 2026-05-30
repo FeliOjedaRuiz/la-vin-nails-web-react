@@ -15,7 +15,7 @@ const update = (userId, user) => http.patch(`/users/${userId}`, user);
 
 const list = () => http.get("/users");
 
-export default {
+const usersApi = {
   create,
   login,
   sendRestoreEmail,
@@ -24,3 +24,5 @@ export default {
   update,
   list,
 };
+
+export default usersApi;

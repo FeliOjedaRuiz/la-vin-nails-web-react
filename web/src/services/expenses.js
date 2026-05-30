@@ -10,10 +10,12 @@ const update = (expenseId, expense) => http.patch(`/expenses/${expenseId}`, expe
 
 const deleteExpense = (id) => http.delete(`/expenses/${id}`);
 
-export default {
+const expensesApi = {
   create,
   listByDate,
   listByMonth,
   update,
   deleteExpense,
 };
+
+export default expensesApi;

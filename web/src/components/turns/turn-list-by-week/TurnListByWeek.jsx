@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import turnsService from "../../../services/turns";
 import TurnItemGuest from "../turn-item-guest/TurnItemGuest";
 import NotAvailableTurn from "../not-avalaible-turn/NotAvailableTurn";
@@ -20,35 +20,6 @@ const SkeletonDay = () => (
     <div className="h-6 bg-emerald-300/10 rounded animate-[pulse_2.5s_ease-in-out_infinite] w-full"></div>
   </div>
 );
-
-const areDayColumnPropsEqual = (prev, next) => {
-  // 1. Si la fecha, loading o cantidad de turnos cambió, re-render obligatorio
-  if (
-    prev.dateStr !== next.dateStr ||
-    prev.loading !== next.loading ||
-    prev.dayTurns.length !== next.dayTurns.length
-  ) {
-    return false;
-  }
-
-  // 2. Extracción segura del ID (por si MongoDB usa _id o id)
-  const prevId = prev.selectedTurn?.id || prev.selectedTurn?._id;
-  const nextId = next.selectedTurn?.id || next.selectedTurn?._id;
-
-  // Si ambos son inexistentes o idénticos, no hubo cambio de selección que afecte las columnas
-  if (prevId !== nextId) {
-    // Si el ID cambió, solo re-renderizamos si uno de los dos IDs está en este día
-    const isOldInThisDay = prev.dayTurns.some(t => String(t.id || t._id) === String(prevId));
-    const isNewInThisDay = next.dayTurns.some(t => String(t.id || t._id) === String(nextId));
-    
-    if (isOldInThisDay || isNewInThisDay) {
-      return false; // False = Re-renderiza porque el highlight cambió en esta columna
-    }
-  }
-
-  // True = No re-renderizar, todo es igual o el cambio no nos afecta
-  return true;
-};
 
 const DayColumn = React.memo(({ dateStr, dayTurns, loading, getFormattedDate, onTurnSelection, selectedTurn, isLocked, openingDate }) => {
   const selectedId = selectedTurn?.id || selectedTurn?._id;
@@ -161,11 +132,11 @@ function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVi
 
   const baseDay = safeParseDate(initDate);
 
-  const getNextDate = (base, daysToAdd) => {
+  const getNextDate = useCallback((base, daysToAdd) => {
     const d = new Date(base);
     d.setDate(d.getDate() + daysToAdd);
     return transformDate(d);
-  };
+  }, [transformDate]);
 
   const firstDay  = getNextDate(baseDay, 1);
   const secondDay = getNextDate(baseDay, 2);
@@ -247,7 +218,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVi
       });
 
     return () => { cancelled = true; };
-  }, [reload, initDate]);
+  }, [reload, initDate, sixthDay, baseDay, getNextDate]);
 
   const sortByHour = (arr) =>
     [...arr].sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));

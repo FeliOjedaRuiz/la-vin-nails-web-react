@@ -19,7 +19,7 @@ const update = (id, date) => http.patch(`/dates/${id}`, date);
 
 const deleteDate = (id) => http.delete(`/dates/${id}`);
 
-export default {
+const datesApi = {
 	create,
 	list,
 	myList,
@@ -30,3 +30,5 @@ export default {
 	update,
 	deleteDate,
 };
+
+export default datesApi;

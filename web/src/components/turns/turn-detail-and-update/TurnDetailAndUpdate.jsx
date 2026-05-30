@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import turnsService from '../../../services/turns';
 import datesService from '../../../services/dates';
 import { Link, useParams } from 'react-router-dom';
@@ -27,35 +27,66 @@ function TurnDetailAndUpdate() {
 		'Cancelado',
 		'Reservado',
 	]);
-	let states = [];
 	const [modalState, setModalState] = useState(false);
 	const [modalDateState, setModalDateState] = useState(false);
 	const [reload, setReload] = useState(false);
 
 	const [serverError, setServerError] = useState(undefined);
 
+	const months = [
+		'Enero',
+		'Febrero',
+		'Marzo',
+		'Abril',
+		'Mayo',
+		'Junio',
+		'Julio',
+		'Agosto',
+		'Septiembre',
+		'Octubre',
+		'Noviembre',
+		'Diciembre',
+	];
+
+	const days = {
+		1: 'Lunes',
+		2: 'Martes',
+		3: 'Miércoles',
+		4: 'Jueves',
+		5: 'Viernes',
+		6: 'Sábado',
+		7: 'Domingo',
+	};
+
+	const showDate = useCallback((date) => {
+		let turnDate = new Date(date);
+		return `${days[turnDate.getDay()]} ${turnDate.getDate()} de ${
+			months[turnDate.getMonth()]
+		}`;
+	}, []);
+
 	useEffect(() => {
 		setDate(currentDate);
 		deleteDate();
-	}, []);
+	}, [currentDate, deleteDate]);
 
 	useEffect(() => {
 		turnsService
 			.detail(id)
 			.then((turn) => {
 				setTurn(turn);
-				states = turnStates.filter((state) => turn.state !== state);
-				states.unshift(turn.state);
-				setTurnStates(states);
+				const newStates = turnStates.filter((state) => turn.state !== state);
+				newStates.unshift(turn.state);
+				setTurnStates(newStates);
 			})
 			.catch((error) => console.error(error));
-	}, [reload]);
+	}, [reload, id, turnStates]);
 
 	useEffect(() => {
 		if (turn.date) {
 			setTurnDateWhatsapp(showDate(turn.date));
 		}
-	}, [turn, date]);
+	}, [turn, date, showDate]);
 
 	// useEffect(() => {
 	//   const query = {};
@@ -163,38 +194,6 @@ function TurnDetailAndUpdate() {
 			.update(id, { state: 'Cancelado' })
 			.then(onDateDelete)
 			.catch((error) => console.error(error));
-	};
-
-	const months = [
-		'Enero',
-		'Febrero',
-		'Marzo',
-		'Abril',
-		'Mayo',
-		'Junio',
-		'Julio',
-		'Agosto',
-		'Septiembre',
-		'Octubre',
-		'Noviembre',
-		'Diciembre',
-	];
-
-	const days = {
-		1: 'Lunes',
-		2: 'Martes',
-		3: 'Miércoles',
-		4: 'Jueves',
-		5: 'Viernes',
-		6: 'Sábado',
-		7: 'Domingo',
-	};
-
-	const showDate = (date) => {
-		let turnDate = new Date(date);
-		return `${days[turnDate.getDay()]} ${turnDate.getDate()} de ${
-			months[turnDate.getMonth()]
-		}`;
 	};
 
 	return (

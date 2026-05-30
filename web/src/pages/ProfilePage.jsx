@@ -7,7 +7,6 @@ import datesService from '../services/dates';
 import userServices from '../services/users';
 import { Accordion, AccordionHeader, AccordionBody } from '../components/ui/Accordion';
 import UserProfile from '../components/users/user-profile/UserProfile';
-import UserLoyalty from '../components/users/user-loyalty/UserLoyalty';
 import DateDetailAdmin from './../components/dates/date-detail-admin/DateDetailAdmin';
 
 function ProfilePage() {
@@ -27,13 +26,13 @@ function ProfilePage() {
 					setUser(user);
 				})
 				.catch((error) => console.error(error));
-		}, [userId]);
+	}, [userId]);
 
 	const handleOpen = (value) => setOpen(open === value ? 0 : value);
 
 	useEffect(() => {
 		setReload(!reload);
-	}, []);
+	}, [reload]);
 
 	const onPhotoCreation = () => {
 		setReload(!reload);
@@ -73,7 +72,7 @@ function ProfilePage() {
 					setDates(datesUserAndDate);
 				})
 				.catch((error) => console.error(error));
-		}, [reload]);
+		}, [reload, actualDate, userId]);
 
 	const ChevronIcon = (
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5 transition-transform">

@@ -67,7 +67,7 @@ const WeekCarousel = ({ initDate, onWeekChange, renderItem, disablePrev = false,
   // Setear posición inicial del strip cuando tenemos width
   useEffect(() => {
     if (width) controls.set({ x: -width });
-  }, [width]);
+  }, [width, controls]);
 
   // Sincronizar si el padre cambia initDate desde fuera
   useEffect(() => {
@@ -77,7 +77,7 @@ const WeekCarousel = ({ initDate, onWeekChange, renderItem, disablePrev = false,
     lastExternalDate.current = initDate;
     setDates({ prev: getPrev(initDate), center: initDate, next: getNext(initDate) });
     if (width) controls.set({ x: -width });
-  }, [initDate, width]);
+  }, [initDate, width, controls, dates.center]);
 
   const goTo = useCallback(
     async (direction) => {
@@ -114,7 +114,7 @@ const WeekCarousel = ({ initDate, onWeekChange, renderItem, disablePrev = false,
       isTransitioning.current = false;
       setIsDraggable(true); // Re-render → drag={"x"} → touch restaurado
     },
-    [width, controls, onWeekChange]
+    [width, controls, onWeekChange, disableNext, disablePrev]
   );
 
   const handleDragEnd = useCallback(

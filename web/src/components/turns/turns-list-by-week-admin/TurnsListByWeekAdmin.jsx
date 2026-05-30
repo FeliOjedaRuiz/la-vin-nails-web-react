@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import turnsService from '../../../services/turns';
 import TurnItemAdmin from '../turn-item-admin/TurnItemAdmin';
 
@@ -95,11 +95,11 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 
 	const baseDay = safeParseDate(initDate);
 
-	const getNextDate = (base, daysToAdd) => {
+	const getNextDate = useCallback((base, daysToAdd) => {
 		const d = new Date(base);
 		d.setDate(d.getDate() + daysToAdd);
 		return transformDate(d);
-	};
+	}, [transformDate]);
 
 	const firstDay  = getNextDate(baseDay, 1);
 	const secondDay = getNextDate(baseDay, 2);
@@ -191,7 +191,7 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 			});
 
 		return () => { cancelled = true; };
-	}, [reload, initDate]);
+	}, [reload, initDate, sixthDay, baseDay, getNextDate]);
 
 	// Estado DERIVADO calculado inline — no necesita useState ni useEffect propio.
 	// Esto elimina el bug de "render fantasma vacío" que causaba el parpadeo.

@@ -13,10 +13,12 @@ const update = (id, turn) => http.patch(`/turns/${id}`, turn);
 
 const deleteTurn = (id) => http.delete(`/turns/${id}`);
 
-export default {
+const turnsApi = {
   create,
   list,
   detail,
   update,
   deleteTurn,
 };
+
+export default turnsApi;

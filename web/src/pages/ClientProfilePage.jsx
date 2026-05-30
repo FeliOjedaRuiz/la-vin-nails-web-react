@@ -5,7 +5,6 @@ import WhatsappIcon from '../components/icons/WhatsappIcon';
 import DateDetail from '../components/dates/date-detail/DateDetail';
 import datesService from '../services/dates';
 import ButtonGreen from '../components/butons/ButtonGreen';
-import UserLoyaltyGuest from '../components/users/user-loyalty-guest/UserLoyaltyGuest';
 import { Link } from 'react-router-dom';
 import UserProfile from '../components/users/user-profile/UserProfile';
 import { Accordion, AccordionHeader, AccordionBody } from '../components/ui/Accordion';
@@ -52,7 +51,7 @@ function ClientProfilePage() {
 				setDates(datesUserAndDate);
 			})
 			.catch((error) => console.error(error));
-	}, [reload]);
+	}, [reload, actualDate]);
 
 	const ChevronIcon = (
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5 transition-transform">

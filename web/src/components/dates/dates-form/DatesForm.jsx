@@ -68,6 +68,7 @@ function DatesForm({ service, serviceTypes }) {
     const d = newWeek.firstDay;
     setInitDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Solo al montar, para resetear a la semana actual siempre
 
   // ── Valor por defecto del tipo de servicio ────────────────────────────────
@@ -193,11 +194,10 @@ function DatesForm({ service, serviceTypes }) {
       const turnUpdate = { ...selectedTurn, state: "Solicitado" };
       await turnsService.update(selectedTurn.id, turnUpdate);
 
-      // ── Step 2: Create the Date ───────────────────────────────────────────
+      // ─ Step 2: Create the Date ───────────────────────────────────────────
       // If this fails → rollback Turn back to "Disponible"
-      let createdDate;
       try {
-        createdDate = await datesService.create(dateApplication);
+        await datesService.create(dateApplication);
       } catch (dateError) {
         // Rollback: release the turn lock
         await turnsService.update(selectedTurn.id, { ...selectedTurn, state: "Disponible" });

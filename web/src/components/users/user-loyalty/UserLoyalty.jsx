@@ -16,7 +16,7 @@ function UserLoyalty({ userId }) {
 				}
 			})
 			.catch((error) => console.error(error));
-	}, []);
+	}, [userId]);
 
 	const handleClick = (loyalty) => {
 		setLoyalty(loyalty);

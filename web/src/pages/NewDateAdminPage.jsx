@@ -17,7 +17,7 @@ function NewDateAdminPage() {
         setServiceTypes(service.type);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [id]);
 
   return (
     <div>

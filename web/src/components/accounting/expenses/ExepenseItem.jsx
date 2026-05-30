@@ -20,13 +20,14 @@ function ExepenseItem({ expense, handleReload }) {
 		);
 		selectCategorys.unshift(newExpense.category);
 		setCategorys(selectCategorys);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		if (!editing) {
 			setNewExpense(expense);
 		}
-	}, [expense]);
+	}, [expense, editing]);
 
 	const handleExpenseChange = (ev) => {
 		const key = ev.target.id;
@@ -52,6 +53,7 @@ function ExepenseItem({ expense, handleReload }) {
 		if (newExpense !== expense) {
 			expenseSubmit(newExpense);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [newExpense]);
 
 	const expenseSubmit = async (updatedExpense) => {

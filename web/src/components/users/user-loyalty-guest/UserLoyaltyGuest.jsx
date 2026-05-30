@@ -16,7 +16,7 @@ function UserLoyaltyGuest({ userId }) {
 				}
 			})
 			.catch((error) => console.error(error));
-	}, []);
+	}, [userId]);
 
 	return (
 		<div className="w-full flex justify-center items-center">
