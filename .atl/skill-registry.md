@@ -41,6 +41,8 @@
 | pwa_expert | service-worker, manifest, push notifications | Active | PWA and offline-first strategies |
 | testing_expert | unit testing, integration tests, jest | Active | Testing strategies and patterns |
 | ux-ui-design | styles, colors, animations, premium design | Active | UI Design and visual excellence |
+| tarea | /tarea, planificar, nueva tarea, handoff, cambio de modelo | Active | Planificación con ahorro de tokens y escalación de errores |
+| feature | /feature, nueva feature, nueva funcionalidad, crear feature | Active | Ciclo completo de nueva funcionalidad con SDD y preview Vercel |
 
 ## Registered Skills
 
@@ -58,3 +60,5 @@
 - [pwa_expert](file:///d:/Proyectos%20web/web-la-vin/web-la-vin-nails-react/.agent/skills/pwa_expert/SKILL.md)
 - [testing_expert](file:///d:/Proyectos%20web/web-la-vin/web-la-vin-nails-react/.agent/skills/testing_expert/SKILL.md)
 - [ux-ui-design](file:///d:/Proyectos%20web/web-la-vin/web-la-vin-nails-react/.agent/skills/ux-ui-design/SKILL.md)
+- [tarea](file:///d:/Proyectos%20web/web-la-vin/web-la-vin-nails-react/.agent/skills/tarea/SKILL.md)
+- [feature](file:///d:/Proyectos%20web/web-la-vin/web-la-vin-nails-react/.agent/skills/feature/SKILL.md)

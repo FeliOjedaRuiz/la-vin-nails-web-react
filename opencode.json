@@ -1,0 +1,64 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "gentle-orchestrator": {
+      "model": "opencode-go/qwen3.6-plus"
+    },
+    "sdd-explore": {
+      "description": "Investigate codebase and think through ideas",
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4-pro"
+    },
+    "sdd-propose": {
+      "description": "Create change proposals from explorations",
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4-pro"
+    },
+    "sdd-spec": {
+      "description": "Write detailed specifications from proposals",
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4-pro"
+    },
+    "sdd-design": {
+      "description": "Create technical design from proposals",
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4-pro"
+    },
+    "sdd-tasks": {
+      "description": "Break down specs and designs into implementation tasks",
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4-pro"
+    },
+    "sdd-apply": {
+      "description": "Implement code changes from task definitions",
+      "mode": "subagent",
+      "model": "opencode-go/minimax-m2.7"
+    },
+    "sdd-apply-docs": {
+      "description": "Generate and update documentation during apply phase",
+      "mode": "subagent",
+      "model": "opencode-go/mimo-v2.5-pro"
+    },
+    "sdd-verify": {
+      "description": "Validate implementation against specs",
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4-flash"
+    }
+  },
+  "permission": {
+    "task": {
+      "*": "deny",
+      "sdd-apply": "allow",
+      "sdd-apply-docs": "allow",
+      "sdd-archive": "allow",
+      "sdd-design": "allow",
+      "sdd-explore": "allow",
+      "sdd-init": "allow",
+      "sdd-onboard": "allow",
+      "sdd-propose": "allow",
+      "sdd-spec": "allow",
+      "sdd-tasks": "allow",
+      "sdd-verify": "allow"
+    }
+  }
+}

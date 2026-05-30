@@ -9,22 +9,33 @@ Este workflow garantiza que cualquier mejora, experimento o tarea grande se desa
 1. **Definición de la Rama**:
    - Si el usuario no especificó un nombre para la rama al llamar al comando, pídele una breve descripción para generar un nombre semántico (ej: `feat/nuevo-login`, `fix/ui-calendario`, `refactor/estado-citas`).
 
-2. **Creación y Cambio de Rama**:
+2. **Verificar Spec Existente (ANTES de implementar)**:
+   - Identifica qué página(s) o feature(s) toca esta rama.
+   - Comprueba si existe `docs/specs/[nombre].spec.md` para esas páginas.
+   - Si existe: **léela antes de escribir una línea de código**. La spec describe el comportamiento actual — la feature debe extenderlo, no romperlo.
+   - Si no existe: anótalo. Al terminar la implementación se sugerirá ejecutar `/documentar`.
+
+3. **Creación y Cambio de Rama**:
    - Comprueba el estado actual del repositorio: `git status`
    - Si está limpio (o los cambios están relacionados con la feature), crea y cambia a la nueva rama:
      `git checkout -b <nombre-de-la-rama>`
 
-3. **Implementación de la Feature**:
+4. **Implementación de la Feature**:
    - Procede a desarrollar la mejora solicitada por el usuario.
    - *Tip:* Si la feature es muy grande y estás usando un modelo pesado (Opus/Pro), puedes aplicar automáticamente la lógica del workflow `/tarea` para planificar y recomendar delegar la escritura a un modelo rápido.
 
-4. **Commit y Push (Activación de Preview)**:
+5. **Actualizar o Sugerir Spec (AL TERMINAR LA IMPLEMENTACIÓN)**:
+   - Si existe spec para la(s) página(s) modificadas y la feature cambia o extiende el comportamiento: **actualiza `docs/specs/[nombre].spec.md`**. Añade las nuevas reglas de negocio, comportamientos por rol, o casos edge que la feature introduce. Registra el cambio en el "Historial de Cambios Relevantes".
+   - Si no existe spec para las páginas tocadas: informa al usuario:
+     > 📄 **Spec pendiente**: Esta feature creó o modificó comportamiento en `[NombrePágina]` que aún no está documentado. Ejecuta `/documentar` para registrar su comportamiento actual antes de hacer merge a `main`.
+
+6. **Commit y Push (Activación de Preview)**:
    - Una vez la mejora esté implementada y probada localmente (o si el usuario te pide subirla para ver el Preview):
    - Haz commit de los cambios: `git add .` seguido de `git commit -m "feat: [descripción]"`
    - Sube la rama al repositorio remoto: `git push -u origin <nombre-de-la-rama>`
    - **Aviso al usuario:** Infórmale que al subir la rama, su plataforma (ej. Vercel) debería generar un enlace de Preview automáticamente.
 
-5. **Aislamiento Estricto (REGLA DE ORO)**:
+7. **Aislamiento Estricto (REGLA DE ORO)**:
    - **NUNCA** hagas merge de vuelta a la rama principal (`main`) desde la terminal.
    - **NUNCA** ejecutes workflows de despliegue a producción como `/deploy` o comandos como `fly deploy`.
    - Recuerda al usuario que el paso a producción debe hacerse mediante la creación de un Pull Request (PR) en GitHub, una vez validada la versión en el entorno de Preview.
