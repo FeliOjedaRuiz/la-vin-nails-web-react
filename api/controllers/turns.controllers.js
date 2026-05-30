@@ -33,9 +33,11 @@ module.exports.list = async (req, res, next) => {
 			const [spainYear, spainMonth] = spainDateStr.split('-').map(Number);
 
 			// Mes visible más lejano = mes actual + 1 (0-indexed)
-			const maxMonth = spainMonth % 12; // 0-indexed next month
-			const maxYear = spainMonth === 12 ? spainYear + 1 : spainYear;
-			// Último día del mes siguiente: día 0 del mes posterior
+			// June exception: June (6) → M+2 (2 months ahead)
+			const isJuneException = spainMonth === 6;
+			const maxMonth = isJuneException ? spainMonth + 1 : spainMonth % 12; // M+2 for June only
+			const maxYear = isJuneException ? spainYear : (spainMonth === 12 ? spainYear + 1 : spainYear);
+			// Último día del mes visible: día 0 del mes posterior
 			const lastDayOfMaxMonth = new Date(maxYear, maxMonth + 1, 0);
 			const maxEndDate = `${lastDayOfMaxMonth.getFullYear()}-${String(lastDayOfMaxMonth.getMonth() + 1).padStart(2, '0')}-${String(lastDayOfMaxMonth.getDate()).padStart(2, '0')}`;
 

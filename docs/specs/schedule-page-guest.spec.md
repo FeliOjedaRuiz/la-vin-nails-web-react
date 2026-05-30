@@ -14,7 +14,7 @@
   - `web/src/utils/monthVisibility.js` — lógica de visibilidad por mes
   - `web/src/services/turns.js` — capa de acceso a la API
   - `web/src/contexts/AuthStore.js` — contexto global de semana seleccionada
-- **Última actualización**: 2026-05-01
+- **Última actualización**: 2026-05-30
 - **Roles que interactúan**: visitante (sin sesión), usuario autenticado (igual a visitante en esta vista)
 
 ---
@@ -57,13 +57,19 @@ Esta es la página pública de la agenda. Cualquier persona puede entrar sin reg
 
 1. **Techo de visibilidad por mes (REGLA CRÍTICA)**: El visitante solo puede ver hasta el último día del mes siguiente al mes actual. Es decir: si hoy es cualquier día de mayo, el máximo visible es el 31 de mayo (mes actual, visible completo) + todos los días de junio (mes siguiente). A partir del 1 de julio, la agenda estaría bloqueada con el estado `AgendaNotAvailable`.
 
-    - Fórmula en código: `endOfMonth(addMonths(new Date(), 1))`
+    - Fórmula en código (regla normal): `endOfMonth(addMonths(new Date(), 1))`
+    - **Excepción de junio**: Solo el 1 de junio el offset cambia de M+1 a M+2 (2 meses adelante). El 1 de julio vuelve a la regla normal M+1.
+      - Fórmula en código (excepción): `endOfMonth(new Date(now.getFullYear(), currentMonth + 2, 1))`
+      - Esta excepción aplica únicamente en junio (0-indexed: mes 5).
     - Esta regla controla la visualización columna a columna dentro de una semana (cada columna se evalúa independientemente con `getMonthVisibility`).
     - **Navegación**: El visitante puede navegar hasta el final del mes BLOQUEADO (el mes siguiente al último visible), para poder ver los candados informativos.
-      - Fórmula navegación: `maxNavigationDate = endOfMonth(addMonths(new Date(), 2))`
+      - Fórmula navegación (regla normal): `maxNavigationDate = endOfMonth(addMonths(new Date(), 2))`
+      - Fórmula navegación (excepción): `endOfMonth(new Date(now.getFullYear(), currentMonth + 3, 1))`
       - El botón ▶ se deshabilita solo al llegar a este segundo límite.
 
 2. **Apertura de mes**: El primer día de cada mes (día 1 del mes M), la agenda del mes siguiente (M+1) se "abre" automáticamente para que los visitantes puedan verla. No hay intervención manual del admin para esto — es una consecuencia directa de la fórmula del punto 1.
+
+    **Excepción de junio**: El 1 de junio el offset cambia de M+1 a M+2 (se publican turnos de agosto). El 1 de julio vuelve a M+1 (se abre agosto por regla normal). El 1 de agosto abre septiembre (M+1). El 1 de septiembre abre octubre (M+1).
 
 3. **Restricción de navegación al pasado**: Los visitantes no pueden retroceder a semanas anteriores a la actual. El botón ◀ está deshabilitado si la semana mostrada es la semana actual. La comparación se hace por `isSameDay` entre el primer día de la semana actual (domingo) y el `firstDay` del `currentWeek` del contexto.
 
@@ -150,6 +156,13 @@ Esta es la página pública de la agenda. Cualquier persona puede entrar sin reg
 - [ ] **Semana a caballo entre meses visible/bloqueado**: Las columnas de cada mes se comportan independientemente (algunas visibles, otras bloqueadas en la misma semana)
 - [ ] **El componente `AgendaNotAvailable` muestra la fecha de apertura correcta**: La fecha mostrada debe ser el día 1 del mes bloqueado
 
+### Excepción de junio
+
+- [ ] **El 1 de junio un guest ve turnos hasta fin de agosto** (M+2)
+- [ ] **El 1 de julio un guest ve turnos hasta fin de agosto** (M+1 normal)
+- [ ] **El 1 de agosto un guest ve turnos hasta fin de septiembre** (M+1 normal)
+- [ ] **El 1 de septiembre un guest ve turnos hasta fin de octubre** (M+1 normal)
+
 ### Caché y datos
 
 - [ ] **Sin parpadeo al navegar**: Al ir a una semana que ya fue visitada, los datos aparecen instantáneamente sin pasar por el estado de loading
@@ -172,6 +185,7 @@ Esta es la página pública de la agenda. Cualquier persona puede entrar sin reg
 
 | Fecha | Cambio | Razón |
 |-------|--------|-------|
+| 2026-05-30 | Excepción de junio en visibilidad | El 1 de junio el offset cambia de M+1 a M+2 (se publican turnos de agosto). El 1 de julio vuelve a M+1 normal |
 | 2026-05 | Refactor estética `AgendaNotAvailable` | De ámbar a escala de grises por requerimiento de diseño |
 | 2026-05 | Extensión de límite de navegación | Permitir navegar hasta el final del mes bloqueado para ver los candados informativos |
 | 2026-04 | Se añadió `WeekCarousel` con Framer Motion | Reemplazar navegación por botones sola; mejorar UX en móvil con swipe nativo |

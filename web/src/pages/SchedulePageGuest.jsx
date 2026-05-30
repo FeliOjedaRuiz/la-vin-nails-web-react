@@ -6,7 +6,8 @@ import WeekCarousel from '../components/carousel/WeekCarousel';
 import { Link } from 'react-router-dom';
 import TurnsColorsExplication from '../components/turns/turns-color-explication/TurnsColorsExplication';
 import { AuthContext } from '../contexts/AuthStore';
-import { addWeeks, subWeeks, startOfWeek, endOfWeek, isSameDay, endOfMonth, addMonths } from 'date-fns';
+import { addWeeks, subWeeks, startOfWeek, endOfWeek, isSameDay } from 'date-fns';
+import { getVisibilityCeiling } from '../utils/monthVisibility';
 
 const weekToInitDate = (week) => {
 	if (!week?.firstDay) return undefined;
@@ -44,12 +45,8 @@ function SchedulePageGuest() {
 		  )
 		: true;
 
-	// Techo de visibilidad: fin del mes siguiente (ej: mayo -> junio)
-	const maxVisibleDate = endOfMonth(addMonths(new Date(), 1));
-
-	// Techo de NAVEGACIÓN: fin del mes SUBSIGUIENTE (ej: mayo -> julio)
-	// Esto permite navegar por las semanas del mes bloqueado para ver los candados.
-	const maxNavigationDate = endOfMonth(addMonths(new Date(), 2));
+	// Techo de visibilidad y navegación (con excepción de junio)
+	const { maxVisibleDate, maxNavigationDate } = getVisibilityCeiling();
 
 	// ¿La semana mostrada ya toca o supera el techo de navegación?
 	const isAtMaxWeek = currentWeek?.lastDay

@@ -11,7 +11,8 @@ import { clearGuestTurnsCache } from "../../turns/turn-list-by-week/TurnListByWe
 import { clearAdminTurnsCache } from "../../turns/turns-list-by-week-admin/TurnsListByWeekAdmin";
 import Modal from "../../modal/Modal";
 import TurnsColorsExplication from "../../turns/turns-color-explication/TurnsColorsExplication";
-import { addWeeks, subWeeks, startOfWeek, endOfWeek, isSameDay, endOfMonth, addMonths } from "date-fns";
+import { addWeeks, subWeeks, startOfWeek, endOfWeek, isSameDay } from "date-fns";
+import { getVisibilityCeiling } from "../../../utils/monthVisibility";
 
 // ─── CalendarPanel ────────────────────────────────────────────────────────────
 // CRÍTICO: este componente está FUERA de DatesForm para que React lo vea
@@ -85,12 +86,8 @@ function DatesForm({ service, serviceTypes }) {
       )
     : true;
 
-  // Techo de visibilidad: fin del mes siguiente (ej: mayo -> junio)
-  const maxVisibleDate = endOfMonth(addMonths(new Date(), 1));
-
-  // Techo de NAVEGACIÓN: fin del mes SUBSIGUIENTE (ej: mayo -> julio)
-  // Esto permite navegar por las semanas del mes bloqueado para ver los candados.
-  const maxNavigationDate = endOfMonth(addMonths(new Date(), 2));
+  // Techo de visibilidad y navegación (con excepción de junio)
+  const { maxVisibleDate, maxNavigationDate } = getVisibilityCeiling();
 
   // ¿La semana mostrada ya toca o supera el techo de navegación?
   const isAtMaxWeek = currentWeek?.lastDay

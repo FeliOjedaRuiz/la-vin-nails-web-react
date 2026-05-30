@@ -1,3 +1,32 @@
+import { addMonths, endOfMonth } from 'date-fns';
+
+/**
+ * Returns the visibility and navigation ceiling dates for guest users.
+ *
+ * Normal rule: on day 1 of month M, appointments for month M+1 become visible.
+ * June exception: on June 1st and July 1st, the offset changes from M+1 to M+2
+ * (2 months ahead). August falls through to the normal M+1 rule.
+ *
+ * @returns {{ maxVisibleDate: Date, maxNavigationDate: Date }}
+ */
+export const getVisibilityCeiling = () => {
+  const now = new Date();
+  const currentMonth = now.getMonth(); // 0-indexed
+
+  // June (5) → M+2 (2 months ahead). July+ normal M+1.
+  const isJuneException = currentMonth === 5;
+
+  const maxVisibleDate = isJuneException
+    ? endOfMonth(new Date(now.getFullYear(), currentMonth + 2, 1)) // M+2
+    : endOfMonth(addMonths(now, 1));
+
+  const maxNavigationDate = isJuneException
+    ? endOfMonth(new Date(now.getFullYear(), currentMonth + 3, 1)) // M+3
+    : endOfMonth(addMonths(now, 2));
+
+  return { maxVisibleDate, maxNavigationDate };
+};
+
 /**
  * Calcula si un día (string 'YYYY-MM-DD') pertenece a un mes cuya agenda
  * aún no se ha abierto para los guests.
