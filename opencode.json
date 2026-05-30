@@ -45,6 +45,11 @@
       "model": "opencode-go/deepseek-v4-flash"
     }
   },
+  "workflows": {
+    "tarea": {
+      "description": "Planificar tareas complejas con verificación de specs existentes"
+    }
+  },
   "permission": {
     "task": {
       "*": "deny",
