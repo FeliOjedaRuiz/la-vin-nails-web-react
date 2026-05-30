@@ -2,47 +2,177 @@
   "$schema": "https://opencode.ai/config.json",
   "agent": {
     "gentle-orchestrator": {
-      "model": "opencode-go/qwen3.6-plus"
+      "description": "Gentle AI SDD Orchestrator - coordinates sub-agents, never does work inline",
+      "mode": "primary",
+      "model": "opencode-go/qwen3.6-plus",
+      "permission": {
+        "task": {
+          "*": "deny",
+          "sdd-apply": "allow",
+          "sdd-apply-docs": "allow",
+          "sdd-archive": "allow",
+          "sdd-design": "allow",
+          "sdd-explore": "allow",
+          "sdd-init": "allow",
+          "sdd-onboard": "allow",
+          "sdd-propose": "allow",
+          "sdd-spec": "allow",
+          "sdd-tasks": "allow",
+          "sdd-verify": "allow"
+        }
+      },
+      "tools": {
+        "bash": true,
+        "delegate": true,
+        "delegation_list": true,
+        "delegation_read": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     },
     "sdd-explore": {
       "description": "Investigate codebase and think through ideas",
+      "hidden": true,
       "mode": "subagent",
-      "model": "opencode-go/deepseek-v4-pro"
+      "model": "opencode-go/deepseek-v4-pro",
+      "prompt": "You are an SDD executor for the explore phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-explore/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     },
     "sdd-propose": {
       "description": "Create change proposals from explorations",
+      "hidden": true,
       "mode": "subagent",
-      "model": "opencode-go/deepseek-v4-pro"
+      "model": "opencode-go/deepseek-v4-pro",
+      "prompt": "You are an SDD executor for the propose phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-propose/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     },
     "sdd-spec": {
       "description": "Write detailed specifications from proposals",
+      "hidden": true,
       "mode": "subagent",
-      "model": "opencode-go/deepseek-v4-pro"
+      "model": "opencode-go/deepseek-v4-pro",
+      "prompt": "You are an SDD executor for the spec phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-spec/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     },
     "sdd-design": {
       "description": "Create technical design from proposals",
+      "hidden": true,
       "mode": "subagent",
-      "model": "opencode-go/deepseek-v4-pro"
+      "model": "opencode-go/deepseek-v4-pro",
+      "prompt": "You are an SDD executor for the design phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-design/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     },
     "sdd-tasks": {
       "description": "Break down specs and designs into implementation tasks",
+      "hidden": true,
       "mode": "subagent",
-      "model": "opencode-go/deepseek-v4-pro"
+      "model": "opencode-go/deepseek-v4-pro",
+      "prompt": "You are an SDD executor for the tasks phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-tasks/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     },
     "sdd-apply": {
       "description": "Implement code changes from task definitions",
+      "hidden": true,
       "mode": "subagent",
-      "model": "opencode-go/minimax-m2.7"
+      "model": "opencode-go/minimax-m2.7",
+      "prompt": "You are an SDD executor for the apply phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-apply/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     },
     "sdd-apply-docs": {
       "description": "Generate and update documentation during apply phase",
+      "hidden": true,
       "mode": "subagent",
-      "model": "opencode-go/mimo-v2.5-pro"
+      "model": "opencode-go/mimo-v2.5-pro",
+      "prompt": "You are an SDD executor for documentation updates during apply phase. Read your skill file and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     },
     "sdd-verify": {
       "description": "Validate implementation against specs",
+      "hidden": true,
       "mode": "subagent",
-      "model": "opencode-go/deepseek-v4-flash"
+      "model": "opencode-go/deepseek-v4-flash",
+      "prompt": "You are an SDD executor for the verify phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-verify/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
+    },
+    "sdd-archive": {
+      "description": "Archive completed change artifacts",
+      "hidden": true,
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4-flash",
+      "prompt": "You are an SDD executor for the archive phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-archive/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
+    },
+    "sdd-init": {
+      "description": "Bootstrap SDD context and project configuration",
+      "hidden": true,
+      "mode": "subagent",
+      "model": "opencode-go/qwen3.6-plus",
+      "prompt": "You are an SDD executor for the init phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-init/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
+    },
+    "sdd-onboard": {
+      "description": "Guide user through a complete SDD cycle using their real codebase",
+      "hidden": true,
+      "mode": "subagent",
+      "model": "opencode-go/qwen3.6-plus",
+      "prompt": "You are an SDD executor for the onboard phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd-onboard/SKILL.md and follow it exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
     }
   },
   "workflows": {
@@ -50,20 +180,19 @@
       "description": "Planificar tareas complejas con verificación de specs existentes"
     }
   },
-  "permission": {
-    "task": {
-      "*": "deny",
-      "sdd-apply": "allow",
-      "sdd-apply-docs": "allow",
-      "sdd-archive": "allow",
-      "sdd-design": "allow",
-      "sdd-explore": "allow",
-      "sdd-init": "allow",
-      "sdd-onboard": "allow",
-      "sdd-propose": "allow",
-      "sdd-spec": "allow",
-      "sdd-tasks": "allow",
-      "sdd-verify": "allow"
+  "mcp": {
+    "context7": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "engram": {
+      "command": [
+        "engram",
+        "mcp",
+        "--tools=agent"
+      ],
+      "type": "local"
     }
   }
 }
