@@ -26,6 +26,13 @@ function SchedulePageAdmin() {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
+    // Si ya hay una semana en contexto (ej: vuelta desde otra página o TurnDetailPage),
+    // sincronizar initDate con esa semana para que el carousel no muestre la semana actual
+    // mientras el navigator muestra otra distinta.
+    if (currentWeek?.firstDay) {
+      setInitDate(weekToInitDate(currentWeek));
+      return;
+    }
     const now = new Date();
     const newWeek = {
       firstDay: startOfWeek(now, { weekStartsOn: 0 }),
@@ -34,7 +41,7 @@ function SchedulePageAdmin() {
     onWeekSelect(newWeek);
     setInitDate(weekToInitDate(newWeek));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Solo al montar, para resetear a la semana actual siempre
+  }, []); // Solo al montar; respeta y sincroniza con currentWeek si ya existe
 
   const updateWeek = (baseDate) => {
     const newWeek = {
