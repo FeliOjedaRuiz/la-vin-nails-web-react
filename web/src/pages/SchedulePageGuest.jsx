@@ -6,7 +6,7 @@ import WeekCarousel from '../components/carousel/WeekCarousel';
 import { Link } from 'react-router-dom';
 import TurnsColorsExplication from '../components/turns/turns-color-explication/TurnsColorsExplication';
 import { AuthContext } from '../contexts/AuthStore';
-import { addWeeks, subWeeks, startOfWeek, endOfWeek } from 'date-fns';
+import { addWeeks, subWeeks, startOfWeek, endOfWeek, isSameDay, endOfMonth, addMonths } from 'date-fns';
 
 const weekToInitDate = (week) => {
 	if (!week?.firstDay) return undefined;
@@ -20,36 +20,45 @@ const weekToInitDate = (week) => {
 function SchedulePageGuest() {
 	const { currentWeek, onWeekSelect } = useContext(AuthContext);
 	const [initDate, setInitDate] = useState(() => {
-		if (currentWeek?.firstDay) return weekToInitDate(currentWeek);
 		const now = new Date();
 		const firstDay = startOfWeek(now, { weekStartsOn: 0 });
 		return weekToInitDate({ firstDay });
 	});
 
 	useEffect(() => {
-		if (!currentWeek || !currentWeek.firstDay) {
-			const now = new Date();
-			const newWeek = {
-				firstDay: startOfWeek(now, { weekStartsOn: 0 }),
-				lastDay: endOfWeek(now, { weekStartsOn: 0 }),
-			};
-			onWeekSelect(newWeek);
-			setInitDate(weekToInitDate(newWeek));
-		} else {
-			setInitDate(weekToInitDate(currentWeek));
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWeek]);
-
-	const updateWeek = (baseDate) => {
+		const now = new Date();
 		const newWeek = {
-			firstDay: startOfWeek(baseDate, { weekStartsOn: 0 }),
-			lastDay: endOfWeek(baseDate, { weekStartsOn: 0 }),
+			firstDay: startOfWeek(now, { weekStartsOn: 0 }),
+			lastDay: endOfWeek(now, { weekStartsOn: 0 }),
 		};
 		onWeekSelect(newWeek);
-	};
+		setInitDate(weekToInitDate(newWeek));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); // Solo al montar, para resetear a la semana actual siempre
+
+	// Semana actual: los guests no pueden navegar al pasado
+	const isCurrentWeek = currentWeek?.firstDay
+		? isSameDay(
+				startOfWeek(new Date(), { weekStartsOn: 0 }),
+				new Date(currentWeek.firstDay)
+		  )
+		: true;
+
+	// Techo de visibilidad: fin del mes siguiente (ej: mayo -> junio)
+	const maxVisibleDate = endOfMonth(addMonths(new Date(), 1));
+
+	// Techo de NAVEGACIÓN: fin del mes SUBSIGUIENTE (ej: mayo -> julio)
+	// Esto permite navegar por las semanas del mes bloqueado para ver los candados.
+	const maxNavigationDate = endOfMonth(addMonths(new Date(), 2));
+
+	// ¿La semana mostrada ya toca o supera el techo de navegación?
+	const isAtMaxWeek = currentWeek?.lastDay
+		? new Date(currentWeek.lastDay) >= maxNavigationDate
+		: false;
 
 	const handleWeekChange = (direction) => {
+		if (direction === 'prev' && isCurrentWeek) return; // Guard: guests can't go to past weeks
+		if (direction === 'next' && isAtMaxWeek) return;   // Guard: guests can't go beyond next month
 		if (!currentWeek?.firstDay) return;
 		const base = new Date(currentWeek.firstDay);
 		const newBase = direction === 'next' ? addWeeks(base, 1) : subWeeks(base, 1);
@@ -65,10 +74,6 @@ function SchedulePageGuest() {
 
 	const onTurnSelection = useCallback(() => {}, []);
 
-	const onInitDate = useCallback((date) => {
-		setInitDate(date);
-	}, []);
-
 	return (
 		<Layout>
 			<div className="p-2 flex flex-col items-center gap-1.5 overflow-hidden">
@@ -83,6 +88,8 @@ function SchedulePageGuest() {
 						currentWeek={currentWeek}
 						onPrev={() => handleWeekChange('prev')}
 						onNext={() => handleWeekChange('next')}
+						disablePrev={isCurrentWeek}
+						disableNext={isAtMaxWeek}
 					/>
 				</div>
 
@@ -93,10 +100,13 @@ function SchedulePageGuest() {
 						<WeekCarousel
 							initDate={initDate}
 							onWeekChange={handleWeekChange}
+							disablePrev={isCurrentWeek}
+							disableNext={isAtMaxWeek}
 							renderItem={(date) => (
 								<TurnListByWeek
 									initDate={date}
 									onTurnSelection={onTurnSelection}
+									maxVisibleDate={maxVisibleDate}
 								/>
 							)}
 						/>

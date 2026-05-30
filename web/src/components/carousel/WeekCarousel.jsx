@@ -27,7 +27,7 @@ const getNext = (dateStr) => getDateString(addWeeks(safeParseDate(dateStr), 1));
  * relative, y overflow hidden. Esto IMPIDE que el strip (3x) empuje
  * al padre.
  */
-const WeekCarousel = ({ initDate, onWeekChange, renderItem }) => {
+const WeekCarousel = ({ initDate, onWeekChange, renderItem, disablePrev = false, disableNext = false }) => {
   const measureRef = useRef(null);
   const controls = useAnimation();
   // Ref: guard síncrono para impedir re-entrada en goTo (setState es async,
@@ -137,8 +137,15 @@ const WeekCarousel = ({ initDate, onWeekChange, renderItem }) => {
       }
 
       if (offset.x < -DIST_THRESHOLD || velocity.x < -VEL_THRESHOLD) {
-        goTo("next");
-      } else if (offset.x > DIST_THRESHOLD || velocity.x > VEL_THRESHOLD) {
+        if (!disableNext) {
+          goTo("next");
+        } else {
+          controls.start({
+            x: -width,
+            transition: { type: "spring", stiffness: 350, damping: 35 },
+          });
+        }
+      } else if ((offset.x > DIST_THRESHOLD || velocity.x > VEL_THRESHOLD) && !disablePrev) {
         goTo("prev");
       } else {
         controls.start({

@@ -11,19 +11,20 @@ import { clearGuestTurnsCache } from "../../turns/turn-list-by-week/TurnListByWe
 import { clearAdminTurnsCache } from "../../turns/turns-list-by-week-admin/TurnsListByWeekAdmin";
 import Modal from "../../modal/Modal";
 import TurnsColorsExplication from "../../turns/turns-color-explication/TurnsColorsExplication";
-import { addWeeks, subWeeks, startOfWeek, endOfWeek } from "date-fns";
+import { addWeeks, subWeeks, startOfWeek, endOfWeek, isSameDay, endOfMonth, addMonths } from "date-fns";
 
 // ─── CalendarPanel ────────────────────────────────────────────────────────────
 // CRÍTICO: este componente está FUERA de DatesForm para que React lo vea
 // siempre como el mismo tipo entre renders. Si estuviese dentro,
 // cada render de DatesForm crearía un tipo nuevo → unmount+remount de los
 // 3 paneles → 540 TurnItemGuest re-montados → freeze en móvil.
-const CalendarPanel = React.memo(function CalendarPanel({ date, selectedTurn, onTurnSelection }) {
+const CalendarPanel = React.memo(function CalendarPanel({ date, selectedTurn, onTurnSelection, maxVisibleDate }) {
   return (
     <TurnListByWeek
       initDate={date}
       onTurnSelection={onTurnSelection}
       selectedTurn={selectedTurn}
+      maxVisibleDate={maxVisibleDate}
     />
   );
 });
@@ -46,8 +47,8 @@ function DatesForm({ service, serviceTypes }) {
   const navigate = useNavigate();
   const { user, currentWeek, onWeekSelect } = useContext(AuthContext);
   const [initDate, setInitDate] = useState(() => {
-    if (!currentWeek?.firstDay) return undefined;
-    const d = new Date(currentWeek.firstDay);
+    const now = new Date();
+    const d = startOfWeek(now, { weekStartsOn: 0 });
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   });
   const [selectedTurn, setSelectedTurn] = useState({});
@@ -57,18 +58,16 @@ function DatesForm({ service, serviceTypes }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!currentWeek?.firstDay) {
-      const now = new Date();
-      const newWeek = {
-        firstDay: startOfWeek(now, { weekStartsOn: 0 }),
-        lastDay: endOfWeek(now, { weekStartsOn: 0 }),
-      };
-      onWeekSelect(newWeek);
-    } else {
-      const d = new Date(currentWeek.firstDay);
-      setInitDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
-    }
-  }, [currentWeek]);
+    const now = new Date();
+    const newWeek = {
+      firstDay: startOfWeek(now, { weekStartsOn: 0 }),
+      lastDay: endOfWeek(now, { weekStartsOn: 0 }),
+    };
+    onWeekSelect(newWeek);
+    const d = newWeek.firstDay;
+    setInitDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Solo al montar, para resetear a la semana actual siempre
 
   // ── Valor por defecto del tipo de servicio ────────────────────────────────
   // react-hook-form no detecta el value del <select> si nunca se disparó onChange.
@@ -78,7 +77,29 @@ function DatesForm({ service, serviceTypes }) {
     }
   }, [serviceTypes, setValue]);
 
+  // Semana actual: los guests no pueden navegar al pasado (se declara ANTES de handleWeekChange)
+  const isCurrentWeek = currentWeek?.firstDay
+    ? isSameDay(
+        startOfWeek(new Date(), { weekStartsOn: 0 }),
+        new Date(currentWeek.firstDay)
+      )
+    : true;
+
+  // Techo de visibilidad: fin del mes siguiente (ej: mayo -> junio)
+  const maxVisibleDate = endOfMonth(addMonths(new Date(), 1));
+
+  // Techo de NAVEGACIÓN: fin del mes SUBSIGUIENTE (ej: mayo -> julio)
+  // Esto permite navegar por las semanas del mes bloqueado para ver los candados.
+  const maxNavigationDate = endOfMonth(addMonths(new Date(), 2));
+
+  // ¿La semana mostrada ya toca o supera el techo de navegación?
+  const isAtMaxWeek = currentWeek?.lastDay
+    ? new Date(currentWeek.lastDay) >= maxNavigationDate
+    : false;
+
   const handleWeekChange = useCallback((direction) => {
+    if (direction === "prev" && isCurrentWeek) return; // Guard: guests can't go to past weeks
+    if (direction === "next" && isAtMaxWeek) return;   // Guard: guests can't go beyond next month
     if (!currentWeek?.firstDay) return;
     const base = new Date(currentWeek.firstDay);
     const newBase = direction === "next" ? addWeeks(base, 1) : subWeeks(base, 1);
@@ -92,7 +113,7 @@ function DatesForm({ service, serviceTypes }) {
     setInitDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
     
     onWeekSelect(newWeek);
-  }, [currentWeek, onWeekSelect]);
+  }, [currentWeek, onWeekSelect, isCurrentWeek, isAtMaxWeek]);
 
   const onTurnSelection = useCallback((turn) => {
     setSelectedTurn(turn);
@@ -101,6 +122,7 @@ function DatesForm({ service, serviceTypes }) {
   // Callbacks estables para WeekNavigator — evita funciones anónimas nuevas en cada render
   const handleWeekPrev = useCallback(() => handleWeekChange("prev"), [handleWeekChange]);
   const handleWeekNext = useCallback(() => handleWeekChange("next"), [handleWeekChange]);
+
 
   // [ELIMINADO] useEffect que llamaba setSelectedDate → causaba un segundo render
   // tras cada selección de turno. selectedDate ahora se deriva arriba.
@@ -364,6 +386,8 @@ function DatesForm({ service, serviceTypes }) {
               currentWeek={currentWeek}
               onPrev={handleWeekPrev}
               onNext={handleWeekNext}
+              disablePrev={isCurrentWeek}
+              disableNext={isAtMaxWeek}
             />
           </div>
           <TurnsColorsExplication />
@@ -371,11 +395,14 @@ function DatesForm({ service, serviceTypes }) {
             <WeekCarousel
               initDate={initDate}
               onWeekChange={handleWeekChange}
+              disablePrev={isCurrentWeek}
+              disableNext={isAtMaxWeek}
               renderItem={(date) => (
                 <CalendarPanel
                   date={date}
                   selectedTurn={selectedTurn}
                   onTurnSelection={onTurnSelection}
+                  maxVisibleDate={maxVisibleDate}
                 />
               )}
             />

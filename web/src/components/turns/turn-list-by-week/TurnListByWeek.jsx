@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import turnsService from "../../../services/turns";
 import TurnItemGuest from "../turn-item-guest/TurnItemGuest";
 import NotAvailableTurn from "../not-avalaible-turn/NotAvailableTurn";
+import AgendaNotAvailable from "../agenda-not-available/AgendaNotAvailable";
+import { getMonthVisibility } from "../../../utils/monthVisibility";
 
 // ─── Sub-componentes FUERA del render principal ───────────────────────────────
 // Si se definen DENTRO, React los ve como tipos nuevos en cada re-render
@@ -48,7 +50,7 @@ const areDayColumnPropsEqual = (prev, next) => {
   return true;
 };
 
-const DayColumn = React.memo(({ dateStr, dayTurns, loading, getFormattedDate, onTurnSelection, selectedTurn }) => {
+const DayColumn = React.memo(({ dateStr, dayTurns, loading, getFormattedDate, onTurnSelection, selectedTurn, isLocked, openingDate }) => {
   const selectedId = selectedTurn?.id || selectedTurn?._id;
   const { dateMonth, dayName } = getFormattedDate(dateStr);
 
@@ -63,8 +65,9 @@ const DayColumn = React.memo(({ dateStr, dayTurns, loading, getFormattedDate, on
         </h6>
       </div>
       {loading && <SkeletonDay />}
-      {!loading && !dayTurns[0] && <NotAvailableTurn />}
-      {!loading && dayTurns.map((turn) => {
+      {!loading && isLocked && <AgendaNotAvailable openingDate={openingDate} />}
+      {!loading && !isLocked && !dayTurns[0] && <NotAvailableTurn />}
+      {!loading && !isLocked && dayTurns.map((turn) => {
         const turnId = turn.id || turn._id;
         const isSelected = selectedId && String(selectedId) === String(turnId);
 
@@ -79,7 +82,31 @@ const DayColumn = React.memo(({ dateStr, dayTurns, loading, getFormattedDate, on
       })}
     </div>
   );
-}, areDayColumnPropsEqual);
+}, (prev, next) => {
+  // Incluir isLocked en la comparación
+  if (
+    prev.dateStr !== next.dateStr ||
+    prev.loading !== next.loading ||
+    prev.dayTurns.length !== next.dayTurns.length ||
+    prev.isLocked !== next.isLocked
+  ) {
+    return false;
+  }
+
+  const prevId = prev.selectedTurn?.id || prev.selectedTurn?._id;
+  const nextId = next.selectedTurn?.id || next.selectedTurn?._id;
+
+  if (prevId !== nextId) {
+    const isOldInThisDay = prev.dayTurns.some(t => String(t.id || t._id) === String(prevId));
+    const isNewInThisDay = next.dayTurns.some(t => String(t.id || t._id) === String(nextId));
+    
+    if (isOldInThisDay || isNewInThisDay) {
+      return false;
+    }
+  }
+
+  return true;
+});
 
 // Caché a nivel de módulo: sobrevive la navegación entre páginas (React Router
 // desmonta el componente al navegar, pero este objeto persiste en memoria).
@@ -94,7 +121,7 @@ export const clearGuestTurnsCache = () => {
   Object.keys(turnsCache).forEach(key => delete turnsCache[key]);
 };
 
-function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn }) {
+function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVisibleDate }) {
   // Inicializar desde caché si existe → evita el flash en blanco al volver
   const [turns, setTurns] = useState(() => turnsCache[initDate] || []);
   const [loading, setLoading] = useState(!turnsCache[initDate]);
@@ -232,14 +259,21 @@ function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn }) {
   const fifthDayTurns  = sortByHour(turns.filter((t) => t.date === fifthDay));
   const sixthDayTurns  = sortByHour(turns.filter((t) => t.date === sixthDay));
 
+  const firstDayVis  = getMonthVisibility(firstDay,  maxVisibleDate);
+  const secondDayVis = getMonthVisibility(secondDay, maxVisibleDate);
+  const thirdDayVis  = getMonthVisibility(thirdDay,  maxVisibleDate);
+  const fourthDayVis = getMonthVisibility(fourthDay, maxVisibleDate);
+  const fifthDayVis  = getMonthVisibility(fifthDay,  maxVisibleDate);
+  const sixthDayVis  = getMonthVisibility(sixthDay,  maxVisibleDate);
+
   return (
     <div className="w-full grid grid-cols-3 md:grid-cols-3 xl:grid-cols-6">
-      <DayColumn dateStr={firstDay}  dayTurns={firstDayTurns}  loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} />
-      <DayColumn dateStr={secondDay} dayTurns={secondDayTurns} loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} />
-      <DayColumn dateStr={thirdDay}  dayTurns={thirdDayTurns}  loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} />
-      <DayColumn dateStr={fourthDay} dayTurns={fourthDayTurns} loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} />
-      <DayColumn dateStr={fifthDay}  dayTurns={fifthDayTurns}  loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} />
-      <DayColumn dateStr={sixthDay}  dayTurns={sixthDayTurns}  loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} />
+      <DayColumn dateStr={firstDay}  dayTurns={firstDayTurns}  loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} isLocked={firstDayVis.isLocked}  openingDate={firstDayVis.openingDate} />
+      <DayColumn dateStr={secondDay} dayTurns={secondDayTurns} loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} isLocked={secondDayVis.isLocked} openingDate={secondDayVis.openingDate} />
+      <DayColumn dateStr={thirdDay}  dayTurns={thirdDayTurns}  loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} isLocked={thirdDayVis.isLocked}  openingDate={thirdDayVis.openingDate} />
+      <DayColumn dateStr={fourthDay} dayTurns={fourthDayTurns} loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} isLocked={fourthDayVis.isLocked} openingDate={fourthDayVis.openingDate} />
+      <DayColumn dateStr={fifthDay}  dayTurns={fifthDayTurns}  loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} isLocked={fifthDayVis.isLocked}  openingDate={fifthDayVis.openingDate} />
+      <DayColumn dateStr={sixthDay}  dayTurns={sixthDayTurns}  loading={loading} getFormattedDate={getFormattedDate} onTurnSelection={onTurnSelection} selectedTurn={selectedTurn} isLocked={sixthDayVis.isLocked}  openingDate={sixthDayVis.openingDate} />
     </div>
   );
 }

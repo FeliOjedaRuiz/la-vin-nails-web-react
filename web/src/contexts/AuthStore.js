@@ -30,25 +30,10 @@ const restoreDateFromLocalStorage = () => {
 	return undefined;
 };
 
-const restoreWeekFromLocalStorage = () => {
-	try {
-		const week = localStorage.getItem('current-week');
-		if (week) {
-			const parsed = JSON.parse(week);
-			return {
-				firstDay: new Date(parsed.firstDay),
-				lastDay: new Date(parsed.lastDay),
-			};
-		}
-	} catch (e) {
-		console.warn("localStorage not accessible", e);
-	}
-	return undefined;
-};
 
 function AuthStore({ children }) {
 	const [user, setUser] = useState(restoreUserFromLocalStorage());
-	const [currentWeek, setCurrentWeek] = useState(restoreWeekFromLocalStorage);
+	const [currentWeek, setCurrentWeek] = useState(undefined);
 	const [currentDate, setCurrentDate] = useState(restoreDateFromLocalStorage);
 	const navigate = useNavigate();
 
@@ -65,7 +50,6 @@ function AuthStore({ children }) {
 			try {
 				localStorage.removeItem('user-access-token');
 				localStorage.removeItem('current-user');
-				localStorage.removeItem('current-week');
 				localStorage.removeItem('current-date');
 			} catch (e) {
 				console.warn("localStorage not accessible", e);
@@ -96,15 +80,6 @@ function AuthStore({ children }) {
 
 	const handleWeekSelect = useCallback((week) => {
 		console.log('Updating week context', week);
-		if (!week) {
-			try {
-				localStorage.removeItem('current-week');
-			} catch (e) {}
-		} else {
-			try {
-				localStorage.setItem('current-week', JSON.stringify(week));
-			} catch (e) {}
-		}
 		setCurrentWeek(week);
 	}, []);
 

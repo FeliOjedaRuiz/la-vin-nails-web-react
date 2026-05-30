@@ -47,7 +47,11 @@ function DatesFormAdmin({ service, serviceTypes }) {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
-  const [initDate, setInitDate] = useState(() => weekToInitDate(currentWeek));
+  const [initDate, setInitDate] = useState(() => {
+    const now = new Date();
+    const d = startOfWeek(now, { weekStartsOn: 0 });
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
   const [selectedTurn, setSelectedTurn] = useState({});
   // selectedDate se deriva directamente — evita un useEffect extra por selección
   const selectedDate = selectedTurn.date;
@@ -62,16 +66,15 @@ function DatesFormAdmin({ service, serviceTypes }) {
 
   // ── Carga de semana inicial ──────────────────────────────────────────────
   useEffect(() => {
-    if (!currentWeek?.firstDay) {
-      const now = new Date();
-      const newWeek = {
-        firstDay: startOfWeek(now, { weekStartsOn: 0 }),
-        lastDay: endOfWeek(now, { weekStartsOn: 0 }),
-      };
-      onWeekSelect(newWeek);
-    }
-    setInitDate(weekToInitDate(currentWeek));
-  }, [currentWeek]);
+    const now = new Date();
+    const newWeek = {
+      firstDay: startOfWeek(now, { weekStartsOn: 0 }),
+      lastDay: endOfWeek(now, { weekStartsOn: 0 }),
+    };
+    onWeekSelect(newWeek);
+    setInitDate(weekToInitDate(newWeek));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Solo al montar, para resetear a la semana actual siempre
 
   // ── Carga de usuarios: UNA SOLA VEZ al montar, no al seleccionar turno ──
   useEffect(() => {

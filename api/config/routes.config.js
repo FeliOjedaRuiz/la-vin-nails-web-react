@@ -50,7 +50,7 @@ router.get('/services/:id', services.detail);
 
 // TURNS
 router.post('/turns', secure.isAdmin, turns.create);
-router.get('/turns/date/:date', turns.list);
+router.get('/turns/date/:date', secure.optionalAuth, turns.list);
 router.get('/turns/:id', turns.detail);
 router.patch('/turns/:id', secure.auth, turnsMid.exists, turns.update);
 router.delete(

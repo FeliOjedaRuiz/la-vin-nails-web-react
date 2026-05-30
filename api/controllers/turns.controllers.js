@@ -8,7 +8,44 @@ module.exports.create = (req, res, next) => {
 
 module.exports.list = async (req, res, next) => {
 	try {
-		const criterial = { date: { $gt: req.params.date } };
+		let startDate = req.params.date;
+
+		// Si no es administrador, aplicamos restricciones de visibilidad
+		if (req.user?.role !== 'admin') {
+			// --- Suelo: no ver semanas pasadas ---
+			// Calculamos el inicio de la semana actual en UTC (domingo)
+			const now = new Date();
+			const currentWeekStart = new Date(now);
+			currentWeekStart.setDate(now.getDate() - now.getDay());
+			currentWeekStart.setHours(0, 0, 0, 0);
+			const currentWeekStartStr = currentWeekStart.toISOString().split('T')[0];
+			if (startDate < currentWeekStartStr) {
+				startDate = currentWeekStartStr;
+			}
+
+			// --- Techo: no ver más allá del mes siguiente (hora España) ---
+			// El día 1 del mes M se abren los turnos del mes M+1.
+			// Usamos Intl para leer la fecha actual en Europe/Madrid sin librerías.
+			const spainDateStr = new Intl.DateTimeFormat('en-CA', {
+				timeZone: 'Europe/Madrid',
+				year: 'numeric', month: '2-digit', day: '2-digit',
+			}).format(new Date()); // Formato: 'YYYY-MM-DD'
+			const [spainYear, spainMonth] = spainDateStr.split('-').map(Number);
+
+			// Mes visible más lejano = mes actual + 1 (0-indexed)
+			const maxMonth = spainMonth % 12; // 0-indexed next month
+			const maxYear = spainMonth === 12 ? spainYear + 1 : spainYear;
+			// Último día del mes siguiente: día 0 del mes posterior
+			const lastDayOfMaxMonth = new Date(maxYear, maxMonth + 1, 0);
+			const maxEndDate = `${lastDayOfMaxMonth.getFullYear()}-${String(lastDayOfMaxMonth.getMonth() + 1).padStart(2, '0')}-${String(lastDayOfMaxMonth.getDate()).padStart(2, '0')}`;
+
+			// Forzar endDate al límite si no hay uno o si excede el máximo
+			if (!req.query.endDate || req.query.endDate > maxEndDate) {
+				req.query.endDate = maxEndDate;
+			}
+		}
+
+		const criterial = { date: { $gt: startDate } };
 		if (req.query.endDate) {
 			criterial.date.$lte = req.query.endDate;
 		}

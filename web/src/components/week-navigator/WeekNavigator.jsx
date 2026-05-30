@@ -2,7 +2,7 @@ import React from 'react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-const WeekNavigator = ({ currentWeek, onPrev, onNext }) => {
+const WeekNavigator = ({ currentWeek, onPrev, onNext, disablePrev = false, disableNext = false }) => {
   if (!currentWeek?.firstDay) return null;
 
   const formatDate = (dateString) => {
@@ -13,8 +13,13 @@ const WeekNavigator = ({ currentWeek, onPrev, onNext }) => {
     <div className="flex items-center justify-between w-full bg-white/50 border-2 border-emerald-500 rounded-full shadow-md px-4 py-2 my-2 text-emerald-800 font-bold">
       <button 
         type="button"
-        onClick={onPrev}
-        className="p-2 hover:bg-emerald-100 rounded-full transition-colors active:scale-95 text-emerald-600"
+        onClick={disablePrev ? undefined : onPrev}
+        disabled={disablePrev}
+        className={`p-2 rounded-full transition-colors ${
+          disablePrev
+            ? "text-gray-300 cursor-not-allowed"
+            : "text-emerald-600 hover:bg-emerald-100 active:scale-95"
+        }`}
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
@@ -30,8 +35,13 @@ const WeekNavigator = ({ currentWeek, onPrev, onNext }) => {
 
       <button 
         type="button"
-        onClick={onNext}
-        className="p-2 hover:bg-emerald-100 rounded-full transition-colors active:scale-95 text-emerald-600"
+        onClick={disableNext ? undefined : onNext}
+        disabled={disableNext}
+        className={`p-2 rounded-full transition-colors ${
+          disableNext
+            ? "text-gray-300 cursor-not-allowed"
+            : "text-emerald-600 hover:bg-emerald-100 active:scale-95"
+        }`}
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
@@ -42,3 +52,4 @@ const WeekNavigator = ({ currentWeek, onPrev, onNext }) => {
 };
 
 export default WeekNavigator;
+
