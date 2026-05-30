@@ -18,6 +18,7 @@ export function renderWithProviders(ui, { route = '/', ...options } = {}) {
   );
 }
 
+
 /**
  * Mock manual de localStorage para tests si el entorno JSDOM falla.
  */

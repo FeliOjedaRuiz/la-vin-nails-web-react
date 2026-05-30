@@ -1,7 +1,7 @@
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 
-const dbHandler = require('../db-handler');
+const dbHandler = require('./db-handler');
 
 process.env.JWT_SECRET = 'test-secret-key';
 
@@ -111,6 +111,46 @@ describe('Middleware de Autenticación (secure.mid)', () => {
         done();
       };
       secureMid.isAdmin(req, res, next);
+    });
+  });
+
+  describe('optionalAuth', () => {
+    it('llama a next() sin error y req.user es undefined cuando no hay token', (done) => {
+      const req = { headers: {} };
+      const res = {};
+      const next = (err) => {
+        expect(err).toBeUndefined();
+        expect(req.user).toBeUndefined();
+        done();
+      };
+      secureMid.optionalAuth(req, res, next);
+    });
+
+    it('llama a next() y asigna req.user con token válido', (done) => {
+      const req = {
+        headers: { authorization: `Bearer ${validToken}` },
+      };
+      const res = {};
+      const next = (err) => {
+        expect(err).toBeUndefined();
+        expect(req.user).toBeDefined();
+        expect(req.user.email).toBe('test@test.com');
+        done();
+      };
+      secureMid.optionalAuth(req, res, next);
+    });
+
+    it('llama a next() sin error con token inválido (req.user queda undefined)', (done) => {
+      const req = {
+        headers: { authorization: 'Bearer token-falso' },
+      };
+      const res = {};
+      const next = (err) => {
+        expect(err).toBeUndefined();
+        expect(req.user).toBeUndefined();
+        done();
+      };
+      secureMid.optionalAuth(req, res, next);
     });
   });
 

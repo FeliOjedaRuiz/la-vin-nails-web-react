@@ -16,3 +16,24 @@ jest.mock('axios', () => {
     };
     return mocked;
 });
+
+Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(), // Deprecated
+        removeListener: jest.fn(), // Deprecated
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+    }),
+});
+
+// Mock de offsetWidth para JSDOM (necesario para WeekCarousel)
+Object.defineProperty(HTMLElement.prototype, 'offsetWidth', { configurable: true, value: 500 });
+Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, value: 500 });
+
+
+
