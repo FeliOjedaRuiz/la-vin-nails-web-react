@@ -45,7 +45,7 @@ module.exports.sendRestoreEmail = (req, res, next) => {
 };
 
 module.exports.restorePassword = (req, res, next) => {
-	Object.assign(req.user, req.body);
+	req.user.password = req.body.password;
 	req.user
 		.save()
 		.then((user) => {

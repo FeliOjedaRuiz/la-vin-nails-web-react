@@ -86,20 +86,30 @@ module.exports.listByDate = (req, res, next) => {
 module.exports.listByMonth = (req, res, next) => {
 	const targetDate = req.params.selectedMonth;
 	const [targetYear, targetMonth] = targetDate.split('-');
+	const dateRegex = `^${targetYear}-${targetMonth}`;
 
-	Date.find()
-		.populate('turn')
-		.then((dates) => {
-			const filteredDates = dates.filter((date) => {
-				if (date.turn) {
-					const [year, month] = date.turn.date.split('-');
-					if (year === targetYear && month === targetMonth) {
-						return true;
-					}
-				}
-			});
-			res.json(filteredDates);
-		})
+	Date.aggregate([
+		{
+			$lookup: {
+				from: 'turns',
+				localField: 'turn',
+				foreignField: '_id',
+				as: 'turn',
+			},
+		},
+		{
+			$unwind: {
+				path: '$turn',
+				preserveNullAndEmptyArrays: false,
+			},
+		},
+		{
+			$match: {
+				'turn.date': { $regex: dateRegex },
+			},
+		},
+	])
+		.then((dates) => res.json(dates))
 		.catch(next);
 };
 

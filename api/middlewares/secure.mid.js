@@ -90,7 +90,7 @@ module.exports.isAdmin = (req, res, next) => {
 };
 
 module.exports.isAuthorized = (req, res, next) => {
-  if ((req.user.role === "admin") || (req.user.id = req.params.userId)) {
+  if ((req.user.role === "admin") || (req.user.id === req.params.userId)) {
     next();
   } else {
     next(createError(401, "Unauthorized"));

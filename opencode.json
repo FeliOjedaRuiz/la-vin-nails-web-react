@@ -18,7 +18,8 @@
           "sdd-propose": "allow",
           "sdd-spec": "allow",
           "sdd-tasks": "allow",
-          "sdd-verify": "allow"
+          "sdd-verify": "allow",
+          "commit-agent": "allow"
         }
       },
       "tools": {
@@ -172,6 +173,17 @@
         "edit": true,
         "read": true,
         "write": true
+      }
+    },
+    "commit-agent": {
+      "description": "Analyze git diff and generate conventional commit messages. High-frequency, low-complexity task.",
+      "hidden": true,
+      "mode": "subagent",
+      "model": "opencode-go/mimo-v2.5",
+      "prompt": "You are a commit agent. Your ONLY job is to analyze the current git diff and generate a conventional commit message, then commit.\n\nRULES:\n1. Run `git diff --staged` to see staged changes, or `git diff` if nothing is staged.\n2. Analyze the diff and determine the type: feat, fix, docs, style, refactor, test, chore, perf, build, ci.\n3. Generate a concise conventional commit message: `type(scope): description`\n4. Scope is optional. Use it only if the change is clearly scoped to one module (e.g., auth, navbar, booking).\n5. Description must be imperative, lowercase, no period at end. Max 72 chars.\n6. Run `git commit -m \"message\"` with the generated message.\n7. NEVER add \"Co-Authored-By\" or AI attribution.\n8. If the diff is empty or there are no changes, report back with \"No changes to commit.\"\n9. Do NOT delegate. Do NOT launch sub-agents. Do this yourself.\n10. After committing, run `git log --oneline -1` and report the commit hash and message.\n\nIf the user provides a specific commit message, use it directly instead of generating one.",
+      "tools": {
+        "bash": true,
+        "read": true
       }
     }
   },

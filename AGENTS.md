@@ -19,3 +19,17 @@ Solo se deben utilizar soluciones dentro de este stack:
 - **Viewport**: ESTRICTAMENTE PROHIBIDO usar `h-screen` o `100vh`. USAR `h-dvh` SIEMPRE para evitar problemas nativos de barras en móviles (Safari iOS).
 - **Fechas**: No confíes en el parsing directo de Date a string sin formateadores seguros (`date-fns`).
 - **Inputs UI**: `font-size` mínimo de `16px` para evitar zoom automático en iOS.
+
+## 4. Memoria Persistente (Engram)
+
+Este proyecto tiene memoria persistente en Engram. Antes de tomar decisiones técnicas, buscar contexto previo o diseñar agentes nuevos, consultar via `mem_search`:
+
+| Topic Key | Contenido | Cuándo buscar |
+|-----------|-----------|---------------|
+| `opencode/ai-models-comparison` | Comparativa de 6 modelos IA (DeepSeek, MiniMax, Qwen, MiMo, GLM, Kimi) con puntuaciones y casos de uso | Al crear/configurar agentes nuevos |
+| `opencode/model-rate-limits` | Límites de peticiones por modelo en suscripción Go | Al distribuir carga entre agentes |
+| `opencode/orchestrator-model-choice` | Razón de usar Qwen3.6 Plus como orchestrator (visión) | Al evaluar cambio de modelo del orchestrator |
+| `opencode/documentation-model-choice` | Mejor modelo para documentación masiva (MiMo-V2.5-Pro) | Al planificar tareas de documentación |
+| `sdd-init/web-la-vin-nails-react` | Capacidades de testing del proyecto, modo TDD | Antes de lanzar sdd-apply o sdd-verify |
+
+**Regla**: Si el orchestrator necesita elegir un modelo para un agente nuevo, SIEMPRE buscar `opencode/ai-models-comparison` y `opencode/model-rate-limits` primero.

@@ -173,4 +173,65 @@ describe('Middleware de Autenticación (secure.mid)', () => {
       expect(next).toHaveBeenCalled();
     });
   });
+
+  describe('isAuthorized', () => {
+    it('permite pasar a un admin (tiene acceso a cualquier recurso)', () => {
+      const req = {
+        user: { id: 'admin123', role: 'admin' },
+        params: { userId: 'otro-usuario-cualquiera' },
+      };
+      const res = {};
+      const next = jest.fn();
+
+      secureMid.isAuthorized(req, res, next);
+
+      expect(next).toHaveBeenCalledWith();
+      expect(req.user.id).toBe('admin123'); // no fue mutado
+    });
+
+    it('permite pasar a un usuario cuando el userId coincide con su propio ID', () => {
+      const req = {
+        user: { id: 'abc123', role: 'guest' },
+        params: { userId: 'abc123' },
+      };
+      const res = {};
+      const next = jest.fn();
+
+      secureMid.isAuthorized(req, res, next);
+
+      expect(next).toHaveBeenCalledWith();
+      expect(req.user.id).toBe('abc123'); // no fue mutado
+    });
+
+    it('RECHAZA a un usuario guest cuando intenta acceder al recurso de OTRO usuario', () => {
+      const req = {
+        user: { id: 'abc123', role: 'guest' },
+        params: { userId: 'xyz789' }, // ID de otro usuario
+      };
+      const res = {};
+      const next = jest.fn();
+
+      secureMid.isAuthorized(req, res, next);
+
+      const error = next.mock.calls[0][0];
+      expect(error).toBeDefined();
+      expect(error.status).toBe(401);
+      expect(req.user.id).toBe('abc123'); // no fue mutado — clave
+    });
+
+    it('NO muta req.user.id cuando rechaza el acceso (regresión del bug =)', () => {
+      const req = {
+        user: { id: 'mi-id-real', role: 'guest' },
+        params: { userId: 'id-de-otro' },
+      };
+      const res = {};
+      const next = jest.fn();
+
+      secureMid.isAuthorized(req, res, next);
+
+      // Si el bug (= en vez de ===) estuviera activo, req.user.id sería 'id-de-otro'
+      expect(req.user.id).toBe('mi-id-real');
+      expect(next.mock.calls[0][0].status).toBe(401);
+    });
+  });
 });

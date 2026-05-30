@@ -162,27 +162,16 @@ function DatesForm({ service, serviceTypes }) {
     return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
   };
 
-  const onTurnSubmit = async () => {
-    if (!selectedTurn?.id) return;
-    const updatedTurn = { ...selectedTurn, state: "Solicitado" };
-    try {
-      await turnsService.update(selectedTurn.id, updatedTurn);
-    } catch (error) {
-      console.error("Error updating turn:", error);
-      throw error; 
-    }
-  };
-
   const onDateSubmit = async (data) => {
     if (isSubmitting) return;
-    
+
     setModalError(undefined);
 
     if (!user?.id) {
       setModalError("Tu sesión no pudo ser verificada. Prueba abrir la web desde Safari o vuelve a iniciar sesión.");
       return;
     }
-    
+
     if (!selectedTurn?.id) {
       setServerError("Debe seleccionar un turno antes de confirmar.");
       return;
@@ -198,18 +187,25 @@ function DatesForm({ service, serviceTypes }) {
     try {
       setIsSubmitting(true);
       setServerError(undefined);
-      
-      // Atomic-like submission: Create Date entity
-      await datesService.create(dateApplication);
-      
-      // Update Turn state (AWAITED to prevent race condition)
-      await onTurnSubmit();
-      
-      // CRITICAL: Cerrar modal ANTES de navegar.
-      // Sin esto, el modal fixed z-20 queda renderizado encima de /profile
-      // y el usuario ve la pantalla congelada.
+
+      // ── Step 1: Lock the Turn FIRST (prevents double-booking) ─────────────
+      // If this fails → abort entirely, nothing created yet
+      const turnUpdate = { ...selectedTurn, state: "Solicitado" };
+      await turnsService.update(selectedTurn.id, turnUpdate);
+
+      // ── Step 2: Create the Date ───────────────────────────────────────────
+      // If this fails → rollback Turn back to "Disponible"
+      let createdDate;
+      try {
+        createdDate = await datesService.create(dateApplication);
+      } catch (dateError) {
+        // Rollback: release the turn lock
+        await turnsService.update(selectedTurn.id, { ...selectedTurn, state: "Disponible" });
+        throw dateError;
+      }
+
+      // ── All good: close modal, invalidate caches, navigate ───────────────
       setModalState(false);
-      // Invalidar ambos cachés para que el calendario muestre datos frescos
       clearGuestTurnsCache();
       clearAdminTurnsCache();
       navigate("/profile");

@@ -21,25 +21,18 @@ module.exports.listByDate = (req, res, next) => {
 
 module.exports.listByMonth = (req, res, next) => {
 	const targetDate = req.params.selectedMonth;
-	const [targetYear, targetMonth] = targetDate.split('-');
+	const dateRegex = `^${targetDate}`;
 
-	Expense.find()
-		.then((expenses) => {
-			const filteredExpenses = expenses.filter((expense) => {
-				if (expense) {
-					const [year, month] = expense.date.split('-');
-					if (year === targetYear && month === targetMonth) {
-						return true;
-					}
-				}
-			});
-			res.json(filteredExpenses);
-		})
+	Expense.find({ date: { $regex: dateRegex } })
+		.then((expenses) => res.json(expenses))
 		.catch(next);
 };
 
 module.exports.update = (req, res, next) => {
-	Object.assign(req.expense, req.body);
+	req.expense.description = req.body.description;
+	req.expense.amount = req.body.amount;
+	req.expense.category = req.body.category;
+	req.expense.date = req.body.date;
 	req.expense
 		.save()
 		.then((expense) => res.json(expense))

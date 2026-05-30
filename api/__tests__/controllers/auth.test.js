@@ -118,4 +118,71 @@ describe('Users Controller', () => {
       });
     });
   });
+
+  describe('restorePassword', () => {
+    let testUser;
+
+    beforeEach(async () => {
+      testUser = await User.create({
+        ...validUserData,
+        role: 'guest', // rol normal, no admin
+      });
+    });
+
+    it('actualiza la contraseña y devuelve el usuario', (done) => {
+      const req = {
+        user: testUser,
+        body: { password: 'nuevaPass123' },
+      };
+      const res = {
+        json(user) {
+          expect(user).toBeDefined();
+          expect(user.role).toBe('guest'); // el rol no cambió
+          done();
+        },
+      };
+      const next = (err) => done(err);
+      usersController.restorePassword(req, res, next);
+    });
+
+    it('NO permite escalar privilegios enviando role en el body', (done) => {
+      const req = {
+        user: testUser,
+        body: {
+          password: 'passConHack',
+          role: 'admin', // intento malicioso
+        },
+      };
+      const res = {
+        json(user) {
+          // Si el bug existiera, user.role sería 'admin'
+          expect(user.role).toBe('guest');
+          done();
+        },
+      };
+      const next = (err) => done(err);
+      usersController.restorePassword(req, res, next);
+    });
+
+    it('solo actualiza el campo password, ignora campos extraños del body', (done) => {
+      const req = {
+        user: testUser,
+        body: {
+          password: 'password-limpia',
+          role: 'admin',
+          email: 'hacked@evil.com', // intento de cambiar email
+          __v: 999,
+        },
+      };
+      const res = {
+        json(user) {
+          expect(user.role).toBe('guest');
+          expect(user.email).toBe('maria@test.com'); // email original
+          done();
+        },
+      };
+      const next = (err) => done(err);
+      usersController.restorePassword(req, res, next);
+    });
+  });
 });

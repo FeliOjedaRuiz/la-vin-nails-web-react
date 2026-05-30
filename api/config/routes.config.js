@@ -118,7 +118,7 @@ router.patch(
 	expenses.update
 );
 router.delete(
-	'/expenses/:id',
+	'/expenses/:expenseId',
 	secure.isAdmin,
 	expensesMid.exists,
 	expenses.delete

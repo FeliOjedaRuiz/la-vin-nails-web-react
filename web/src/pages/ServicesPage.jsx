@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Layout from '../components/layouts/Layout';
 import { AuthContext } from '../contexts/AuthStore';
-import { services as laVinServices } from '../components/services/LaVinServices/LaVinServices';
+import servicesApi from '../services/services';
 import SEO from '../components/seo/SEO';
 
 // Icons
@@ -178,11 +178,28 @@ const Button = ({ className, children, variant = 'default', ...props }) => {
 
 function ServicesPage() {
 	const [expandedService, setExpandedService] = useState(null);
+	const [services, setServices] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 	const { user } = useContext(AuthContext);
 
 	const toggleExpanded = (serviceId) => {
 		setExpandedService(expandedService === serviceId ? null : serviceId);
 	};
+
+	useEffect(() => {
+		servicesApi
+			.list()
+			.then((data) => {
+				setServices(data);
+				setLoading(false);
+			})
+			.catch((err) => {
+				console.error('Error fetching services:', err);
+				setError('No se pudieron cargar los servicios. Intenta de nuevo más tarde.');
+				setLoading(false);
+			});
+	}, []);
 
 	return (
 		<Layout>
@@ -208,8 +225,25 @@ function ServicesPage() {
 
 				{/* Services Grid */}
 				<div className="container mx-auto px-4 py-8">
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-						{laVinServices.map((service, index) => {
+					{loading && (
+						<div className="flex justify-center items-center py-20">
+							<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
+						</div>
+					)}
+					{error && (
+						<div className="text-center py-12">
+							<p className="text-red-500 text-lg mb-4">{error}</p>
+							<button
+								onClick={() => window.location.reload()}
+								className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition-colors"
+							>
+								Reintentar
+							</button>
+						</div>
+					)}
+					{!loading && !error && (
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							{services.map((service, index) => {
 							const IconComponent = icons[index % icons.length];
 							const isExpanded = expandedService === service.id;
 
@@ -386,6 +420,7 @@ function ServicesPage() {
 							);
 						})}
 					</div>
+					)}
 				</div>
 			</div>
 		</Layout>
