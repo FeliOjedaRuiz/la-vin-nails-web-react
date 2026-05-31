@@ -90,4 +90,34 @@ describe('TurnDetailAndUpdate', () => {
       expect(mockNavigate).toHaveBeenCalledWith('/admin-schedule');
     });
   });
+
+  it('debe usar turn.dateData como fallback cuando currentDate no está en contexto', async () => {
+    // Turn con dateData populado por el backend (como viene de la API real)
+    const turnWithDateData = {
+      ...mockTurn,
+      dateData: {
+        id: '456',
+        user: { id: 'user1', name: 'Test User', phone: '123456789' },
+        service: { id: 'serv1', name: 'Manicura' },
+        type: 'Semipermanente',
+        needRemove: 'No',
+        designDetails: 'Ninguno',
+        cost: 20,
+        duration: '1:00',
+      },
+    };
+
+    turnsService.detail.mockResolvedValue(turnWithDateData);
+
+    // Render sin currentDate en contexto (simula navegación directa)
+    renderWithProviders(<TurnDetailAndUpdate />, { route: '/turns/123' });
+
+    // Esperar a que cargue el detalle
+    await waitFor(() => expect(screen.getByDisplayValue('10:00')).toBeInTheDocument());
+
+    // Verificación: Debe mostrar detalles de la cita (no el mensaje "aún no fue solicitado")
+    expect(screen.queryByText(/aún no fue solicitado/i)).not.toBeInTheDocument();
+    expect(screen.getByText('Manicura')).toBeInTheDocument();
+    expect(screen.getByText('Semipermanente')).toBeInTheDocument();
+  });
 });

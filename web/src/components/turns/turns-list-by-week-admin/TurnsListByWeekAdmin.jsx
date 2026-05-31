@@ -1,6 +1,43 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import turnsService from '../../../services/turns';
 import TurnItemAdmin from '../turn-item-admin/TurnItemAdmin';
+
+// ─── Static data (hoisted to module scope — never changes) ────────────────────
+const months = ['Enero', 'Feb.', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Ago.', 'Sept.', 'Oct.', 'Nov.', 'Dic.'];
+const days   = { 0: 'Domingo', 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado' };
+
+// ─── Pure functions (hoisted to module scope — stable references) ─────────────
+const transformDate = (date) => {
+  const dt = new Date(date);
+  const year  = dt.getFullYear();
+  let   month = dt.getMonth() + 1;
+  let   day   = dt.getDate();
+
+  if (month < 10) month = '0' + month;
+  if (day   < 10) day   = '0' + day;
+
+  return `${year}-${month}-${day}`;
+};
+
+const safeParseDate = (dateString) => {
+  if (!dateString) return new Date();
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const getNextDate = (base, daysToAdd) => {
+  const d = new Date(base);
+  d.setDate(d.getDate() + daysToAdd);
+  return transformDate(d);
+};
+
+const getFormattedDate = (date) => {
+  const dt = safeParseDate(date);
+  return {
+    dateMonth: `${dt.getDate()} - ${months[dt.getMonth()]}`,
+    dayName: days[dt.getDay()]
+  };
+};
 
 // ─── Sub-componentes FUERA del render principal ───────────────────────────────
 // Si se definen DENTRO, React los ve como tipos nuevos en cada re-render
@@ -60,11 +97,8 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 	const [turns, setTurns] = useState(() => turnsCache[initDate] || []);
 	const [loading, setLoading] = useState(!turnsCache[initDate]);
 
-	// Sincronización durante render: si initDate cambió y hay datos en caché,
-	// actualizar turns ANTES del flush al DOM → elimina el parpadeo "Sin turnos".
-	const [prevInitDate, setPrevInitDate] = useState(initDate);
-	if (initDate !== prevInitDate) {
-		setPrevInitDate(initDate);
+	// ── Cache sync via useEffect (replaces render-phase setState) ───────────────
+	useEffect(() => {
 		const cached = turnsCache[initDate];
 		if (cached) {
 			setTurns(cached);
@@ -73,33 +107,9 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 			setTurns([]);
 			setLoading(true);
 		}
-	}
-
-	const transformDate = (date) => {
-		let dt = new Date(date);
-		let year = dt.getFullYear();
-		let month = dt.getMonth() + 1;
-		let day = dt.getDate();
-
-		if (month < 10) month = '0' + month;
-		if (day < 10) day = '0' + day;
-
-		return `${year}-${month}-${day}`;
-	};
-
-	const safeParseDate = (dateString) => {
-		if (!dateString) return new Date();
-		const parts = dateString.split('-').map(Number);
-		return new Date(parts[0], parts[1] - 1, parts[2]);
-	};
+	}, [initDate]);
 
 	const baseDay = safeParseDate(initDate);
-
-	const getNextDate = useCallback((base, daysToAdd) => {
-		const d = new Date(base);
-		d.setDate(d.getDate() + daysToAdd);
-		return transformDate(d);
-	}, [transformDate]);
 
 	const firstDay  = getNextDate(baseDay, 1);
 	const secondDay = getNextDate(baseDay, 2);
@@ -108,20 +118,13 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 	const fifthDay  = getNextDate(baseDay, 5);
 	const sixthDay  = getNextDate(baseDay, 6);
 
-	const months = ['Enero', 'Feb.', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Ago.', 'Sept.', 'Oct.', 'Nov.', 'Dic.'];
-	const days   = { 0: 'Domingo', 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado' };
-
-	const getFormattedDate = (date) => {
-		const dt = safeParseDate(date);
-		return {
-			dateMonth: `${dt.getDate()} - ${months[dt.getMonth()]}`,
-			dayName: days[dt.getDay()]
-		};
-	};
-
 	// Ref para distinguir si el efecto se disparó por reload (creación de turno)
 	// o por cambio de initDate (navegación del carrusel).
 	const prevReloadRef = useRef(reload);
+
+	// Ref que registra el initDate activo al inicio del fetch.
+	// Si cambia antes de que la promesa resuelva, descartamos la respuesta.
+	const currentInitDateRef = useRef(initDate);
 
 	useEffect(() => {
 		if (!initDate) return;
@@ -129,16 +132,29 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 		const isReloadTriggered = prevReloadRef.current !== reload;
 		prevReloadRef.current = reload;
 
+		// Actualizar el ref con el initDate activo en este efecto.
+		// Cualquier respuesta de un efecto anterior con initDate distinto
+		// será descartada en el .then() gracias a este ref.
+		currentInitDateRef.current = initDate;
+
 		const cached = turnsCache[initDate];
 
+		// ── SWR revalidation path (cached data exists) ──────────────────────────
 		// Si hay caché y NO fue un reload forzado, los datos ya son correctos
 		// (vienen del prefetch o de una navegación anterior) → cero flash.
 		// Si hay caché y NO fue un reload forzado, usamos los datos cacheados
 		// pero SIEMPRE revalidamos en background (Stale-While-Revalidate real).
 		// Esto soluciona que al volver atrás con navegación nativa se vean datos viejos.
 		if (cached && !isReloadTriggered) {
-			turnsService.list(initDate, sixthDay)
+			const abortController = new AbortController();
+
+			turnsService.list(initDate, sixthDay, abortController.signal)
 				.then((freshTurns) => {
+					// Descartar si el abort fue solicitado o si el initDate cambió
+					// mientras este fetch estaba en vuelo.
+					if (abortController.signal.aborted) return;
+					if (currentInitDateRef.current !== initDate) return;
+
 					const currentCached = turnsCache[initDate];
 					const changed = JSON.stringify(freshTurns) !== JSON.stringify(currentCached);
 					if (changed) {
@@ -146,21 +162,22 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 						setTurns(freshTurns);
 					}
 				})
-				.catch(() => {});
-			return;
+				.catch((e) => { /* silent SWR error */ });
+
+			return () => { abortController.abort(); };
 		}
 
 		if (!cached) setLoading(true);
 
-		// Flag para descartar respuestas de fetches obsoletos cuando
-		// el usuario navega rápido y este efecto se re-ejecuta antes
-		// de que la Promise anterior resuelva.
-		let cancelled = false;
+		// AbortController para cancelar fetches obsoletos a nivel de transporte HTTP.
+		// El flag `cancelled` sigue presente como defensa adicional para el estado,
+		// pero AbortController corta el request en la capa de red.
+		const abortController = new AbortController();
 
 		turnsService
-			.list(initDate, sixthDay)
+			.list(initDate, sixthDay, abortController.signal)
 			.then((freshTurns) => {
-				if (cancelled) return; // Este fetch ya no es relevante
+				if (abortController.signal.aborted) return;
 
 				const currentCached = turnsCache[initDate];
 				const changed = JSON.stringify(freshTurns) !== JSON.stringify(currentCached);
@@ -184,26 +201,31 @@ function TurnsListByWeekAdmin({ initDate, reload }) {
 				prefetch(7);
 			})
 			.catch((error) => {
-				if (!cancelled) console.error(error);
+				if (!abortController.signal.aborted) console.error(error);
 			})
 			.finally(() => {
-				if (!cancelled) setLoading(false);
+				if (!abortController.signal.aborted) setLoading(false);
 			});
 
-		return () => { cancelled = true; };
-	}, [reload, initDate, sixthDay, baseDay, getNextDate]);
+		return () => { abortController.abort(); };
+	// baseDay y getNextDate son estables (funciones puras a nivel módulo, derivadas de initDate).
+	// initDate ya cubre el caso de re-fetch; agregar baseDay causaría re-ejecuciones fantasma.
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [reload, initDate, sixthDay]);
 
-	// Estado DERIVADO calculado inline — no necesita useState ni useEffect propio.
-	// Esto elimina el bug de "render fantasma vacío" que causaba el parpadeo.
+	// Helper: sort turns by hour ascending
 	const sortByHour = (arr) =>
 		[...arr].sort((x, y) => x.hour.replace(':', '') - y.hour.replace(':', ''));
 
-	const firstDayTurns  = sortByHour(turns.filter((t) => t.date === firstDay));
-	const secondDayTurns = sortByHour(turns.filter((t) => t.date === secondDay));
-	const thirdDayTurns  = sortByHour(turns.filter((t) => t.date === thirdDay));
-	const fourthDayTurns = sortByHour(turns.filter((t) => t.date === fourthDay));
-	const fifthDayTurns  = sortByHour(turns.filter((t) => t.date === fifthDay));
-	const sixthDayTurns  = sortByHour(turns.filter((t) => t.date === sixthDay));
+	// ── Memoized derived day arrays ─────────────────────────────────────────────
+	// Wrapped in useMemo so React.memo on DayColumn skips re-renders when
+	// turns haven't changed (spec §Memoized Derived Day Arrays).
+	const firstDayTurns  = useMemo(() => sortByHour(turns.filter((t) => t.date === firstDay)),  [turns, firstDay]);
+	const secondDayTurns = useMemo(() => sortByHour(turns.filter((t) => t.date === secondDay)), [turns, secondDay]);
+	const thirdDayTurns  = useMemo(() => sortByHour(turns.filter((t) => t.date === thirdDay)),  [turns, thirdDay]);
+	const fourthDayTurns = useMemo(() => sortByHour(turns.filter((t) => t.date === fourthDay)), [turns, fourthDay]);
+	const fifthDayTurns  = useMemo(() => sortByHour(turns.filter((t) => t.date === fifthDay)),  [turns, fifthDay]);
+	const sixthDayTurns  = useMemo(() => sortByHour(turns.filter((t) => t.date === sixthDay)),  [turns, sixthDay]);
 
 	return (
 		<div className="w-full grid grid-cols-3 md:grid-cols-3 xl:grid-cols-6">

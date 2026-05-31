@@ -41,7 +41,6 @@ function SchedulePageAdmin() {
     onWeekSelect(newWeek);
     setInitDate(weekToInitDate(newWeek));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Solo al montar; respeta y sincroniza con currentWeek si ya existe
 
   const handleWeekChange = (direction) => {

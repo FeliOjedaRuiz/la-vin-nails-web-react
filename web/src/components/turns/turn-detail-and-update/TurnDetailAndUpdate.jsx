@@ -66,9 +66,15 @@ function TurnDetailAndUpdate() {
 	}, []);
 
 	useEffect(() => {
-		setDate(currentDate);
-		deleteDate();
-	}, [currentDate, deleteDate]);
+		// Solo sincronizar si hay una currentDate válida en contexto.
+		// deleteDate() limpia el contexto después de usarlo para evitar
+		// que la próxima navegación herede una currentDate stale.
+		if (currentDate) {
+			setDate(currentDate);
+			deleteDate();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentDate]);
 
 	useEffect(() => {
 		turnsService
@@ -78,9 +84,16 @@ function TurnDetailAndUpdate() {
 				const newStates = turnStates.filter((state) => turn.state !== state);
 				newStates.unshift(turn.state);
 				setTurnStates(newStates);
+				
+				// Fallback: si currentDate no está disponible en contexto,
+				// usar turn.dateData que el backend ya populó.
+				if (!currentDate && turn.dateData) {
+					setDate(turn.dateData);
+				}
 			})
 			.catch((error) => console.error(error));
-	}, [reload, id, turnStates]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [reload, id]);
 
 	useEffect(() => {
 		if (turn.date) {

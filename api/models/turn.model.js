@@ -30,6 +30,8 @@ const turnSchema = new mongoose.Schema(
   }
 );
 
+turnSchema.index({ date: 1 }, { background: true });
+
 const Turn = mongoose.model("Turn", turnSchema);
 
 module.exports = Turn;

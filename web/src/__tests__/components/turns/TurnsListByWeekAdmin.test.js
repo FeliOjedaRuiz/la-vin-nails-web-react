@@ -40,12 +40,46 @@ describe('TurnsListByWeekAdmin (SWR Strategy)', () => {
     expect(screen.getByText('10:00')).toBeInTheDocument();
     
     // Verificación 2: La API ha sido llamada a pesar de tener caché (SWR)
-    expect(turnsService.list).toHaveBeenCalledWith(initDate, expect.any(String));
+    expect(turnsService.list).toHaveBeenCalledWith(initDate, expect.any(String), expect.any(Object));
 
     // Verificación 3: Tras resolver la API, se muestran los datos nuevos
     await waitFor(() => {
       expect(screen.getByText('11:00')).toBeInTheDocument();
     });
+  });
+
+  it('debe cancelar el AbortController al cambiar de initDate', async () => {
+    // Pre-poblar el caché para activar la ruta SWR
+    turnsCache[initDate] = mockCachedTurns;
+
+    // Mock que retorna una promesa controlable (simula fetch lento)
+    let resolveSwr;
+    const swrPromise = new Promise((resolve) => { resolveSwr = resolve; });
+    turnsService.list.mockReturnValue(swrPromise);
+
+    const { unmount } = renderWithProviders(<TurnsListByWeekAdmin initDate={initDate} reload={false} />);
+
+    // Verificar que el servicio fue llamado con un signal (AbortController)
+    expect(turnsService.list).toHaveBeenCalledWith(
+      initDate,
+      expect.any(String),
+      expect.objectContaining({ aborted: false })
+    );
+
+    // Extraer el signal que se pasó al servicio
+    const signal = turnsService.list.mock.calls[0][2];
+
+    // Simular desmontaje del componente (cambio de semana → nuevo render)
+    unmount();
+
+    // Verificar que el AbortController fue abortado al desmontar
+    expect(signal.aborted).toBe(true);
+
+    // Resolver la promesa — la respuesta DEBE ser descartada
+    resolveSwr(mockFreshTurns);
+    await new Promise((r) => setTimeout(r, 10));
+    
+    // El test pasa si no hay errores — la respuesta obsoleta fue ignorada
   });
 
   it('debe mostrar loading si NO hay datos en caché', async () => {

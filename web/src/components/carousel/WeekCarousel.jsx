@@ -69,7 +69,10 @@ const WeekCarousel = ({ initDate, onWeekChange, renderItem, disablePrev = false,
     if (width) controls.set({ x: -width });
   }, [width, controls]);
 
-  // Sincronizar si el padre cambia initDate desde fuera
+  // Sincronizar si el padre cambia initDate desde fuera.
+  // NO incluir dates.center en deps: goTo ya actualiza dates internamente
+  // y agregarlo aquí crea un race condition que resetea las fechas y aborta fetches.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (initDate === lastExternalDate.current) return;
     if (initDate === dates.center) return;
@@ -77,7 +80,7 @@ const WeekCarousel = ({ initDate, onWeekChange, renderItem, disablePrev = false,
     lastExternalDate.current = initDate;
     setDates({ prev: getPrev(initDate), center: initDate, next: getNext(initDate) });
     if (width) controls.set({ x: -width });
-  }, [initDate, width, controls, dates.center]);
+  }, [initDate, width, controls]);
 
   const goTo = useCallback(
     async (direction) => {
@@ -187,9 +190,12 @@ const WeekCarousel = ({ initDate, onWeekChange, renderItem, disablePrev = false,
               willChange: "transform",
             }}
           >
-            {[dates.prev, dates.center, dates.next].map((date) => (
+            {/* Keys estables para preservar instancias de componentes hijos.
+                Con key={date}, React desmontaba/remontaba en cada navegación,
+                abortando fetches y causando semanas vacías con scroll rápido. */}
+            {[dates.prev, dates.center, dates.next].map((date, idx) => (
               <div 
-                key={date} 
+                key={`panel-${idx}`} 
                 style={{ width: `${width}px`, minWidth: 0, flexShrink: 0, overflow: "hidden" }}
               >
                 {renderItem(date)}
