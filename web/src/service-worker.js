@@ -91,9 +91,10 @@ self.addEventListener('notificationclick', (event) => {
 
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
-      // Si la app ya está abierta, enfocamos la ventana y navegamos
+      // Si la app ya está abierta, navegamos a la URL y enfocamos
       const matchingClient = windowClients.find((client) => client.url === urlToOpen || client.url.includes(urlToOpen));
       if (matchingClient) {
+        matchingClient.navigate(urlToOpen);
         return matchingClient.focus();
       }
       

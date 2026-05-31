@@ -13,14 +13,14 @@ module.exports.create = (req, res, next) => {
 				.then((date) => {
 					mailer.sendDateCreationEmail(date);
 					
-					// Push a los Administradores
-					const clientName = date.user?.name || 'Un cliente';
-					const serviceName = date.service?.name || 'un servicio';
-					pushService.notifyAdmins({
-						title: '🗓️ Nueva Reserva',
-						body: `${clientName} ha reservado ${serviceName}.`,
-						url: '/admin/bookings'
-					});
+				// Push a los Administradores
+				const clientName = date.user?.name || 'Un cliente';
+				const serviceName = date.service?.name || 'un servicio';
+				pushService.notifyAdmins({
+					title: '🗓️ Nueva Reserva',
+					body: `${clientName} ha reservado ${serviceName}.`,
+					url: date.turn?._id ? `/turns/${date.turn._id}` : '/admin-schedule'
+				});
 				});
 		})
 		.catch(next);
