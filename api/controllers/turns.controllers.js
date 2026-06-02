@@ -97,9 +97,33 @@ module.exports.list = async (req, res, next) => {
 };
 
 module.exports.detail = (req, res, next) => {
-	Turn.findById(req.params.id)
-		.then((turn) => {
-			res.json(turn);
+	Turn.findById(req.params.id).lean()
+		.then(async (turn) => {
+			if (!turn) return res.status(404).json({ message: 'Turno no encontrado' });
+
+			const DateModel = require('../models/date.model');
+			const date = await DateModel.findOne({ turn: turn._id })
+				.populate('user')
+				.populate('service')
+				.lean();
+
+			const result = { ...turn, id: turn._id };
+
+			if (date) {
+				const user = date.user ? { ...date.user, id: date.user._id } : date.user;
+				const service = date.service ? { ...date.service, id: date.service._id } : date.service;
+				result.dateData = {
+					...date,
+					id: date._id,
+					user,
+					service,
+					turn: date.turn.toString()
+				};
+			} else {
+				result.dateData = null;
+			}
+
+			res.json(result);
 		})
 		.catch(next);
 };

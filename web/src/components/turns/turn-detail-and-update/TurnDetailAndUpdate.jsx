@@ -66,17 +66,6 @@ function TurnDetailAndUpdate() {
 	}, []);
 
 	useEffect(() => {
-		// Solo sincronizar si hay una currentDate válida en contexto.
-		// deleteDate() limpia el contexto después de usarlo para evitar
-		// que la próxima navegación herede una currentDate stale.
-		if (currentDate) {
-			setDate(currentDate);
-			deleteDate();
-		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentDate]);
-
-	useEffect(() => {
 		turnsService
 			.detail(id)
 			.then((turn) => {
@@ -85,10 +74,15 @@ function TurnDetailAndUpdate() {
 				newStates.unshift(turn.state);
 				setTurnStates(newStates);
 				
-				// Fallback: si currentDate no está disponible en contexto,
-				// usar turn.dateData que el backend ya populó.
-				if (!currentDate && turn.dateData) {
+				// dateData es la fuente de verdad — el backend la pobló
+				// con user + service. Tiene prioridad sobre currentDate (contexto)
+				// para evitar mostrar datos stale al navegar desde notificación.
+				if (turn.dateData) {
 					setDate(turn.dateData);
+				} else if (currentDate) {
+					// Fallback: solo si el backend no devolvió dateData
+					setDate(currentDate);
+					deleteDate();
 				}
 			})
 			.catch((error) => console.error(error));
