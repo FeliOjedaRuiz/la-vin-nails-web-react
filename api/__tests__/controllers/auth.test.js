@@ -185,4 +185,52 @@ describe('Users Controller', () => {
       usersController.restorePassword(req, res, next);
     });
   });
+
+  describe('Registration Gate', () => {
+    const AppSetting = require('../../models/app-setting.model');
+    const registrationMid = require('../../middlewares/registration.mid');
+
+    it('blocks POST /users when registration.enabled is false', (done) => {
+      AppSetting.create({ key: 'registration.enabled', value: false }).then(() => {
+        const req = {};
+        const res = {
+          status(code) {
+            this.statusCode = code;
+            return this;
+          },
+          json(data) {
+            expect(this.statusCode).toBe(403);
+            expect(data.message).toBe('Registro temporalmente cerrado.');
+            done();
+          },
+        };
+        const next = jest.fn();
+        registrationMid.isOpen(req, res, next);
+      });
+    });
+
+    it('allows POST /users when registration.enabled is true', (done) => {
+      AppSetting.create({ key: 'registration.enabled', value: true }).then(() => {
+        const req = {};
+        const res = {};
+        const next = (err) => {
+          expect(err).toBeUndefined();
+          done();
+        };
+        registrationMid.isOpen(req, res, next);
+      });
+    });
+
+    it('allows POST /users when registration.enabled doc is missing (fail-open)', (done) => {
+      AppSetting.deleteMany({ key: 'registration.enabled' }).then(() => {
+        const req = {};
+        const res = {};
+        const next = (err) => {
+          expect(err).toBeUndefined();
+          done();
+        };
+        registrationMid.isOpen(req, res, next);
+      });
+    });
+  });
 });

@@ -8,7 +8,15 @@ const secure = require('./middlewares/secure.mid');
 
 //** Load configuration */
 require('./config/db.config');
+const AppSetting = require('./models/app-setting.model');
 const app = express();
+
+// Seed registration.enabled on startup
+mongoose.connection.once('open', () => {
+  AppSetting.getOrDefault('registration.enabled', true)
+    .then(() => console.info('Registration setting seeded'))
+    .catch((err) => console.error('Failed to seed registration setting', err));
+});
 
 const cors = require('./config/cors.config');
 app.use(cors);

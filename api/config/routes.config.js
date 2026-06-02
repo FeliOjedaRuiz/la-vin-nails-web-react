@@ -8,6 +8,7 @@ const dates = require('../controllers/dates.controllers');
 const photos = require('../controllers/photos.controllers');
 const expenses = require('../controllers/expenses.controllers');
 const push = require('../controllers/push.controllers');
+const settings = require('../controllers/settings.controllers');
 
 const turnsMid = require('../middlewares/turns.mid');
 const datesMid = require('../middlewares/dates.mid');
@@ -15,15 +16,24 @@ const secure = require('../middlewares/secure.mid');
 const usersMid = require('../middlewares/users.mid');
 const photosMid = require('../middlewares/photos.mid');
 const expensesMid = require('../middlewares/expenses.mid');
+const registrationMid = require('../middlewares/registration.mid');
 
 const fileUploader = require('../config/cloudinary.config');
 
 // PUSH
 router.get('/push/public-key', secure.auth, push.getPublicKey);
 router.post('/push/subscribe', secure.auth, push.subscribe);
+router.delete('/push/unsubscribe', secure.isAdmin, push.unsubscribe);
+router.post('/push/test', secure.isAdmin, push.sendTest);
+
+// SETTINGS
+router.get('/settings/registration.enabled', settings.getByKey);
+router.get('/settings', secure.isAdmin, settings.list);
+router.get('/settings/:key', secure.isAdmin, settings.getByKey);
+router.patch('/settings/:key', secure.isAdmin, settings.update);
 
 // USERS
-router.post('/users', users.create);
+router.post('/users', registrationMid.isOpen, users.create);
 router.post('/login', users.login);
 router.post(
 	'/sendRestoreEmail/:email',
