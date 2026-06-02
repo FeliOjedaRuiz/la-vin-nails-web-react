@@ -66,6 +66,16 @@ function TurnDetailAndUpdate() {
 	}, []);
 
 	useEffect(() => {
+		// Sincronización rápida desde el calendario: currentDate llega populado
+		// cuando se navega desde la agenda admin. Evita un render en blanco.
+		if (currentDate) {
+			setDate(currentDate);
+			deleteDate();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentDate]);
+
+	useEffect(() => {
 		turnsService
 			.detail(id)
 			.then((turn) => {
@@ -74,15 +84,11 @@ function TurnDetailAndUpdate() {
 				newStates.unshift(turn.state);
 				setTurnStates(newStates);
 				
-				// dateData es la fuente de verdad — el backend la pobló
-				// con user + service. Tiene prioridad sobre currentDate (contexto)
-				// para evitar mostrar datos stale al navegar desde notificación.
+				// dateData del backend SIEMPRE gana — es la fuente de verdad.
+				// Corrige el caso de notificación directa donde currentDate
+				// puede estar stale de una navegación anterior.
 				if (turn.dateData) {
 					setDate(turn.dateData);
-				} else if (currentDate) {
-					// Fallback: solo si el backend no devolvió dateData
-					setDate(currentDate);
-					deleteDate();
 				}
 			})
 			.catch((error) => console.error(error));
