@@ -16,7 +16,7 @@ import { clearGuestTurnsCache } from '../turn-list-by-week/TurnListByWeek';
 function TurnDetailAndUpdate() {
 	const { id } = useParams();
 	const [turn, setTurn] = useState({});
-	const { currentDate, deleteDate } = useContext(AuthContext);
+	const { currentDate } = useContext(AuthContext);
 	const [date, setDate] = useState();
 	const [turnDateWhatsapp, setTurnDateWhatsapp] = useState();
 	const navigate = useNavigate();
@@ -69,9 +69,9 @@ function TurnDetailAndUpdate() {
 		// Solo aceptar currentDate si pertenece a este turno (evita flicker
 		// de datos stale al navegar directo desde notificación push).
 		// currentDate.turn es el ObjectId del turno, id viene de useParams().
+		// NO llamamos deleteDate() — así currentDate sobrevive al back navigation.
 		if (currentDate && currentDate.turn === id) {
 			setDate(currentDate);
-			deleteDate();
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentDate, id]);
