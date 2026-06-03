@@ -11,7 +11,10 @@ function RegisterPage() {
 
   useEffect(() => {
     settingsApi.getByKey("registration.enabled")
-      .then(({ value }) => setIsOpen(value))
+      .then((setting) => {
+        const value = setting?.value ?? setting;
+        setIsOpen(typeof value === "boolean" ? value : true);
+      })
       .catch(() => {
         // fail-open on fetch error
         setIsOpen(true);
@@ -40,13 +43,15 @@ function RegisterPage() {
     return (
       <Layout>
         <div className="px-8 pt-4 flex flex-col justify-center items-center">
-          <div className="text-4xl mb-4">🔒</div>
+          <div className="text-4xl mb-4"></div>
           <h1 className="text-center text-2xl font-bold mb-3 text-gray-700">
             Registro temporalmente cerrado
           </h1>
+          <p className="text-center text-sm text-gray-500 mb-2">
+            En este momento no estamos aceptando nuevas clientas.
+          </p>
           <p className="text-center text-sm text-gray-500 mb-6">
-            En este momento no es posible crear nuevas cuentas.
-            <br />Por favor, intenta más tarde.
+            Disculpá las molestias. Volvé a intentar más tarde o contactanos por Instagram.
           </p>
           <Link
             to="/login"
