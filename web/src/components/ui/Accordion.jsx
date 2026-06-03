@@ -18,7 +18,7 @@ function AccordionBody({ children, open }) {
   return (
     <div
       className={`overflow-hidden transition-all duration-300 ease-in-out ${
-        open ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+        open ? 'max-h-[10000px] opacity-100' : 'max-h-0 opacity-0'
       }`}
     >
       <div className="py-2">{children}</div>

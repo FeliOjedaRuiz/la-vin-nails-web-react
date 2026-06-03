@@ -136,7 +136,7 @@ function ClientProfilePage() {
 									className="flex flex-col items-center justify-center mt-3"
 									href={`https://wa.me/$+34699861930?text=Hola tengo una duda sobre mi cuenta en La Vin Nails Web.`}
 								>
-									<ButtonGreen>
+									<ButtonGreen styles={'flex items-center gap-2'}>
 										<WhatsappIcon color={'#ffffff'} />
 										Consultar
 									</ButtonGreen>

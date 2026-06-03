@@ -10,7 +10,7 @@
 ---
 
 ## Descripción General
-Página de inicio del panel de administración. Muestra un buscador de usuarios para filtrar por nombre y una lista de usuarios del sistema. Incluye un botón de cerrar sesión y un mensaje personalizado.
+Página de inicio del panel de administración. Muestra un buscador de usuarios para filtrar por nombre y una lista de usuarios del sistema. Incluye un botón de cerrar sesión, un mensaje personalizado y los paneles de administración y configuración de la PWA y notificaciones Push.
 
 ---
 
@@ -18,6 +18,8 @@ Página de inicio del panel de administración. Muestra un buscador de usuarios 
 
 ### 🛡️ Administrador
 - Ve un botón de "Cerrar sesión" que ejecuta `logout()` del AuthContext
+- Ve un panel de estado de la PWA (`PwaStatusCard`) con el estado del Service Worker.
+- Ve un panel de configuración de notificaciones Push (`PushSettingsCard`) con un toggle para habilitarlas y un botón para enviar pruebas.
 - Ve un buscador de usuarios que filtra por nombre (case-insensitive)
 - Ve la lista completa de usuarios cargada al montar el componente
 - Puede hacer clic en un usuario para ver su perfil de cliente (redirige a `/clients/:id`)
@@ -34,6 +36,7 @@ Página de inicio del panel de administración. Muestra un buscador de usuarios 
 3. **RB-03 — Carga inicial**: Al montar, se cargan TODOS los usuarios de la base de datos sin paginación.
 4. **RB-04 — Logout**: El botón de cerrar sesión está visible directamente en la página (no solo en la navegación).
 5. **RB-05 — Sin funcionalidad semanal/mensual**: A diferencia de AccountingPage, esta página es solo un dashboard de búsqueda de usuarios.
+6. **RB-06 — Gestión de PWA/Push**: El administrador puede ver el estado de la PWA, solicitar actualizaciones del Service Worker, suscribirse/desuscribirse de notificaciones y enviar notificaciones de prueba directamente desde este dashboard.
 
 ---
 
@@ -42,6 +45,8 @@ Página de inicio del panel de administración. Muestra un buscador de usuarios 
 |------------|-------------------------------|
 | `Layout` | Wrapper con navegación y guard de admin |
 | `UsersSearchComponent` | Contenedor de búsqueda + lista de usuarios |
+| `PwaStatusCard` | Muestra el estado del Service Worker y notifica si la app está en modo desarrollo |
+| `PushSettingsCard` | Toggle tipo iOS para suscripción a push y botón de notificación de prueba |
 | `UsersSearchBar` | Input de búsqueda con estado controlado |
 | `UsersList` | Lista renderizada de usuarios filtrados |
 
@@ -51,10 +56,13 @@ Página de inicio del panel de administración. Muestra un buscador de usuarios 
 | Endpoint | Método | Cuándo se llama | Qué retorna |
 |----------|--------|-----------------|-------------|
 | `/users` | GET | Al montar UsersSearchComponent | Lista completa de usuarios |
+| `/push/unsubscribe` | DELETE | Al desactivar el toggle en `PushSettingsCard` | 204 No Content |
+| `/push/test` | POST | Al pulsar el botón "Notificación de prueba" en `PushSettingsCard` | 200 OK con mensaje de éxito |
 
 ---
 
 ## Estado y Efectos Secundarios
+- **`usePwaStatus` hook**: La página consume este hook para manejar el estado completo de la PWA (suscripciones, modos, errores).
 - **`users`**: Lista completa de usuarios cargada de la API. No cambia después de la carga inicial.
 - **`search`**: Texto del buscador. Se actualiza con cada cambio en el input.
 - **`usersToShow`**: Derivado — `users.filter(u => u.name.includes(search))`. Se recalcula en cada render.

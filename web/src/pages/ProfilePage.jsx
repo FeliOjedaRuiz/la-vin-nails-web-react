@@ -120,17 +120,15 @@ function ProfilePage() {
 						Próximas citas
 					</AccordionHeader>
 					<AccordionBody open={open === 3}>
-						<div className="p-4">
-							<div>
-								{!dates[0] && (
-									<div className="text-center text-xl font-medium text-emerald-600 p-2 rounded-lg">
-										No tienes citas pendientes
-									</div>
-								)}
-								{dates.map((date) => (
-									<DateDetailAdmin date={date}  />
-								))}
-							</div>
+						<div className="px-2 py-1">
+							{!dates[0] && (
+								<div className="text-center text-base font-medium text-emerald-600 py-4">
+									No tienes citas pendientes
+								</div>
+							)}
+							{dates.map((date) => (
+								<DateDetailAdmin key={date._id || date.turn.date + date.turn.hour} date={date} />
+							))}
 						</div>
 					</AccordionBody>
 				</Accordion>

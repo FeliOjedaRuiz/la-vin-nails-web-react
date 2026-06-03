@@ -433,8 +433,7 @@ function TurnDetailAndUpdate() {
 							className="flex items-center justify-center"
 						>
 							{' '}
-							<ButtonGreen styles={'py-1.5'}>
-								{' '}
+							<ButtonGreen styles={'py-1.5 flex items-center gap-2'}>
 								<WhatsappIcon color={'#ffffff'} /> Escribir
 							</ButtonGreen>
 						</a>

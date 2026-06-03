@@ -72,6 +72,7 @@ self.addEventListener('push', (event) => {
       const options = {
         body: payload.body || 'Tienes un nuevo mensaje.',
         icon: iconUrl,
+        badge: `${self.location.origin}/icons/icon-badge-72x72.png`,
         data: { url: payload.url || '/' },
         vibrate: [200, 100, 200]
       };

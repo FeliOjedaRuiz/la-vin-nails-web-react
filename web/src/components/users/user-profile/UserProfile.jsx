@@ -20,7 +20,7 @@ function UserProfile({ user }) {
 			<div className=''>
 				<a
 					href={`https://wa.me/+34${user.phone}?text=¡Hola!`}
-					className="flex items-center mt-2 h-7"
+					className="flex items-center gap-2 mt-2 h-7"
 				>
 					<WhatsappIcon color={'#00796b'} />
 					<span className="text-xl">{user.phone}</span>

@@ -37,6 +37,39 @@
   - `409 Conflict` — el índice único de `endpoint` en MongoDB detecta un duplicado (race condition entre upsert concurrentes).
   - `500 Internal Server Error` — cualquier otro error no manejado de MongoDB.
 
+### DELETE /push/unsubscribe
+- **Middleware**: `secure.isAdmin` — requiere token JWT válido y rol de administrador.
+- **Body esperado**:
+  - `endpoint` (string) — URL del servicio de push del navegador a desuscribir (obligatorio).
+- **Lógica**:
+  1. Extrae `endpoint` del body.
+  2. Valida que el `endpoint` esté presente; si falta, delega error 400.
+  3. Ejecuta `PushSubscription.findOneAndDelete` buscando por `endpoint` y `user` (tomado de `req.user.id`).
+  4. Si no se encuentra el documento, devuelve error 404.
+- **Respuesta exitosa**: `204 No Content` — la suscripción fue eliminada.
+- **Errores posibles**:
+  - `401 Unauthorized` — token ausente, inválido o usuario no encontrado.
+  - `403 Forbidden` — el usuario no es administrador.
+  - `400 Bad Request` — `endpoint` falta en el body.
+  - `404 Not Found` — la suscripción no existe o no pertenece al usuario logueado.
+  - `500 Internal Server Error` — cualquier otro error de MongoDB.
+
+### POST /push/test
+- **Middleware**: `secure.isAdmin` — requiere token JWT válido y rol de administrador.
+- **Body/Query esperado**: ninguno.
+- **Lógica**:
+  1. Busca la última reserva real en la colección `Date` (`findOne().sort({ createdAt: -1 }).populate('user service turn')`).
+  2. Si no hay ninguna reserva en la base de datos, delega error 404.
+  3. Busca todas las suscripciones push del usuario logueado (`req.user.id`).
+  4. Si no tiene suscripciones, delega error 404.
+  5. Construye un payload push con la estructura de notificación para turnos, usando los datos de la reserva encontrada (título, cuerpo con la fecha/hora e icon badge).
+  6. Envía la notificación usando `webpush.sendNotification` a todas las suscripciones del admin logueado.
+- **Respuesta exitosa**: `200 OK` — `{ message: 'Notificación de prueba enviada exitosamente', result: ... }`
+- **Errores posibles**:
+  - `401 Unauthorized` / `403 Forbidden` — fallos de autenticación o permisos (no es admin).
+  - `404 Not Found` — no hay reservas en la BD, o el usuario no tiene suscripciones push activas.
+  - `500 Internal Server Error` — error al enviar la notificación mediante web-push o problemas de BD.
+
 ## Reglas de negocio
 
 1. **Solo usuarios autenticados** pueden obtener la clave pública y suscribirse a notificaciones push. No hay acceso anónimo.
@@ -44,7 +77,8 @@
 3. **La suscripción se vincula al usuario** mediante `req.user.id`, que inyecta el middleware `secure.auth`. No se puede suscribir a otro usuario.
 4. **La clave pública VAPID** se lee directamente de `VAPID_PUBLIC_KEY` en el entorno. Si no está configurada, el servidor falla con 500 — no hay fallback.
 5. **El trim de la clave pública** es una defensa contra errores de configuración con espacios accidentales, que romperían la verificación criptográfica del lado del cliente (especialmente en Safari/iOS).
-6. **No hay endpoint de unsubscribe**: una vez suscrito, no hay forma de cancelar la suscripción a través de este controller. La limpieza de suscripciones obsoletas debe hacerse manualmente o por otro mecanismo.
+6. **Manejo de desuscripciones**: Se puede cancelar la suscripción de un navegador enviando su `endpoint` a `DELETE /push/unsubscribe`. Esto elimina físicamente el registro de la BD.
+7. **Notificación de prueba**: El administrador puede enviar una notificación simulada a sus propios dispositivos suscritos para verificar el funcionamiento del sistema (`POST /push/test`). Esta notificación usa datos reales de la última reserva en la BD para probar también el deep linking.
 
 ## Tests derivados
 
@@ -62,3 +96,11 @@
 - [ ] POST /push/subscribe vincula la suscripción al `req.user.id` del token, no a un valor del body
 - [ ] POST /push/subscribe devuelve 409 cuando hay un conflicto de índice único (código 11000 de MongoDB)
 - [ ] POST /push/subscribe propaga errores no esperados de MongoDB al manejador global
+- [ ] DELETE /push/unsubscribe devuelve 204 cuando se elimina la suscripción correctamente
+- [ ] DELETE /push/unsubscribe devuelve 400 cuando falta `endpoint` en el body
+- [ ] DELETE /push/unsubscribe devuelve 404 cuando la suscripción no existe o no pertenece al usuario
+- [ ] DELETE /push/unsubscribe devuelve 403 si el usuario no es admin
+- [ ] POST /push/test devuelve 200 y envía notificación cuando el admin tiene suscripciones y hay reservas
+- [ ] POST /push/test devuelve 404 si no hay reservas en la BD
+- [ ] POST /push/test devuelve 404 si el admin no tiene suscripciones push activas
+- [ ] POST /push/test devuelve 403 si el usuario no es admin
