@@ -8,12 +8,12 @@ function LoginBanner() {
       <h1
         className="
         transition duration-1000 translate-x-96
-      text-4xl md:text-5xl mb-3 relative right-96 font-extrabold text-center text-pink-600"
+      text-2xl md:text-3xl mb-2 relative right-96 font-bold text-center text-pink-600"
       >
-        ¿Ya te registraste?
+        ¿Ya eres clienta?
       </h1>
-      <p className="mb-6 text-xl/6 md:text-2xl/7 text-center font-medium text-pink-800">
-        Accede para agendar tu cita <br /> y conseguir descuentos.
+      <p className="mb-6 text-base md:text-lg text-center font-medium text-pink-800">
+        Accede para agendar tu cita.
       </p>
 
       <NavLink to="/login">

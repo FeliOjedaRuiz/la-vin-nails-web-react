@@ -27,7 +27,10 @@ router.delete('/push/unsubscribe', secure.isAdmin, push.unsubscribe);
 router.post('/push/test', secure.isAdmin, push.sendTest);
 
 // SETTINGS
-router.get('/settings/registration.enabled', settings.getByKey);
+router.get('/settings/registration.enabled', (req, res, next) => {
+	req.params.key = 'registration.enabled';
+	settings.getByKey(req, res, next);
+});
 router.get('/settings', secure.isAdmin, settings.list);
 router.get('/settings/:key', secure.isAdmin, settings.getByKey);
 router.patch('/settings/:key', secure.isAdmin, settings.update);
