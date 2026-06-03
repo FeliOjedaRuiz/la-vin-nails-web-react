@@ -8,8 +8,12 @@ const RegistrationToggle = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    settingsApi.getByKey('registration.enabled')
-      .then(({ value }) => setIsEnabled(value))
+    settingsApi.getAll()
+      .then((settings) => {
+        const regSetting = settings.find((s) => s.key === 'registration.enabled');
+        // If setting exists, use its value; otherwise default to true
+        setIsEnabled(regSetting ? regSetting.value : true);
+      })
       .catch(() => {
         // fail-open: default to enabled if fetch fails
         setIsEnabled(true);
