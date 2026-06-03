@@ -12,6 +12,7 @@ import UserProfile from './../../users/user-profile/UserProfile';
 import { AuthContext } from '../../../contexts/AuthStore';
 import { clearAdminTurnsCache } from '../turns-list-by-week-admin/TurnsListByWeekAdmin';
 import { clearGuestTurnsCache } from '../turn-list-by-week/TurnListByWeek';
+import LoadingIcon from '../../icons/LoadingIcon';
 
 function TurnDetailAndUpdate() {
 	const { id } = useParams();
@@ -30,6 +31,7 @@ function TurnDetailAndUpdate() {
 	const [modalState, setModalState] = useState(false);
 	const [modalDateState, setModalDateState] = useState(false);
 	const [reload, setReload] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	const [serverError, setServerError] = useState(undefined);
 
@@ -77,6 +79,7 @@ function TurnDetailAndUpdate() {
 	}, [currentDate, id]);
 
 	useEffect(() => {
+		setLoading(true);
 		turnsService
 			.detail(id)
 			.then((turn) => {
@@ -92,7 +95,8 @@ function TurnDetailAndUpdate() {
 					setDate(turn.dateData);
 				}
 			})
-			.catch((error) => console.error(error));
+			.catch((error) => console.error(error))
+			.finally(() => setLoading(false));
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [reload, id]);
 
@@ -209,6 +213,15 @@ function TurnDetailAndUpdate() {
 			.then(onDateDelete)
 			.catch((error) => console.error(error));
 	};
+
+	if (loading) {
+		return (
+			<div className="fixed inset-0 flex flex-col items-center justify-center bg-white/80 z-50">
+				<LoadingIcon className="w-12 h-12 animate-spin" />
+				<p className="mt-3 text-pink-600 font-medium">Cargando turno...</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="bg-white/50 rounded-lg px-2 pt-3 md:p-6 shadow ">

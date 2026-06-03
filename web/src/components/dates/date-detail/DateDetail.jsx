@@ -5,6 +5,43 @@ import datesService from '../../../services/dates';
 import turnsService from '../../../services/turns';
 import Modal from './../../modal/Modal';
 
+const MAPS_URL = 'https://www.google.es/maps/place/La+Vin+Nails/@37.199055,-3.6219443,17z/data=!3m1!4b1!4m6!3m5!1s0xd71fdcc60fab787:0xffdd8e2502825163!8m2!3d37.1990508!4d-3.6193694!16s%2Fg%2F11tsjffhvt?entry=ttu';
+
+/**
+ * Genera URL de Google Calendar con datos prellenados.
+ * Formato: YYYYMMDDTHHmmss/YYYYMMDDTHHmmss
+ */
+function buildGoogleCalendarUrl(date) {
+	const { turn, service, type, designDetails, cost, duration } = date;
+	
+	// Parsear fecha y hora de inicio
+	const [year, month, day] = turn.date.split('-');
+	const [hours, minutes] = turn.hour.split(':');
+	const startDate = `${year}${month}${day}T${hours}${minutes}00`;
+	
+	// Calcular hora de fin
+	const durHours = duration || 1;
+	const totalStartMinutes = parseInt(hours) * 60 + parseInt(minutes);
+	const totalEndMinutes = totalStartMinutes + Math.round(durHours * 60);
+	const endHours = Math.floor(totalEndMinutes / 60) % 24;
+	const endMinutes = totalEndMinutes % 60;
+	const endDate = `${year}${month}${day}T${String(endHours).padStart(2, '0')}${String(endMinutes).padStart(2, '0')}00`;
+	
+	const title = encodeURIComponent(`La Vin Nails - ${service.name}`);
+	
+	const details = encodeURIComponent(
+		`Tipo: ${type}\n` +
+		(designDetails ? `Detalles: ${designDetails}\n` : '') +
+		`Precio: ${cost ? cost + '€' : 'Sin confirmar'}\n` +
+		`Duración: ${duration ? duration + ' hs' : 'Sin confirmar'}\n\n` +
+		`La Vin Nails | ${MAPS_URL}`
+	);
+	
+	const location = encodeURIComponent('La Vin Nails - Granada');
+	
+	return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}&sf=true`;
+}
+
 function DateDetail({ date, onDateDelete }) {
 	const [modalState, setModalState] = useState(false);
 	const state = date.turn.state === 'Solicitado' ? 'Sin confirmación' : date.turn.state;
@@ -43,6 +80,7 @@ function DateDetail({ date, onDateDelete }) {
 	};
 
 	const whatsappUrl = `https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.`;
+	const googleCalendarUrl = useMemo(() => buildGoogleCalendarUrl(date), [date]);
 
 	return (
 		<>
@@ -138,32 +176,50 @@ function DateDetail({ date, onDateDelete }) {
 					</div>
 				</div>
 
-				{/* Footer: Location + WhatsApp + Cancel (icon-only, same line) */}
-				<div className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-pink-50/50 to-white border-t border-pink-50">
+				{/* Footer: Agendar (left) + icon actions (right) - same line */}
+				<div className="flex items-center justify-between gap-2 px-4 py-3 bg-gradient-to-r from-pink-50/50 to-white border-t border-pink-50">
+					{/* Agendar button */}
 					<a
-						href="https://www.google.es/maps/place/La+Vin+Nails/@37.199055,-3.6219443,17z/data=!3m1!4b1!4m6!3m5!1s0xd71fdcc60fab787:0xffdd8e2502825163!8m2!3d37.1990508!4d-3.6193694!16s%2Fg%2F11tsjffhvt?entry=ttu"
-						className="flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-pink-500 to-pink-700 text-white hover:from-pink-600 hover:to-pink-800 transition-all shadow-sm"
-						aria-label="Ver ubicación"
+						href={googleCalendarUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-emerald-500 via-teal-500 via-25% to-pink-400 hover:from-emerald-600 hover:via-teal-600 hover:to-pink-500 transition-all shadow-sm shrink-0"
 					>
-						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-							<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-							<circle cx="12" cy="10" r="3" />
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+							<rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+							<line x1="16" x2="16" y1="2" y2="6" />
+							<line x1="8" x2="8" y1="2" y2="6" />
+							<line x1="3" x2="21" y1="10" y2="10" />
 						</svg>
+						Agendar
 					</a>
-					<a
-						href={whatsappUrl}
-						className="flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-sm"
-						aria-label="Consultar por WhatsApp"
-					>
-						<WhatsappIcon color="#ffffff" />
-					</a>
-					<button
-						onClick={() => setModalState(!modalState)}
-						className="flex items-center justify-center w-9 h-9 rounded-lg bg-red-600 text-white hover:bg-red-700 hover:ring-2 hover:ring-red-400 focus:ring-2 focus:ring-red-400 transition-all shadow-sm"
-						aria-label="Cancelar cita"
-					>
-						<DeleteIcon className="w-4 h-4" />
-					</button>
+					{/* Icon actions */}
+					<div className="flex items-center gap-2">
+						<a
+							href={MAPS_URL}
+							className="flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-pink-500 to-pink-700 text-white hover:from-pink-600 hover:to-pink-800 transition-all shadow-sm"
+							aria-label="Ver ubicación"
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+								<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+								<circle cx="12" cy="10" r="3" />
+							</svg>
+						</a>
+						<a
+							href={whatsappUrl}
+							className="flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-sm"
+							aria-label="Consultar por WhatsApp"
+						>
+							<WhatsappIcon color="#ffffff" />
+						</a>
+						<button
+							onClick={() => setModalState(!modalState)}
+							className="flex items-center justify-center w-9 h-9 rounded-lg bg-red-600 text-white hover:bg-red-700 hover:ring-2 hover:ring-red-400 focus:ring-2 focus:ring-red-400 transition-all shadow-sm"
+							aria-label="Cancelar cita"
+						>
+							<DeleteIcon className="w-4 h-4" />
+						</button>
+					</div>
 				</div>
 			</div>
 

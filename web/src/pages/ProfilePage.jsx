@@ -8,6 +8,7 @@ import userServices from '../services/users';
 import { Accordion, AccordionHeader, AccordionBody } from '../components/ui/Accordion';
 import UserProfile from '../components/users/user-profile/UserProfile';
 import DateDetailAdmin from './../components/dates/date-detail-admin/DateDetailAdmin';
+import LoadingIcon from '../components/icons/LoadingIcon';
 
 function ProfilePage() {
 	const [reload, setReload] = useState(false);
@@ -16,16 +17,19 @@ function ProfilePage() {
 	const { id } = useParams();
 	const [open, setOpen] = useState(0);
 	const [user, setUser] = useState({});
+	const [loading, setLoading] = useState(true);
 
 	const userId = id;
 
 	useEffect(() => {
+			setLoading(true);
 			userServices
 				.detail(userId)
 				.then((user) => {
 					setUser(user);
 				})
-				.catch((error) => console.error(error));
+				.catch((error) => console.error(error))
+				.finally(() => setLoading(false));
 	}, [userId]);
 
 	const handleOpen = (value) => setOpen(open === value ? 0 : value);
@@ -79,7 +83,14 @@ function ProfilePage() {
 	return (
 		<Layout>
 			<div className="flex flex-col justify-center items-center p-4 max-w-xl mx-auto">
-				<UserProfile user={user} />
+				{loading ? (
+					<div className="flex flex-col items-center justify-center py-16 w-full">
+						<LoadingIcon className="w-12 h-12 animate-spin" />
+						<p className="mt-3 text-pink-600 font-medium">Cargando perfil...</p>
+					</div>
+				) : (
+					<>
+						<UserProfile user={user} />
 				{/* <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
@@ -170,6 +181,8 @@ function ProfilePage() {
 						</div> */}
 					</AccordionBody>
 				</Accordion>
+					</>
+				)}
 			</div>
 		</Layout>
 	);
