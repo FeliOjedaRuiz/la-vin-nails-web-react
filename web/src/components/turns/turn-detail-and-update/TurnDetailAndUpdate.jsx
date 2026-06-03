@@ -66,14 +66,15 @@ function TurnDetailAndUpdate() {
 	}, []);
 
 	useEffect(() => {
-		// Sincronización rápida desde el calendario: currentDate llega populado
-		// cuando se navega desde la agenda admin. Evita un render en blanco.
-		if (currentDate) {
+		// Solo aceptar currentDate si pertenece a este turno (evita flicker
+		// de datos stale al navegar directo desde notificación push).
+		// currentDate.turn es el ObjectId del turno, id viene de useParams().
+		if (currentDate && currentDate.turn === id) {
 			setDate(currentDate);
 			deleteDate();
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentDate]);
+	}, [currentDate, id]);
 
 	useEffect(() => {
 		turnsService
