@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Layout from '../components/layouts/Layout';
 import NailPhotoGalery from '../components/nails-photos/nail-photo-galery/NailPhotoGalery';
 import PhotoUpload from '../components/nails-photos/photo-upload/PhotoUpload';
@@ -30,10 +30,6 @@ function ProfilePage() {
 
 	const handleOpen = (value) => setOpen(open === value ? 0 : value);
 
-	useEffect(() => {
-		setReload(!reload);
-	}, [reload]);
-
 	const onPhotoCreation = () => {
 		setReload(!reload);
 	};
@@ -60,7 +56,7 @@ function ProfilePage() {
 		return `${year}-${month}-${day}`;
 	};
 
-	const actualDate = transformDate(new Date());
+	const actualDate = useMemo(() => transformDate(new Date()), []);
 
 	useEffect(() => {
 			datesService

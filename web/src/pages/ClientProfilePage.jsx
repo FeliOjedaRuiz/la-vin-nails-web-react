@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import Layout from '../components/layouts/Layout';
 import { AuthContext } from '../contexts/AuthStore';
 import WhatsappIcon from '../components/icons/WhatsappIcon';
@@ -39,7 +39,7 @@ function ClientProfilePage() {
 		return `${year}-${month}-${day}`;
 	};
 
-	const actualDate = transformDate(new Date());
+	const actualDate = useMemo(() => transformDate(new Date()), []);
 
 	useEffect(() => {
 		datesService
