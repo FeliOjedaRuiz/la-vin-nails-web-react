@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { formatDateToShort } from '../../../utils/dateFormat';
 
 function DateDetailAdmin({ date }) {
 	const state = date.turn.state === 'Solicitado' ? 'Sin confirmación' : date.turn.state;
@@ -43,7 +44,7 @@ function DateDetailAdmin({ date }) {
 							<line x1="8" x2="8" y1="2" y2="6" />
 							<line x1="3" x2="21" y1="10" y2="10" />
 						</svg>
-						{date.turn.date}
+						{formatDateToShort(date.turn.date)}
 					</span>
 					<span className="flex items-center gap-1.5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pink-500 shrink-0">

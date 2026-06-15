@@ -45,9 +45,9 @@ function ClientProfilePage() {
 		datesService
 			.myList()
 			.then((dates) => {
-				const datesUserAndDate = dates.filter(
-					(date) => date.turn.date >= actualDate
-				);
+				const datesUserAndDate = dates
+					.filter((date) => date.turn.date >= actualDate)
+					.sort((a, b) => a.turn.date.localeCompare(b.turn.date));
 				setDates(datesUserAndDate);
 			})
 			.catch((error) => console.error(error));
@@ -101,7 +101,11 @@ function ClientProfilePage() {
 									</div>
 								)}
 								{dates.map((date) => (
-									<DateDetail date={date} onDateDelete={onDateDelete} />
+									<DateDetail
+										key={date.id || date.turn.date + date.turn.hour}
+										date={date}
+										onDateDelete={onDateDelete}
+									/>
 								))}
 							</div>
 						</div>

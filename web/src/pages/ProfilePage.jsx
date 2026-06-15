@@ -66,9 +66,9 @@ function ProfilePage() {
 			datesService
 				.listByUser(userId)
 				.then((dates) => {
-					const datesUserAndDate = dates.filter(
-						(date) => date.turn.date >= actualDate
-					);
+					const datesUserAndDate = dates
+						.filter((date) => date.turn.date >= actualDate)
+						.sort((a, b) => a.turn.date.localeCompare(b.turn.date));
 					setDates(datesUserAndDate);
 				})
 				.catch((error) => console.error(error));

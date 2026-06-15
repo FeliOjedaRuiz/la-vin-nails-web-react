@@ -4,6 +4,7 @@ import DeleteIcon from '../../icons/DeleteIcon';
 import datesService from '../../../services/dates';
 import turnsService from '../../../services/turns';
 import Modal from './../../modal/Modal';
+import { formatDateToShort } from '../../../utils/dateFormat';
 
 const MAPS_URL = 'https://www.google.es/maps/place/La+Vin+Nails/@37.199055,-3.6219443,17z/data=!3m1!4b1!4m6!3m5!1s0xd71fdcc60fab787:0xffdd8e2502825163!8m2!3d37.1990508!4d-3.6193694!16s%2Fg%2F11tsjffhvt?entry=ttu';
 
@@ -79,7 +80,7 @@ function DateDetail({ date, onDateDelete }) {
 			.catch((error) => console.error(error));
 	};
 
-	const whatsappUrl = `https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${date.turn.date}%20a%20las%20${date.turn.hour}%20hs.`;
+	const whatsappUrl = `https://wa.me/$+34699861930?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20mi%20cita%20del%20${formatDateToShort(date.turn.date)}%20a%20las%20${date.turn.hour}%20hs.`;
 	const googleCalendarUrl = useMemo(() => buildGoogleCalendarUrl(date), [date]);
 
 	return (
@@ -108,7 +109,7 @@ function DateDetail({ date, onDateDelete }) {
 								<line x1="8" x2="8" y1="2" y2="6" />
 								<line x1="3" x2="21" y1="10" y2="10" />
 							</svg>
-							{date.turn.date}
+							{formatDateToShort(date.turn.date)}
 						</span>
 						<span className="flex items-center gap-1.5">
 							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pink-500 shrink-0">
