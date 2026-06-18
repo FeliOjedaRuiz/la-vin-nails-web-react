@@ -9,6 +9,10 @@ const TABS = [
   { label: "Mensual", value: "Mensual", component: <MonthlyAccounting /> },
 ];
 
+/**
+ * AccountingTabs - Tabbed view for daily, weekly, and monthly accounting.
+ * Uses a simple state-based tab system without external routing.
+ */
 function AccountingTabs() {
   const [activeTab, setActiveTab] = React.useState("Diario");
 
