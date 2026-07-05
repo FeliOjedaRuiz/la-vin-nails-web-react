@@ -90,7 +90,15 @@ function ProfilePage() {
 					</div>
 				) : (
 					<>
-						<UserProfile user={user} />
+						<UserProfile
+							user={user}
+							onToggleBlock={() => {
+								userServices
+									.detail(userId)
+									.then((u) => setUser(u))
+									.catch((error) => console.error(error));
+							}}
+						/>
 				{/* <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
