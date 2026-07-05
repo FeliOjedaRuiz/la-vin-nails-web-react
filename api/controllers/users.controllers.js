@@ -26,6 +26,11 @@ module.exports.login = (req, res, next) => {
 						createError(401, { errors: { password: 'Credenciales invalidas' } })
 					);
 				}
+				if (user.blocked) {
+					return next(
+						createError(403, { errors: { password: 'Tu cuenta ha sido bloqueada. Contactá al administrador.' } })
+					);
+				}
 				const token = jwt.sign(
 					{ sub: user.id, exp: Date.now() / 1000 + maxSessionTime },
 					process.env.JWT_SECRET
@@ -75,5 +80,15 @@ module.exports.update = (req, res, next) => {
 module.exports.list = (req, res, next) => {
 	User.find()
 		.then((users) => res.json(users))
+		.catch(next);
+};
+
+module.exports.toggleBlock = (req, res, next) => {
+	if (req.user.id === req.clientUser.id) {
+		return next(createError(400, "No podés bloquear tu propia cuenta"));
+	}
+	const newBlocked = !req.clientUser.blocked;
+	User.findByIdAndUpdate(req.clientUser.id, { blocked: newBlocked }, { new: true })
+		.then((user) => res.json(user))
 		.catch(next);
 };

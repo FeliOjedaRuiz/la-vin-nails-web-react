@@ -125,4 +125,17 @@ describe('User Model', () => {
       await expect(User.create(data)).rejects.toThrow();
     });
   });
+
+  describe('Blocked field', () => {
+    it('asigna blocked=false por defecto si no se provee', async () => {
+      const user = await User.create(validUserData);
+      expect(user.blocked).toBe(false);
+    });
+
+    it('permite crear un usuario con blocked=true', async () => {
+      const data = { ...validUserData, blocked: true };
+      const user = await User.create(data);
+      expect(user.blocked).toBe(true);
+    });
+  });
 });

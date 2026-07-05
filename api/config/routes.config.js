@@ -56,6 +56,12 @@ router.patch(
 	users.update
 );
 router.get('/users', secure.isAdmin, users.list);
+router.patch(
+	'/users/:userId/toggle-block',
+	secure.isAdmin,
+	usersMid.clientExists,
+	users.toggleBlock
+);
 
 // SERVICES
 router.get('/services', services.list);

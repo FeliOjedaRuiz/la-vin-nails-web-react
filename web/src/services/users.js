@@ -15,6 +15,8 @@ const update = (userId, user) => http.patch(`/users/${userId}`, user);
 
 const list = () => http.get("/users");
 
+const toggleBlock = (userId) => http.patch(`/users/${userId}/toggle-block`);
+
 const usersApi = {
   create,
   login,
@@ -23,6 +25,7 @@ const usersApi = {
   detail,
   update,
   list,
+  toggleBlock,
 };
 
 export default usersApi;

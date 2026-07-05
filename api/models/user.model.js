@@ -45,6 +45,10 @@ const userSchema = new mongoose.Schema(
       min: [0, "Minimo 0 cita"],
       max: [10, "Máximo 10 citas"],
     },
+    blocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
