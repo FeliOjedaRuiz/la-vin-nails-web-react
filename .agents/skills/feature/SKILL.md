@@ -1,80 +1,70 @@
 ---
 name: feature
 description: >
-  Inicia una nueva funcionalidad en rama aislada con SDD automático, preview de Vercel,
-  y cambio de modelo (pesado planifica → ligero implementa).
-  Trigger: "/feature", "nueva feature", "nueva funcionalidad", "crear feature",
-  "añadir", "implementar [algo nuevo]", "quiero agregar".
+  Disparador para crear funcionalidades NUEVAS en rama aislada. Asume proceso
+  mediano o grande desde el inicio: rama → SDD → handoff → apply → verify →
+  push → PR. Trigger: "/feature", "nueva feature", "nueva funcionalidad",
+  "crear feature", "añadir [algo nuevo]", "implementar [funcionalidad nueva]".
+  Funciona en OpenCode (con sub-agentes) y Antigravity (single-agent).
+  NO usar para fixes o modificaciones a cosas existentes — eso es /tarea.
 license: Apache-2.0
 metadata:
   author: gentleman-programming
-  version: "1.0"
+  version: "2.0"
 ---
 
 ## Cuándo usar este skill
 
-`/feature` es para **nuevas funcionalidades** — cosas que NO existen en el proyecto. Si es una corrección, modificación pequeña o ajuste a algo que YA existe, usa `/tarea` en su lugar.
+`/feature` es para **crear funcionalidades NUEVAS** — cosas que NO existen
+en el proyecto. Si es una corrección, modificación, o ajuste a algo que YA
+existe, usá `/tarea` en su lugar.
 
-Actívalo cuando el usuario:
+Activá este skill cuando el usuario:
 - Dice `/feature` seguido de una descripción
 - Pide "añadir", "crear", "implementar" una funcionalidad nueva
 - Quiere "agregar" algo que no existe (página, componente, endpoint, sistema)
 
+**Diferencia con `/tarea`**: `/feature` **asume desde el inicio que el
+proceso es mediano o grande** (no trivial casi nunca) y dispara rama aislada
++ SDD + PR por default. `/tarea` clasifica el tamaño y adapta la profundidad.
+
 ---
 
-## Workflow completo
+## Workflow agnóstico
 
 ```
 /feature "descripción"
     │
-    ├─► PASO 0: Inicializar SDD (si no existe)
-    │
-    ├─► PASO 1: Crear rama (feat/nombre)
-    │
-    ├─► PASO 2: SDD — Explorar (sdd-explore)
-    │
-    ├─► PASO 3: SDD — Proponer (sdd-propose)
-    │
-    ├─► PASO 4: SDD — Especificar (sdd-spec)
-    │
-    ├─► PASO 5: SDD — Diseñar (sdd-design)
-    │
-    ├─► PASO 6: SDD — Tareas (sdd-tasks)
-    │
-    ├─► PASO 7: HARD STOP — Handoff (cambio de modelo)
-    │         │
-    │         └─► [USUARIO CAMBIA A MODELO LIGERO]
-    │
-    ├─► PASO 8: SDD — Implementar (sdd-apply)
-    │         │
-    │         └─► [ESCALATION GUARDRAIL activo]
-    │
-    ├─► PASO 9: SDD — Verificar (sdd-verify)
-    │
-    ├─► PASO 10: Commit + Push → Preview
-    │
-    └─► PASO 11: Crear PR (opcional, con branch-pr)
+    ├─► 0. Inicializar SDD (si no existe en el proyecto)
+    ├─► 1. Crear rama aislada (feat/nombre-kebab)
+    ├─► 2. Explorar (qué hay, qué se integra, qué patrones usar)
+    ├─► 3. SDD: propose → spec → design → tasks
+    ├─► 4. Generar HANDOFF.md en docs/handoffs/ (si el plan lo amerita)
+    ├─► 5. Implementar (apply) respetando tasks y dependencias
+    ├─► 6. Verificar (verify)
+    ├─► 7. Commit conventional + push a la rama
+    └─► 8. PR (branch-pr) — default, no opcional
 ```
 
 ---
 
-## PASO 0 — Inicializar SDD (automático)
+## Paso 0 — Inicializar SDD (una sola vez por proyecto)
 
-Verificar si SDD está inicializado en el proyecto. Si no existe el directorio `changes/`:
+Verificar si SDD está inicializado (directorio `openspec/` o `changes/`
+existente). Si no:
 
 1. Cargar el skill `sdd-init`
 2. Ejecutar la inicialización: detectar stack, convenciones, testing, bootstrap
-3. Esto configura `changes/`, specs base, y el backend de persistencia
 
-**Esta verificación se hace UNA sola vez por proyecto.** Si SDD ya está inicializado, saltar al Paso 1.
+Si ya está inicializado, saltar al Paso 1.
 
 ---
 
-## PASO 1 — Definir y crear rama
+## Paso 1 — Crear rama aislada
 
-### 1a. Nombre de la rama
+### Nombre de la rama
 
-Si el usuario no especificó un nombre, generar uno semántico a partir de la descripción:
+Generar nombre semántico kebab-case a partir de la descripción:
 
 ```
 feat/descripcion-breve-en-kebab-case
@@ -85,19 +75,19 @@ Ejemplos:
 - `/feature página de testimonios` → `feat/pagina-testimonios`
 - `/feature refactor autenticación` → `feat/refactor-autenticacion`
 
-**Mostrar el nombre al usuario y pedir confirmación** antes de crear la rama.
+**Mostrar el nombre al usuario y pedir confirmación** antes de crear.
 
-### 1b. Verificar estado del repo
+### Verificar estado del repo
 
 ```bash
 git status
 ```
 
 Si hay cambios sin commitear:
-- Si están relacionados con la feature → hacer commit previo o stash
-- Si no están relacionados → advertir al usuario y preguntar
+- Si están relacionados con la feature → commit previo o stash
+- Si no → advertir al usuario y preguntar
 
-### 1c. Crear rama
+### Crear la rama
 
 ```bash
 git checkout -b feat/nombre
@@ -105,175 +95,117 @@ git checkout -b feat/nombre
 
 ---
 
-## PASOS 2-6 — SDD: Planificación formal
+## Paso 2 — Explorar
 
-> ⚠️ **Estos pasos los ejecuta el MODELO PESADO.** No escribas código de implementación. Solo documentación, specs, y diseño.
+**Objetivo**: Entender el codebase antes de proponer nada.
 
-### Paso 2 — sdd-explore
+- Leer archivos relevantes al cambio.
+- Identificar patrones existentes, dependencias, puntos de integración.
+- Detectar convenciones del proyecto (estructura de carpetas, naming, testing).
+- Documentar hallazgos en el artefacto de explore.
 
-**Objetivo**: Entender el codebase antes de decidir nada.
-
-- Leer archivos relevantes al cambio
-- Identificar patrones existentes, dependencias, puntos de integración
-- Documentar hallazgos en `changes/{nombre}/exploration.md`
-
-### Paso 3 — sdd-propose
-
-**Objetivo**: Definir QUÉ se va a hacer y POR QUÉ.
-
-- Crear `changes/{nombre}/proposal.md`
-- Incluir: problema, solución propuesta, scope, NO scope, alternativas consideradas
-
-### Paso 4 — sdd-spec
-
-**Objetivo**: Especificar requisitos formales con escenarios.
-
-- Crear `changes/{nombre}/spec.md`
-- Incluir: requisitos funcionales (REQ-01, REQ-02...), escenarios, criterios de aceptación, edge cases
-
-### Paso 5 — sdd-design
-
-**Objetivo**: Decidir arquitectura técnica.
-
-- Crear `changes/{nombre}/design.md`
-- Incluir: decisiones de arquitectura, patrones, estructura de archivos, modelos de datos, rutas API
-
-### Paso 6 — sdd-tasks
-
-**Objetivo**: Desglosar en tareas implementables.
-
-- Crear `changes/{nombre}/tasks.md`
-- Lista ordenada de tareas con: archivo destino, dependencias, prioridad
+**Output**: artefacto `exploration.md` o equivalente (según el skill SDD del
+proyecto).
 
 ---
 
-## PASO 7 — HARD STOP: Handoff
+## Paso 3 — SDD completo
 
-> ⚠️ **EJECUTAR SOLO SI ERES MODELO PESADO.** Si YA eres un modelo ligero, saltar al Paso 8.
+Ejecutar las fases SDD en orden:
 
-Al completar todos los pasos de planificación:
+### 3a. Propose
+- Problema, solución propuesta, scope, NO scope, alternativas consideradas.
 
-1. **Generar HANDOFF.md** en `docs/handoffs/YYYY-MM-DD-nombre-feature.md` con:
-   - Resumen ejecutivo
-   - Decisiones de arquitectura
-   - Especificaciones y criterios de aceptación
-   - Plan de implementación (tareas ordenadas)
-   - Contexto técnico (reglas del proyecto, dependencias, gotchas)
-   - Archivos relevantes
-   - Referencia a los archivos SDD en `changes/{nombre}/`
+### 3b. Spec
+- Requisitos funcionales (REQ-01, REQ-02...), escenarios, criterios de
+  aceptación, edge cases.
 
-2. **DETENERSE** y mostrar este mensaje:
+### 3c. Design
+- Decisiones de arquitectura, patrones, estructura de archivos, modelos de
+  datos, rutas API.
 
-```
----
+### 3d. Tasks
+- Lista ordenada de tareas con: archivo destino, dependencias, prioridad.
 
-## ⚡ CAMBIO DE PERFIL SDD — Planificación completada
-
-La arquitectura, specs y tareas están listas.
-
-📄 **HANDOFF.md**: `docs/handoffs/YYYY-MM-DD-nombre-feature.md`
-📁 **SDD**: `changes/{nombre}/` (proposal, spec, design, tasks)
-🌿 **Rama**: `feat/{nombre}`
-
-### Para implementar:
-
-**Cambia de modelo en el dropdown de OpenCode**:
-
-- De: `DeepSeek V4 Pro` (Planificación)
-- A: `MiniMax M2.7` (Implementación rápida) o `DeepSeek V4 Flash` (Features gigantes)
-
-El perfil `implement` usa modelos con límites altos (3,400 a 31,650).
-
-Una vez cambiado, dile:
-
-> "Ejecuta la implementación de HANDOFF.md en la rama feat/{nombre}"
-
-¿Guardo el contexto en Engram?
-```
+> **El modelo que planifica NO escribe código de implementación.** Solo
+> documentación, specs y diseño. Si el plan lo amerita, generar HANDOFF.md
+> en `docs/handoffs/YYYY-MM-DD-nombre-feature.md` para el implementador.
 
 ---
 
-## PASO 8 — SDD: Implementar (modelo ligero)
+## Paso 4 — HANDOFF.md (si aplica)
 
-> ⚠️ **Ejecutar con MODELO LIGERO.** Si eres modelo pesado, DETENTE en el Paso 7.
+Generar el HANDOFF.md con la plantilla en
+`.agents/skills/tarea/assets/handoff-template.md`. Incluir:
 
-### 8a. Leer HANDOFF.md
+- Resumen ejecutivo
+- Decisiones de arquitectura
+- Especificaciones y criterios de aceptación
+- Plan de implementación (tareas ordenadas)
+- Contexto técnico (reglas del proyecto, dependencias, gotchas)
+- Archivos relevantes
 
-Primer paso obligatorio: leer el handoff completo para entender el plan sin repensarlo.
+**En OpenCode**: el orchestrator decide si lanza el sub-agente de apply con
+el HANDOFF.md en su prompt. **No requiere cambio de modelo manual**.
 
-### 8b. Ejecutar sdd-apply
-
-Implementar las tareas en orden, respetando dependencias. Usar el sub-agente `sdd-apply` para cada tarea o grupo de tareas.
-
-### 8c. Escalation Guardrail (ACTIVO durante todo el paso)
-
-Aplicar las mismas reglas de escalación de `/tarea`. Si encuentras cualquiera de estos, **DETENTE**:
-
-| # | Criterio |
-|---|----------|
-| 1 | **Causa raíz desconocida** — no sabes POR QUÉ falla |
-| 2 | **Impacto arquitectónico** — requiere nuevos archivos o cambiar contratos |
-| 3 | **Scope overflow** — afecta >2 archivos no planeados |
-| 4 | **Contradicción** — la solución invalida el plan original |
-| 5 | **Reincidencia** — 2 intentos fallidos en el mismo error |
-
-Si se cumple algún criterio:
-
-```
----
-
-## 🚨 ESCALACIÓN REQUERIDA
-
-**Situación**: [error preciso]
-**Por qué escalo**: [criterio]
-**Lo que NO haré**: Improvisar
-
-👉 Vuelve a un modelo potente con este contexto.
-```
+**En Antigravity**: indicarle al usuario "cambiar a modelo ligero" en el
+dropdown antes de implementar.
 
 ---
 
-## PASO 9 — Verificar
+## Paso 5 — Implementar (apply)
 
-Ejecutar `sdd-verify` para validar que la implementación coincide con las specs:
+Implementar las tareas en orden, respetando dependencias. Aplicar el
+**Escalation Guardrail** durante todo el paso (ver más abajo).
 
-- ¿Todas las tareas están completas?
+- Cada tarea con su commit (conventional commits).
+- No commitear secretos, archivos generados, ni dependencias lockfile a menos
+  que sea estrictamente necesario.
+
+---
+
+## Paso 6 — Verificar (verify)
+
+Ejecutar `sdd-verify` para validar que la implementación coincide con las
+specs:
+
+- ¿Todas las tasks están completas?
 - ¿Los criterios de aceptación se cumplen?
 - ¿Los tests pasan?
 
 Si hay discrepancias:
-- Pequeñas → corregir en el acto
-- Grandes → evaluar si escalar
+- Pequeñas → corregir en el acto.
+- Grandes → evaluar si escalar (ver Escalation Guardrail).
 
 ---
 
-## PASO 10 — Commit + Push → Preview
+## Paso 7 — Commit + Push
 
-### 10a. Verificar tests
+### 7a. Verificar tests
 
-Antes de commitear:
+Antes de commitear y pushear:
 
 ```bash
 npm run test:run    # En web/
 npm test            # En api/
 ```
 
-### 10b. Commit
+### 7b. Commit
 
 ```bash
 git add .
 git commit -m "feat({scope}): {descripción}"
 ```
 
-Usar conventional commits: `feat(booking): añadir selector de horarios avanzado`
+**Nunca** "Co-Authored-By" ni atribución a IA.
 
-### 10c. Push
+### 7c. Push
 
 ```bash
 git push -u origin feat/{nombre}
 ```
 
-### 10d. Informar al usuario
+### 7d. Informar al usuario
 
 ```
 ---
@@ -281,26 +213,29 @@ git push -u origin feat/{nombre}
 ## 🚀 Rama subida — Preview disponible
 
 🌿 **Rama**: `feat/{nombre}`
-🔗 **Preview**: Vercel generará una URL automáticamente
-📋 **PR pendiente**: [decisión del usuario]
+🔗 **Preview**: el pipeline del proyecto generará la URL de preview
+   (Fly.io genera URL de máquina por rama; Vercel/Render por push).
+   Verificá en el dashboard correspondiente o en la sección de
+   checks de GitHub.
+📋 **PR pendiente**: lo creo a continuación
 
 ### Para validar:
-1. Abre el preview de Vercel (aparecerá en el dashboard o en GitHub)
-2. Prueba la funcionalidad
-3. Si todo OK → dime "crear PR" y usaré `branch-pr`
-4. Si hay ajustes → dime qué corregir y sigo en esta rama
+1. Abrí el preview correspondiente al target de deploy del proyecto
+2. Probá la funcionalidad
+3. Si todo OK → PR listo
+4. Si hay ajustes → decime qué corregir y sigo en esta rama
 ```
 
 ---
 
-## PASO 11 — Crear PR (opcional)
+## Paso 8 — Crear PR (default, no opcional)
 
-Cuando el usuario diga "crear PR" o "mergear":
+Cuando la rama esté pusheada y verificada:
 
-1. Usar el skill `branch-pr` para crear el Pull Request
-2. El PR incluirá: resumen de cambios, specs de SDD, preview link
-3. **NUNCA hacer merge desde la terminal** — solo crear el PR en GitHub
-4. El merge lo hace el usuario manualmente desde la UI de GitHub
+1. Usar el skill `branch-pr` para crear el Pull Request.
+2. El PR incluirá: resumen de cambios, specs de SDD, preview link.
+3. **NUNCA hacer merge desde la terminal** — solo crear el PR en GitHub.
+4. El merge lo hace el usuario manualmente desde la UI de GitHub.
 
 ### Después del merge
 
@@ -308,32 +243,55 @@ Cuando la feature se mergea a `main`:
 
 1. Volver a `main`: `git checkout main`
 2. Actualizar: `git pull origin main`
-3. Ejecutar `sdd-archive` para sincronizar las delta specs con las specs principales
+3. Ejecutar `sdd-archive` para sincronizar las delta specs con las specs
+   principales.
 4. (Opcional) Eliminar la rama local: `git branch -d feat/{nombre}`
+
+---
+
+## 🚨 Escalation Guardrail (ACTIVO durante implementación)
+
+Si durante la implementación aparece **cualquiera** de estos, **DETENERSE**:
+
+| # | Criterio |
+|---|----------|
+| 1 | **Causa raíz desconocida** — no sabés POR QUÉ falla |
+| 2 | **Impacto arquitectónico** — requiere nuevos archivos, cambiar contratos, modificar middleware, alterar modelos de datos |
+| 3 | **Scope overflow** — el error o ajuste afecta a más de 2 archivos NO planeados |
+| 4 | **Contradicción con el plan** — la solución invalida el HANDOFF o las specs originales |
+| 5 | **Reincidencia** — 2 intentos fallidos en el mismo error sin avance real |
+
+Si se cumple alguno, escalar a un modelo potente o pedirle al usuario que
+revise. **No improvisar**.
+
+---
+
+## Compatibilidad Antigravity
+
+En Antigravity este mismo skill funciona, con las siguientes adaptaciones:
+
+- **Single-agent**: el mismo agente hace explorar, planificar, implementar y
+  pushear secuencialmente.
+- **Sin sub-agentes SDD**: en lugar de invocar `sdd-explore`/`sdd-propose`/
+  etc., el agente genera los artefactos (`changes/{nombre}/explore.md`,
+  `proposal.md`, `spec.md`, `design.md`, `tasks.md`) directamente.
+- **Handoff de modelo manual**: cuando el HANDOFF.md esté listo, indicarle al
+  usuario "cambiar a modelo ligero" en el dropdown.
+- **Sin auto-detección de target de deploy**: preguntar al usuario o detectar
+  de la config del repo (`fly.toml` → Fly.io, `vercel.json` → Vercel, etc.).
+- **PR manual**: `gh pr create` desde la terminal funciona igual; o el
+  agente genera el link de comparación y el usuario lo crea desde la UI.
+- **Todo lo demás es idéntico**: fases, artefactos, escalation guardrail,
+  conventional commits, memoria en Engram.
 
 ---
 
 ## Reglas de Oro
 
-1. **NUNCA mergear a `main` desde la terminal** — solo crear PR
-2. **NUNCA desplegar a producción** sin permiso explícito
-3. **NUNCA escribir código de implementación en los pasos 2-6** — solo planificación
-4. **SIEMPRE verificar tests antes de push**
-5. **SIEMPRE respetar AGENTS.md** (JS puro, dvh, safeParseDate, try/catch, español)
-6. **La rama es aislada** — no afecta a producción hasta que el PR se mergea
-
----
-
-## Comparación con el original de Antigravity
-
-| Elemento | `/feature` Antigravity | `/feature` OpenCode |
-|----------|----------------------|---------------------|
-| Rama | ✅ `feat/nombre` | ✅ `feat/nombre` |
-| SDD | ❌ No | ✅ Automático (explore → archive) |
-| Planificación | Manual | ✅ Formal con proposal + spec + design |
-| Handoff | Menciona usar `/tarea` | ✅ Integrado (Paso 7) |
-| Escalation guardrail | ❌ No | ✅ 5 criterios (Paso 8c) |
-| Preview Vercel | ✅ Push → preview | ✅ Push → preview |
-| PR | Manual | ✅ `branch-pr` skill |
-| Documentación | Solo código | ✅ SDD + HANDOFF.md + Engram |
-| Verificación | Manual | ✅ `sdd-verify` automático |
+1. **NUNCA mergear a `main` desde la terminal** — solo PR.
+2. **NUNCA desplegar a producción** sin permiso explícito.
+3. **NUNCA escribir código de implementación en los pasos 2-3** — solo
+   planificación.
+4. **SIEMPRE verificar tests antes de push**.
+5. **SIEMPRE respetar AGENTS.md** (JS puro, h-dvh, date-fns, 16px inputs).
+6. **La rama es aislada** — no afecta a producción hasta que el PR se mergea.
