@@ -14,11 +14,13 @@ import usersService from "../../../services/users";
 function UserItem({ user, onToggleBlock }) {
   const { user: adminUser } = useContext(AuthContext);
   const [modalState, setModalState] = useState(false);
+  const [error, setError] = useState(null);
   const isAdmin = adminUser && adminUser.role === "admin";
 
   const handleToggleClick = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    setError(null);
     setModalState(true);
   };
 
@@ -29,13 +31,20 @@ function UserItem({ user, onToggleBlock }) {
       .then(() => {
         if (onToggleBlock) onToggleBlock(user.id);
       })
-      .catch(() => {
-        // keep previous state, error handled by caller if needed
+      .catch((err) => {
+        const msg =
+          err?.response?.data?.error ||
+          (err?.response?.status === 400
+            ? "No podés bloquear tu propia cuenta."
+            : "Error al cambiar el estado. Intenta de nuevo.");
+        setError(msg);
+        setModalState(true);
       });
   };
 
   const handleCancel = () => {
     setModalState(false);
+    setError(null);
   };
 
   const isBlocking = !user.blocked;
@@ -68,6 +77,11 @@ function UserItem({ user, onToggleBlock }) {
       </Link>
 
       <Modal modalState={modalState}>
+        {error && (
+          <p className="text-red-600 text-sm mb-3" role="alert">
+            {error}
+          </p>
+        )}
         <p className="text-lg font-semibold text-teal-700 mb-4">
           {isBlocking
             ? `¿Estás seguro de que querés bloquear a ${user.name}? Esta persona no podrá acceder a la app.`

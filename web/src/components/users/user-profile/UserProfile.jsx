@@ -14,6 +14,7 @@ import EmailIcon from '../../icons/EmailIcon';
 function UserProfile({ user, onToggleBlock }) {
   const { user: adminUser } = useContext(AuthContext);
   const [modalState, setModalState] = useState(false);
+  const [error, setError] = useState(null);
   const isAdmin = adminUser && adminUser.role === "admin";
   const showBlockControls = isAdmin && onToggleBlock;
 
@@ -21,6 +22,7 @@ function UserProfile({ user, onToggleBlock }) {
 
   const handleToggleClick = (e) => {
     e.stopPropagation();
+    setError(null);
     setModalState(true);
   };
 
@@ -31,13 +33,20 @@ function UserProfile({ user, onToggleBlock }) {
       .then(() => {
         if (onToggleBlock) onToggleBlock(user.id);
       })
-      .catch(() => {
-        // keep previous state
+      .catch((err) => {
+        const msg =
+          err?.response?.data?.error ||
+          (err?.response?.status === 400
+            ? "No podés bloquear tu propia cuenta."
+            : "Error al cambiar el estado. Intenta de nuevo.");
+        setError(msg);
+        setModalState(true);
       });
   };
 
   const handleCancel = () => {
     setModalState(false);
+    setError(null);
   };
 
   const isBlocking = !user.blocked;
@@ -88,6 +97,11 @@ function UserProfile({ user, onToggleBlock }) {
 
       {showBlockControls && (
         <Modal modalState={modalState}>
+          {error && (
+            <p className="text-red-600 text-sm mb-3" role="alert">
+              {error}
+            </p>
+          )}
           <p className="text-lg font-semibold text-teal-700 mb-4">
             {isBlocking
               ? `¿Estás seguro de que querés bloquear a ${user.name}? Esta persona no podrá acceder a la app.`

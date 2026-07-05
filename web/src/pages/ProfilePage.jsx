@@ -18,6 +18,7 @@ function ProfilePage() {
 	const [open, setOpen] = useState(0);
 	const [user, setUser] = useState({});
 	const [loading, setLoading] = useState(true);
+	const [toggleError, setToggleError] = useState(null);
 
 	const userId = id;
 
@@ -95,10 +96,20 @@ function ProfilePage() {
 							onToggleBlock={() => {
 								userServices
 									.detail(userId)
-									.then((u) => setUser(u))
-									.catch((error) => console.error(error));
+									.then((u) => {
+										setUser(u);
+										setToggleError(null);
+									})
+									.catch(() => {
+										setToggleError("El estado se actualizó pero hubo un error al refrescar los datos.");
+									});
 							}}
 						/>
+						{toggleError && (
+							<p className="text-red-600 text-sm mt-2 text-center" role="alert">
+								{toggleError}
+							</p>
+						)}
 				{/* <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
 					<AccordionHeader
 						className="text-pink-600 hover:text-pink-800 border-b-pink-50"
