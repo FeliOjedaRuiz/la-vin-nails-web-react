@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import AuthContext from "../../../contexts/AuthStore";
+import { AuthContext } from "../../../contexts/AuthStore";
 import Modal from "../../modal/Modal";
 import usersService from "../../../services/users";
 import WhatsappIcon from './../../icons/WhatsappIcon';

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../../contexts/AuthStore";
+import { AuthContext } from "../../../contexts/AuthStore";
 import Modal from "../../modal/Modal";
 import usersService from "../../../services/users";
 
