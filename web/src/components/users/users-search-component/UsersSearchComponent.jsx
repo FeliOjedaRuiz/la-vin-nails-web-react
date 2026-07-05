@@ -7,17 +7,25 @@ function UsersSearchComponent() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
+  const fetchUsers = () => {
     UsersService.list()
       .then((users) => {
         setUsers(users)
       })
       .catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   const onSearch = (value) => {
     setSearch(value);
-  };  
+  };
+
+  const handleToggleBlock = () => {
+    fetchUsers();
+  };
 
   const usersToShow = users.filter(u => u.name.toLowerCase().includes(search.toLocaleLowerCase()))
 
@@ -27,7 +35,7 @@ function UsersSearchComponent() {
         Usuarios:
       </h3>
       <UsersSearchBar search={search} onSearch={onSearch} />
-      <UsersList users={usersToShow} />
+      <UsersList users={usersToShow} onToggleBlock={handleToggleBlock} />
     </div>
   );
 }
