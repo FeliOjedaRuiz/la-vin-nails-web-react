@@ -69,8 +69,22 @@ function UserItem({ user, onToggleBlock }) {
         {isAdmin && (
           <button
             onClick={handleToggleClick}
-            className="mt-2 text-sm text-left text-pink-700 underline hover:text-pink-900"
+            className={`mt-2 self-start inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white shadow-sm transition-all active:scale-95 ${
+              user.blocked
+                ? "bg-emerald-600 hover:bg-emerald-700"
+                : "bg-pink-700 hover:bg-pink-800"
+            }`}
+            aria-label={user.blocked ? "Desbloquear usuario" : "Bloquear usuario"}
           >
+            {user.blocked ? (
+              <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 576 512" className="fill-current" aria-hidden="true">
+                <path d="M352 192h-32V128c0-70.7-57.3-128-128-128S64 57.3 64 128v64H32c-17.7 0-32 14.3-32 32v256c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32zM112 128c0-44.2 35.8-80 80-80s80 35.8 80 80v64H112V128zm240 264c0 4.4-3.6 8-8 8H152c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h192c4.4 0 8 3.6 8 8v16z"/>
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 384 512" className="fill-current" aria-hidden="true">
+                <path d="M224 0c-35.3 0-64 28.7-64 64v64H96c-17.7 0-32 14.3-32 32v320c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32H160V64c0-35.3 28.7-64 64-64s64 28.7 64 64v32c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-35.3-28.7-64-64-64z"/>
+              </svg>
+            )}
             {user.blocked ? "Desbloquear" : "Bloquear"}
           </button>
         )}
