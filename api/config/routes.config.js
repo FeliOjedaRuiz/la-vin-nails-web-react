@@ -21,8 +21,8 @@ const registrationMid = require('../middlewares/registration.mid');
 const fileUploader = require('../config/cloudinary.config');
 
 // PUSH
-router.get('/push/public-key', secure.auth, push.getPublicKey);
-router.post('/push/subscribe', secure.auth, push.subscribe);
+router.get('/push/public-key', secure.auth, secure.notBlocked, push.getPublicKey);
+router.post('/push/subscribe', secure.auth, secure.notBlocked, push.subscribe);
 router.delete('/push/unsubscribe', secure.isAdmin, push.unsubscribe);
 router.post('/push/test', secure.isAdmin, push.sendTest);
 
@@ -48,7 +48,7 @@ router.post(
 	usersMid.checkUser,
 	users.restorePassword
 );
-router.get('/users/:userId', secure.auth, secure.isAuthorized, users.detail);
+router.get('/users/:userId', secure.auth, secure.isAuthorized, secure.notBlocked, users.detail);
 router.patch(
 	'/users/:userId',
 	secure.isAdmin,
@@ -71,7 +71,7 @@ router.get('/services/:id', services.detail);
 router.post('/turns', secure.isAdmin, turns.create);
 router.get('/turns/date/:date', secure.optionalAuth, turns.list);
 router.get('/turns/:id', turns.detail);
-router.patch('/turns/:id', secure.auth, turnsMid.exists, turns.update);
+router.patch('/turns/:id', secure.auth, secure.notBlocked, turnsMid.exists, turns.update);
 router.delete(
 	'/turns/:id',
 	secure.isAdmin,
@@ -81,7 +81,7 @@ router.delete(
 );
 
 // DATES
-router.post('/dates', secure.auth, dates.create);
+router.post('/dates', secure.auth, secure.notBlocked, dates.create);
 router.get('/dates', secure.isAdmin, dates.list);
 router.get('/dates/:userId', secure.isAdmin, dates.listByUser);
 router.get(
@@ -94,11 +94,12 @@ router.get(
 	secure.isAdmin,
 	dates.listByMonth
 );
-router.get('/myDates', secure.auth, dates.myList);
+router.get('/myDates', secure.auth, secure.notBlocked, dates.myList);
 router.patch('/dates/:id', secure.isAdmin, datesMid.exists, dates.update);
 router.delete(
 	'/dates/:id',
 	secure.auth,
+	secure.notBlocked,
 	datesMid.exists,
 	datesMid.checkOwner,
 	dates.delete
@@ -111,12 +112,13 @@ router.post(
 	fileUploader.single('photoUrl'),
 	photos.upload
 );
-router.post('/photos', secure.auth, photos.create);
+router.post('/photos', secure.auth, secure.notBlocked, photos.create);
 router.get('/photos', photos.list);
 router.get(
 	'/photos/:userId',
 	secure.auth,
 	secure.isAuthorized,
+	secure.notBlocked,
 	photos.listByUser
 );
 router.delete('/photos/:id', secure.isAdmin, photosMid.exists, photos.delete);

@@ -174,6 +174,39 @@ describe('Middleware de Autenticación (secure.mid)', () => {
     });
   });
 
+  describe('notBlocked', () => {
+    it('llama a next() cuando req.user.blocked es false', (done) => {
+      const req = { user: { id: 'abc123', blocked: false } };
+      const res = {};
+      const next = (err) => {
+        expect(err).toBeUndefined();
+        done();
+      };
+      secureMid.notBlocked(req, res, next);
+    });
+
+    it('devuelve 403 cuando req.user.blocked es true', (done) => {
+      const req = { user: { id: 'abc123', blocked: true } };
+      const res = {};
+      const next = (err) => {
+        expect(err).toBeDefined();
+        expect(err.status).toBe(403);
+        done();
+      };
+      secureMid.notBlocked(req, res, next);
+    });
+
+    it('llama a next() sin error cuando req.user es undefined (edge case)', (done) => {
+      const req = {};
+      const res = {};
+      const next = (err) => {
+        expect(err).toBeUndefined();
+        done();
+      };
+      secureMid.notBlocked(req, res, next);
+    });
+  });
+
   describe('isAuthorized', () => {
     it('permite pasar a un admin (tiene acceso a cualquier recurso)', () => {
       const req = {

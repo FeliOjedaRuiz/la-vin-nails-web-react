@@ -33,9 +33,18 @@ http.interceptors.response.use(
       }
       window.location.href = "/";
       return Promise.resolve();
-    } else {
-      return Promise.reject(error);
     }
+    if (status === 403 && !window.location.href.includes("login")) {
+      try {
+        localStorage.removeItem("current-user");
+        localStorage.removeItem("user-access-token");
+      } catch (e) {
+        console.warn("localStorage not accessible", e);
+      }
+      window.location.href = "/";
+      return Promise.resolve();
+    }
+    return Promise.reject(error);
   }
 );
 

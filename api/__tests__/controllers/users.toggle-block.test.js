@@ -104,14 +104,14 @@ describe('login — blocked user scenarios', () => {
     }).then(() => done());
   });
 
-  it('devuelve 403 con mensaje de bloqueada cuando password correcta y blocked=true', (done) => {
+  it('devuelve error generico (sin leak) cuando password correcta y blocked=true', (done) => {
     User.findOneAndUpdate({ email: 'maria@test.com' }, { blocked: true }, { new: true }).then(() => {
       const req = { body: { email: 'maria@test.com', password: 'pass' } };
       const res = { json: jest.fn() };
       const next = (err) => {
         expect(err).toBeDefined();
-        expect(err.status).toBe(403);
-        expect(err.errors.password).toBe('Tu cuenta ha sido bloqueada. Contactá al administrador.');
+        expect(err.status).toBe(401);
+        expect(err.errors.password).toBe('Credenciales invalidas');
         done();
       };
       usersController.login(req, res, next);

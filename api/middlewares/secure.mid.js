@@ -96,3 +96,10 @@ module.exports.isAuthorized = (req, res, next) => {
     next(createError(401, "Unauthorized"));
   }
 };
+
+module.exports.notBlocked = (req, res, next) => {
+  if (req.user && req.user.blocked) {
+    return next(createError(403, "No se pudo iniciar sesion"));
+  }
+  next();
+};

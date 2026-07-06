@@ -28,7 +28,7 @@ module.exports.login = (req, res, next) => {
 				}
 				if (user.blocked) {
 					return next(
-						createError(403, { errors: { password: 'Tu cuenta ha sido bloqueada. Contactá al administrador.' } })
+						createError(401, { errors: { password: 'Credenciales invalidas' } })
 					);
 				}
 				const token = jwt.sign(
