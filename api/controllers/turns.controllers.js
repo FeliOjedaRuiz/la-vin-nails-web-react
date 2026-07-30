@@ -47,9 +47,15 @@ module.exports.list = async (req, res, next) => {
 			}
 		}
 
+		const isAdmin = req.user?.role === 'admin';
+		const validCategories = ['normal', 'retiro'];
+
 		const criterial = { date: { $gt: startDate } };
 		if (req.query.endDate) {
 			criterial.date.$lte = req.query.endDate;
+		}
+		if (!isAdmin && req.query.category && validCategories.includes(req.query.category)) {
+			criterial.category = req.query.category;
 		}
 
 		const turns = await Turn.find(criterial).lean();

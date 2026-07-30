@@ -11,12 +11,12 @@ describe('Turns Controller', () => {
   const setupTurns = async () => {
     // Generar fechas: hoy, mañana, y una fecha de hace 2 semanas
     const now = new Date();
-    
+
     const today = now.toISOString().split('T')[0];
     const tomorrow = new Date(now);
     tomorrow.setDate(now.getDate() + 1);
     const tomorrowStr = tomorrow.toISOString().split('T')[0];
-    
+
     const twoWeeksAgo = new Date(now);
     twoWeeksAgo.setDate(now.getDate() - 14);
     const pastStr = twoWeeksAgo.toISOString().split('T')[0];
@@ -28,6 +28,21 @@ describe('Turns Controller', () => {
     ]);
 
     return { pastStr, today, tomorrowStr };
+  };
+
+  const setupCategorizedTurns = async () => {
+    // Usar una fecha futura dentro del mes visible para evitar el techo de visibilidad
+    const startDate = '2026-08-03';
+    const turnDate = '2026-08-04';
+
+    await Turn.create([
+      { date: turnDate, hour: '10:00', category: 'normal' },
+      { date: turnDate, hour: '11:00', category: 'normal' },
+      { date: turnDate, hour: '12:00', category: 'retiro' },
+      { date: turnDate, hour: '13:00', category: 'retiro' },
+    ]);
+
+    return { startDate };
   };
 
   describe('list', () => {
@@ -74,13 +89,13 @@ describe('Turns Controller', () => {
 
     it('respeta el parámetro endDate si se proporciona', async () => {
       const { today, tomorrowStr } = await setupTurns();
-      
+
       return new Promise((resolve) => {
         // Pedimos solo hasta hoy
-        const req = { 
-          params: { date: '2000-01-01' }, 
-          query: { endDate: today }, 
-          user: { role: 'admin' } 
+        const req = {
+          params: { date: '2000-01-01' },
+          query: { endDate: today },
+          user: { role: 'admin' }
         };
         const res = {
           json(turns) {
@@ -90,6 +105,112 @@ describe('Turns Controller', () => {
           }
         };
         const next = () => {};
+        turnsController.list(req, res, next);
+      });
+    });
+
+    it('guest ?category=retiro returns only retiro turns', async () => {
+      const { startDate } = await setupCategorizedTurns();
+
+      return new Promise((resolve, reject) => {
+        const req = { params: { date: startDate }, query: { category: 'retiro' }, user: undefined };
+        const res = {
+          json(turns) {
+            try {
+              expect(turns).toHaveLength(2);
+              expect(turns.every(t => t.category === 'retiro')).toBe(true);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }
+        };
+        const next = (err) => reject(err);
+        turnsController.list(req, res, next);
+      });
+    });
+
+    it('guest ?category=normal returns only normal turns', async () => {
+      const { startDate } = await setupCategorizedTurns();
+
+      return new Promise((resolve, reject) => {
+        const req = { params: { date: startDate }, query: { category: 'normal' }, user: undefined };
+        const res = {
+          json(turns) {
+            try {
+              expect(turns).toHaveLength(2);
+              expect(turns.every(t => t.category === 'normal')).toBe(true);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }
+        };
+        const next = (err) => reject(err);
+        turnsController.list(req, res, next);
+      });
+    });
+
+    it('admin without category sees both normal and retiro turns', async () => {
+      const { startDate } = await setupCategorizedTurns();
+
+      return new Promise((resolve, reject) => {
+        const req = { params: { date: startDate }, query: {}, user: { role: 'admin' } };
+        const res = {
+          json(turns) {
+            try {
+              expect(turns).toHaveLength(4);
+              const categories = turns.map(t => t.category).sort();
+              expect(categories).toEqual(['normal', 'normal', 'retiro', 'retiro']);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }
+        };
+        const next = (err) => reject(err);
+        turnsController.list(req, res, next);
+      });
+    });
+
+    it('admin with ?category=retiro still sees both categories (param ignored)', async () => {
+      const { startDate } = await setupCategorizedTurns();
+
+      return new Promise((resolve, reject) => {
+        const req = { params: { date: startDate }, query: { category: 'retiro' }, user: { role: 'admin' } };
+        const res = {
+          json(turns) {
+            try {
+              expect(turns).toHaveLength(4);
+              const categories = turns.map(t => t.category).sort();
+              expect(categories).toEqual(['normal', 'normal', 'retiro', 'retiro']);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }
+        };
+        const next = (err) => reject(err);
+        turnsController.list(req, res, next);
+      });
+    });
+
+    it('ignores an invalid category query param and returns all turns', async () => {
+      const { startDate } = await setupCategorizedTurns();
+
+      return new Promise((resolve, reject) => {
+        const req = { params: { date: startDate }, query: { category: 'express' }, user: undefined };
+        const res = {
+          json(turns) {
+            try {
+              expect(turns).toHaveLength(4);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }
+        };
+        const next = (err) => reject(err);
         turnsController.list(req, res, next);
       });
     });

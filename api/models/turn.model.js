@@ -15,6 +15,11 @@ const turnSchema = new mongoose.Schema(
       enum: ["Disponible", "Solicitado", "Confirmado", "Cancelado", "Reservado"],
       default: "Disponible",
     },
+    category: {
+      type: String,
+      enum: ["normal", "retiro"],
+      default: "normal",
+    },
   },
   {
     timestamps: true,
@@ -31,6 +36,7 @@ const turnSchema = new mongoose.Schema(
 );
 
 turnSchema.index({ date: 1 }, { background: true });
+turnSchema.index({ date: 1, category: 1 }, { background: true });
 
 const Turn = mongoose.model("Turn", turnSchema);
 

@@ -1,18 +1,51 @@
+const createError = require('http-errors');
 const Date = require('../models/date.model');
+const Turn = require('../models/turn.model');
+const Service = require('../models/service.model');
 const mailer = require('../config/mailer.config');
 const pushService = require('../utils/push.service');
 
-module.exports.create = (req, res, next) => {
-	Date.create(req.body)
-		.then((date) => {
-			res.status(201).json(date);
-			Date.findById(date.id)
-				.populate('turn')
-				.populate('user')
-				.populate('service')
-				.then((date) => {
-					mailer.sendDateCreationEmail(date);
-					
+// NOTE: retiro identity is tied to `service.name === "Retiro"` (see api/bin/services.seed.js).
+// If the seed name is renamed, update this helper AND the frontend DatesForm derivation.
+const RETIRO_SERVICE_NAME = 'Retiro';
+
+async function assertServiceTurnCompatibility(turnId, serviceId) {
+	const [turn, service] = await Promise.all([
+		Turn.findById(turnId).lean(),
+		Service.findById(serviceId).lean(),
+	]);
+
+	if (!turn) {
+		throw createError(400, 'Turno no encontrado');
+	}
+	if (!service) {
+		throw createError(400, 'Servicio no encontrado');
+	}
+
+	const isRetiroService = service.name === RETIRO_SERVICE_NAME;
+	const isRetiroTurn = turn.category === 'retiro';
+
+	if (isRetiroService !== isRetiroTurn) {
+		const message = isRetiroService
+			? 'El servicio Retiro solo puede reservarse en turnos marcados como retiro'
+			: 'El servicio no es de retiro y no puede reservarse en un turno de retiro';
+		throw createError(400, message);
+	}
+}
+
+module.exports.create = async (req, res, next) => {
+	try {
+		await assertServiceTurnCompatibility(req.body.turn, req.body.service);
+		const date = await Date.create(req.body);
+		res.status(201).json(date);
+		Date.findById(date.id)
+			.populate('turn')
+			.populate('user')
+			.populate('service')
+			.then((date) => {
+				if (!date) return;
+				mailer.sendDateCreationEmail(date);
+
 				// Push a los Administradores
 				const clientName = date.user?.name || 'Un cliente';
 				const serviceName = date.service?.name || 'un servicio';
@@ -21,9 +54,10 @@ module.exports.create = (req, res, next) => {
 					body: `${clientName} ha reservado ${serviceName}.`,
 					url: date.turn?._id ? `/turns/${date.turn._id}` : '/admin-schedule'
 				});
-				});
-		})
-		.catch(next);
+			});
+	} catch (error) {
+		next(error);
+	}
 };
 
 module.exports.list = (req, res, next) => {
@@ -113,12 +147,17 @@ module.exports.listByMonth = (req, res, next) => {
 		.catch(next);
 };
 
-module.exports.update = (req, res, next) => {
-	Object.assign(req.date, req.body);
-	req.date
-		.save()
-		.then((date) => res.json(date))
-		.catch(next);
+module.exports.update = async (req, res, next) => {
+	try {
+		const turnId = req.body.turn ?? req.date.turn;
+		const serviceId = req.body.service ?? req.date.service;
+		await assertServiceTurnCompatibility(turnId, serviceId);
+		Object.assign(req.date, req.body);
+		const date = await req.date.save();
+		res.json(date);
+	} catch (error) {
+		next(error);
+	}
 };
 
 module.exports.delete = (req, res, next) => {
