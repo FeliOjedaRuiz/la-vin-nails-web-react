@@ -106,7 +106,7 @@ describe('Dates Controller — service↔turn category guard', () => {
 
     expect(result.error.status).toBe(400);
     expect(result.error.message).toBe(
-      'El servicio Retiro solo puede reservarse en turnos marcados como retiro.'
+      'El servicio Retiro solo puede reservarse en turnos marcados como retiro'
     );
 
     const persistedDates = await Date.find();
@@ -124,7 +124,7 @@ describe('Dates Controller — service↔turn category guard', () => {
 
     expect(result.error.status).toBe(400);
     expect(result.error.message).toBe(
-      'Los turnos marcados como retiro solo admiten el servicio Retiro.'
+      'El servicio no es de retiro y no puede reservarse en un turno de retiro'
     );
 
     const persistedDates = await Date.find();
@@ -175,7 +175,7 @@ describe('Dates Controller — service↔turn category guard', () => {
 
     expect(result.error.status).toBe(400);
     expect(result.error.message).toBe(
-      'El servicio Retiro solo puede reservarse en turnos marcados como retiro.'
+      'El servicio Retiro solo puede reservarse en turnos marcados como retiro'
     );
 
     const unchangedDate = await Date.findById(existingDate.id);

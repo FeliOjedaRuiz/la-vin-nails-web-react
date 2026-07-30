@@ -27,8 +27,8 @@ async function assertServiceTurnCompatibility(turnId, serviceId) {
 
 	if (isRetiroService !== isRetiroTurn) {
 		const message = isRetiroService
-			? 'El servicio Retiro solo puede reservarse en turnos marcados como retiro.'
-			: 'Los turnos marcados como retiro solo admiten el servicio Retiro.';
+			? 'El servicio Retiro solo puede reservarse en turnos marcados como retiro'
+			: 'El servicio no es de retiro y no puede reservarse en un turno de retiro';
 		throw createError(400, message);
 	}
 }
