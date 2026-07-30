@@ -19,13 +19,14 @@ import { getVisibilityCeiling } from "../../../utils/monthVisibility";
 // siempre como el mismo tipo entre renders. Si estuviese dentro,
 // cada render de DatesForm crearía un tipo nuevo → unmount+remount de los
 // 3 paneles → 540 TurnItemGuest re-montados → freeze en móvil.
-const CalendarPanel = React.memo(function CalendarPanel({ date, selectedTurn, onTurnSelection, maxVisibleDate }) {
+const CalendarPanel = React.memo(function CalendarPanel({ date, selectedTurn, onTurnSelection, maxVisibleDate, category }) {
   return (
     <TurnListByWeek
       initDate={date}
       onTurnSelection={onTurnSelection}
       selectedTurn={selectedTurn}
       maxVisibleDate={maxVisibleDate}
+      category={category}
     />
   );
 });
@@ -36,6 +37,7 @@ const isInAppBrowser = () => {
 };
 
 function DatesForm({ service, serviceTypes }) {
+  const targetCategory = service?.name === "Retiro" ? "retiro" : "normal";
   const {
     register,
     handleSubmit,
@@ -199,8 +201,9 @@ function DatesForm({ service, serviceTypes }) {
       try {
         await datesService.create(dateApplication);
       } catch (dateError) {
-        // Rollback: release the turn lock
-        await turnsService.update(selectedTurn.id, { ...selectedTurn, state: "Disponible" });
+        // Rollback: release the turn lock WITHOUT spreading the stale turn object,
+        // so a concurrent admin category edit is never overwritten.
+        await turnsService.update(selectedTurn.id, { state: "Disponible" });
         throw dateError;
       }
 
@@ -396,6 +399,7 @@ function DatesForm({ service, serviceTypes }) {
                   selectedTurn={selectedTurn}
                   onTurnSelection={onTurnSelection}
                   maxVisibleDate={maxVisibleDate}
+                  category={targetCategory}
                 />
               )}
             />
