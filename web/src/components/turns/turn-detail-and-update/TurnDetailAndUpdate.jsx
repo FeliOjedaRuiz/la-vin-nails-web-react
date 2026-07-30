@@ -315,7 +315,7 @@ function TurnDetailAndUpdate() {
 
 						<div className="mr-5">
 							<label
-								for="category"
+								htmlFor="category"
 								className="ml-2 font-medium text-pink-800 text-sm"
 							>
 								Categoría

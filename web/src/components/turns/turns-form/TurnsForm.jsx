@@ -99,7 +99,7 @@ function TurnsForm({ onTurnCreation }) {
             />
             <label
               htmlFor="isRetiro"
-              className="text-xs font-medium text-pink-800 cursor-pointer select-none leading-tight"
+              className="text-base font-medium text-pink-800 cursor-pointer select-none leading-tight"
             >
               Es turno<br />para retiro
             </label>
