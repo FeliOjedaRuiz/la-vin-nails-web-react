@@ -2,11 +2,16 @@ import React from "react";
 
 function TurnItemGuest({ turn, onTurnSelection, isSelected }) {
   const isAvailable = turn.state === "Disponible";
-  
-  const style = isAvailable 
-    ? (isSelected 
-        ? "bg-emerald-600 text-white ring-2 ring-emerald-400 scale-105 shadow-md transition-all font-bold cursor-pointer z-10" 
-        : "bg-pink-400 text-white active:scale-95 transition-transform cursor-pointer")
+  const isRetiro = turn.category === "retiro";
+
+  const style = isAvailable
+    ? (isSelected
+        ? (isRetiro
+            ? "bg-violet-600 text-white ring-2 ring-violet-400 scale-105 shadow-md transition-all font-bold cursor-pointer z-10"
+            : "bg-emerald-600 text-white ring-2 ring-emerald-400 scale-105 shadow-md transition-all font-bold cursor-pointer z-10")
+        : (isRetiro
+            ? "bg-violet-400 text-white active:scale-95 transition-transform cursor-pointer"
+            : "bg-pink-400 text-white active:scale-95 transition-transform cursor-pointer"))
     : "bg-gray-300 text-gray-700 opacity-90 cursor-not-allowed";
 
   const handleClick = (e) => {
