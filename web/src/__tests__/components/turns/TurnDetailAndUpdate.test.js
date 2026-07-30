@@ -39,6 +39,7 @@ describe('TurnDetailAndUpdate', () => {
     date: '2026-05-04',
     hour: '10:00',
     state: 'Confirmado',
+    category: 'normal',
   };
 
   const mockDate = {
@@ -56,6 +57,8 @@ describe('TurnDetailAndUpdate', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     turnsService.detail.mockResolvedValue(mockTurn);
+    turnsService.update.mockResolvedValue(mockTurn);
+    datesService.update.mockResolvedValue({});
     // Para simplificar el test de handleSubmit, asumimos que no hay cita (date) inicialmente
     // o mockeamos que AuthContext la provee si quisiéramos testear ambos, pero el bug era en el await general.
   });
@@ -119,5 +122,64 @@ describe('TurnDetailAndUpdate', () => {
     expect(screen.queryByText(/aún no fue solicitado/i)).not.toBeInTheDocument();
     expect(screen.getByText('Manicura')).toBeInTheDocument();
     expect(screen.getByText('Semipermanente')).toBeInTheDocument();
+  });
+
+  it('SC-CAT-04: muestra modal de confirmación al cambiar categoría con cita activa', async () => {
+    const turnWithActiveDate = {
+      ...mockTurn,
+      dateData: {
+        ...mockDate,
+        state: 'Solicitada',
+      },
+    };
+    turnsService.detail.mockResolvedValue(turnWithActiveDate);
+    turnsService.update.mockResolvedValue({ ...turnWithActiveDate, category: 'retiro' });
+
+    renderWithProviders(<TurnDetailAndUpdate />);
+
+    await waitFor(() => expect(screen.getByDisplayValue('10:00')).toBeInTheDocument());
+
+    fireEvent.change(screen.getByRole('combobox', { name: /Categoría/i }), {
+      target: { value: 'retiro' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /guardar/i }));
+
+    expect(turnsService.update).not.toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(screen.getByText(/cambiar la categoría/i)).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /Aceptar/i }));
+
+    await waitFor(() => {
+      expect(turnsService.update).toHaveBeenCalledWith(
+        '123',
+        expect.objectContaining({ category: 'retiro' })
+      );
+      expect(mockNavigate).toHaveBeenCalledWith('/admin-schedule');
+    });
+  });
+
+  it('SC-CAT-05: guarda la categoría directamente si no hay cita activa', async () => {
+    turnsService.update.mockResolvedValue({ ...mockTurn, category: 'retiro' });
+
+    renderWithProviders(<TurnDetailAndUpdate />);
+
+    await waitFor(() => expect(screen.getByDisplayValue('10:00')).toBeInTheDocument());
+
+    fireEvent.change(screen.getByRole('combobox', { name: /Categoría/i }), {
+      target: { value: 'retiro' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /guardar/i }));
+
+    await waitFor(() => {
+      expect(turnsService.update).toHaveBeenCalledWith(
+        '123',
+        expect.objectContaining({ category: 'retiro' })
+      );
+      expect(mockNavigate).toHaveBeenCalledWith('/admin-schedule');
+    });
+    expect(screen.queryByText(/cambiar la categoría/i)).not.toBeInTheDocument();
   });
 });
