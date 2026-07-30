@@ -11,13 +11,16 @@ function TurnsForm({ onTurnCreation }) {
     formState: { errors },
   } = useForm({ mode: "onBlur" });
   const [serverError, setServerError] = useState(undefined);
-
-  // const turnState = ["Disponible", "Solicitada", "Confirmada", "Cancelada"];
+  const [isRetiro, setIsRetiro] = useState(false);
 
   const onTurnSubmit = async (turn) => {
     try {
       setServerError();
-      turn = await turnsService.create(turn);
+      const payload = {
+        ...turn,
+        category: isRetiro ? "retiro" : "normal",
+      };
+      turn = await turnsService.create(payload);
       onTurnCreation();
     } catch (error) {
       const errors = error.response?.data?.errors;
@@ -50,6 +53,7 @@ function TurnsForm({ onTurnCreation }) {
               Fecha
             </label>
             <input
+              id="date"
               type="date"
               placeholder="Hora"
               {...register("date", { required: "Debes seleccionar un día" })}
@@ -70,6 +74,7 @@ function TurnsForm({ onTurnCreation }) {
               Hora
             </label>
             <input
+              id="hour"
               type="time"
               placeholder="Hora"
               {...register("hour", {
@@ -82,6 +87,22 @@ function TurnsForm({ onTurnCreation }) {
                 {errors.hour?.message}
               </div>
             )}
+          </div>
+
+          <div className="flex items-center gap-1 shrink-0 mb-1">
+            <input
+              id="isRetiro"
+              type="checkbox"
+              checked={isRetiro}
+              onChange={(e) => setIsRetiro(e.target.checked)}
+              className="h-4 w-4 cursor-pointer"
+            />
+            <label
+              htmlFor="isRetiro"
+              className="text-xs font-medium text-pink-800 cursor-pointer select-none leading-tight"
+            >
+              Es turno<br />para retiro
+            </label>
           </div>
 
           <button className="shrink-0 mb-px" type="submit">

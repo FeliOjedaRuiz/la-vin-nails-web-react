@@ -77,25 +77,37 @@ function TurnItemAdmin({ turn }) {
 		<>
 			{loaded && (
 				<NavLink to={`/turns/${id}`}>
-					<div
-						onClick={handleDateSelect}
-						className={`mb-0.5 ${bg} rounded shadow-sm py-[2px] px-0.5 flex flex-col `}
-					>
-						<p className={`pl-1 font-medium text-[10px] md:text-xs leading-[14px] truncate ${textColor}`}>
-							{turn.hour} - {date && date.user.name}
-						</p>
-					</div>
+          <div
+            onClick={handleDateSelect}
+            className={`relative mb-0.5 ${bg} rounded shadow-sm py-[2px] px-0.5 flex flex-col `}
+          >
+            {turn.category === 'retiro' && (
+              <span
+                aria-label="Categoría retiro"
+                className="absolute top-1 right-1 w-2 h-2 rounded-full bg-violet-500"
+              />
+            )}
+            <p className={`pl-1 font-medium text-[10px] md:text-xs leading-[14px] truncate ${textColor}`}>
+              {turn.hour} - {date && date.user.name}
+            </p>
+          </div>
 				</NavLink>
 			)}
 			{!loaded && (
-				<div
-					onClick={handleDateSelect}
-					className={`mb-0.5 ${bg} rounded shadow-sm py-[2px] px-0.5 flex flex-col `}
-				>
-					<p className={`pl-1 font-medium text-[10px] md:text-xs leading-[14px] truncate ${textColor}`}>
-						{turn.hour}
-					</p>
-				</div>
+          <div
+            onClick={handleDateSelect}
+            className={`relative mb-0.5 ${bg} rounded shadow-sm py-[2px] px-0.5 flex flex-col `}
+          >
+            {turn.category === 'retiro' && (
+              <span
+                aria-label="Categoría retiro"
+                className="absolute top-1 right-1 w-2 h-2 rounded-full bg-violet-500"
+              />
+            )}
+            <p className={`pl-1 font-medium text-[10px] md:text-xs leading-[14px] truncate ${textColor}`}>
+              {turn.hour}
+            </p>
+          </div>
 			)}
 		</>
 	);
