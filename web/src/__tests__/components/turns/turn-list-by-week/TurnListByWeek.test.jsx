@@ -34,7 +34,7 @@ describe('TurnListByWeek category-aware cache', () => {
     await flushAsyncEffect();
   });
 
-  it('llama a turnsService.list con category "normal" por defecto', async () => {
+  it('llama a turnsService.list SIN category (muestra todos los turnos) cuando no se pasa la prop', async () => {
     renderWithProviders(
       <TurnListByWeek initDate={initDate} onTurnSelection={jest.fn()} />
     );
@@ -43,7 +43,7 @@ describe('TurnListByWeek category-aware cache', () => {
       expect(turnsService.list).toHaveBeenCalledWith(
         initDate,
         expect.any(String),
-        'normal',
+        undefined,
         expect.objectContaining({ aborted: false })
       );
     });

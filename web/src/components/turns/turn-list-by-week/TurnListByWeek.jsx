@@ -136,8 +136,8 @@ export const clearGuestTurnsCache = () => {
   Object.keys(turnsCache).forEach(key => delete turnsCache[key]);
 };
 
-function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVisibleDate, category = 'normal' }) {
-  const cacheKey = `${initDate}:${category}`;
+function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVisibleDate, category }) {
+  const cacheKey = category ? `${initDate}:${category}` : initDate;
 
   // Inicializar desde caché si existe → evita el flash en blanco al volver
   const [turns, setTurns] = useState(() => turnsCache[cacheKey] || []);
