@@ -98,7 +98,7 @@ export const services = [
       "https://res.cloudinary.com/duoshgr3h/image/upload/v1722880058/retiro_tf9ihq.webp",
     description:
       "Remoción total del material dejando la uña natural limpia y con un protector y endurecedor de calcio. Se efectua una limpieza y manicuria express (limado, corte de cuticulas y pulido de pieles).",
-    price: 3,
+    price: 5,
     dateDuration: "0:30",
   },
   {
