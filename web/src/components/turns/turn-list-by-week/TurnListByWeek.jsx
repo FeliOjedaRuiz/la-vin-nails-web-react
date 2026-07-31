@@ -136,14 +136,16 @@ export const clearGuestTurnsCache = () => {
   Object.keys(turnsCache).forEach(key => delete turnsCache[key]);
 };
 
-function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVisibleDate }) {
+function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVisibleDate, category = 'normal' }) {
+  const cacheKey = `${initDate}:${category}`;
+
   // Inicializar desde caché si existe → evita el flash en blanco al volver
-  const [turns, setTurns] = useState(() => turnsCache[initDate] || []);
-  const [loading, setLoading] = useState(!turnsCache[initDate]);
+  const [turns, setTurns] = useState(() => turnsCache[cacheKey] || []);
+  const [loading, setLoading] = useState(!turnsCache[cacheKey]);
 
   // ── Cache sync via useEffect (replaces render-phase setState) ───────────────
   useEffect(() => {
-    const cached = turnsCache[initDate];
+    const cached = turnsCache[cacheKey];
     if (cached) {
       setTurns(cached);
       setLoading(false);
@@ -151,7 +153,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVi
       setTurns([]);
       setLoading(true);
     }
-  }, [initDate]);
+  }, [cacheKey]);
 
   const baseDay = safeParseDate(initDate);
 
@@ -178,7 +180,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVi
     // Actualizar el ref con el initDate activo en este efecto.
     currentInitDateRef.current = initDate;
 
-    const cached = turnsCache[initDate];
+    const cached = turnsCache[cacheKey];
 
     // ── SWR revalidation path (cached data exists) ─────────────────────────────
     // Si hay caché y NO fue un reload forzado, los datos ya son correctos
@@ -186,15 +188,15 @@ function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVi
     if (cached && !isReloadTriggered) {
       const abortController = new AbortController();
 
-      turnsService.list(initDate, sixthDay, abortController.signal)
+      turnsService.list(initDate, sixthDay, category, abortController.signal)
         .then((freshTurns) => {
           if (abortController.signal.aborted) return;
           if (currentInitDateRef.current !== initDate) return;
 
-          const currentCached = turnsCache[initDate];
+          const currentCached = turnsCache[cacheKey];
           const changed = JSON.stringify(freshTurns) !== JSON.stringify(currentCached);
           if (changed) {
-            turnsCache[initDate] = freshTurns;
+            turnsCache[cacheKey] = freshTurns;
             setTurns(freshTurns);
           }
         })
@@ -209,28 +211,29 @@ function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVi
     const abortController = new AbortController();
 
     turnsService
-      .list(initDate, sixthDay, abortController.signal)
+      .list(initDate, sixthDay, category, abortController.signal)
       .then((freshTurns) => {
         if (abortController.signal.aborted) return;
 
-        const currentCached = turnsCache[initDate];
+        const currentCached = turnsCache[cacheKey];
         const changed = JSON.stringify(freshTurns) !== JSON.stringify(currentCached);
-        turnsCache[initDate] = freshTurns;
+        turnsCache[cacheKey] = freshTurns;
         if (changed) {
           setTurns(freshTurns);
         }
 
-        // Prefetch semanas adyacentes
+        // Prefetch semanas adyacentes (misma categoría)
         const prefetch = (offsetDays) => {
           const targetInitDate = getNextDate(baseDay, offsetDays);
-          if (turnsCache[targetInitDate]) return;
-          
+          const targetCacheKey = `${targetInitDate}:${category}`;
+          if (turnsCache[targetCacheKey]) return;
+
           const targetSixthDay = getNextDate(baseDay, offsetDays + 6);
-          turnsService.list(targetInitDate, targetSixthDay)
-            .then(res => { turnsCache[targetInitDate] = res; })
+          turnsService.list(targetInitDate, targetSixthDay, category)
+            .then(res => { turnsCache[targetCacheKey] = res; })
             .catch(() => {});
         };
-        
+
         prefetch(-7);
         prefetch(7);
       })
@@ -245,7 +248,7 @@ function TurnListByWeek({ initDate, reload, onTurnSelection, selectedTurn, maxVi
   // baseDay es derivado de initDate (función pura a nivel módulo).
   // initDate ya cubre el caso de re-fetch; agregar baseDay causaría re-ejecuciones fantasma.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload, initDate, sixthDay]);
+  }, [reload, initDate, sixthDay, category]);
 
   const sortByHour = (arr) =>
     [...arr].sort((x, y) => x.hour.replace(":", "") - y.hour.replace(":", ""));

@@ -30,6 +30,8 @@ function TurnDetailAndUpdate() {
 	]);
 	const [modalState, setModalState] = useState(false);
 	const [modalDateState, setModalDateState] = useState(false);
+	const [modalCategoryState, setModalCategoryState] = useState(false);
+	const [initialCategory, setInitialCategory] = useState('normal');
 	const [reload, setReload] = useState(false);
 	const [loading, setLoading] = useState(true);
 
@@ -83,11 +85,15 @@ function TurnDetailAndUpdate() {
 		turnsService
 			.detail(id)
 			.then((turn) => {
-				setTurn(turn);
+				setTurn({
+					...turn,
+					category: turn.category || 'normal',
+				});
+				setInitialCategory(turn.category || 'normal');
 				const newStates = turnStates.filter((state) => turn.state !== state);
 				newStates.unshift(turn.state);
 				setTurnStates(newStates);
-				
+
 				// dateData del backend SIEMPRE gana — es la fuente de verdad.
 				// Corrige el caso de notificación directa donde currentDate
 				// puede estar stale de una navegación anterior.
@@ -138,8 +144,7 @@ function TurnDetailAndUpdate() {
 		});
 	};
 
-	const handleSubmit = async (ev) => {
-		ev.preventDefault();
+	const executeSubmit = async () => {
 		await onTurnSubmit(turn);
 		if (date) {
 			await onDateSubmit(date);
@@ -147,6 +152,19 @@ function TurnDetailAndUpdate() {
 		clearAdminTurnsCache();
 		clearGuestTurnsCache();
 		navigate('/admin-schedule');
+	};
+
+	const handleSubmit = async (ev) => {
+		ev.preventDefault();
+		if (
+			turn.category !== initialCategory &&
+			turn.dateData &&
+			turn.dateData.state !== 'Cancelada'
+		) {
+			setModalCategoryState(true);
+			return;
+		}
+		await executeSubmit();
 	};
 
 	const onTurnSubmit = async (turn) => {
@@ -274,7 +292,7 @@ function TurnDetailAndUpdate() {
 						</div>
 					</div>
 
-					<div className="flex flex-wrap">
+						<div className="flex flex-wrap">
 						<div className="mr-5">
 							<label
 								for="state"
@@ -294,6 +312,27 @@ function TurnDetailAndUpdate() {
 								</select>
 							</div>
 						</div>
+
+						<div className="mr-5">
+							<label
+								htmlFor="category"
+								className="ml-2 font-medium text-pink-800 text-sm"
+							>
+								Categoría
+							</label>
+							<div>
+								<select
+									className="rounded-lg px-2 h-10 w-36 border-2 border-pink-300 align-top text-base"
+									id="category"
+									onChange={handleTurnChange}
+									value={turn.category}
+								>
+									<option value="normal">Normal</option>
+									<option value="retiro">Retiro</option>
+								</select>
+							</div>
+						</div>
+
 						{!date && (
 							<div className="flex items-end justify-start pt-2">
 								{/* setModalState(!modalState) */}
@@ -482,6 +521,34 @@ function TurnDetailAndUpdate() {
 					<button
 						onClick={handleDeleteDate}
 						className="bg-green-600 text-white  px-2 py-1 rounded "
+					>
+						Aceptar
+					</button>
+				</div>
+			</Modal>
+
+			<Modal modalState={modalCategoryState}>
+				<div className="text-center mb-6">
+					<p className="font-bold text-2xl">Cambiar categoría</p>
+				</div>
+
+				<div className="text-center text-xl font-medium mb-6">
+					<p>Hay una cita activa en este turno. ¿Cambiar la categoría igualmente?</p>
+				</div>
+
+				<div className="flex justify-around">
+					<button
+						onClick={() => setModalCategoryState(false)}
+						className="bg-red-600 text-white px-2 py-1 rounded"
+					>
+						Cancelar
+					</button>
+					<button
+						onClick={() => {
+							setModalCategoryState(false);
+							executeSubmit();
+						}}
+						className="bg-green-600 text-white px-2 py-1 rounded"
 					>
 						Aceptar
 					</button>

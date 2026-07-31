@@ -12,6 +12,10 @@ function TurnsColorsExplication() {
           <div className="bg-gray-400 w-3.5 h-3.5 rounded mr-1.5"></div>
           <p className="text-sm font-medium text-gray-700">Ocupado</p>
         </div>
+        <div className="flex items-center ">
+          <div className="bg-violet-400 w-3.5 h-3.5 rounded mr-1.5"></div>
+          <p className="text-sm font-medium text-gray-700">Retiro</p>
+        </div>
       </div>
     </div>
   );
