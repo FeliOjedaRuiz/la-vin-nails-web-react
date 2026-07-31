@@ -123,3 +123,33 @@ The `TurnDetailAndUpdate` component MUST display date/cita details using `turn.d
 - WHEN `TurnDetailAndUpdate` mounts
 - THEN `currentDate` SHALL take precedence over `turn.dateData`
 - AND `deleteDate()` SHALL clear context after sync
+
+### Requirement: Category-Aware Cache Keys
+
+The guest turn list cache key MUST include the turn category to prevent cross-service cache collisions. When a client switches between Retiro and non-Retiro services in the same week, the cache MUST NOT return stale turns from the previous category.
+
+#### Scenario: Cache isolation per category
+
+- GIVEN client views week 2026-08-03 on the Retiro service page
+- AND the cache for key '2026-08-03:retiro' is populated
+- WHEN client navigates to a non-Retiro service page for the same week
+- THEN the calendar SHALL fetch turns with cache key '2026-08-03:normal'
+- AND the previously cached 'retiro' list SHALL NOT be used
+
+#### Scenario: Refetch on category change
+
+- GIVEN component displaying turns for category 'normal'
+- WHEN the category prop changes to 'retiro'
+- THEN the component SHALL discard the 'normal' cache entry
+- AND fetch turns with the new 'retiro' category
+
+### Requirement: Tight Rollback Payload on Date Creation Failure
+
+When the client locks a turn to 'Solicitado' and the subsequent Date creation fails (e.g., 400 compatibility guard), the rollback payload MUST contain ONLY the state field. Sending the full selectedTurn object risks clobbering concurrent admin edits to other fields (e.g., category).
+
+#### Scenario: Rollback does not clobber concurrent admin edits
+
+- GIVEN the client is submitting a date and the API call fails after the turn was locked to 'Solicitado'
+- WHEN the rollback runs
+- THEN the rollback payload SHALL be '{state: "Disponible"}' only
+- AND no other field of the turn SHALL be overwritten
