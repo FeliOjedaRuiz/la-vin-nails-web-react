@@ -90,7 +90,7 @@ describe('Turns Visibility — Backend Clamping', () => {
   });
 });
 
-describe('Turns Visibility — June Exception', () => {
+describe('Turns Visibility — June & August Exceptions (M+2)', () => {
   const setupTurnsForJune = async () => {
     await Turn.create([
       { date: '2026-06-15', hour: '10:00' },
@@ -149,7 +149,7 @@ describe('Turns Visibility — June Exception', () => {
     expect(hasSeptember).toBe(false);
   });
 
-  it('el 1 de agosto un guest ve hasta septiembre (M+1 normal)', async () => {
+  it('el 1 de agosto un guest ve hasta octubre (excepción M+2)', async () => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2026-08-01T12:00:00Z'));
 
@@ -165,9 +165,11 @@ describe('Turns Visibility — June Exception', () => {
 
     const hasSeptember = turns.some(t => t.date.startsWith('2026-09'));
     const hasOctober = turns.some(t => t.date.startsWith('2026-10'));
+    const hasNovember = turns.some(t => t.date.startsWith('2026-11'));
 
     expect(hasSeptember).toBe(true);
-    expect(hasOctober).toBe(false);
+    expect(hasOctober).toBe(true);
+    expect(hasNovember).toBe(false);
   });
 
   it('el 1 de septiembre vuelve a regla normal: guest ve hasta octubre', async () => {

@@ -30,7 +30,7 @@ describe('getMonthVisibility utility', () => {
   });
 });
 
-describe('getVisibilityCeiling — June exception', () => {
+describe('getVisibilityCeiling — June & August exceptions (M+2)', () => {
   afterEach(() => {
     jest.useRealTimers();
   });
@@ -69,14 +69,26 @@ describe('getVisibilityCeiling — June exception', () => {
     expect(maxVisibleDate.getDate()).toBe(31);
   });
 
-  it('en agosto aplica regla normal: techo = fin de septiembre (M+1)', () => {
+  it('el 1 de agosto aplica excepción M+2: techo = fin de octubre', () => {
     jest.useFakeTimers();
-    jest.setSystemTime(new Date('2026-08-20T12:00:00'));
+    jest.setSystemTime(new Date('2026-08-01T12:00:00'));
+
+    const { maxVisibleDate, maxNavigationDate } = getVisibilityCeiling();
+
+    expect(maxVisibleDate.getMonth()).toBe(9); // October (0-indexed)
+    expect(maxVisibleDate.getDate()).toBe(31);
+    expect(maxNavigationDate.getMonth()).toBe(10); // November
+    expect(maxNavigationDate.getDate()).toBe(30);
+  });
+
+  it('en agosto (día 15) aplica excepción M+2: techo = fin de octubre', () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-08-15T12:00:00'));
 
     const { maxVisibleDate } = getVisibilityCeiling();
 
-    expect(maxVisibleDate.getMonth()).toBe(8); // September
-    expect(maxVisibleDate.getDate()).toBe(30);
+    expect(maxVisibleDate.getMonth()).toBe(9); // October
+    expect(maxVisibleDate.getDate()).toBe(31);
   });
 
   it('el 1 de septiembre vuelve a regla normal: techo = fin de octubre', () => {
